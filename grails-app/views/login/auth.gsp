@@ -68,13 +68,25 @@
 
     #login #submit {
         margin-left: 15px;
+        height: 30px;
+    }
+
+    #login .inner .register
+    {
+        margin-left: 150px;
+
+    }
+
+    #login .inner .cssform .submit
+    {
+        margin-left: 20px;
     }
 
     #login #remember_me_holder label {
         float: none;
-        margin-left: 0;
+        height:  1px;
         text-align: left;
-        width: 200px
+        width: 190px
     }
 
     #login .inner .login_message {
@@ -87,7 +99,8 @@
     }
 
     #login .inner .chk {
-        height: 12px;
+        height: 20px;
+        margin-right: 100px;
     }
     </style>
 </head>
@@ -123,15 +136,21 @@
                 <label for="remember_me"><g:message code='springSecurity.login.remember.me.label'/></label>
             </p>
 
-            <p>
+            <div class="submit">
                 <input type="submit" id="submit" value="${message(code: 'springSecurity.login.button')}"/>
-                <sec:ifNotLoggedIn>
-                    <g:link controller="user" action="register">
-                        Register
-                    </g:link>
-                </sec:ifNotLoggedIn>
-            </p>
+            </div>
+
         </form>
+
+        <div class="register">
+            <sec:ifNotLoggedIn>
+                Don't have an account?
+                <g:link controller="user" action="register">
+                    Register Now!
+                </g:link>
+            </sec:ifNotLoggedIn>
+        </div>
+
     </div>
 </div>
 <script>
