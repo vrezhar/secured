@@ -125,6 +125,11 @@
 
             <p>
                 <input type="submit" id="submit" value="${message(code: 'springSecurity.login.button')}"/>
+                <sec:ifNotLoggedIn>
+                    <g:link controller="user" action="register">
+                        Register
+                    </g:link>
+                </sec:ifNotLoggedIn>
             </p>
         </form>
     </div>
