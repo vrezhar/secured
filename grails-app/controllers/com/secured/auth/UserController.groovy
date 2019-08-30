@@ -21,33 +21,40 @@ class UserController  {
             {
                 usr = new User(username: params.username, firstName: params.firstName, lastName: params.lastName)
                 usr.errors.rejectValue("username","user.username.exists")
-                return [user: usr]
+                render view:"register", model: [user: usr]
+                return
             }
             usr = new User(username:  params.username ,password:  params.password, firstName:  params.firstName, lastName:  params.lastName)
-            if(!usr.validate())
-                return [user: usr]
+            if(!usr.validate()) {
+                render view: "register", model: [user: usr]
+                return
+            }
             if (params.password != params.confirm)
             {
                 usr.errors.rejectValue("password", "user.password.doesntmatch")
-                return [user: usr]
+                render view:"register", model: [user: usr]
+                return
             }
 
             if(!patternValidator.validateUsername(usr.username))
             {
                 usr.errors.rejectValue("username","user.username.incorrect")
-                return [user: usr]
+                render view:"register", model: [user: usr]
             }
             switch(patternValidator.validatePassword(usr.password))
             {
                 case 0:
                     usr.errors.rejectValue("password","user.password.tooshort")
-                    return [user: usr]
+                    render view:"register", model: [user: usr]
+                    return
                 case -1:
                     usr.errors.rejectValue("password","user.password.toolong")
-                    return [user: usr]
+                    render view:"register", model: [user: usr]
+                    return
                 case 1:
                     usr.errors.rejectValue("password","user.password.tooweak")
-                    return [user: usr]
+                    render view:"register", model: [user: usr]
+                    return
             }
             Map<String,String> securityCard = securityCoordinateGenerator.generateCoordinates()
 

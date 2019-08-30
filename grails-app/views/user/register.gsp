@@ -57,9 +57,21 @@
         height: 1%;
     }
 
+    #register .inner .cssform  .confirm-wrapper{
+        clear: left;
+        margin: 0;
+        padding: 4px 0 3px 0;
+        padding-left: 115px;
+        margin-bottom: 20px;
+        height: 1%;
+    }
+
+
+
     #login .inner .cssform .form-wrapper p{
         width: 130px;
     }
+
 
     #login .inner .cssform label {
         font-weight: bold;
@@ -136,7 +148,7 @@
                 </p>
             </div>
 
-            <div class="form-wrapper">
+            <div class="confirm-wrapper">
                 <p>
                     <label for="confirm">Confirm:     </label>
                     <g:passwordField id="text_" name="confirm" value="${params?.confirm}"></g:passwordField>
