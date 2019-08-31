@@ -1,4 +1,4 @@
-package secured
+package com.secured.auth
 
 
 class UrlMappings {

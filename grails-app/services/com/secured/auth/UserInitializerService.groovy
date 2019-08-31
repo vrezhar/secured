@@ -25,14 +25,4 @@ class UserInitializerService  implements  UserInitializer{
             UserRole.create(usr,role,flush)
     }
 
-
-    @Override
-    def addToCoordinates(User usr, Map<String,String> coordinates,boolean save = false,boolean flush = false)
-    {
-        coordinates.each {k,v ->
-            usr.addToCoordinates(position: k,value: v,user: usr)
-        }
-        if(save)
-            usr.save(flush)
-    }
 }

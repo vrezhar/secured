@@ -1,7 +1,5 @@
 package com.secured.auth
 
-
-import org.springframework.web.bind.annotation.RequestMapping
 import grails.plugin.springsecurity.annotation.Secured
 
 @Secured(['ROLE_ADMIN','ROLE_USER'])

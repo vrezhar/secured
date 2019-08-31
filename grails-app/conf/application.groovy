@@ -1,9 +1,4 @@
 
-grails.plugin.springsecurity.providerNames = [
-		'twoFactorAuthenticationProvider',
-		'anonymousAuthenticationProvider',
-		'rememberMeAuthenticationProvider']
-
 // Added by the Spring Security Core plugin:
 grails.plugin.springsecurity.userLookup.userDomainClassName = 'com.secured.auth.User'
 grails.plugin.springsecurity.userLookup.authorityJoinClassName = 'com.secured.auth.UserRole'

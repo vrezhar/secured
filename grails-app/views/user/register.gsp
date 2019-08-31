@@ -118,7 +118,7 @@
         </g:hasErrors>
         </div>
 
-        <g:form controller="user" action="register" id="loginForm" class="cssform">
+        <g:form url="/register" class="cssform">
 
             <div class="form-wrapper">
                 <p>
