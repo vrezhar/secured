@@ -15,16 +15,18 @@ class UserController  {
 
         if(request.method == 'POST')
         {
+
             def userRole = Role.findOrSaveWhere(authority: "ROLE_USER")
             User usr = User.findWhere(username: params.username)
             if(usr)
             {
-                usr = new User(username: params.username, firstName: params.firstName, lastName: params.lastName)
+                usr = new User(username: params.username, firstName: params.firstName, lastName: params.lastName,email: params.email)
                 usr.errors.rejectValue("username","user.username.exists")
                 render view: "register", model: [user: usr]
                 return
             }
-            usr = new User(username:  params.username ,password:  params.password, firstName:  params.firstName, lastName:  params.lastName)
+            usr = new User(username:  params.username ,password:  params.password, firstName:  params.firstName, lastName:  params.lastName, email: params.email)
+            println(usr.username)
             if(!usr.validate()) {
                 render view: "register", model: [user: usr]
                 return
@@ -58,7 +60,6 @@ class UserController  {
             }
             userInitializer.assignRole(usr,userRole,true)
             springSecurityService.reauthenticate(usr.username,usr.password)
-            flash.securitycard = "I'll fix this up later"
             redirect controller: 'main',action:'confirm'
 
         }

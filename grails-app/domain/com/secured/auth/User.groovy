@@ -15,6 +15,9 @@ class User implements Serializable {
     String password
     String firstName
     String lastName
+    String email
+    String mainToken
+    static hasMany = [companies: Company]
 
     boolean enabled = true
     boolean accountExpired
@@ -32,10 +35,13 @@ class User implements Serializable {
         username nullable: false, blank: false, unique: true
         firstName nullable: false, blank: false
         lastName nullable: false, blank: false
+        email nullable: false,blank: false,email: true
     }
 
     static mapping = {
 	    password column: '`password`'
+        //TODO Implement this properly later
+        mainToken formula: 'FIRST_NAME + LAST_NAME'
     }
 
 
