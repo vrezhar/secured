@@ -42,6 +42,7 @@ class UserController  {
             {
                 usr.errors.rejectValue("username","user.username.incorrect")
                 render view:"register", model: [user: usr]
+                return
             }
             switch(patternValidator.validatePassword(usr.password))
             {

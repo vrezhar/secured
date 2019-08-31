@@ -23,7 +23,7 @@ class PatternValidatorService {
     boolean validateUsername(String username)
     {
         //contains at least one lowercase character and has,has at least 3 characters but less than 16
-        return validatePatternFor("((?=.*[a-z]).{3,16})",username) as boolean;
+        return validatePatternFor("[^0-9][a-zA-Z0-9]{2,15}",username) as boolean;
     }
 
     private static int validatePatternFor(String pattern, String what_is_being_validated)
