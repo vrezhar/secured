@@ -26,27 +26,14 @@ class UserInitializerServiceSpec extends HibernateSpec implements ServiceUnitTes
         when:
         def test_role = "ROLE_TEST"
         def user = new User(firstName: "bron", lastName: "bronson",
-                username: "bruh", password: "bruhMoment"
+                username: "bruh", password: "bruhMoment",email: "test@test.com"
         )
+        user.save()
         service.assignRole(user, test_role)
+
         then:
         UserRole.findByUser(user).role.authority == "ROLE_TEST"
     }
 
-    void "test security card initialization"() {
-        when:
-
-        def mockCard = ["A1": "10"]
-        def test_role = "ROLE_TEST"
-
-        def user = new User(firstName: "bron", lastName: "bronson",
-                username: "bruh", password: "bruhMoment"
-        )
-        service.assignRole(user, test_role)
-        service.addToCoordinates(user, mockCard)
-        then:
-        UserRole.findByUser(user).user.coordinates[0].value == "10"
-
-    }
 
 }

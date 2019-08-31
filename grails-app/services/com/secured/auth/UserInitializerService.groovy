@@ -12,6 +12,7 @@ class UserInitializerService  implements  UserInitializer{
         def role = Role.findOrSaveWhere(authority: r)
         if(!usr.authorities.contains(role))
             UserRole.create(usr,role,flush)
+
     }
 
 
@@ -23,6 +24,7 @@ class UserInitializerService  implements  UserInitializer{
             role.save()
         if(!usr.authorities.contains(role))
             UserRole.create(usr,role,flush)
+
     }
 
 }

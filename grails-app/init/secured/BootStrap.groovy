@@ -17,7 +17,7 @@ class BootStrap {
         def admin = User.findWhere(username: 'admin')
         if(!admin)
         {
-            admin = new User(username: 'admin',password: '1Test',firstName: 'Admin', lastName: 'Admin')
+            admin = new User(username: 'admin',password: '1Test',firstName: 'Admin', lastName: 'Admin', email: "vrarakel01@gmail.com")
             admin.save()
             UserRole.create(admin, adminRole,true)
         }
