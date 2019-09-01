@@ -4,6 +4,7 @@ import grails.test.hibernate.HibernateSpec
 import grails.testing.services.ServiceUnitTest
 import spock.lang.Specification
 
+//TODO fix this
 class UserInitializerServiceSpec extends HibernateSpec implements ServiceUnitTest<UserInitializerService> {
 
     List<Class> getDomainClasses() {
@@ -15,8 +16,9 @@ class UserInitializerServiceSpec extends HibernateSpec implements ServiceUnitTes
         when:
         def test_role = Role.findOrSaveWhere(authority: "ROLE_TEST")
         def user = new User(firstName: "bron", lastName: "bronson",
-                username: "bruh", password: "bruhMoment"
+                username: "bruh", password: "bruhMoment", email:"test@test.com"
         )
+        //Note to self: save something before searching for them in a database
         service.assignRole(user, test_role,true)
         then:
         UserRole.findByUser(user).role.authority == "ROLE_TEST"
@@ -28,7 +30,6 @@ class UserInitializerServiceSpec extends HibernateSpec implements ServiceUnitTes
         def user = new User(firstName: "bron", lastName: "bronson",
                 username: "bruh", password: "bruhMoment",email: "test@test.com"
         )
-        user.save()
         service.assignRole(user, test_role)
 
         then:

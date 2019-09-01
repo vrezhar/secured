@@ -27,4 +27,19 @@ class UserInitializerService  implements  UserInitializer{
 
     }
 
+    def enable(User usr)
+    {
+        usr.enabled = true
+    }
+
+    def disable(User usr)
+    {
+        usr.enabled = false
+    }
+
+    def lockAccount(User usr)
+    {
+        usr.accountLocked = true
+    }
+
 }

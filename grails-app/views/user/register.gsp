@@ -19,13 +19,18 @@
         padding: 0px;
         text-align: center;
     }
+
+    body{
+        background-image: linear-gradient(rgb(240,255,255),#f0f0fa);
+    }
+
     #register .inner {
         width: 500px;
         padding-bottom: 6px;
         margin: 60px auto;
         text-align: left;
-        border: 1px solid #aab;
-        background-color: #f0f0fa;
+        border: 1px solid rgb(233, 248, 250);
+        background-color: #f1effa;
         -moz-box-shadow: 2px 2px 2px #eee;
         -webkit-box-shadow: 2px 2px 2px #eee;
         -khtml-box-shadow: 2px 2px 2px #eee;
@@ -60,7 +65,7 @@
         padding-right: 10px;
     }
 
-    #register .inner .cssform .formButton {
+    #register .inner .cssform .form-button {
         margin-left: 190px;
     }
 
@@ -181,7 +186,7 @@
                 <g:passwordField id="text_" name="confirm" value="${params?.confirm}"></g:passwordField>
             </div>
 
-            <div class="formButton">
+            <div class="form-button">
                 <g:submitButton  name="register" value="Register" ></g:submitButton>
             </div>
         </g:form>
