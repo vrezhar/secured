@@ -31,7 +31,7 @@
     <g:each var="user" in="${users}">
         <tr>
             <th><a href = "${createLink(uri: "/user/show?id=${user.id}")}">${user.firstName}</a></th>
-            <th><a href = "">${user.lastName}</a></th>
+            <th><a href = "${createLink(uri: "/user/show?id=${user.id}")}">${user.lastName}</a></th>
         </tr>
     </g:each>
 </table>

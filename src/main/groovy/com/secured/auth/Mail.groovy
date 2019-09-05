@@ -6,16 +6,18 @@ class Mail
     String to
     String subject
     String text
-    MailingContext context
-    MailErrorHandlingContext handler
+    MailingStrategy strategy
+    MailErrorHandlingStrategy handler
     def useSendingStrategy(MailingStrategy strategy)
     {
-        context = new MailingContext(strategy)
+        this.strategy = strategy
         return this
     }
+
+
     def onErrors(MailErrorHandlingStrategy handler)
     {
-        this.handler = new MailErrorHandlingContext(handler)
+        this.handler = handler
         return this
     }
     def from(String senderEmail)
@@ -42,11 +44,15 @@ class Mail
     def send()
     {
         try{
-            context.executeStrategy(this)
+            if(!strategy)
+                strategy = new GmailSender()
+            strategy.sendEmail(this)
         }
         catch(Exception e)
         {
-            handler.executeStrategy(this)
+            if(!handler)
+                handler = RejectEmail.withMessage(e.message)
+            handler.handleErrors(this,e)
         }
     }
 }

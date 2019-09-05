@@ -15,6 +15,6 @@
 </head>
 
 <body>
-    <h3>Go to the <g:link controller="main" action="home">home page </g:link> </h3>
+    <h3>Please verify your email account before proceeding</h3>
 </body>
 </html>

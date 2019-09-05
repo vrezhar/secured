@@ -19,13 +19,15 @@ class Retry implements MailErrorHandlingStrategy
         repeatedFailureHandler = handler
     }
     @Override
-    def handleErrors(Mail mail) {
+    def handleErrors(Mail mail,Exception e) {
         try{
-        retryStrategy.sendEmail(mail)
+            //do something with e
+            println("Sending email failed due to exception: " + e.message)
+            retryStrategy.sendEmail(mail)
         }
-        catch(Exception e)
+        catch(Exception again)
         {
-            repeatedFailureHandler.handleErrors(mail)
+            repeatedFailureHandler.handleErrors(mail,again)
         }
     }
 }

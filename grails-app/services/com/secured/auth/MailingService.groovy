@@ -5,7 +5,11 @@ import grails.gorm.transactions.Transactional
 @Transactional
 class MailingService {
 
-    def serviceMethod() {
-
+    private Mail mail
+    def compose()
+    {
+        mail = new Mail()
+        return mail
     }
+
 }

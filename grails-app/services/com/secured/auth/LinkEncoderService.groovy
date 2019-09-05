@@ -5,15 +5,15 @@ import grails.gorm.transactions.Transactional
 @Transactional
 class LinkEncoderService {
 
-    def encode(User user)
+    def encode(String token)
     {
-
+        return token
     }
-    def decode(User user)
+    def decode(String token)
     {
-
+        return token
     }
-    private static generateHash(String string)
+    private static String generateHash(String string)
     {
 
     }

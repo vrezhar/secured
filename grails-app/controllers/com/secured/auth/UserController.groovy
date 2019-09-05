@@ -10,6 +10,9 @@ class UserController  {
     UserValidatorService userValidator
     SpringSecurityService springSecurityService
     TokenGeneratorService tokenGeneratorService
+    MailingService mailingService
+    LinkEncoderService linkEncoderService
+    LinkBuiderService  linkBuiderService
 
     def register()
     {
@@ -45,6 +48,22 @@ class UserController  {
             {
                 usr.mainToken = tokenGeneratorService.generate(usr)
                 userInitializer.assignRole(usr,userRole,true)
+
+                /*
+                String message = "Click the link below to verify your email\n"
+                                + linkBuiderService
+                                  .build(linkEncoderService.encode(usr.mainToken))
+                mailingService.compose()
+                        .from("admin's email")
+                        .to(usr.email)
+                        .withSubject("Confirm your email")
+                        .withMessage(message)
+                        .useSendingStrategy(new GmailSender())
+                        .onErrors(RejectEmail.withMessage("Something went wrong"))
+                        .send()
+                 */
+
+
                 springSecurityService.reauthenticate(usr.username,usr.password)
                 redirect controller: 'main',action:'confirm'
                 return
