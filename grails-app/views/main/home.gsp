@@ -34,6 +34,9 @@
             </g:link>
             </h1>
         </sec:ifAllGranted>
+        <g:link controller="user" action="show">
+            Details
+        </g:link>
     </div>
 
 </body>

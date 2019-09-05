@@ -1,7 +1,8 @@
 package com.secured.auth
 
-import java.util.regex.*;
 import grails.gorm.transactions.Transactional
+import java.util.regex.Matcher
+import java.util.regex.Pattern
 
 @Transactional
 class PatternValidatorService {

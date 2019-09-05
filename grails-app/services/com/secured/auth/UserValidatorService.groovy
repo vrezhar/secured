@@ -2,6 +2,7 @@ package com.secured.auth
 
 import grails.gorm.transactions.Transactional
 
+
 @Transactional
 class UserValidatorService extends PatternValidatorService {
 
@@ -9,6 +10,9 @@ class UserValidatorService extends PatternValidatorService {
 
     def isPasswordValid(User usr)
     {
+
+        if(usr == null)
+            return false
 
         switch(validatePassword(usr.password))
         {
@@ -30,6 +34,8 @@ class UserValidatorService extends PatternValidatorService {
 
     def isUsernameValid(User usr)
     {
+        if(usr == null)
+            return false
         if(!validateUsername(usr.username))
         {
             usr.errors.rejectValue("username","user.username.incorrect")
@@ -40,6 +46,8 @@ class UserValidatorService extends PatternValidatorService {
 
     def alreadyExists(String username)
     {
+        if(username == null)
+            return false
         User usr = User.findWhere(username: username)
         if(usr)
             return true
@@ -48,6 +56,8 @@ class UserValidatorService extends PatternValidatorService {
 
     def isValid(User usr)
     {
+        if(usr == null)
+            return false
         if(usr.validate())
             return true
         return false
