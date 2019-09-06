@@ -15,6 +15,6 @@ class LinkEncoderService {
     }
     private static String generateHash(String string)
     {
-
+        return  null
     }
 }

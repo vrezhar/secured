@@ -17,6 +17,7 @@ class RejectEmail implements MailErrorHandlingStrategy
     //@Publisher('UnableToVerifyEmail')
     def handleErrors(Mail mail,Exception e) {
         if(!errorMessage) errorMessage = e.message
+        println(errorMessage)
         return errorMessage
     }
 }

@@ -3,17 +3,17 @@ package com.secured.auth
 import grails.plugin.springsecurity.SpringSecurityService
 import grails.plugin.springsecurity.annotation.Secured
 
-@Secured(['permitAll'])
+
 class UserController  {
 
     UserInitializerService userInitializer
     UserValidatorService userValidator
     SpringSecurityService springSecurityService
     TokenGeneratorService tokenGeneratorService
-    MailingService mailingService
     LinkEncoderService linkEncoderService
     LinkBuiderService  linkBuiderService
 
+    @Secured(['permitAll'])
     def register()
     {
         if(request.method == 'POST')
@@ -49,20 +49,17 @@ class UserController  {
                 usr.mainToken = tokenGeneratorService.generate(usr)
                 userInitializer.assignRole(usr,userRole,true)
 
-                /*
-                String message = "Click the link below to verify your email\n"
-                                + linkBuiderService
-                                  .build(linkEncoderService.encode(usr.mainToken))
-                mailingService.compose()
-                        .from("admin's email")
+
+                String message = "Click the link below to verify your email\n localhost:8080/verify?token=${usr.mainToken}"
+                new Mail()
+                        .from("your email")
                         .to(usr.email)
                         .withSubject("Confirm your email")
                         .withMessage(message)
-                        .useSendingStrategy(new GmailSender())
+                        .useSendingStrategy(SendViaGmail.usingAccount("your username",
+                                "your password"))
                         .onErrors(RejectEmail.withMessage("Something went wrong"))
                         .send()
-                 */
-
 
                 springSecurityService.reauthenticate(usr.username,usr.password)
                 redirect controller: 'main',action:'confirm'

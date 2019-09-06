@@ -41,11 +41,11 @@ class Mail
         this.text = text
         return this
     }
-    def send()
+    def send(String username = "dummy", String password = "supersecret")
     {
         try{
             if(!strategy)
-                strategy = new GmailSender()
+                strategy = SendViaGmail.usingAccount(username,password)
             strategy.sendEmail(this)
         }
         catch(Exception e)

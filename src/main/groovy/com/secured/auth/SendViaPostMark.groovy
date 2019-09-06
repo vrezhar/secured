@@ -1,6 +1,6 @@
 package com.secured.auth
 
-class PostMarkSender implements MailingStrategy
+class SendViaPostMark implements MailingStrategy
 {
 
     private static final username = "username"
