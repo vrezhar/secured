@@ -1,5 +1,6 @@
 package com.secured.auth
 
+import com.secured.main.TestController
 import grails.testing.web.controllers.ControllerUnitTest
 import spock.lang.Specification
 

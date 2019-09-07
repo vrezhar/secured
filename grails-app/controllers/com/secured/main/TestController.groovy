@@ -1,5 +1,8 @@
-package com.secured.auth
+package com.secured.main
 
+import com.secured.Mail
+import com.secured.strategy.handlers.RejectEmail
+import com.secured.strategy.senders.SendViaGmail
 import grails.plugin.springsecurity.annotation.Secured
 
 @Secured(['ROLE_ADMIN'])

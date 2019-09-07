@@ -1,5 +1,6 @@
-package com.secured.auth
+package com.secured.main
 
+import com.secured.auth.User
 import grails.plugin.springsecurity.SpringSecurityService
 import grails.plugin.springsecurity.annotation.Secured
 
@@ -7,7 +8,6 @@ import grails.plugin.springsecurity.annotation.Secured
 class MainController {
     static defaultAction = 'home'
     SpringSecurityService springSecurityService
-    LinkEncoderService linkEncoderService
 
     @Secured(['ROLE_ADMIN'])
     def list()
@@ -31,9 +31,12 @@ class MainController {
     @Secured(["ROLE_USER","ROLE_ADMIN"])
     def verify()
     {
-        def token = User.findWhere(mainToken: linkEncoderService.decode(params.token))
-        if(token)
-            redirect controller:'main', action: 'home'
+        def usr = User.findWhere(mainToken: params.token)
+        if(usr)
+        {
+            usr.enabled = true
+            redirect controller: 'main', action: 'home'
+        }
         render view: '/error'
     }
 

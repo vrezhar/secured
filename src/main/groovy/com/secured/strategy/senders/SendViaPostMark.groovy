@@ -1,4 +1,7 @@
-package com.secured.auth
+package com.secured.strategy.senders
+
+import com.secured.Mail
+import com.secured.strategy.MailingStrategy
 
 class SendViaPostMark implements MailingStrategy
 {

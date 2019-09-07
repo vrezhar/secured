@@ -1,6 +1,7 @@
-package com.secured.auth
+package com.secured.strategy.handlers
 
-import grails.events.annotation.Publisher
+import com.secured.Mail
+import com.secured.strategy.MailErrorHandlingStrategy
 
 class RejectEmail implements MailErrorHandlingStrategy
 {
@@ -15,7 +16,7 @@ class RejectEmail implements MailErrorHandlingStrategy
     }
     @Override
     //@Publisher('UnableToVerifyEmail')
-    def handleErrors(Mail mail,Exception e) {
+    def handleErrors(Mail mail, Exception e) {
         if(!errorMessage) errorMessage = e.message
         println(errorMessage)
         return errorMessage

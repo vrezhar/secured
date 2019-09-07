@@ -1,9 +1,9 @@
 package com.secured.auth
 
-import grails.testing.services.ServiceUnitTest
+import grails.testing.gorm.DomainUnitTest
 import spock.lang.Specification
 
-class LinkBuiderServiceSpec extends Specification implements ServiceUnitTest<LinkBuiderService>{
+class UserCommandSpec extends Specification implements DomainUnitTest<UserCommand> {
 
     def setup() {
     }

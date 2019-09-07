@@ -1,6 +1,6 @@
-package com.secured.auth
+package com.secured.strategy
 
-
+import com.secured.Mail
 
 interface MailingStrategy
 {

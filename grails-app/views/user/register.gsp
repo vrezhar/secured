@@ -95,7 +95,7 @@
             <div class="message" role="status">${flash.message}</div>
         </g:if>
 
-        <g:form url="${postUrl ?: '/register'}" class="cssform">
+        <g:form url="${postUrl ?: '/register/confirm'}" class="cssform">
 
             <div class="form-wrapper">
                 <label for="firstName">First Name:</label>

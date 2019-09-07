@@ -1,5 +1,6 @@
-package com.secured.auth
+package com.secured.mail
 
+import com.secured.Mail
 import grails.gorm.transactions.Transactional
 
 @Transactional

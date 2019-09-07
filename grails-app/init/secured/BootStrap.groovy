@@ -21,12 +21,13 @@ class BootStrap {
                              firstName: 'Admin', lastName: 'Admin',
                              email: "vrarakel01@gmail.com")
             admin.mainToken ="admins_credentials"
+            admin.enabled = true
             admin.save()
             UserRole.create(admin, adminRole, true)
         }
 
-
     }
+
     def destroy = {
     }
 }

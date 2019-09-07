@@ -1,4 +1,8 @@
-package com.secured.auth
+package com.secured.strategy.handlers
+
+import com.secured.Mail
+import com.secured.strategy.MailErrorHandlingStrategy
+import com.secured.strategy.MailingStrategy
 
 class Retry implements MailErrorHandlingStrategy
 {
@@ -19,7 +23,7 @@ class Retry implements MailErrorHandlingStrategy
         repeatedFailureHandler = handler
     }
     @Override
-    def handleErrors(Mail mail,Exception e) {
+    def handleErrors(Mail mail, Exception e) {
         try{
             //do something with e
             println("Sending email failed due to exception: " + e.message)

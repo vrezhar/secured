@@ -1,4 +1,9 @@
-package com.secured.auth
+package com.secured
+
+import com.secured.strategy.MailErrorHandlingStrategy
+import com.secured.strategy.MailingStrategy
+import com.secured.strategy.handlers.RejectEmail
+import com.secured.strategy.senders.SendViaGmail
 
 class Mail
 {

@@ -16,11 +16,12 @@ class User implements Serializable {
     String firstName
     String lastName
     String email
-    String mainToken = ""
+    String mainToken = UUID.randomUUID().toString()
     Date dateCreated
+    Date lastUpdated
     static hasMany = [companies: Company]
 
-    boolean enabled = true
+    boolean enabled = false
     boolean accountExpired
     boolean accountLocked
     boolean passwordExpired
@@ -30,7 +31,30 @@ class User implements Serializable {
 
     }
 
-    static transients = ['springSecurityService']
+    static constraints = {
+        password nullable: false, blank: false, password: true
+        username nullable: false, blank: false, unique: true
+        firstName nullable: false, blank: false
+        lastName nullable: false, blank: false
+        email nullable: false,blank: false,email: true,unique: true
+        mainToken unique: true
+    }
+
+    static mapping = {
+	    password column: '`password`'
+    }
+
+}
+
+class UserCommand
+{
+
+    String username
+    String password
+    String firstName
+    String lastName
+    String email
+
     static constraints = {
         password nullable: false, blank: false, password: true
         username nullable: false, blank: false, unique: true
@@ -38,12 +62,5 @@ class User implements Serializable {
         lastName nullable: false, blank: false
         email nullable: false,blank: false,email: true,unique: true
     }
-
-    static mapping = {
-	    password column: '`password`'
-        //TODO Implement this properly later
-    }
-
 }
-
 

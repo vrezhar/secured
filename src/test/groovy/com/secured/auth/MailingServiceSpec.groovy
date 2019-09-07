@@ -1,5 +1,6 @@
 package com.secured.auth
 
+import com.secured.mail.MailingService
 import grails.testing.services.ServiceUnitTest
 import spock.lang.Specification
 

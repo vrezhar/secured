@@ -1,6 +1,8 @@
-package com.secured.auth
+package com.secured.strategy.senders
 
-import java.util.Properties;
+import com.secured.Mail
+import com.secured.strategy.MailingStrategy
+
 import javax.mail.*;
 import javax.mail.internet.*;
 
