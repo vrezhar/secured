@@ -10,8 +10,6 @@ class UserController  {
     UserValidatorService userValidator
     SpringSecurityService springSecurityService
     TokenGeneratorService tokenGeneratorService
-    LinkEncoderService linkEncoderService
-    LinkBuiderService  linkBuiderService
 
     @Secured(['permitAll'])
     def register()

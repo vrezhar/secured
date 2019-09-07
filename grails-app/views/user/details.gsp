@@ -36,6 +36,13 @@
         </div>
 
         <div class = "info">
+            <label for = "email">Email:</label>
+            <p id = "email">
+                ${user.email}
+            </p>
+        </div>
+
+        <div class = "info">
             <label for = "dateCreated">Joined at:</label>
             <p id = "dateCreated">
                 ${user.dateCreated}
