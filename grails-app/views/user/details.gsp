@@ -9,6 +9,8 @@
 <html>
 <head>
     <title></title>
+    <meta charset="utf-8">
+    <meta name="layout" content="${gspLayout ?: 'main'}"/>
 </head>
 
 <body>
@@ -47,6 +49,21 @@
             <p id = "dateCreated">
                 ${user.dateCreated}
             </p>
+        </div>
+
+        <div class = "companies">
+            <table>
+                <tr>
+                    <th>Company Address</th>
+                    <th>Date Created</th>
+                </tr>
+                <g:each var="company" in="${user.companies}">
+                    <tr>
+                        <th>${company.address}</th>
+                        <th>${company.dateCreated}</th>
+                    </tr>
+                </g:each>
+            </table>
         </div>
 
         <sec:ifAllGranted roles="ROLE_USER">

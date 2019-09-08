@@ -15,17 +15,10 @@
         <h1>
             <b>Welcome, ${user}!</b>
         </h1>
-
-
-
     </div>
-
-
 </head>
 
 <body>
-
-
     <div class = "navbar">
         <sec:ifAllGranted roles="ROLE_ADMIN" >
             <h1>
@@ -38,7 +31,6 @@
             Details
         </g:link>
     </div>
-
 </body>
 
 </html>
