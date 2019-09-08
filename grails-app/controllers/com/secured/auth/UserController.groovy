@@ -16,60 +16,57 @@ class UserController  {
     @Secured(['permitAll'])
     def register()
     {
-        render view: 'register'
+        UserCommand usercommand = flash.model as UserCommand ?: new UserCommand()
+        render view: 'register', model: [user: usercommand]
     }
 
     @Secured(['permitAll'])
     def confirm()
     {
-        if(request.method == 'POST')
+        UserCommand cmd = UserCommand.createCommand(params)
+        if(userValidator.alreadyExists(params.username))
         {
-
-            if(userValidator.alreadyExists(params.username))
-            {
-                def usr = new User(username: params.username,
-                        firstName: params.firstName,
-                        lastName: params.lastName,
-                        email: params.email)
-                usr.errors.rejectValue("username",
-                        "user.username.exists")
-                render view: "register", model: [user: usr]
-                return
-            }
-            User usr = new User(username: params.username,
-                    password: params.password,
-                    firstName: params.firstName,
-                    lastName: params.lastName,
-                    email: params.email)
+            cmd.errors.rejectValue("username",
+                               "user.username.exists")
+            flash.model = cmd
+            redirect(action:"register")
+            return
+        }
+        if (params.password != params.confirm)
+        {
+            cmd.errors.rejectValue("password",
+                               "user.password.doesntmatch")
+            flash.model = cmd
+            redirect(action:"register")
+            return
+        }
+        if(cmd.validate())
+        {
+            User usr = User.createUser(cmd)
             def userRole = Role.findOrSaveWhere(authority: "ROLE_USER")
-            if (params.password != params.confirm)
+            if(userValidator.isUsernameValid(usr)  && userValidator.isPasswordValid(usr))
             {
-                usr.errors.rejectValue("password",
-                        "user.password.doesntmatch")
-                render view:"register", model: [user: usr]
-                return
-            }
-
-            if(userValidator.isValid(usr) && userValidator.isUsernameValid(usr) && userValidator.isPasswordValid(usr))
-            {
+                usr.save()
                 userInitializer.assignRole(usr,userRole,true)
-                String message = "Click the link below to verify your email\n localhost:8080/verify?token=${usr.mainToken}"
+                String message = "Click the link below to verify your email\n " +
+                        "localhost:8080/verify?token=${usr.mainToken}"
                 new Mail()
-                        .from("your email")
-                        .to(usr.email)
-                        .withSubject("Confirm your email")
-                        .withMessage(message)
-                        .useSendingStrategy(SendViaGmail.usingAccount("your username",
+                    .from("your email")
+                    .to(usr.email)
+                    .withSubject("Confirm your email")
+                    .withMessage(message)
+                    .useSendingStrategy(SendViaGmail.usingAccount("your username",
                                 "your password"))
-                        .onErrors(RejectEmail.withMessage("Something went wrong"))
-                        .send()
-
+                    .onErrors(RejectEmail.withMessage("Something went wrong"))
+                    .send()
                 springSecurityService.reauthenticate(usr.username,usr.password)
                 redirect controller: 'main',action:'confirm'
                 return
             }
-            render view:"register", model: [user: usr]
         }
+        flash.model = cmd
+        redirect(action:"register")
+
     }
 
 

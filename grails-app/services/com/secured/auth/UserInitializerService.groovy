@@ -26,7 +26,6 @@ class UserInitializerService  implements  UserInitializer{
     {
         if(usr == null || role == null)
             return false
-        usr.save()
         if(!Role.find(role))
             role.save()
         if(!usr.authorities.contains(role)) {

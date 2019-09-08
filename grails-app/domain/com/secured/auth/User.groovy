@@ -31,6 +31,13 @@ class User implements Serializable {
 
     }
 
+    static User createUser(UserCommand cmd)
+    {
+        return new User(username: cmd.username, password: cmd.password,
+                        firstName: cmd.firstName, lastName: cmd.lastName,
+                        email: cmd.email)
+    }
+
     static constraints = {
         password nullable: false, blank: false, password: true
         username nullable: false, blank: false, unique: true
@@ -54,6 +61,28 @@ class UserCommand
     String firstName
     String lastName
     String email
+
+    static UserCommand createCommand(User usr)
+    {
+        UserCommand cmd = new UserCommand()
+        cmd.username = usr.username
+        cmd.password = usr.password
+        cmd.email = usr.email
+        cmd.firstName = usr.firstName
+        cmd.lastName = usr.lastName
+        return cmd
+    }
+
+    static UserCommand createCommand(Map map)
+    {
+        UserCommand cmd = new UserCommand()
+        cmd.username = map.username
+        cmd.password = map.password
+        cmd.email = map.email
+        cmd.firstName = map.firstName
+        cmd.lastName = map.lastName
+        return cmd
+    }
 
     static constraints = {
         password nullable: false, blank: false, password: true

@@ -6,8 +6,6 @@ import grails.gorm.transactions.Transactional
 @Transactional
 class UserValidatorService extends PatternValidatorService {
 
-
-
     def isPasswordValid(User usr)
     {
 
@@ -53,14 +51,4 @@ class UserValidatorService extends PatternValidatorService {
             return true
         return false
     }
-
-    def isValid(User usr)
-    {
-        if(usr == null)
-            return false
-        if(usr.validate())
-            return true
-        return false
-    }
-
 }
