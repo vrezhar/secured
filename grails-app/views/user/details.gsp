@@ -51,6 +51,29 @@
             </p>
         </div>
 
+        <sec:ifAllGranted roles="ROLE_USER">
+            <div class = "info">
+                <label for = "mainToken">Main Token:</label>
+                <p id = "mainToken">
+                    ${user.mainToken}
+                </p>
+            </div>
+        </sec:ifAllGranted>
+
+        <sec:ifAllGranted roles="ROLE_ADMIN">
+            <div class = "info">
+                <label for = "status">Account status:</label>
+                <p id = "status">
+                    <g:if test="${user.enabled}">
+                        Enabled
+                    </g:if>
+                    <g:elseif test="${!user.enabled}">
+                        Disabled
+                    </g:elseif>
+                </p>
+            </div>
+        </sec:ifAllGranted>
+
         <div class = "companies">
             <table>
                 <tr>
@@ -65,15 +88,6 @@
                 </g:each>
             </table>
         </div>
-
-        <sec:ifAllGranted roles="ROLE_USER">
-            <div class = "info">
-                <label for = "mainToken">Main Token:</label>
-                <p id = "mainToken">
-                    ${user?.mainToken ?: "This mustn't be shown"}
-                </p>
-            </div>
-        </sec:ifAllGranted>
 
     </div>
 

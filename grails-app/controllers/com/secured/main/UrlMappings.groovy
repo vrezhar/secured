@@ -9,6 +9,7 @@ class UrlMappings {
                 // apply constraints here
             }
         }
+        "/api"(controller: "apiTest")
         "/register"(controller: 'user',action: 'register')
         "/register/confirm"(controller: 'user', action: "confirm")
         "/"(controller: 'main', action:'home')
