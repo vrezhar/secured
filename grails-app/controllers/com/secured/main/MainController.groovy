@@ -28,13 +28,15 @@ class MainController {
         render view: "confirm", model: [user: springSecurityService.getCurrentUser()]
     }
 
-    @Secured(["ROLE_USER","ROLE_ADMIN"])
+    @Secured(["permitAll"])
     def verify()
     {
         def usr = User.findWhere(mainToken: params.token)
         if(usr)
         {
             usr.enabled = true
+            usr.save()
+            springSecurityService.reauthenticate(usr.username,usr.password)
             redirect controller: 'main', action: 'home'
         }
         render view: '/error'

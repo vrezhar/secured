@@ -1,6 +1,7 @@
 package com.secured.auth
 
 import com.secured.Mail
+import com.secured.auth.commands.UserCommand
 import com.secured.strategy.handlers.RejectEmail
 import com.secured.strategy.senders.SendViaGmail
 import grails.plugin.springsecurity.SpringSecurityService
@@ -36,37 +37,45 @@ class UserController  {
         {
             cmd.errors.rejectValue("password",
                                "user.password.doesntmatch")
+            cmd.password = ""
             flash.model = cmd
             redirect(action:"register")
             return
         }
-        if(cmd.validate())
+        if(!cmd.validate())
         {
-            User usr = User.createUser(cmd)
-            def userRole = Role.findOrSaveWhere(authority: "ROLE_USER")
-            if(userValidator.isUsernameValid(usr)  && userValidator.isPasswordValid(usr))
-            {
-                usr.save()
-                userInitializer.assignRole(usr,userRole,true)
-                String message = "Click the link below to verify your email\n " +
-                        "localhost:8080/verify?token=${usr.mainToken}"
-                new Mail()
-                    .from("your email")
-                    .to(usr.email)
-                    .withSubject("Confirm your email")
-                    .withMessage(message)
-                    .useSendingStrategy(SendViaGmail.usingAccount("your username",
-                                "your password"))
-                    .onErrors(RejectEmail.withMessage("Something went wrong"))
-                    .send()
-                springSecurityService.reauthenticate(usr.username,usr.password)
-                redirect controller: 'main',action:'confirm'
-                return
-            }
+            flash.model = cmd
+            redirect(action:"register")
+            return
         }
-        flash.model = cmd
-        redirect(action:"register")
-
+        if(!userValidator.isPasswordValid(cmd))
+        {
+            flash.model = cmd
+            redirect(action:"register")
+            return
+        }
+        if(!userValidator.isUsernameValid(cmd))
+        {
+            flash.model = cmd
+            redirect(action:"register")
+            return
+        }
+        User usr = User.createUser(cmd)
+        def userRole = Role.findOrSaveWhere(authority: "ROLE_USER")
+        usr.save()
+        userInitializer.assignRole(usr,userRole,true)
+        String message = "Click the link below to verify your email\n " +
+                "localhost:8080/verify?token=${usr.mainToken}"
+        new Mail()
+                .from("your email")
+                .to(usr.email)
+                .withSubject("Confirm your email")
+                .withMessage(message)
+                .useSendingStrategy(SendViaGmail.usingAccount("your username",
+                        "your password"))
+                .onErrors(RejectEmail.withMessage("Something went wrong"))
+                .send()
+        redirect controller: 'main',action:'confirm'
     }
 
 
@@ -78,6 +87,7 @@ class UserController  {
             render model: [user: user], view: "details"
             return
         }
+
         render model: [user: springSecurityService.getCurrentUser()], view: "details"
     }
 
