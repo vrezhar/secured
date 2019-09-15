@@ -1,9 +1,9 @@
 package com.secured.auth
 
-import grails.testing.gorm.DomainUnitTest
+import grails.testing.web.controllers.ControllerUnitTest
 import spock.lang.Specification
 
-class UserCommandSpec extends Specification implements DomainUnitTest<UserCommand> {
+class RegisterControllerSpec extends Specification implements ControllerUnitTest<RegisterController> {
 
     def setup() {
     }

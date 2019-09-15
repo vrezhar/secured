@@ -1,6 +1,6 @@
 package com.secured.auth
 
-import com.secured.auth.commands.UserCommand
+import com.secured.user.UserCommand
 import groovy.transform.EqualsAndHashCode
 import groovy.transform.ToString
 import grails.compiler.GrailsCompileStatic

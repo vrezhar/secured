@@ -1,9 +1,9 @@
-package com.secured.auth.commands
+package com.secured.user
 
-import com.secured.auth.User
+import grails.validation.Validateable
 
 
-class UserCommand
+class UserCommand implements Validateable
 {
 
     String username
@@ -11,17 +11,6 @@ class UserCommand
     String firstName
     String lastName
     String email
-
-    static UserCommand createCommand(User usr)
-    {
-        UserCommand cmd = new UserCommand()
-        cmd.username = usr.username
-        cmd.password = usr.password
-        cmd.email = usr.email
-        cmd.firstName = usr.firstName
-        cmd.lastName = usr.lastName
-        return cmd
-    }
 
     static UserCommand createCommand(Map map)
     {

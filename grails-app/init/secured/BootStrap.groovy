@@ -19,8 +19,8 @@ class BootStrap {
         {
             admin = new User(username: 'admin', password: '1Test',
                              firstName: 'Admin', lastName: 'Admin',
-                             email: "vrarakel01@gmail.com")
-            admin.mainToken ="admins_credentials"
+                             email: "testmail@gmail.com")
+            admin.mainToken = "admins_credentials"
             admin.enabled = true
             admin.save()
             UserRole.create(admin, adminRole, true)

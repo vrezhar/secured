@@ -139,7 +139,7 @@
         <div class="register">
             <sec:ifNotLoggedIn>
                 Don't have an account?
-                <g:link controller="user" action="register">
+                <g:link controller="register" action="register">
                     Register Now!
                 </g:link>
             </sec:ifNotLoggedIn>
@@ -147,10 +147,12 @@
 
     </div>
 </div>
+
 <script>
     (function() {
         document.forms['loginForm'].elements['${usernameParameter ?: 'username'}'].focus();
     })();
 </script>
+
 </body>
 </html>

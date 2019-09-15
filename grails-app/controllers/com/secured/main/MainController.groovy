@@ -22,7 +22,7 @@ class MainController {
         render view:"home", model: [user: springSecurityService.getCurrentUser().username ]
     }
 
-    @Secured(["ROLE_USER","ROLE_ADMIN"])
+    @Secured(["permitAll"])
     def confirm()
     {
         render view: "confirm", model: [user: springSecurityService.getCurrentUser()]
