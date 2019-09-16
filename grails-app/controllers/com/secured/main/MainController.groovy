@@ -8,6 +8,7 @@ import grails.plugin.springsecurity.annotation.Secured
 @Secured(['ROLE_ADMIN','ROLE_USER'])
 class MainController {
     static defaultAction = 'home'
+
     SpringSecurityService springSecurityService
     UserInitializerService userInitializerService
 
