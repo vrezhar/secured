@@ -8,6 +8,7 @@ import grails.plugin.springsecurity.annotation.Secured
 @Secured(['ROLE_ADMIN','ROLE_USER'])
 class MainController {
     static defaultAction = 'home'
+
     SpringSecurityService springSecurityService
     UserInitializerService userInitializerService
 
@@ -33,7 +34,7 @@ class MainController {
     @Secured(["permitAll"])
     def verify()
     {
-        def usr = User.findWhere(mainToken: params.token)
+        User usr = User.findWhere(mainToken: params.token)
         if(usr)
         {
             userInitializerService.enable(usr)
