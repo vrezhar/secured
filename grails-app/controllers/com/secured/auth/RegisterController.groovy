@@ -68,6 +68,7 @@ class RegisterController
                         "bruhMoment"))
                 .onErrors(RejectEmail.withMessage())
                 .send()
+        println(message)
         redirect controller: 'main',action:'confirm'
     }
 }
