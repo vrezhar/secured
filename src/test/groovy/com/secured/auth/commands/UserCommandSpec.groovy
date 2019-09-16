@@ -1,5 +1,6 @@
-package com.secured.auth
+package com.secured.auth.commands
 
+import com.secured.user.UserCommand
 import grails.testing.gorm.DomainUnitTest
 import spock.lang.Specification
 

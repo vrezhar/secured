@@ -1,9 +1,9 @@
-package com.secured.api
+package com.secured.auth
 
 import grails.testing.web.controllers.ControllerUnitTest
 import spock.lang.Specification
 
-class ApiTestControllerSpec extends Specification implements ControllerUnitTest<ApiTestController> {
+class RegisterControllerSpec extends Specification implements ControllerUnitTest<RegisterController> {
 
     def setup() {
     }

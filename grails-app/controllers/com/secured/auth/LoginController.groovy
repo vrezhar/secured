@@ -2,14 +2,12 @@ package com.secured.auth
 
 class LoginController extends grails.plugin.springsecurity.LoginController
 {
-    def auth() {
-
-
+    def auth()
+    {
         if (springSecurityService.isLoggedIn()) {
             redirect uri: conf.successHandler.defaultTargetUrl
             return
         }
-
         String postUrl = request.contextPath + conf.apf.filterProcessesUrl
         render view: 'auth', model: [postUrl: postUrl,
                                      rememberMeParameter: conf.rememberMe.parameter,

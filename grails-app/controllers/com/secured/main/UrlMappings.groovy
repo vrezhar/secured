@@ -1,6 +1,5 @@
 package com.secured.main
 
-
 class UrlMappings {
 
     static mappings = {
@@ -9,9 +8,8 @@ class UrlMappings {
                 // apply constraints here
             }
         }
-        "/api"(controller: "apiTest")
-        "/register"(controller: 'user',action: 'register')
-        "/register/confirm"(controller: 'user', action: "confirm")
+        "/register"(controller: 'register',action: 'register')
+        "/register/confirm"(controller: 'register', action: "confirm")
         "/"(controller: 'main', action:'home')
         "/verify"(controller: "main", action: "verify")
         "500"(view:'/error')
