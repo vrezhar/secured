@@ -24,39 +24,32 @@ class RegisterController
     def confirm()
     {
         UserCommand cmd = UserCommand.createCommand(params)
-        if(!cmd.validate() || !userValidator.isPasswordValid(cmd) || !userValidator.isUsernameValid(cmd))
-        {
-            cmd.password = ""
-            errorCommand = cmd
-            redirect(action: "register")
-            //render view: "register",model: [user: cmd]
-            return
-        }
-        if(userValidator.alreadyExists(params.username))
-        {
-            cmd.errors.rejectValue("username",
-                    "user.username.exists")
-            cmd.password = ""
-            errorCommand = cmd
-            redirect(action: "register")
-            //render view: "register",model: [user: cmd]
-            return
-        }
-        if (params.password != params.confirm)
+        boolean haserrors = false
+        if(!cmd.validate() )
+            haserrors = true
+        if(!userValidator.isPasswordValid(cmd))
+            haserrors = true
+        if(!userValidator.isUsernameValid(cmd))
+            haserrors = true
+        if(userValidator.alreadyExists(cmd))
+            haserrors = true
+        if(params.confirm == null || params.confirm == "" || params.password != params.confirm)
         {
             cmd.errors.rejectValue("password",
                     "user.password.doesntmatch")
+            haserrors = true
+        }
+        if(haserrors)
+        {
             cmd.password = ""
             errorCommand = cmd
+            //render view: "register", model: [user: cmd]
             redirect(action: "register")
-            //render view: "register",model: [user: cmd]
             return
         }
-
         User usr = User.createUser(cmd)
         def userRole = Role.findOrSaveWhere(authority: "ROLE_USER")
-        usr.save()
-        userInitializer.assignRole(usr,userRole,true)
+        userInitializer.assignRole(usr,userRole)
         String message = "Click the link below to verify your email\n " +
                 "localhost:8080/verify?token=${usr.mainToken}"
         new Mail()
