@@ -1,6 +1,7 @@
 package com.secured.main
 
 import com.secured.auth.User
+import com.secured.auth.UserInitializerService
 import grails.plugin.springsecurity.SpringSecurityService
 import grails.plugin.springsecurity.annotation.Secured
 
@@ -8,6 +9,7 @@ import grails.plugin.springsecurity.annotation.Secured
 class MainController {
     static defaultAction = 'home'
     SpringSecurityService springSecurityService
+    UserInitializerService userInitializerService
 
     @Secured(['ROLE_ADMIN'])
     def list()
@@ -34,10 +36,10 @@ class MainController {
         def usr = User.findWhere(mainToken: params.token)
         if(usr)
         {
-            usr.enabled = true
-            usr.save()
+            userInitializerService.enable(usr)
             springSecurityService.reauthenticate(usr.username,usr.password)
             redirect controller: 'main', action: 'home'
+            return
         }
         render view: '/error'
     }

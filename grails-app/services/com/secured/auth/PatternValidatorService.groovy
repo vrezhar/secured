@@ -25,7 +25,7 @@ class PatternValidatorService {
         if(username.length()<3 || username.length()>16)
             return false
         //contains at least one lowercase character and has,has at least 3 characters but less than 16
-        return validatePatternFor("[a-zA-Z]+\\S",username) as boolean;
+        return validatePatternFor("[a-zA-Z]+\\S*",username) as boolean;
     }
 
     private static int validatePatternFor(String pattern, String what_is_being_validated)

@@ -26,6 +26,7 @@ class UserInitializerService  implements  UserInitializer{
     {
         if(usr == null || role == null)
             return false
+        usr.save()
         if(!Role.find(role))
             role.save()
         if(!usr.authorities.contains(role)) {
@@ -41,6 +42,8 @@ class UserInitializerService  implements  UserInitializer{
         if(usr == null)
             return false
         usr.enabled = true
+        usr.save()
+        return true
     }
 
     def disable(User usr)
@@ -48,6 +51,8 @@ class UserInitializerService  implements  UserInitializer{
         if(usr == null)
             return false
         usr.enabled = false
+        usr.save()
+        return true
     }
 
     def lockAccount(User usr)
@@ -55,6 +60,17 @@ class UserInitializerService  implements  UserInitializer{
         if(usr == null)
             return false
         usr.accountLocked = true
+        usr.save()
+        return true
+    }
+
+    def unlockAccount(User usr)
+    {
+        if(usr == null)
+            return false
+        usr.accountLocked = false
+        usr.save()
+        return true
     }
 
 }
