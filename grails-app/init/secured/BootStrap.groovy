@@ -1,6 +1,7 @@
 
 package secured
 
+
 import com.secured.auth.Role
 import com.secured.auth.User
 import com.secured.auth.UserRole
@@ -25,6 +26,7 @@ class BootStrap {
             admin.save()
             UserRole.create(admin, adminRole, true)
         }
+
 
     }
 

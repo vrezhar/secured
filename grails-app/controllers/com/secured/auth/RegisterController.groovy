@@ -18,6 +18,7 @@ class RegisterController
     {
         UserCommand usercommand = errorCommand ?: new UserCommand()
         render view: 'register', model: [user: usercommand]
+        errorCommand = null
     }
 
     def confirm()
