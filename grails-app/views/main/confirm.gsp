@@ -5,7 +5,7 @@
   Time: 17:51
 --%>
 
-<%@ page contentType="text/html;charset=UTF-8" %>
+<%@ page import="grails.plugin.springsecurity.SpringSecurityService" contentType="text/html;charset=UTF-8" %>
 <html>
 <head>
     <title>
@@ -15,11 +15,6 @@
 </head>
 
 <body>
-    <h2>This is your security card copy it somewhere now and do not leave or reload this page before doing so</h2>
-    <div class = card-body>
-        ${flash.securitycard}
-    </div>
-    <h3>Go to the <g:link controller="main" action="home">home page </g:link> </h3>
-
+    <h3>Please verify your email account before proceeding</h3>
 </body>
 </html>

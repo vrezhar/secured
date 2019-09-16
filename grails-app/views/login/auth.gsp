@@ -125,12 +125,6 @@
                 <input type="password" class="text_" name="${passwordParameter ?: 'password'}" id="password"/>
             </p>
 
-            <p>
-                <label for="coordinateValue">${position}</label>
-                <input type="hidden" name="coordinatePosition" id="coordinatePosition" value="${position}"/>
-                <input type="text" class="text_" name="coordinateValue" id="coordinateValue"/>
-            </p>
-
             <p id="remember_me_holder">
                 <input type="checkbox" class="chk" name="${rememberMeParameter ?: 'remember-me'}" id="remember_me" <g:if test='${hasCookie}'>checked="checked"</g:if>/>
                 <label for="remember_me"><g:message code='springSecurity.login.remember.me.label'/></label>

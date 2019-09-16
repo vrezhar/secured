@@ -1,8 +1,3 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: vrezh
-  Date: 29.08.19
-  Time: 22:49
 --%>
 <%--
   Created by IntelliJ IDEA.
@@ -25,29 +20,22 @@
         text-align: center;
     }
 
+    body{
+        background-image: linear-gradient(rgb(240,255,255),#f0f0fa);
+    }
+
     #register .inner {
         width: 500px;
         padding-bottom: 6px;
         margin: 60px auto;
         text-align: left;
-        border: 1px solid #aab;
-        background-color: #f0f0fa;
+        border: 1px solid rgb(233, 248, 250);
+        background-color: #f1effa;
         -moz-box-shadow: 2px 2px 2px #eee;
         -webkit-box-shadow: 2px 2px 2px #eee;
         -khtml-box-shadow: 2px 2px 2px #eee;
         box-shadow: 2px 2px 2px #eee;
     }
-
-    #register .inner .fheader {
-        padding: 18px 26px 14px 26px;
-        background-color: #f7f7ff;
-        margin: 0px 0 14px 0;
-        color: #2e3741;
-        font-size: 18px;
-        font-weight: bold;
-    }
-
-
     #register .inner .cssform  .form-wrapper{
         clear: left;
         margin: 0;
@@ -57,40 +45,42 @@
         height: 1%;
     }
 
-    #register .inner .cssform  .confirm-wrapper{
-        clear: left;
+    #register .inner .cssform  .form-wrapper ul{
         margin: 0;
-        padding: 4px 0 3px 0;
-        padding-left: 115px;
-        margin-bottom: 20px;
-        height: 1%;
+        padding: 0;
+        background-color: #f0f0fa;
+        -moz-box-shadow: 2px 2px 2px #f0f0fa;
+        -webkit-box-shadow: 2px 2px 2px #f0f0fa;
+        -khtml-box-shadow: 2px 2px 2px #f0f0fa;
+        border: #f0f0fa;
     }
 
-
-
-    #login .inner .cssform .form-wrapper p{
-        width: 130px;
-    }
-
-
-    #login .inner .cssform label {
+    #register .inner .cssform label {
         font-weight: bold;
         float: left;
-        text-align: right;
+        text-align: left;
         margin-left: -90px;
-        width: 110px;
+        width: 95px;
         padding-top: 3px;
         padding-right: 10px;
     }
 
-    #register .inner .cssform .formButton {
+    #register .inner .cssform .form-button {
         margin-left: 190px;
     }
 
-    #register .inner .formTitle {
-        margin-left: 150px;
+    #register .inner .cssform .formButton input {
+        width: 100px;
+        height: 25px;
+        align-content: center;
+        font-weight: bold;
     }
 
+    #register .inner h1{
+        margin-left:  180px;
+        padding-bottom:  25px;
+        font-weight: bolder;
+    }
     </style>
     <title> Register </title>
 </head>
@@ -100,62 +90,103 @@
 
 <div class="wrapper" id="register" >
     <div class="inner">
-
-        <div class="formTitle">
-            <h2>Registration Form</h2>
-        </div>
-
+        <h1>Registration Form</h1>
         <g:if test="${flash.message}">
             <div class="message" role="status">${flash.message}</div>
         </g:if>
-        <div class="fheader">
-            <g:hasErrors bean="${user}">
-                <ul class="errors" role="alert">
+
+        <g:form url="${postUrl ?: '/register/confirm'}" class="cssform">
+
+            <div class="form-wrapper">
+                <label for="firstName">First Name:</label>
+                <g:textField id="text_" name="firstName" value="${user?.firstName}"></g:textField>
+                <g:hasErrors bean="${user}" var="error">
                     <g:eachError bean="${user}" var="error">
-                        <li <g:if test="${error in FieldError}">data-field-id="${error.field}"</g:if>><g:message error="${error}"/></li>
+                        <g:if test="${error?.field == "firstName"}">
+                            <ul class = "errors" role="alert">
+                                <li>
+                                    <g:message error="${error}"/>
+                                </li>
+                            </ul>
+                        </g:if>
                     </g:eachError>
-                </ul>
-        </g:hasErrors>
-        </div>
-
-        <g:form controller="user" action="register" id="loginForm" class="cssform">
-
-            <div class="form-wrapper">
-                <p>
-                    <label for="firstName">First Name:</label>
-                    <g:textField id="text_" name="firstName" value="${user?.firstName}"></g:textField>
-                </p>
+                </g:hasErrors>
             </div>
 
             <div class="form-wrapper">
-                <p>
-                    <label for="lastName">Last Name:</label>
-                    <g:textField id="text_" name="lastName" value="${user?.lastName}"></g:textField>
-                </p>
+                <label for="lastName">Last Name:</label>
+                <g:textField id="text_" name="lastName" value="${user?.lastName}"></g:textField>
+                    <g:hasErrors bean="${user}" var="error">
+                        <g:eachError bean="${user}" var="error">
+                            <g:if test="${error?.field == "lastName"}">
+                                <ul class = "errors" role="alert">
+                                    <li>
+                                        <g:message error="${error}"/>
+                                    </li>
+                                </ul>
+                            </g:if>
+                        </g:eachError>
+                    </g:hasErrors>
             </div>
 
             <div class="form-wrapper">
-                <p>
-                    <label for="username">Username: </label>
-                    <g:textField id="text_" name="username" value="${user?.username}"></g:textField>
-                </p>
+                <label for="email">Email:</label>
+                <g:textField id="text_" name="email" value="${user?.email}"></g:textField>
+                    <g:hasErrors bean="${user}" var="error">
+                        <g:eachError bean="${user}" var="error">
+                            <g:if test="${error?.field == "email"}">
+                                <ul class = "errors" role="alert">
+                                    <li>
+                                        <g:message error="${error}"/>
+                                    </li>
+                                </ul>
+                            </g:if>
+                        </g:eachError>
+                    </g:hasErrors>
             </div>
 
             <div class="form-wrapper">
-                <p>
-                    <label for="password">Password:  </label>
-                    <g:passwordField id="text_" name="password" value="${user?.password}"></g:passwordField>
-                </p>
+                <label for="username">Username: </label>
+                <g:textField id="text_" name="username" value="${user?.username}"></g:textField>
+
+                    <g:hasErrors bean="${user}" var="error">
+                        <g:eachError bean="${user}" var="error">
+                            <g:if test="${error?.field == "username"}">
+                                <ul class = "errors" role="alert">
+                                    <li>
+                                        <g:message error="${error}"/>
+                                    </li>
+                                </ul>
+                            </g:if>
+                        </g:eachError>
+                    </g:hasErrors>
+
             </div>
 
-            <div class="confirm-wrapper">
-                <p>
-                    <label for="confirm">Confirm:     </label>
-                    <g:passwordField id="text_" name="confirm" value="${params?.confirm}"></g:passwordField>
-                </p>
+            <div class="form-wrapper">
+                <label for="password">Password:  </label>
+                <g:passwordField id="text_" name="password" value="${user?.password}"></g:passwordField>
+
+                    <g:hasErrors bean="${user}" var="error">
+                        <g:eachError bean="${user}" var="error">
+                            <g:if test="${error?.field == "password"}">
+                                <ul class = "errors" role="alert">
+                                    <li>
+                                        <g:message error="${error}"/>
+                                    </li>
+                                </ul>
+                            </g:if>
+                        </g:eachError>
+                    </g:hasErrors>
+
             </div>
 
-            <div class="formButton">
+            <div class="form-wrapper">
+                <label for="confirm">Confirm:     </label>
+                <g:passwordField id="text_" name="confirm" value="${params?.confirm}"></g:passwordField>
+            </div>
+
+            <div class="form-button">
                 <g:submitButton  name="register" value="Register" ></g:submitButton>
             </div>
         </g:form>

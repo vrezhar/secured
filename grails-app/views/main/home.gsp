@@ -15,17 +15,10 @@
         <h1>
             <b>Welcome, ${user}!</b>
         </h1>
-
-
-
     </div>
-
-
 </head>
 
 <body>
-
-
     <div class = "navbar">
         <sec:ifAllGranted roles="ROLE_ADMIN" >
             <h1>
@@ -34,8 +27,10 @@
             </g:link>
             </h1>
         </sec:ifAllGranted>
+        <g:link controller="user" action="show">
+            Details
+        </g:link>
     </div>
-
 </body>
 
 </html>

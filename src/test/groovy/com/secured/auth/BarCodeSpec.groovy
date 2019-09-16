@@ -3,7 +3,7 @@ package com.secured.auth
 import grails.testing.gorm.DomainUnitTest
 import spock.lang.Specification
 
-class SecurityCoordinateSpec extends Specification implements DomainUnitTest<SecurityCoordinate> {
+class BarCodeSpec extends Specification implements DomainUnitTest<BarCode> {
 
     def setup() {
     }

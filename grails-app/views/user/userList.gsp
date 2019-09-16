@@ -12,6 +12,13 @@
 
     </title>
     <h1>User List</h1>
+    <style>
+    .table a
+    {
+        display:block;
+        text-decoration:none;
+    }
+    </style>
 </head>
 
 <body>
@@ -23,8 +30,8 @@
     </tr>
     <g:each var="user" in="${users}">
         <tr>
-            <th>${user.firstName}</th>
-            <th>${user.lastName}</th>
+            <th><a href = "${createLink(uri: "/user/show?id=${user.id}")}">${user.firstName}</a></th>
+            <th><a href = "${createLink(uri: "/user/show?id=${user.id}")}">${user.lastName}</a></th>
         </tr>
     </g:each>
 </table>

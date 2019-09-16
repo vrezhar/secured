@@ -1,4 +1,4 @@
-package secured
+package com.secured.main
 
 
 class UrlMappings {
@@ -10,7 +10,9 @@ class UrlMappings {
             }
         }
         "/register"(controller: 'user',action: 'register')
+        "/register/confirm"(controller: 'user', action: "confirm")
         "/"(controller: 'main', action:'home')
+        "/verify"(controller: "main", action: "verify")
         "500"(view:'/error')
         "404"(view:'/notFound')
     }

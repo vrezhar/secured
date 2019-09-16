@@ -1,9 +1,10 @@
 package com.secured.auth
 
-import grails.testing.services.ServiceUnitTest
+import com.secured.main.TestController
+import grails.testing.web.controllers.ControllerUnitTest
 import spock.lang.Specification
 
-class CoordinateValidatorServiceSpec extends Specification implements ServiceUnitTest<CoordinateValidatorService>{
+class TestControllerSpec extends Specification implements ControllerUnitTest<TestController> {
 
     def setup() {
     }
