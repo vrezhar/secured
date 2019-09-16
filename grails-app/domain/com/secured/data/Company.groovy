@@ -1,8 +1,12 @@
-package com.secured.auth
+package com.secured.data
+
+import com.secured.auth.User
+import com.secured.data.BarCode
 
 class Company
 {
     String address
+    String companyId
     String token = UUID.randomUUID().toString()
     Date dateCreated
     Date lastUpdated

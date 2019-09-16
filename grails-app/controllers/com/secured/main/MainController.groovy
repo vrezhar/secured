@@ -33,7 +33,7 @@ class MainController {
     @Secured(["permitAll"])
     def verify()
     {
-        def usr = User.findWhere(mainToken: params.token)
+        User usr = User.findWhere(mainToken: params.token)
         if(usr)
         {
             userInitializerService.enable(usr)

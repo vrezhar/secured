@@ -1,10 +1,10 @@
-package com.secured.auth
+package com.secured.api.recources
 
-import com.secured.data.Company
+import com.secured.api.resources.CompanyBuildingSource
 import grails.testing.gorm.DomainUnitTest
 import spock.lang.Specification
 
-class CompanySpec extends Specification implements DomainUnitTest<Company> {
+class CompanyBuildingSourceSpec extends Specification implements DomainUnitTest<CompanyBuildingSource> {
 
     def setup() {
     }

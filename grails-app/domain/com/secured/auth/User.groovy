@@ -1,5 +1,6 @@
 package com.secured.auth
 
+import com.secured.data.Company
 import com.secured.user.UserCommand
 import groovy.transform.EqualsAndHashCode
 import groovy.transform.ToString

@@ -1,5 +1,6 @@
 package com.secured.auth
 
+import com.secured.data.BarCode
 import grails.testing.gorm.DomainUnitTest
 import spock.lang.Specification
 

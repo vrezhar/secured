@@ -8,6 +8,13 @@ class UrlMappings {
                 // apply constraints here
             }
         }
+
+        post "/company"(controller: "apiCompanyEndpoints", action: "save")
+        put "/company"(controller: "apiCompanyEndpoints", action: "update")
+
+        post "/barcode"(controller: "apiBarCodeEndpoints", action: "save")
+        delete "/barcode"(controller: "apiBarCodeEndpoints", action: "delete")
+
         "/register"(controller: 'register',action: 'register')
         "/register/confirm"(controller: 'register', action: "confirm")
         "/"(controller: 'main', action:'home')
