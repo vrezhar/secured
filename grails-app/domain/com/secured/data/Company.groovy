@@ -15,6 +15,6 @@ class Company
     static hasMany = [barCodes: BarCode]
 
     static constraints = {
-        token nullable: false, unique: true
+        token nullable: false, blank: false, unique: true
     }
 }

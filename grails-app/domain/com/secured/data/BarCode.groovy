@@ -7,8 +7,10 @@ class BarCode {
     String code
     Date dateCreated
     Date lastUpdated
+    Date dateDeleted = null
 
     static belongsTo = [company: Company]
     static constraints = {
+        dateDeleted nullable: true
     }
 }

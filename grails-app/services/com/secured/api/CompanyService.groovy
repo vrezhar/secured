@@ -15,10 +15,12 @@ class CompanyService {
                 src.companyId == "" ||
                 src.address == null ||
                 src.companyId == null)
-            return "COMPANY_NOT_CREATED"
+            return "INVALID_INPUT"
+        if(src.mainToken == null || src.mainToken == "")
+            return "INVALID_TOKEN"
         User user = User.findWhere(mainToken: src.mainToken)
         if(!user)
-            return "COMPANY_NOT_CREATED"
+            return "INVALID_TOKEN"
         Company company = new Company(address: src.address,
                                       companyId: src.companyId,
                                       user: user)
@@ -29,10 +31,22 @@ class CompanyService {
             user.save()
             return company.token
         }
-        return "COMPANY_NOT_CREATED"
+        return "INVALID_INPUT"
     }
-    def regenerateToken()
+
+    protected static String regenerateToken()
     {
        return UUID.randomUUID().toString()
+    }
+
+    def update(CompanyBuildingSource src)
+    {
+
+        Company company = Company.findByToken(src.companyToken)
+        if(!company)
+           return "INVALID_TOKEN"
+        company.token = regenerateToken()
+        company.save()
+        return company.token
     }
 }

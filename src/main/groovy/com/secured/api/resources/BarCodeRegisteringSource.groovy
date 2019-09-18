@@ -5,7 +5,7 @@ import grails.validation.Validateable
 class BarCodeRegisteringSource implements Validateable
 {
     String companyToken
-    List<String> barcodeList
+    List<String> barcodes
     static constraints = {
     }
 }
