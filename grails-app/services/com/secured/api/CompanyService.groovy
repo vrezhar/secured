@@ -1,26 +1,35 @@
 package com.secured.api
 
 import com.secured.api.resources.CompanyBuildingSource
+import com.secured.api.response.Responsive
 import com.secured.auth.User
 import com.secured.data.Company
+
 import grails.gorm.transactions.Transactional
 
 @Transactional
-class CompanyService {
+class CompanyService extends Responsive
+{
 
-    def registerCompany(CompanyBuildingSource src)
+    def save(CompanyBuildingSource src)
     {
-        if(src == null ||
-                src.address == "" ||
-                src.companyId == "" ||
-                src.address == null ||
-                src.companyId == null)
-            return "INVALID_INPUT"
-        if(src.mainToken == null || src.mainToken == "")
-            return "INVALID_TOKEN"
+        Map response = [:]
+        if(!src.validate())
+        {
+            response.status = statusCodes.invalid_input
+            return response
+        }
+        if(src.mainToken == null && src.companyToken == null)
+        {
+            response.status = statusCodes.invalid_token
+            return response
+        }
         User user = User.findWhere(mainToken: src.mainToken)
         if(!user)
-            return "INVALID_TOKEN"
+        {
+            response.status = statusCodes.invalid_token
+            return response
+        }
         Company company = new Company(address: src.address,
                                       companyId: src.companyId,
                                       user: user)
@@ -29,9 +38,12 @@ class CompanyService {
             user.addToCompanies(company)
             company.save()
             user.save()
-            return company.token
+            response.company_token = company.token
+            response.status = statusCodes.success
+            return response
         }
-        return "INVALID_INPUT"
+        response.status = statusCodes.invalid_input
+        return response
     }
 
     protected static String regenerateToken()
@@ -41,12 +53,18 @@ class CompanyService {
 
     def update(CompanyBuildingSource src)
     {
-
+        Map response = [:]
         Company company = Company.findByToken(src.companyToken)
         if(!company)
-           return "INVALID_TOKEN"
+        {
+            response.status = statusCodes.invalid_token
+            return response
+        }
         company.token = regenerateToken()
         company.save()
-        return company.token
+        response.new_company_token = company.token
+        response.status = statusCodes.success
+        return response
     }
+
 }

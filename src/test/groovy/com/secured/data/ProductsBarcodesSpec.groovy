@@ -1,9 +1,10 @@
 package com.secured.data
 
+import com.secured.data.connectors.ProductsBarcodes
 import grails.testing.gorm.DomainUnitTest
 import spock.lang.Specification
 
-class ProductSpec extends Specification implements DomainUnitTest<Product> {
+class ProductsBarcodesSpec extends Specification implements DomainUnitTest<ProductsBarcodes> {
 
     def setup() {
     }

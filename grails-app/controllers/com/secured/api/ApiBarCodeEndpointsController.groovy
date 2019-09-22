@@ -1,6 +1,8 @@
 package com.secured.api
 
 import com.secured.api.resources.BarCodeRegisteringSource
+import com.secured.data.BarCode
+import com.secured.logs.DevCycleLogger
 import grails.plugin.springsecurity.annotation.Secured
 import grails.rest.RestfulController
 
@@ -27,45 +29,47 @@ class ApiBarCodeEndpointsController extends RestfulController<BarCodeRegistering
 
     def save(BarCodeRegisteringSource src)
     {
-        def response_list = barCodeService.registerBarCodes(src)
-        if(response_list[0] == "INVALID_TOKEN")
-        {
-            withFormat {
-                json{
-                    respond(status: 401)
-                }
-            }
-        }
+        DevCycleLogger.list_all_products()
+        def response = barCodeService.save(src)
+        DevCycleLogger.print_logs()
+        DevCycleLogger.list_all_products()
+        DevCycleLogger.cleanup()
+        this.response.status = (response.status as int)
         withFormat {
             json{
-                respond([barcode_list: response_list, status: 200])
+                respond(response)
+            }
+        }
+    }
+
+    def update(BarCodeRegisteringSource src)
+    {
+        src.productId = (params.id as int)
+        DevCycleLogger.list_all_barcodes()
+        def response = barCodeService.update(src)
+        DevCycleLogger.print_logs()
+        DevCycleLogger.list_all_barcodes()
+        DevCycleLogger.cleanup()
+        this.response.status = (response.status as int)
+        withFormat {
+            json{
+                respond(response)
             }
         }
     }
 
     def delete(BarCodeRegisteringSource src)
     {
-        def response_list = barCodeService.delete(src)
-        if(response_list[0] == "INVALID_TOKEN")
-        {
-            withFormat {
-                json{
-                    respond(status: 401)
-                }
-            }
-        }
-        if(response_list[0] == "INVALID_INPUT")
-        {
-            response_list.remove(0)
-            withFormat {
-                json{
-                    respond([barcode_list: response_list,status: 400])
-                }
-            }
-        }
+        src.productId = (params.id as int)
+        DevCycleLogger.list_all_barcodes()
+        def response = barCodeService.delete(src)
+        DevCycleLogger.print_logs()
+        DevCycleLogger.list_all_barcodes()
+        DevCycleLogger.cleanup()
+        this.response.status = (response.status as int)
         withFormat {
             json{
-                respond([barcode_list: response_list,status: 200])
+                respond(response)
             }
         }
     }

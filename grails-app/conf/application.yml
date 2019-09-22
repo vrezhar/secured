@@ -1,4 +1,10 @@
 ---
+status:
+    INVALID_TOKEN: 401
+    INVALID_ACTION: 400
+    OK: 200
+
+---
 grails:
     profile: web
     codegen:

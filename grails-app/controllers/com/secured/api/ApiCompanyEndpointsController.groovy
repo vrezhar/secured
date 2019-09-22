@@ -26,26 +26,12 @@ class ApiCompanyEndpointsController extends RestfulController<CompanyBuildingSou
 
     def save(CompanyBuildingSource src)
     {
-        String response = companyService.registerCompany(src)
-        if(response == "INVALID_TOKEN")
-        {
-            withFormat {
-                json{
-                    respond status: 401
-                }
-            }
-        }
-        if(response == "INVALID_INPUT")
-        {
-            withFormat {
-                json{
-                    respond status: 400
-                }
-            }
-        }
+
+        def response = companyService.save(src)
         withFormat {
+            this.response.status = (response.status as int)
             json{
-                respond([company_token: response, status: 200])
+                respond(response)
             }
         }
     }
@@ -53,17 +39,10 @@ class ApiCompanyEndpointsController extends RestfulController<CompanyBuildingSou
     def update(CompanyBuildingSource src)
     {
         def response = companyService.update(src)
-        if(response == "INVALID_TOKEN")
-        {
-            withFormat {
-                json{
-                    respond status: 401
-                }
-            }
-        }
         withFormat {
+            this.response.status = (response.status as int)
             json{
-                respond([new_companny_token: response, status: 200])
+                respond(response)
             }
         }
     }

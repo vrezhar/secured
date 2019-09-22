@@ -1,4 +1,4 @@
-package com.secured.main
+package com.secured
 
 class UrlMappings {
 
@@ -13,7 +13,8 @@ class UrlMappings {
         put "/company"(controller: "apiCompanyEndpoints", action: "update")
 
         post "/barcode"(controller: "apiBarCodeEndpoints", action: "save")
-        put "/barcode"(controller: "apiBarCodeEndpoints", action: "delete")
+        post "/barcode/$id"(controller: "apiBarCodeEndpoints", action: "update")
+        put "/barcode/$id"(controller: "apiBarCodeEndpoints", action: "delete")
 
         "/register"(controller: 'register',action: 'register')
         "/register/confirm"(controller: 'register', action: "confirm")
