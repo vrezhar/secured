@@ -72,8 +72,16 @@ class BarCodeService extends Responsive
         }
         owner.save()
 
-        response.status = statusCodes.success
-        DevCycleLogger.log("saving changes, report success, exiting save()")
+        if(response.saved_barcode_list != [])
+        {
+            DevCycleLogger.log("saving changes, report success, exiting save()")
+            response.status = statusCodes.success
+        }
+        else
+        {
+            DevCycleLogger.log("report failure, exiting save()")
+            response.status = statusCodes.invalid_input
+        }
         return response
 
     }
@@ -123,8 +131,16 @@ class BarCodeService extends Responsive
         }
         owner.save()
 
-        DevCycleLogger.log("saving changes, report success, exiting update()")
-        response.status = statusCodes.success
+        if(response.saved_barcodes_list != [])
+        {
+            DevCycleLogger.log("saving changes, report success, exiting update()")
+            response.status = statusCodes.success
+        }
+        else
+        {
+            DevCycleLogger.log("report failure, exiting update()")
+            response.status = statusCodes.invalid_input
+        }
         return response
 
     }
@@ -142,7 +158,7 @@ class BarCodeService extends Responsive
             return response
         }
 
-        Products products = Products.findById(src.productId)
+        Products products = Products.get(src.productId)
         if(!products)
         {
             DevCycleLogger.log("product with id ${src.productId} not found, exiting delete()")
@@ -163,7 +179,6 @@ class BarCodeService extends Responsive
 
         for(barCode in src.barcodes)
         {
-            //validate barcodes before deleting
             BarCode barcode = BarCode.findWhere(code: barCode, company: owner)
             if(barcode.dateDeleted != null)
             {
@@ -183,19 +198,16 @@ class BarCodeService extends Responsive
             response.not_deleted_barcode_list.add(barCode)
         }
 
-        DevCycleLogger.log("saving changes, report success, exiting delete()")
-        response.status = statusCodes.success
+        if(response.deleted_barcode_list != [])
+        {
+            DevCycleLogger.log("saving changes, report success, exiting delete()")
+            response.status = statusCodes.success
+        }
+        else
+        {
+            DevCycleLogger.log("report failure, exiting delete()")
+            response.status = statusCodes.invalid_input
+        }
         return response
     }
-
-    protected static boolean contains(Company company,BarCode barcode)
-    {
-        for(barCode in company.barCodes)
-        {
-            if(barcode.equals(barCode))
-                return true
-        }
-        return false
-    }
-
 }

@@ -15,6 +15,7 @@ class UrlMappings {
         post "/barcode"(controller: "apiBarCodeEndpoints", action: "save")
         post "/barcode/$id"(controller: "apiBarCodeEndpoints", action: "update")
         put "/barcode/$id"(controller: "apiBarCodeEndpoints", action: "delete")
+        delete "/barcode/$id"(controller: "apiBarCodeEndpoints", action: "delete")
 
         "/register"(controller: 'register',action: 'register')
         "/register/confirm"(controller: 'register', action: "confirm")

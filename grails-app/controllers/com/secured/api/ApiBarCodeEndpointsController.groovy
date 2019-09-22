@@ -29,10 +29,8 @@ class ApiBarCodeEndpointsController extends RestfulController<BarCodeRegistering
 
     def save(BarCodeRegisteringSource src)
     {
-        DevCycleLogger.list_all_products()
         def response = barCodeService.save(src)
         DevCycleLogger.print_logs()
-        DevCycleLogger.list_all_products()
         DevCycleLogger.cleanup()
         this.response.status = (response.status as int)
         withFormat {
@@ -45,10 +43,8 @@ class ApiBarCodeEndpointsController extends RestfulController<BarCodeRegistering
     def update(BarCodeRegisteringSource src)
     {
         src.productId = (params.id as int)
-        DevCycleLogger.list_all_barcodes()
         def response = barCodeService.update(src)
         DevCycleLogger.print_logs()
-        DevCycleLogger.list_all_barcodes()
         DevCycleLogger.cleanup()
         this.response.status = (response.status as int)
         withFormat {
@@ -61,10 +57,8 @@ class ApiBarCodeEndpointsController extends RestfulController<BarCodeRegistering
     def delete(BarCodeRegisteringSource src)
     {
         src.productId = (params.id as int)
-        DevCycleLogger.list_all_barcodes()
         def response = barCodeService.delete(src)
         DevCycleLogger.print_logs()
-        DevCycleLogger.list_all_barcodes()
         DevCycleLogger.cleanup()
         this.response.status = (response.status as int)
         withFormat {
