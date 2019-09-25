@@ -6,7 +6,7 @@ import groovy.transform.EqualsAndHashCode
 import groovy.transform.ToString
 
 @GrailsCompileStatic
-@ToString(cache=true, includeNames=true, includePackage=false)
+@ToString(cache=true, includes = ['code','dateCreated'], includePackage=false)
 class BarCode implements Serializable
 {
 
@@ -24,15 +24,16 @@ class BarCode implements Serializable
         if(o instanceof BarCode)
         {
             BarCode other = o as BarCode
-            if(this.code == other.code && (this.company.companyId == other.company.companyId))
+            if(this.code == other.code )
                 return true
         }
         return false
     }
 
-    static belongsTo = [company: Company]
+    static belongsTo = [products: Products]
 
     static constraints = {
         dateDeleted nullable: true
+        code nullable: false, blank: false,unique: true
     }
 }
