@@ -4,8 +4,6 @@ import com.secured.auth.User
 import com.secured.data.BarCode
 import com.secured.data.Company
 import com.secured.data.Products
-import com.secured.data.connectors.CompanyProducts
-import com.secured.data.connectors.ProductsBarcodes
 
 class DevCycleLogger
 {
@@ -34,7 +32,7 @@ class DevCycleLogger
     static void list_products_of(Company company)
     {
         println("printing products of ${company.user}'s company with id ${company.companyId}")
-        (CompanyProducts.findAllWhere(company: company) as List<Products>)*.each{
+        company.products.each{
             println("product code: ${it.productCode}, description: ${it.description}")
         }
     }
@@ -47,21 +45,16 @@ class DevCycleLogger
     static void list_barcodes_of(Company company)
     {
         println("printing barcodes of ${company.user}'s company with id ${company.companyId}")
-        company.barcodes.each{
-            println("code: ${it.code}")
-        }
-    }
-    static void list_barcodes_of(Company company,Products products)
-    {
-        println("printing barcodes assigned to ${products.productCode} of ${company.user}'s company with id ${company.companyId}")
-        (company.getBarCodesOf(products))*.each{
-            println("code: ${it.code}")
+        company.products.each {
+            it.barCodes.each {
+                println("code: ${it.code}")
+            }
         }
     }
     static void list_barcodes_of(Products products)
     {
         println("printing barcodes assigned to ${products.productCode}")
-        products.allBarCodes.each{
+        products.barCodes.each{
             println("code: ${it.code}")
         }
     }
