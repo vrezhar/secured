@@ -17,9 +17,9 @@ class Document
     String owner_inn
     String tradeRecipientInn
     String pdf = "string"
-    int documentDate
-    int transferDate
-    int acceptanceDate
+    long documentDate
+    long transferDate
+    long  acceptanceDate
 
     Date dateCreated
     Date lastUpdated
