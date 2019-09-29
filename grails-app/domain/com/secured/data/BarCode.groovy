@@ -11,29 +11,32 @@ class BarCode implements Serializable
 {
 
     private static final long serialVersionUID = 1
-    //ToDo
-    //Implement this properly later
-    String code
+
+
+    String uit_code
+    String uitu_code
     Date dateCreated
     Date lastUpdated
     Date dateDeleted = null
 
-    @Override
-    boolean equals(Object o)
-    {
-        if(o instanceof BarCode)
-        {
-            BarCode other = o as BarCode
-            if(this.code == other.code )
-                return true
-        }
-        return false
-    }
 
     static belongsTo = [products: Products]
 
     static constraints = {
         dateDeleted nullable: true
-        code nullable: false, blank: false,unique: true
+        uit_code validator: { value, object ->
+            if(BarCode.findWhere(uit_code: value))
+                return false
+
+            if((object?.uitu_code == null || object?.uitu_code == "")  && (value == null || value == ""))
+                return false
+        }
+        uitu_code validator: { value, object ->
+            if(BarCode.findWhere(uitu_code: value))
+                return false
+
+            if((object?.uit_code == null || object?.uit_code == "")  && (value == null || value == ""))
+                return false
+        }
     }
 }
