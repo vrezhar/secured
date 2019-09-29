@@ -14,6 +14,8 @@ class Products implements Serializable
 
     String productCode
     String description
+    int cost
+    int tax
     Date dateCreated
     Date lastUpdated
 
@@ -21,8 +23,10 @@ class Products implements Serializable
     static belongsTo = [company: Company]
 
     static constraints = {
-        productCode nullable: false, blank: false,unique: true
-        description nullable: true, blank: true
+        productCode nullable: false, blank: false, unique: true
+        description nullable: false, blank: false
+        cost nullable: false, blank: false
+        tax nullable: false, blank: false
     }
 
 }
