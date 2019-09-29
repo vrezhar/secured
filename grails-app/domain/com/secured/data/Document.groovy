@@ -11,10 +11,10 @@ class Document
     String tradeOwnerInn
     String tradeSenderName
     String tradeOwnerName
-    String receiver_inn
+    String receiverInn
     String receiver
     String owner
-    String owner_inn
+    String ownerInn
     String tradeRecipientInn
     String pdf = "string"
     long documentDate
