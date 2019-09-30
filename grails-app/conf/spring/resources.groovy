@@ -4,7 +4,7 @@ import com.secured.api.BarCodeService
 import com.secured.api.CompanyService
 import com.secured.api.DocumentService
 import com.secured.api.ProductsService
-import com.secured.api.ResponseGeneratorService
+
 import com.secured.mail.MailErrorHandlingService
 import com.secured.mail.MailingService
 import com.secured.auth.PatternValidatorService
@@ -14,8 +14,6 @@ import com.secured.auth.UserValidatorService
 import org.springframework.security.web.authentication.session.NullAuthenticatedSessionStrategy
 // Place your Spring DSL code here
 beans = {
-
-    responseGenerator(ResponseGeneratorService)
 
     productsService(ProductsService)
 

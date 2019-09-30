@@ -42,7 +42,7 @@ class Response extends  Responsive
         status = statusCodes.invalid_token as int
     }
 
-    Map getResponseAsMap()
+    Map getAsMap()
     {
         Map response = [:]
         response.status = this.status

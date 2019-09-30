@@ -20,7 +20,7 @@ class Document
     //String tradeRecipient// not sure if need this
     String sender
     String senderInn // are they the same as trade_sender?
-    final String pdf = "string" //?(example uses, nothing in documentation)
+    String pdf = "string" //?(example uses, nothing in documentation)
     long documentDate
     long transferDate
     long  acceptanceDate

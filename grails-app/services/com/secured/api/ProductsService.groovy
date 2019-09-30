@@ -1,6 +1,8 @@
 package com.secured.api
 
 import com.secured.api.resources.ProductCommand
+import com.secured.api.response.Response
+import com.secured.data.Products
 import grails.gorm.transactions.Transactional
 
 @Transactional
@@ -9,13 +11,14 @@ class ProductsService
 
     static scope = 'prototype'
 
-    def save(ProductCommand cmd)
+    Products saveOrUpdate(ProductCommand cmd, Response response)
     {
-
-    }
-
-    def update(ProductCommand cmd)
-    {
-
+        if(!cmd.validate())
+        {
+            response.rejectProduct(cmd)
+            return null
+        }
+        Products products = ProductCommand.createOrUpdate(cmd)
+        return  products
     }
 }
