@@ -17,7 +17,7 @@ class Document
     String owner //or this can be blank
     String ownerInn
     String tradeRecipientInn //example contains this, nothing in the documentation
-    String tradeRecipient // not sure if need this
+    //String tradeRecipient// not sure if need this
     String sender
     String senderInn // are they the same as trade_sender?
     final String pdf = "string" //?(example uses, nothing in documentation)

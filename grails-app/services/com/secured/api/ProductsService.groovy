@@ -1,11 +1,21 @@
 package com.secured.api
 
+import com.secured.api.resources.ProductCommand
 import grails.gorm.transactions.Transactional
 
 @Transactional
-class ProductsService {
+class ProductsService
+{
 
-    def serviceMethod() {
+    static scope = 'prototype'
+
+    def save(ProductCommand cmd)
+    {
+
+    }
+
+    def update(ProductCommand cmd)
+    {
 
     }
 }

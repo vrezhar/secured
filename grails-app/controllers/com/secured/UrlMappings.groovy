@@ -9,12 +9,13 @@ class UrlMappings {
             }
         }
 
-        post "/company"(controller: "apiCompanyEndpoints", action: "save")
+        //post "/company"(controller: "apiCompanyEndpoints", action: "save")
         put "/company"(controller: "apiCompanyEndpoints", action: "update")
 
-        post "/barcode"(controller: "apiBarCodeEndpoints", action: "save")
-        post "/barcode/$id"(controller: "apiBarCodeEndpoints", action: "update")
-        put "/barcode/$id"(controller: "apiBarCodeEndpoints", action: "delete")
+        post "/document/acceptance"(controller: "apiDocumentAcceptanceEndpoint", action: "accept")
+        post "/document/shipment"(controller: "apiDocumentShipmentEndpoint", action: "ship")
+        //post "/barcode/$id"(controller: "apiBarCodeEndpoints", action: "update")
+        //put "/barcode/$id"(controller: "apiBarCodeEndpoints", action: "delete")
 
         "/register"(controller: 'register',action: 'register')
         "/register/confirm"(controller: 'register', action: "confirm")
