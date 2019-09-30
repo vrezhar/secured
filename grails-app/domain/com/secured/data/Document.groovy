@@ -18,6 +18,8 @@ class Document
     String ownerInn
     String tradeRecipientInn //example contains this, nothing in the documentation
     String tradeRecipient // not sure if need this
+    String sender
+    String senderInn // are they the same as trade_sender?
     final String pdf = "string" //?(example uses, nothing in documentation)
     long documentDate
     long transferDate
@@ -53,8 +55,35 @@ class Document
             if(object?.requestType == "ACCEPTANCE" && (value == null || value ==""))
                 return false
         }
+        senderInn validator: {value, object ->
+            if(object?.requestType == "SHIPMENT" && (value == null || value ==""))
+                return false
+        }
+        ownerInn validator: {value, object ->
+            if(object?.requestType == "SHIPMENT" && (value == null || value ==""))
+                return false
+        }
+        receiverInn validator: {value, object ->
+            if(object?.requestType == "SHIPMENT" && (value == null || value ==""))
+                return false
+        }
+        sender validator: {value, object ->
+            if(object?.requestType == "SHIPMENT" && (value == null || value ==""))
+                return false
+        }
+        owner validator: {value, object ->
+            if(object?.requestType == "SHIPMENT" && (value == null || value ==""))
+                return false
+        }
+        receiver validator: {value, object ->
+            if(object?.requestType == "SHIPMENT" && (value == null || value ==""))
+                return false
+        }
         documentDate nullable: false //?
         transferDate nullable: false //?
-        acceptanceDate nullable: false //?
+        acceptanceDate validator: {value, object ->
+            if(object?.requestType == "ACCEPTANCE" && value == null)
+                return false
+        } //?
     }
 }
