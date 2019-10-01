@@ -1,6 +1,6 @@
-package com.secured.api
+package com.secured.api.deprecated
 
-import com.secured.api.resources.BarCodeRegisteringSource
+import com.secured.api.resources.deprecated.BarCodeRegisteringSource
 import com.secured.api.response.Responsive
 import com.secured.data.BarCode
 import com.secured.data.Company

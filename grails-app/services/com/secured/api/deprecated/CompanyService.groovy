@@ -1,6 +1,6 @@
-package com.secured.api
+package com.secured.api.deprecated
 
-import com.secured.api.resources.CompanyBuildingSource
+import com.secured.api.resources.deprecated.CompanyBuildingSource
 import com.secured.api.response.Responsive
 import com.secured.auth.User
 import com.secured.data.Company

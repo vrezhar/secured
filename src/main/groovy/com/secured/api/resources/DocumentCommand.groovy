@@ -13,20 +13,6 @@ class DocumentCommand implements Validateable
     String document_number
     String companyToken
 
-    static Document createMock(DocumentCommand cmd)
-    {
-        Document document = new Document()
-        document.documentDate = cmd.document_date
-        document.transferDate = cmd.transfer_date
-        document.turnoverType = cmd.turnover_type
-        document.documentNumber = cmd.document_number
-        cmd.products.each {
-            Products product = ProductCommand.createOrUpdate(it)
-            document.products.add(product)
-        }
-        return document
-    }
-
     static constraints = {
         document_date nullable: false, min: 0
         transfer_date nullable: false, min: 0

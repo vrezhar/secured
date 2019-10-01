@@ -1,7 +1,7 @@
 package spring
 
-import com.secured.api.BarCodeService
-import com.secured.api.CompanyService
+import com.secured.api.deprecated.BarCodeService
+import com.secured.api.deprecated.CompanyService
 import com.secured.api.DocumentService
 import com.secured.api.ProductsService
 

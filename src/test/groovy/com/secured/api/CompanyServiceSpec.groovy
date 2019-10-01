@@ -1,12 +1,12 @@
 package com.secured.api
 
-import com.secured.api.resources.CompanyBuildingSource
+import com.secured.api.deprecated.CompanyService
+import com.secured.api.resources.deprecated.CompanyBuildingSource
 import com.secured.auth.User
 import com.secured.data.BarCode
 import com.secured.data.Company
 import grails.test.hibernate.HibernateSpec
 import grails.testing.services.ServiceUnitTest
-import spock.lang.Specification
 
 class CompanyServiceSpec extends HibernateSpec implements ServiceUnitTest<CompanyService>
 {

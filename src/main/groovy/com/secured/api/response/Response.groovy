@@ -26,17 +26,6 @@ class Response extends  Responsive
         status = statusCodes.invalid_input as int
     }
 
-    void rejectProduct(BarCode barCode)
-    {
-        RejectedProduct rejected = new RejectedProduct(productCode: barCode.products.product_code)
-        if(barCode.uit_code)
-            rejected.uit_code = barCode.uit_code
-        if(barCode.uitu_code)
-            rejected.uitu_code = barCode.uitu_code
-        rejected_list.add(rejected)
-        status = statusCodes.invalid_input as int
-    }
-
     void rejectCompanyToken()
     {
         status = statusCodes.invalid_token as int

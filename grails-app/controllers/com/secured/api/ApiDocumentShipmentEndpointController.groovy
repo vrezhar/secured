@@ -8,6 +8,8 @@ import grails.rest.RestfulController
 class ApiDocumentShipmentEndpointController extends RestfulController<ShipmentDocumentCommand>
 {
 
+    DocumentService documentService
+
     ApiDocumentShipmentEndpointController()
     {
         super(ShipmentDocumentCommand)
@@ -25,6 +27,12 @@ class ApiDocumentShipmentEndpointController extends RestfulController<ShipmentDo
 
     def ship(ShipmentDocumentCommand cmd)
     {
-
+        def response = documentService.ship(cmd)
+        this.response.status = response.status as int
+        withFormat {
+            json{
+                respond(response)
+            }
+        }
     }
 }

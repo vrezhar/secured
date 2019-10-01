@@ -1,12 +1,12 @@
 package com.secured.api
 
-import com.secured.api.resources.BarCodeRegisteringSource
+import com.secured.api.deprecated.BarCodeService
+import com.secured.api.resources.deprecated.BarCodeRegisteringSource
 import com.secured.auth.User
 import com.secured.data.BarCode
 import com.secured.data.Company
 import grails.test.hibernate.HibernateSpec
 import grails.testing.services.ServiceUnitTest
-import spock.lang.Specification
 
 class BarCodeServiceSpec extends HibernateSpec implements ServiceUnitTest<BarCodeService>{
 

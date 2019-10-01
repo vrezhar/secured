@@ -1,4 +1,4 @@
-package com.secured.api.resources
+package com.secured.api.resources.deprecated
 
 
 import grails.validation.Validateable

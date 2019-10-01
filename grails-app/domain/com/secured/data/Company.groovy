@@ -15,6 +15,7 @@ class Company implements  Serializable
     String address
     String companyId
     String token = UUID.randomUUID().toString()
+
     Date dateCreated
     Date lastUpdated
 
@@ -24,7 +25,7 @@ class Company implements  Serializable
     }
 
     static belongsTo = [user: User]
-    static hasMany = [products: Products]
+    static hasMany = [products: Products, documents: Document]
 
     static constraints = {
         token nullable: false, blank: false, unique: true
