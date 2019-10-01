@@ -1,6 +1,7 @@
 package com.secured.api
 
 import com.secured.api.resources.AcceptanceDocumentCommand
+import com.secured.logs.DevCycleLogger
 import grails.plugin.springsecurity.annotation.Secured
 import grails.rest.RestfulController
 
@@ -27,6 +28,8 @@ class ApiDocumentAcceptanceEndpointController extends RestfulController<Acceptan
     def accept(AcceptanceDocumentCommand cmd)
     {
         def response = documentService.accept(cmd)
+        DevCycleLogger.print_logs()
+        DevCycleLogger.cleanup()
         this.response.status = response.status as int
         withFormat {
             json{

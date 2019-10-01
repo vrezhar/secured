@@ -1,7 +1,8 @@
 package com.secured.api.resources
 
-import com.secured.data.Document
+import grails.compiler.GrailsCompileStatic
 
+@GrailsCompileStatic
 class AcceptanceDocumentCommand extends DocumentCommand
 {
     String release_order_number
@@ -19,7 +20,7 @@ class AcceptanceDocumentCommand extends DocumentCommand
         trade_recipient_inn nullable: false, blank: false
         trade_sender_inn nullable: false, blank: false
         trade_sender_name nullable: false, blank: false
-        acceptance_date nullable: false, min: 1
+        acceptance_date nullable: false
     }
 
 }

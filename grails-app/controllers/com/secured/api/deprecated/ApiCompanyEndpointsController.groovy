@@ -2,6 +2,7 @@ package com.secured.api.deprecated
 
 
 import com.secured.api.resources.deprecated.CompanyBuildingSource
+import com.secured.logs.DevCycleLogger
 import grails.plugin.springsecurity.annotation.Secured
 import grails.rest.RestfulController
 
@@ -27,8 +28,10 @@ class ApiCompanyEndpointsController extends RestfulController<CompanyBuildingSou
 
     def save(CompanyBuildingSource src)
     {
-
         def response = companyService.save(src)
+        DevCycleLogger.print_logs()
+        println("command object: {'${src.mainToken}', '${src.address}', '${src.companyId}'}")
+        DevCycleLogger.cleanup()
         withFormat {
             this.response.status = (response.status as int)
             json{

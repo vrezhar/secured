@@ -1,8 +1,8 @@
 package com.secured.api.resources
 
-import com.secured.data.Document
-import grails.validation.Validateable
+import grails.compiler.GrailsCompileStatic
 
+@GrailsCompileStatic
 class ShipmentDocumentCommand extends DocumentCommand
 {
     String pdf

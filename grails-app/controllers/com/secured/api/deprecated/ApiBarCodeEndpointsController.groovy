@@ -30,8 +30,6 @@ class ApiBarCodeEndpointsController extends RestfulController<BarCodeRegistering
     def save(BarCodeRegisteringSource src)
     {
         def response = barCodeService.save(src)
-        DevCycleLogger.print_logs()
-        DevCycleLogger.cleanup()
         this.response.status = (response.status as int)
         withFormat {
             json{
@@ -44,8 +42,6 @@ class ApiBarCodeEndpointsController extends RestfulController<BarCodeRegistering
     {
         src.productId = (params.id as int)
         def response = barCodeService.update(src)
-        DevCycleLogger.print_logs()
-        DevCycleLogger.cleanup()
         this.response.status = (response.status as int)
         withFormat {
             json{

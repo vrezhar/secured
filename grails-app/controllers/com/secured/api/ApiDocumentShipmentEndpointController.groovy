@@ -1,6 +1,7 @@
 package com.secured.api
 
 import com.secured.api.resources.ShipmentDocumentCommand
+import com.secured.logs.DevCycleLogger
 import grails.plugin.springsecurity.annotation.Secured
 import grails.rest.RestfulController
 
@@ -28,6 +29,8 @@ class ApiDocumentShipmentEndpointController extends RestfulController<ShipmentDo
     def ship(ShipmentDocumentCommand cmd)
     {
         def response = documentService.ship(cmd)
+        DevCycleLogger.print_logs()
+        DevCycleLogger.cleanup()
         this.response.status = response.status as int
         withFormat {
             json{
