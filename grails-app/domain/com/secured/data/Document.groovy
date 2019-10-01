@@ -3,7 +3,7 @@ package com.secured.data
 
 class Document
 {
-    List<Products> products
+    List<Products> products = []
     String requestType
     String releaseOrderNumber
     String documentNumber
@@ -36,7 +36,15 @@ class Document
             if(value != "ACCEPTANCE" && value != "SHIPMENT")
                 return false
         }
-        releaseOrderNumber validator: { value, object ->
+        sender nullable: true, validator: { value, object ->
+            if(object?.requestType == "SHIPMENT" && (value == null || value == ""))
+                return false
+        }
+        senderInn nullable: true, validator: { value, object ->
+            if(object?.requestType == "SHIPMENT" && (value == null || value == ""))
+                return false
+        }
+        releaseOrderNumber nullable: true, validator: { value, object ->
             if(object?.requestType == "ACCEPTANCE" && (value == null || value == ""))
                 return false
         }
@@ -45,45 +53,53 @@ class Document
             if(value != "SALE" && value != "COMMISSION" && value != "AGENT" && value != "CONTRACT")
                 return false
         }
-        tradeSenderInn validator: {value, object ->
+        tradeSenderInn nullable: true, validator: {value, object ->
             if(object?.requestType == "ACCEPTANCE" && (value == null || value ==""))
                 return false
         }
-        tradeOwnerInn validator: {value, object ->
+        tradeSenderName nullable: true, validator: { value, object ->
+            if(object?.requestType == "SHIPMENT" && (value == null || value == ""))
+                return false
+        }
+        tradeOwnerInn nullable: true, validator: {value, object ->
             if(object?.requestType == "ACCEPTANCE" && (value == null || value ==""))
                 return false
         }
-        tradeRecipientInn validator: {value, object ->
+        tradeOwnerName nullable: true, validator: { value, object ->
+            if(object?.requestType == "SHIPMENT" && (value == null || value == ""))
+                return false
+        }
+        tradeRecipientInn nullable: true, validator: {value, object ->
             if(object?.requestType == "ACCEPTANCE" && (value == null || value ==""))
                 return false
         }
-        senderInn validator: {value, object ->
+        senderInn nullable: true, validator: {value, object ->
             if(object?.requestType == "SHIPMENT" && (value == null || value ==""))
                 return false
         }
-        ownerInn validator: {value, object ->
+        ownerInn nullable: true, validator: {value, object ->
             if(object?.requestType == "SHIPMENT" && (value == null || value ==""))
                 return false
         }
-        receiverInn validator: {value, object ->
+        receiverInn nullable: true, validator: {value, object ->
             if(object?.requestType == "SHIPMENT" && (value == null || value ==""))
                 return false
         }
-        sender validator: {value, object ->
+        sender nullable: true, validator: {value, object ->
             if(object?.requestType == "SHIPMENT" && (value == null || value ==""))
                 return false
         }
-        owner validator: {value, object ->
+        owner nullable: true, validator: {value, object ->
             if(object?.requestType == "SHIPMENT" && (value == null || value ==""))
                 return false
         }
-        receiver validator: {value, object ->
+        receiver nullable: true, validator: {value, object ->
             if(object?.requestType == "SHIPMENT" && (value == null || value ==""))
                 return false
         }
         documentDate nullable: false //?
         transferDate nullable: false //?
-        acceptanceDate validator: {value, object ->
+        acceptanceDate nullable: true, validator: {value, object ->
             if(object?.requestType == "ACCEPTANCE" && value == null)
                 return false
         } //?

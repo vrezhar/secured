@@ -2,13 +2,6 @@ package com.secured.api.response
 
 import com.secured.api.resources.ProductCommand
 
-class RejectedProduct
-{
-    String uit_code = ""
-    String uitu_code = ""
-    String product_code
-}
-
 class Response extends  Responsive
 {
 
@@ -22,7 +15,7 @@ class Response extends  Responsive
             rejected.uit_code = cmd.uit_code
         if(cmd.uitu_code != "")
             rejected.uitu_code = cmd.uitu_code
-        rejected_list.add(rejected)
+        rejected_list?.add(rejected)
     }
 
     void reportInvalidInput()

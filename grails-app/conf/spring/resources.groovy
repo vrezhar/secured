@@ -15,9 +15,9 @@ import org.springframework.security.web.authentication.session.NullAuthenticated
 // Place your Spring DSL code here
 beans = {
 
-    productsService(ProductsService)
-
-    documentService(DocumentService)
+//    productsService(ProductsService)
+//
+//    documentService(DocumentService)
 
     companyService(CompanyService)
 

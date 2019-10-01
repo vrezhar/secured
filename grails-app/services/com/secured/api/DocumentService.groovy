@@ -14,7 +14,6 @@ import grails.gorm.transactions.Transactional
 @Transactional
 class DocumentService
 {
-    static scope = 'prototype'
 
     ProductsService productsService
 
@@ -71,11 +70,12 @@ class DocumentService
                 Products products = productsService.update(it, document.company)
                 if(!products)
                 {
-                    DevCycleLogger.("unable to update product with code ${it.product_code}, belonging to company with id ${document.company.companyId}, rejecting")
+                    DevCycleLogger.log("unable to update product with code ${it.product_code}, belonging to company with id ${document.company.companyId}, rejecting")
                     response.rejectProduct(it)
                     response.reportInvalidInput()
                     continue
                 }
+                products.save()
                 document.products.add(products)
                 DevCycleLogger.log("adding product with code ${it.product_code}, belonging to company with id ${document.company.companyId}, to the current document")
                 continue
@@ -89,6 +89,7 @@ class DocumentService
                 response.reportInvalidInput()
                 continue
             }
+            products.save()
             DevCycleLogger.log("product with code ${it.product_code}, belonging to company with id ${document.company.companyId} saved, adding to current document")
             document.products.add(products)
         }
@@ -112,6 +113,7 @@ class DocumentService
                     response.reportInvalidInput()
                     continue
                 }
+                products.save()
                 document.products.add(products)
                 continue
             }
@@ -147,8 +149,13 @@ class DocumentService
         Document document = createAcceptanceDocument(cmd)
         document.company = company
         Map response = acceptProducts(document,cmd.products)
-        document.save()
-        DevCycleLogger.log("saving document with number ${document.documentNumber}, exiting accept()")
+        if(!document.products.isEmpty())
+        {
+            document.save()
+            DevCycleLogger.log("saving document with number ${document.documentNumber}, exiting accept()")
+            return response
+        }
+        DevCycleLogger.log("document with number ${document.documentNumber} not saved(empty products list), exiting accept()")
         return response
     }
 
@@ -176,8 +183,20 @@ class DocumentService
         Document document = createShipmentDocument(cmd)
         document.company = company
         Map response = shipProducts(document,cmd.products)
-        document.save()
-        DevCycleLogger.log("saving document with number ${document.documentNumber}, exiting ship()")
+        if(!document.products.isEmpty())
+        {
+            if(!document.save())
+            {
+                document.errors.fieldErrors.each {
+                    DevCycleLogger.log("couldn't validate value ${it.rejectedValue} for field ${it.field}")
+                }
+                DevCycleLogger.log("document with number ${document.documentNumber} not validated, exiting accept()")
+                return response
+            }
+            DevCycleLogger.log("saving document with number ${document.documentNumber}, exiting accept()")
+            return response
+        }
+        DevCycleLogger.log("document with number ${document.documentNumber} not saved(empty products list), exiting accept()")
         return response
     }
 }
