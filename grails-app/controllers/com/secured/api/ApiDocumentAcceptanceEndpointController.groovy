@@ -8,7 +8,7 @@ import grails.rest.RestfulController
 @Secured(['permitAll'])
 class ApiDocumentAcceptanceEndpointController extends RestfulController<AcceptanceDocumentCommand>
 {
-    DocumentService documentService
+    DocumentAcceptanceService documentAcceptanceService
 
     ApiDocumentAcceptanceEndpointController()
     {
@@ -27,7 +27,7 @@ class ApiDocumentAcceptanceEndpointController extends RestfulController<Acceptan
 
     def accept(AcceptanceDocumentCommand cmd)
     {
-        def response = documentService.accept(cmd)
+        def response = documentAcceptanceService.accept(cmd)
         DevCycleLogger.print_logs()
         DevCycleLogger.cleanup()
         this.response.status = response.status as int

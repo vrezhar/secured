@@ -25,7 +25,7 @@ class Company implements  Serializable
     }
 
     static belongsTo = [user: User]
-    static hasMany = [products: Products, documents: Document]
+    static hasMany = [products: Products]
 
     static constraints = {
         token nullable: false, blank: false, unique: true

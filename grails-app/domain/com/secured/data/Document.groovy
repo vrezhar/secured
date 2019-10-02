@@ -1,6 +1,8 @@
 package com.secured.data
 
+import grails.compiler.GrailsCompileStatic
 
+@GrailsCompileStatic
 class Document
 {
     List<Products> products = []
@@ -11,16 +13,15 @@ class Document
     String tradeSenderInn
     String tradeOwnerInn
     String tradeSenderName
-    String tradeOwnerName //who is owner and who is trade owner
+    String tradeOwnerName
     String receiverInn
-    String receiver //not clear when this
-    String owner //or this can be blank
+    String receiver
+    String owner
     String ownerInn
-    String tradeRecipientInn //example contains this, nothing in the documentation
-    //String tradeRecipient// not sure if need this
+    String tradeRecipientInn
     String sender
-    String senderInn // are they the same as trade_sender?
-    String pdf = "string" //?(example uses, nothing in documentation)
+    String senderInn
+    String pdf = "string"
     long documentDate
     long transferDate
     long  acceptanceDate
@@ -28,80 +29,83 @@ class Document
     Date dateCreated
     Date lastUpdated
 
-    static  belongsTo = [company: Company]
-
     static constraints = {
-        products nullable: false
-        requestType validator: {value, object ->
+        products nullable: false, validator: { List<Products> value, Document object ->
+            if(object?.products?.isEmpty())
+            {
+                return false
+            }
+        }
+        requestType validator: { String value, Document object ->
             if(value != "ACCEPTANCE" && value != "SHIPMENT")
                 return false
         }
-        sender nullable: true, validator: { value, object ->
+        sender nullable: true, validator: { String value, Document object ->
             if(object?.requestType == "SHIPMENT" && (value == null || value == ""))
                 return false
         }
-        senderInn nullable: true, validator: { value, object ->
+        senderInn nullable: true, validator: { String value, Document object ->
             if(object?.requestType == "SHIPMENT" && (value == null || value == ""))
                 return false
         }
-        releaseOrderNumber nullable: true, validator: { value, object ->
+        releaseOrderNumber nullable: true, validator: { String value, Document object ->
             if(object?.requestType == "ACCEPTANCE" && (value == null || value == ""))
                 return false
         }
         documentNumber nullable: false, blank: false, unique: true
-        turnoverType validator: {value, object ->
+        turnoverType validator: { String value, Document object ->
             if(value != "SALE" && value != "COMMISSION" && value != "AGENT" && value != "CONTRACT")
                 return false
         }
-        tradeSenderInn nullable: true, validator: {value, object ->
+        tradeSenderInn nullable: true, validator: { String value, Document object ->
             if(object?.requestType == "ACCEPTANCE" && (value == null || value ==""))
                 return false
         }
-        tradeSenderName nullable: true, validator: { value, object ->
+        tradeSenderName nullable: true, validator: { String value, Document object ->
             if(object?.requestType == "SHIPMENT" && (value == null || value == ""))
                 return false
         }
-        tradeOwnerInn nullable: true, validator: {value, object ->
+        tradeOwnerInn nullable: true, validator: { String value, Document object ->
             if(object?.requestType == "ACCEPTANCE" && (value == null || value ==""))
                 return false
         }
-        tradeOwnerName nullable: true, validator: { value, object ->
+        tradeOwnerName nullable: true, validator: { String value, Document object ->
             if(object?.requestType == "SHIPMENT" && (value == null || value == ""))
                 return false
         }
-        tradeRecipientInn nullable: true, validator: {value, object ->
+        tradeRecipientInn nullable: true, validator: { String value, Document object ->
             if(object?.requestType == "ACCEPTANCE" && (value == null || value ==""))
                 return false
         }
-        senderInn nullable: true, validator: {value, object ->
+        senderInn nullable: true, validator: { String value, Document object ->
             if(object?.requestType == "SHIPMENT" && (value == null || value ==""))
                 return false
         }
-        ownerInn nullable: true, validator: {value, object ->
+        ownerInn nullable: true, validator: { String value, Document object ->
             if(object?.requestType == "SHIPMENT" && (value == null || value ==""))
                 return false
         }
-        receiverInn nullable: true, validator: {value, object ->
+        receiverInn nullable: true, validator: { String value, Document object ->
             if(object?.requestType == "SHIPMENT" && (value == null || value ==""))
                 return false
         }
-        sender nullable: true, validator: {value, object ->
+        sender nullable: true, validator: { String value, Document object ->
             if(object?.requestType == "SHIPMENT" && (value == null || value ==""))
                 return false
         }
-        owner nullable: true, validator: {value, object ->
+        owner nullable: true, validator: { String value, Document object ->
             if(object?.requestType == "SHIPMENT" && (value == null || value ==""))
                 return false
         }
-        receiver nullable: true, validator: {value, object ->
+        receiver nullable: true, validator: { String value, Document object ->
             if(object?.requestType == "SHIPMENT" && (value == null || value ==""))
                 return false
         }
-        documentDate nullable: false //?
-        transferDate nullable: false //?
-        acceptanceDate nullable: true, validator: {value, object ->
-            if(object?.requestType == "ACCEPTANCE" && value == null)
+        documentDate nullable: false
+        transferDate nullable: false
+        acceptanceDate nullable: true, validator: { long value, Document object ->
+            if(object?.requestType == "ACCEPTANCE" && value == 0)
                 return false
-        } //?
+        }
     }
 }

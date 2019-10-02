@@ -11,7 +11,7 @@ import grails.gorm.transactions.Transactional
 class ProductsService
 {
 
-    Products update(ProductCommand cmd, Company company, boolean ships = false)
+    Products update(ProductCommand cmd)
     {
         DevCycleLogger.log('update() called')
         cmd.setAction("UPDATE")
@@ -23,65 +23,43 @@ class ProductsService
             DevCycleLogger.log("command object not validated, nothing updated, exiting update()")
             return null
         }
-        Products products = Products.findWhere(productCode: cmd.product_code, company: company)
-        if(products)
+        Products products = Products.findWhere(productCode: cmd.product_code)
+        boolean descriptionchanged = false
+        if(cmd.product_description != null && cmd.product_description != "")
         {
-            DevCycleLogger.log("found product with code ${products.productCode}, belonging to company with id ${company.companyId}(double checking just in case)")
-            if(ships)
-            {
-                DevCycleLogger.log("product is to be shipped, trying to delete shipped barcodes")
-                BarCode barCode = BarCode.findWhere(uit_code: cmd.uit_code, uitu_code: cmd.uitu_code, products: products)
-                if(!barCode)
-                {
-                    DevCycleLogger.log("barcode with uit code ${barCode.uit_code} and uitu code ${barCode.uitu_code} not found, nothing updated, exiting update()")
-                    return null
-                }
-                barCode.dateDeleted = new Date()
-                barCode.save()
-                products.save()
-                DevCycleLogger.log("deleting barcode with uit code ${barCode.uit_code} and uitu code ${barCode.uitu_code}, saving changes, exiting update()")
-                return products
-            }
-            products.description = (cmd.product_description != null && cmd.product_description != "") ? cmd.product_description : products.description
-            products.save()
-            if((cmd.uitu_code != null && cmd.uitu_code != "") || (cmd.uit_code != null && cmd.uit_code != ""))
-            {
-                DevCycleLogger.log("uitu or uit code detected, trying to register a barcode")
-                BarCode barCode = new BarCode(uit_code: cmd.uit_code, uitu_code: cmd.uitu_code, products: products)
-                if(!barCode.validate())
-                {
-                    barCode.errors.fieldErrors.each {
-                        DevCycleLogger.log("couldn't validate value ${it.rejectedValue} for field ${it.field}")
-                    }
-                    DevCycleLogger.log("barcode with uit code ${barCode.uit_code} and uitu code ${barCode.uitu_code} not validated, nothing updated, exiting update()")
-                    return null
-                }
-                products.addToBarCodes(barCode)
-                products.save()
-                DevCycleLogger.log("success, adding to the found product")
-            }
-            products.save()
-            DevCycleLogger.log("saving changes, exiting update()")
-            return products
+            DevCycleLogger.log("updating found product's description")
+            products.description = cmd.product_description
+            descriptionchanged = true
         }
-        DevCycleLogger.log("product with code ${products.productCode}, belonging to company with id ${company.companyId} not found(somehow), exiting update()")
-        return null
+        if((cmd.uitu_code != null && cmd.uitu_code != "") || (cmd.uit_code != null && cmd.uit_code != ""))
+        {
+            DevCycleLogger.log("uitu or uit code detected, trying to register a barcode")
+            BarCode barCode = new BarCode(uit_code: cmd.uit_code, uitu_code: cmd.uitu_code, products: products)
+            if(!barCode.validate())
+            {
+                barCode.errors.fieldErrors.each {
+                    DevCycleLogger.log("couldn't validate value ${it.rejectedValue} for field ${it.field}")
+                }
+                if(descriptionchanged)
+                {
+                    products.save(true)
+                    return products
+                }
+                DevCycleLogger.log("barcode with uit code ${barCode.uit_code} and uitu code ${barCode.uitu_code} not validated, nothing updated, exiting update()")
+                return null
+            }
+            products.addToBarCodes(barCode)
+            barCode.save()
+            DevCycleLogger.log("success, adding to the found product")
+        }
+        products.save(true)
+        DevCycleLogger.log("saving changes, exiting update()")
+        return products
     }
 
     Products save(ProductCommand cmd, Company company)
     {
         DevCycleLogger.log("save() called")
-        if(company == null)
-        {
-            DevCycleLogger.log("invoking save() on a null Company, exiting")
-            return null
-        }
-        if(cmd == null)
-        {
-            DevCycleLogger.log("invoking save() on a null command, exiting()")
-            return null
-        }
-
         cmd.setAction("SAVE")
         if(!cmd.validate())
         {
@@ -111,25 +89,35 @@ class ProductsService
             DevCycleLogger.log("barcode with uit code ${barCode.uit_code} and uitu code ${barCode.uitu_code} not validated, nothing saved, exiting save()")
             return null
         }
-        products.addToBarCodes(barCode)
         products.save()
+        barCode.save(true)
+        products.addToBarCodes(barCode)
+        company.addToProducts(products)
         DevCycleLogger.log("barcode registered")
         DevCycleLogger.log("product saved, exiting save()")
         return products
     }
 
-    boolean exists(String productCode, Company company)
+    Products ship(ProductCommand cmd)
     {
-        if(company == null)
+        DevCycleLogger.log("ship() called")
+        if(!cmd.validate())
         {
-            DevCycleLogger.log("invoking exit() on a null Company, exiting")
-            return false
+            DevCycleLogger.log("command object not validated, exiting ship()")
+            return null
         }
-
-        Products products = Products.findWhere(productCode: productCode, company: company)
-        if(products)
-            return true
-        return false
+        Products products = Products.findWhere(productCode: cmd.product_code)
+        BarCode barCode = BarCode.findWhere(uit_code: cmd.uit_code, uitu_code: cmd.uitu_code, products: products)
+        if(!barCode)
+        {
+            DevCycleLogger.log("barcode with uit code ${barCode.uit_code} and uitu code ${barCode.uitu_code} not found, nothing updated, exiting ship()")
+            return null
+        }
+        barCode.dateDeleted = new Date()
+        barCode.save()
+        products.save(true)
+        DevCycleLogger.log("shipping barcode with uit code ${barCode.uit_code} and uitu code ${barCode.uitu_code}, saving changes, exiting ship()")
+        return products
     }
 
 }

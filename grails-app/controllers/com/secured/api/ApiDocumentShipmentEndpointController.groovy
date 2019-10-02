@@ -9,7 +9,7 @@ import grails.rest.RestfulController
 class ApiDocumentShipmentEndpointController extends RestfulController<ShipmentDocumentCommand>
 {
 
-    DocumentService documentService
+    DocumentShipmentService documentShipmentService
 
     ApiDocumentShipmentEndpointController()
     {
@@ -28,7 +28,7 @@ class ApiDocumentShipmentEndpointController extends RestfulController<ShipmentDo
 
     def ship(ShipmentDocumentCommand cmd)
     {
-        def response = documentService.ship(cmd)
+        def response = documentShipmentService.ship(cmd)
         DevCycleLogger.print_logs()
         DevCycleLogger.cleanup()
         this.response.status = response.status as int

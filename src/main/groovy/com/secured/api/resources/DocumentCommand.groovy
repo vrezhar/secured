@@ -7,18 +7,23 @@ import grails.validation.Validateable
 class DocumentCommand implements Validateable
 {
     List<ProductCommand> products
-    int document_date
-    int transfer_date
+    int document_date = 0
+    int transfer_date = 0
     String turnover_type
     String document_number
     String companyToken
 
     static constraints = {
-        document_date nullable: false
-        transfer_date nullable: false
+        document_date nullable: false, notEqual: 0
+        transfer_date nullable: false, notEqual: 0
         document_number nullable: false, blank: false
         turnover_type nullable: false, blank: false
-        products nullable: false
+        products nullable: false, validator: { List<ProductCommand> value, DocumentCommand object ->
+            if(value?.isEmpty())
+            {
+                return false
+            }
+        }
         companyToken nullable: false, blank: false
     }
 
