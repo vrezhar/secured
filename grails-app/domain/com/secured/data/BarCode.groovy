@@ -25,24 +25,24 @@ class BarCode implements Serializable
     static constraints = {
         dateDeleted nullable: true
         uit_code nullable: true, validator: { String value, BarCode object ->
-            if(object?.uit_code != null && object?.uit_code != "")
+            if((value != "" && value != null) && BarCode.findWhere(uit_code: value))
             {
-                if(BarCode.findWhere(uit_code: value))
-                    return false
-                return  true
+                return false
             }
             if((object?.uitu_code == null || object?.uitu_code == "")  && (value == null || value == ""))
+            {
                 return false
+            }
         }
         uitu_code nullable: true, validator: { String value, BarCode object ->
-            if(object?.uitu_code != null && object?.uitu_code != "")
+            if((value != "" && value != null) && BarCode.findWhere(uitu_code: value))
             {
-                if(BarCode.findWhere(uitu_code: value))
-                    return false
-                return  true
+                return false
             }
             if((object?.uit_code == null || object?.uit_code == "")  && (value == null || value == ""))
+            {
                 return false
+            }
         }
     }
 }

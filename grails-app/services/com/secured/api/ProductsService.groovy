@@ -25,7 +25,7 @@ class ProductsService
         }
         Products products = Products.findWhere(productCode: cmd.product_code)
         boolean descriptionchanged = false
-        if(cmd.product_description != null && cmd.product_description != "")
+        if(cmd.product_description != null && cmd.product_description != "" && cmd.product_description != products.description)
         {
             DevCycleLogger.log("updating found product's description")
             products.description = cmd.product_description
@@ -43,14 +43,15 @@ class ProductsService
                 if(descriptionchanged)
                 {
                     products.save(true)
-                    return products
+                    return null
                 }
                 DevCycleLogger.log("barcode with uit code ${barCode.uit_code} and uitu code ${barCode.uitu_code} not validated, nothing updated, exiting update()")
                 return null
             }
-            products.addToBarCodes(barCode)
-            barCode.save()
+            products.save()
+            barCode.save(true)
             DevCycleLogger.log("success, adding to the found product")
+            return products
         }
         products.save(true)
         DevCycleLogger.log("saving changes, exiting update()")
@@ -91,8 +92,8 @@ class ProductsService
         }
         products.save()
         barCode.save(true)
-        products.addToBarCodes(barCode)
-        company.addToProducts(products)
+        //products.addToBarCodes(barCode) //unnecessary
+        //company.addToProducts(products)
         DevCycleLogger.log("barcode registered")
         DevCycleLogger.log("product saved, exiting save()")
         return products
@@ -103,6 +104,9 @@ class ProductsService
         DevCycleLogger.log("ship() called")
         if(!cmd.validate())
         {
+            cmd.errors.fieldErrors.each {
+                DevCycleLogger.log("${it.rejectedValue} not validated for field ${it.field}")
+            }
             DevCycleLogger.log("command object not validated, exiting ship()")
             return null
         }

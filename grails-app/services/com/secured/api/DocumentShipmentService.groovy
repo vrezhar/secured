@@ -10,7 +10,7 @@ import com.secured.logs.DevCycleLogger
 import grails.gorm.transactions.Transactional
 
 @Transactional
-class DocumentShipmentService  extends DocumentService
+class DocumentShipmentService extends DocumentService
 {
 
     protected Map shipProducts(Document document, Company company, List<ProductCommand> productsList)
@@ -19,10 +19,11 @@ class DocumentShipmentService  extends DocumentService
         for(it in productsList)
         {
             Products products = Products.findWhere(productCode:  it.product_code)
-            if(products && products?.company?.products?.contains(products))
+            if(products && company.products?.contains(products))
             {
+                boolean contains = document.products?.contains(products)
                 DevCycleLogger.log("found product with code ${it.product_code}, belonging to company with id ${company.companyId}")
-                products = ship(it)
+                products = super.ship(it)
                 if(!products)
                 {
                     DevCycleLogger.log("couldn't update product with code ${it.product_code}, belonging to company with id ${company.companyId}, rejecting")
@@ -30,8 +31,10 @@ class DocumentShipmentService  extends DocumentService
                     response.reportInvalidInput()
                     continue
                 }
-                products.save()
-                document.products.add(products)
+                if(!contains)
+                {
+                    document.products.add(products) // necessary, hasMany in document is not defined
+                }
                 continue
             }
             DevCycleLogger.log("couldn't find product with code ${it.product_code}, belonging to company with id ${company.companyId}, rejecting")

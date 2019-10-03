@@ -23,6 +23,7 @@ upper:  for(it in productsList)
             if(products)
             {
                 DevCycleLogger.log("found product with code ${it.product_code}, belonging to company with id ${company.companyId}")
+                boolean contains = document.products?.contains(products)
                 products = update(it)
                 if(!products)
                 {
@@ -31,16 +32,24 @@ upper:  for(it in productsList)
                     response.reportInvalidInput()
                     continue
                 }
-                for(product in document.products)
+                products.save()
+                if(!contains)
                 {
-                    if(products.productCode == product.productCode)
-                    {
-                        product = products
-                        DevCycleLogger.log("Existing product in a document updated")
-                        continue upper
-                    }
+                    document.products.add(products) // necessary, hasMany in document is not defined
                 }
-                document.products.add(products)
+                if(!document.validate())
+                {
+                    Response response_ = new Response()
+                    document.errors.fieldErrors.each {
+                        DevCycleLogger.log("${it.rejectedValue} not validated for ${it.field}")
+                    }
+                    DevCycleLogger.log("document with number ${document.documentNumber} not saved(empty products list), exiting accept()")
+                    productsList.each {
+                        response_.rejectProduct(it)
+                    }
+                    return response_.getAsMap()
+                }
+                document.save(true)
                 DevCycleLogger.log("adding product with code ${it.product_code}, belonging to company with id ${company.companyId}, to the current document")
                 continue
             }
@@ -54,8 +63,21 @@ upper:  for(it in productsList)
                 continue
             }
             DevCycleLogger.log("product with code ${it.product_code}, belonging to company with id ${company.companyId} saved, adding to current document")
-            document.products.add(products)
-            products.save(true)
+            products.save()
+            document.products.add(products) // necessary, hasMany in document is not defined
+            if(!document.validate())
+            {
+                Response response_ = new Response()
+                document.errors.fieldErrors.each {
+                    DevCycleLogger.log("${it.rejectedValue} not validated for ${it.field}")
+                }
+                DevCycleLogger.log("document with number ${document.documentNumber} not saved(empty products list), exiting accept()")
+                productsList.each {
+                    response_.rejectProduct(it)
+                }
+                return response_.getAsMap()
+            }
+            document.save(true)
         }
         DevCycleLogger.log("exiting acceptProducts()")
         return response.getAsMap()
@@ -75,23 +97,30 @@ upper:  for(it in productsList)
         if(!cmd.validate())
         {
             DevCycleLogger.log("command object not validated, reporting invalid input, exiting accept()")
-            Response response = new Response()
-            response.reportInvalidInput()
+            Response response_ = new Response()
+            response_.reportInvalidInput()
             cmd.products.each {
-                response.rejectProduct(it)
+                response_.rejectProduct(it)
             }
-            return response.getAsMap()
+            return response_.getAsMap()
         }
         Document document = createAcceptanceDocumentMock(cmd)
         Map response = acceptProducts(document, company, cmd.products)
-        if(document.validate())
+        if(!document.validate())
         {
-            document.save(true)
-            DevCycleLogger.log("saving document with number ${document.documentNumber}, exiting accept()")
-            return response
+            document.errors.fieldErrors.each {
+               DevCycleLogger.log("${it.rejectedValue} not validated for field ${it.field}")
+            }
+            DevCycleLogger.log("document not validated, reporting invalid input, exiting accept()")
+            Response response_ = new Response()
+            response_.reportInvalidInput()
+            cmd.products.each {
+                response_.rejectProduct(it)
+            }
+            return response_.getAsMap()
         }
-        DevCycleLogger.log("document with number ${document.documentNumber} not saved(empty products list), exiting accept()")
-        return response
+        DevCycleLogger.log("document validated, saving, exiting accept()")
+        return  response
     }
 
 }
