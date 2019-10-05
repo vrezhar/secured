@@ -1,4 +1,4 @@
-package com.secured.api.response
+package com.secured.api.response.current
 
 class RejectedProduct
 {

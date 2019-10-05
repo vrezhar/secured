@@ -32,8 +32,7 @@ class Document
 
     static constraints = {
         products nullable: false, validator: { List<Products> value, Document object ->
-            if(value?.isEmpty())
-            {
+            if(value?.isEmpty()) {
                 return false
             }
         }

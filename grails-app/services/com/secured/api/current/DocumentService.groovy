@@ -1,14 +1,10 @@
-package com.secured.api
+package com.secured.api.current
 
-import com.secured.api.resources.AcceptanceDocumentCommand
-import com.secured.api.resources.DocumentCommand
-import com.secured.api.resources.ProductCommand
-import com.secured.api.resources.ShipmentDocumentCommand
-import com.secured.api.response.Response
-import com.secured.data.Company
+
+import com.secured.api.resources.current.AcceptanceDocumentCommand
+import com.secured.api.resources.current.DocumentCommand
+import com.secured.api.resources.current.ShipmentDocumentCommand
 import com.secured.data.Document
-import com.secured.data.Products
-import com.secured.logs.DevCycleLogger
 import grails.gorm.transactions.Transactional
 
 @Transactional
@@ -42,8 +38,9 @@ class DocumentService extends ProductsService
     {
         Document document = createDocumentMock(cmd)
         document.requestType = "SHIPMENT"
-        if(cmd.pdf != "" && cmd.pdf != null)
+        if(cmd.pdf != "" && cmd.pdf != null){
             document.pdf = cmd.pdf
+        }
         document.owner = cmd.owner
         document.ownerInn = cmd.owner_inn
         document.receiver = cmd.receiver

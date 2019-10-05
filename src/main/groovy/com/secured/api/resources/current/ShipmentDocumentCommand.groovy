@@ -1,5 +1,6 @@
-package com.secured.api.resources
+package com.secured.api.resources.current
 
+import com.secured.api.resources.current.DocumentCommand
 import grails.compiler.GrailsCompileStatic
 
 @GrailsCompileStatic

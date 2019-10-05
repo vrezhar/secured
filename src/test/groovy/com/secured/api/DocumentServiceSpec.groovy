@@ -1,5 +1,6 @@
 package com.secured.api
 
+import com.secured.api.current.DocumentService
 import grails.testing.services.ServiceUnitTest
 import spock.lang.Specification
 

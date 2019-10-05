@@ -2,9 +2,6 @@ package spring
 
 import com.secured.api.deprecated.BarCodeService
 import com.secured.api.deprecated.CompanyService
-import com.secured.api.DocumentService
-import com.secured.api.ProductsService
-
 import com.secured.mail.MailErrorHandlingService
 import com.secured.mail.MailingService
 import com.secured.auth.PatternValidatorService

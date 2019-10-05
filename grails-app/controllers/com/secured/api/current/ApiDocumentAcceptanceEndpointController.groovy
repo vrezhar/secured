@@ -1,6 +1,7 @@
-package com.secured.api
+package com.secured.api.current
 
-import com.secured.api.resources.AcceptanceDocumentCommand
+import com.secured.api.current.DocumentAcceptanceService
+import com.secured.api.resources.current.AcceptanceDocumentCommand
 import com.secured.logs.DevCycleLogger
 import grails.plugin.springsecurity.annotation.Secured
 import grails.rest.RestfulController

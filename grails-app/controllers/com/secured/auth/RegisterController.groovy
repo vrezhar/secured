@@ -12,7 +12,7 @@ class RegisterController
 
     UserInitializerService userInitializer
     UserValidatorService userValidator
-    private static UserCommand errorCommand
+    private UserCommand errorCommand
 
     def register()
     {

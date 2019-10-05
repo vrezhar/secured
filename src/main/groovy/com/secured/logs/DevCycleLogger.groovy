@@ -4,6 +4,8 @@ import com.secured.auth.User
 import com.secured.data.BarCode
 import com.secured.data.Company
 import com.secured.data.Products
+import grails.validation.Validateable
+import sun.security.jgss.GSSCaller
 
 class DevCycleLogger
 {
@@ -39,7 +41,7 @@ class DevCycleLogger
     static void list_all_barcodes()
     {
         BarCode.list().each{
-            println("code: ${it.code}, belongs to: ${it.company.companyId} at ${it.company.address}")
+            println("uit_code: ${it.uit_code}, uitu_code: ${it.uitu_code}, belongs to: ${it.products.productCode} ")
         }
     }
     static void list_barcodes_of(Company company)
@@ -47,7 +49,7 @@ class DevCycleLogger
         println("printing barcodes of ${company.user}'s company with id ${company.companyId}")
         company.products.each {
             it.barCodes.each {
-                println("code: ${it.code}")
+                println("uit_code: ${it.uit_code}, uitu_code: ${it.uitu_code}")
             }
         }
     }
@@ -55,12 +57,22 @@ class DevCycleLogger
     {
         println("printing barcodes assigned to ${products.productCode}")
         products.barCodes.each{
-            println("code: ${it.code}")
+            println("uit_code: ${it.uit_code}, uitu_code: ${it.uitu_code}")
         }
     }
     static void log(String action)
     {
         action_logs.add(action)
+    }
+    static void log_validation_errors(Validateable cmd, String additional_message = null)
+    {
+        cmd.errors.fieldErrors.each {
+            log("value ${it.rejectedValue} not validated for field ${it.field}")
+        }
+        if(additional_message)
+        {
+            log(additional_message)
+        }
     }
     static void print_logs()
     {

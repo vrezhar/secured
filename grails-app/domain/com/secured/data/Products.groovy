@@ -6,7 +6,7 @@ import groovy.transform.EqualsAndHashCode
 import groovy.transform.ToString
 
 @GrailsCompileStatic
-@EqualsAndHashCode(includes=['productCode','company'])
+@EqualsAndHashCode(includes=['productCode'])
 @ToString(cache=true, includes = ['productCode','description','dateCreated'], includePackage=false)
 class Products implements Serializable
 {

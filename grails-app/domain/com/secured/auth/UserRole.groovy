@@ -25,7 +25,8 @@ class UserRole implements Serializable {
 	}
 
     @Override
-	int hashCode() {
+	int hashCode()
+	{
 	    int hashCode = HashCodeHelper.initHash()
         if (user) {
             hashCode = HashCodeHelper.updateHash(hashCode, user.id)
@@ -51,23 +52,28 @@ class UserRole implements Serializable {
 		}
 	}
 
-	static UserRole create(User user, Role role, boolean flush = false) {
+	static UserRole create(User user, Role role, boolean flush = false)
+	{
 		def instance = new UserRole(user: user, role: role)
 		instance.save(flush: flush)
 		instance
 	}
 
-	static boolean remove(User u, Role r) {
+	static boolean remove(User u, Role r)
+	{
 		if (u != null && r != null) {
 			UserRole.where { user == u && role == r }.deleteAll()
 		}
 	}
 
-	static int removeAll(User u) {
+	static int removeAll(User u)
+	{
 		u == null ? 0 : UserRole.where { user == u }.deleteAll() as int
 	}
 
-	static int removeAll(Role r) {
+
+	static int removeAll(Role r)
+	{
 		r == null ? 0 : UserRole.where { role == r }.deleteAll() as int
 	}
 

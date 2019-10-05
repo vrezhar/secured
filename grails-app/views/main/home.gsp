@@ -30,6 +30,9 @@
         <g:link controller="user" action="show">
             Details
         </g:link>
+        <g:link controller="user" action="createCompany">
+            Register company
+        </g:link>
     </div>
 </body>
 
