@@ -25,15 +25,15 @@ class ProductCommand implements Validateable
             return true
         }
         action validator: { String value, ProductCommand object ->
-            if(value != "SAVE" && value != "UPDATE") {
+            if(value != "SAVE" && value != "UPDATE" && value != "DELETE") {
                 return false
             }
         }
         uit_code nullable: true, validator: { String value, ProductCommand object ->
-            if(object?.action == "SAVE" && !object?.uitu_code && !value ) {
+            if(object?.action == "SAVE" && !object?.uitu_code && !value) {
                 return false
             }
-            if(value && BarCode.findWhere(uit_code: value)) {
+            if(value && BarCode.findWhere(uit_code: value) && object?.action != "DELETE") {
                 return false
             }
         }
@@ -41,7 +41,7 @@ class ProductCommand implements Validateable
             if(object?.action == "SAVE" && !object?.uit_code && !value ) {
                 return false
             }
-            if(value && BarCode.findWhere(uitu_code: value)) {
+            if(value && BarCode.findWhere(uitu_code: value) && object?.action != "DELETE") {
                 return false
             }
         }

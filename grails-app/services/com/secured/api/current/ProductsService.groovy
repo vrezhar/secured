@@ -71,6 +71,7 @@ class ProductsService
 
     Products delete(ProductCommand cmd)
     {
+        cmd.setAction("DELETE")
         DevCycleLogger.log("delete() called")
         DevCycleLogger.log("assuming that product corresponding to command object exists")
         if(!cmd.validate()) {
@@ -78,10 +79,13 @@ class ProductsService
             return null
         }
         Products products = Products.findWhere(productCode: cmd.product_code)
-        BarCode barCode = BarCode.findWhere(uit_code: cmd.uit_code, uitu_code: cmd.uitu_code, products: products)
+        BarCode barCode = BarCode.findWhere(uit_code: cmd.uit_code, uitu_code: cmd.uitu_code)
         if(!barCode) {
-            DevCycleLogger.log("barcode with uit code ${barCode.uit_code} and uitu code ${barCode.uitu_code} not found, nothing updated, exiting ship()")
+            DevCycleLogger.log("barcode with uit code ${cmd.uit_code} and uitu code ${cmd.uitu_code} not found, nothing updated, exiting ship()")
             return null
+        }
+        if(!products.barCodes.contains(barCode)){
+            DevCycleLogger.log("barcode with uit code ${cmd.uit_code} and uitu code ${cmd.uitu_code} not found in ownership of product ${products.productCode}, nothing updated, exiting ship()")
         }
         barCode.dateDeleted = new Date()
         barCode.save()
