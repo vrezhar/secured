@@ -25,7 +25,7 @@ class DocumentShipmentService extends ProductsManagerService
         if(!document){
             return dandr.response
         }
-        if(!document.validate()) {
+        if(!document.validate() || document?.products?.isEmpty()) {
             DevCycleLogger.log_validation_errors(document as Validateable, "document with number ${document.documentNumber} not validated, exiting ship()")
             return dandr.response
         }
