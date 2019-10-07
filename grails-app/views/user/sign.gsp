@@ -49,13 +49,19 @@
         align-content: start;
 
     }
-    #create .inner .cssform .visible .submit input[type="submit"]{
-        margin-left: 0px%;
-        margin-top: 25px;
+    #create .inner .submits #submit{
+        margin-left: 15%;
     }
 
-    #create .inner .cssform .visible .cancel input[type="submit"]{
-        margin-left: 15%;
+    #create .inner .submits #cancel{
+        margin-left: 30%;
+        margin-top: -32px;
+        display: none;
+        visibility: hidden;
+    }
+
+    #create .inner .submits #confirm {
+        margin-left: 45%;
         margin-top: -32px;
         display: none;
         visibility: hidden;
@@ -84,7 +90,7 @@
 
 
     #create .inner .company label {
-        font-weight: initial;
+        font-weight: bold;
         display: inline-block;
         width: 100px;
         text-align: right;
@@ -106,6 +112,12 @@
         align-self: center;
         font-weight: bolder;
     }
+    #create .inner .company b
+    {
+        font-weight: bolder;
+        display: inline-block;
+        width: 350px;
+    }
     </style>
     <title> Register company </title>
 </head>
@@ -120,12 +132,7 @@
         <h1>Copy your signature here</h1>
         <div id="signform" class="cssform">
             <div class="visible">
-                <form id = "confirm" action="/user/company/confirm">
-                    <input type="text" class="text_" name="" value="${signature?.body}" id="signature">
-                    <div class = "submit">
-                        <input type="submit" value="Confirm">
-                    </div>
-                </form>
+                <input type="text" class="text_" name="" value="${signature?.body}" id="signature">
                 <g:eachError bean="${signature}" var="error">
                     <g:if test="${error?.field == "body"}">
                         <ul class = "errors" role="alert">
@@ -135,10 +142,6 @@
                         </ul>
                     </g:if>
                 </g:eachError>
-                <div class="submit" id="initial" onclick="submit()">
-                    <input type="submit" id="submit" value="Submit">
-                </div>
-
             </div>
 
             <div class="company" id="company">
@@ -151,10 +154,11 @@
                     <b type="text" class="text_" id="address" ></b>
                 </p>
             </div>
-            <div class="cancel" onclick="cancel()">
-                <input type="submit" id="cancel" value="Cancel">
+            <div class = "submits">
+                    <input type="submit" id="submit" onclick="submit()" value="Submit">
+                    <input type="submit" id="confirm" onclick="confirm()" value="Confirm">
+                    <input type="submit" id="cancel" onclick="cancel()" value="Cancel">
             </div>
-
         </div>
 
     </div>

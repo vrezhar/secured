@@ -4,11 +4,6 @@ function submit()
 {
     var signature = document.getElementById('signature').value;
     console.log(signature);
-    if(signature === "")
-    {
-        alert("Please provide a non-empty signature");
-        return;
-    }
     var xhr = new XMLHttpRequest();
     var url = "/user/company/sign";
     xhr.open("POST", url, true);
@@ -37,6 +32,7 @@ function submit()
                 document.getElementById("address").style.color = "#a60000";
                 document.getElementById("companyId").innerHTML = "Not Found";
                 document.getElementById("address").innerHTML = "Not Found";
+                document.getElementById("")
             }
         }
     };
@@ -58,10 +54,8 @@ function cancel() {
     document.getElementById("confirm").style.display = "none";
 }
 
-function onSubmit(e)
+function confirm()
 {
-
-    e.preventDefault();
     var signature = document.getElementById('signature').value;
     console.log("intercepted a submit");
     var xhr = new XMLHttpRequest();
@@ -70,15 +64,9 @@ function onSubmit(e)
     xhr.setRequestHeader("Content-Type", "application/json");
     xhr.onreadystatechange = function () {
         if (xhr.readyState === 4 && xhr.status === 200) {
-            window.location.replace("/user/show");
+                window.location.replace("/user/show");
         }
     };
     var data = JSON.stringify({"body": signature});
     xhr.send(data);
 }
-
-
-$('#confirm').submit(function(e)
-{
-    onSubmit(e);
-});
