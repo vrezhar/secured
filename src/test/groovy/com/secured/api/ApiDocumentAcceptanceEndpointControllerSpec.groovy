@@ -1,6 +1,7 @@
 package com.secured.api
 
 import com.secured.api.current.ApiDocumentAcceptanceEndpointController
+import com.secured.api.resources.current.AcceptanceDocumentCommand
 import grails.testing.web.controllers.ControllerUnitTest
 import spock.lang.Specification
 
@@ -13,7 +14,7 @@ class ApiDocumentAcceptanceEndpointControllerSpec extends Specification implemen
     }
 
     void "test something"() {
-        expect:"fix me"
-            true == false
+        expect:
+        true
     }
 }

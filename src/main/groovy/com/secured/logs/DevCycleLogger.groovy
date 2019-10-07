@@ -4,6 +4,7 @@ import com.secured.auth.User
 import com.secured.data.BarCode
 import com.secured.data.Company
 import com.secured.data.Products
+import grails.artefact.DomainClass
 import grails.validation.Validateable
 import sun.security.jgss.GSSCaller
 
@@ -65,6 +66,16 @@ class DevCycleLogger
         action_logs.add(action)
     }
     static void log_validation_errors(Validateable cmd, String additional_message = null)
+    {
+        cmd.errors.fieldErrors.each {
+            log("value ${it.rejectedValue} not validated for field ${it.field}")
+        }
+        if(additional_message)
+        {
+            log(additional_message)
+        }
+    }
+    static void log_validation_errors(DomainClass cmd, String additional_message = null)
     {
         cmd.errors.fieldErrors.each {
             log("value ${it.rejectedValue} not validated for field ${it.field}")

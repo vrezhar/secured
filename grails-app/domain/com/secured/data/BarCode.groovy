@@ -15,9 +15,11 @@ class BarCode implements Serializable
 
     String uit_code
     String uitu_code
+    Date dateDeleted = null
+
     Date dateCreated
     Date lastUpdated
-    Date dateDeleted = null
+
 
 
     static belongsTo = [products: Products]

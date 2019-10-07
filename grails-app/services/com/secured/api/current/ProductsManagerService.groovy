@@ -10,6 +10,7 @@ import com.secured.data.Products
 import com.secured.logs.DevCycleLogger
 import grails.gorm.transactions.Transactional
 import grails.validation.Validateable
+import org.apache.commons.lang.Validate
 
 @Transactional
 class ProductsManagerService extends DocumentService{
@@ -47,7 +48,7 @@ class ProductsManagerService extends DocumentService{
                 }
                 products.save()
                 if (!contains) {
-                    document.products.add(products) // necessary,belongsTo in products is not defined
+                    document.addToProducts(products) // necessary,belongsTo in products is not defined
                 }
                 DevCycleLogger.log("adding product with code ${it.product_code}, belonging to company with id ${company.companyId}, to the current document")
                 continue
@@ -56,6 +57,7 @@ class ProductsManagerService extends DocumentService{
             DevCycleLogger.log("product with code ${it.product_code}, belonging to company with id ${company.companyId} not found, trying to save")
             products = save(it, company)
             if (!products || products?.validate()) {
+                DevCycleLogger.log_validation_errors(products)
                 DevCycleLogger.log("unable to save product with code ${it.product_code}, belonging to company with id ${company.companyId}, rejecting")
                 response.rejectProduct(it)
                 response.reportInvalidInput()
@@ -64,7 +66,7 @@ class ProductsManagerService extends DocumentService{
 
             DevCycleLogger.log("product with code ${it.product_code}, belonging to company with id ${company.companyId} saved, adding to current document")
             products.save()
-            document.products.add(products) // necessary, hasMany in document is not defined
+            document.addToProducts(products) // necessary, hasMany in document is not defined
         }
 
         dandr.document = document

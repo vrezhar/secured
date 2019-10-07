@@ -6,7 +6,6 @@ import grails.compiler.GrailsCompileStatic
 class Document
 {
     //TODO implement comparable on Products and substitute the list with a SortedSet
-    List<Products> products = []
     String requestType
     String releaseOrderNumber
     String documentNumber
@@ -30,12 +29,10 @@ class Document
     Date dateCreated
     Date lastUpdated
 
+    static hasMany = [products: Products]
+
     static constraints = {
-        products nullable: false, validator: { List<Products> value, Document object ->
-            if(value?.isEmpty()) {
-                return false
-            }
-        }
+
         requestType validator: { String value, Document object ->
             if(value != "ACCEPTANCE" && value != "SHIPMENT")
                 return false

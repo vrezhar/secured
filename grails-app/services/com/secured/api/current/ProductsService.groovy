@@ -28,15 +28,15 @@ class ProductsService
         if(cmd.uitu_code || cmd.uit_code) {
             DevCycleLogger.log("uitu or uit code detected, trying to register a barcode")
             BarCode barCode = new BarCode(uit_code: cmd.uit_code, uitu_code: cmd.uitu_code, products: products)
-            if(barCode.validate()) {
-                products.addToBarCodes(barCode)
-                products.save()
-                barCode.save(true)
-                DevCycleLogger.log("success, adding to the found product")
-                return products
+            if(!barCode.validate()) {
+                DevCycleLogger.log_validation_errors(barCode as Validateable,"barcode with uit code ${barCode.uit_code} and uitu code ${barCode.uitu_code} not validated, nothing updated, exiting update()")
+                return null
             }
-            DevCycleLogger.log_validation_errors(barCode as Validateable,"barcode with uit code ${barCode.uit_code} and uitu code ${barCode.uitu_code} not validated, nothing updated, exiting update()")
-            return null
+            barCode.save()
+            products.addToBarCodes(barCode)
+            products.save(true)
+            DevCycleLogger.log("success, adding to the found product")
+            return products
         }
         DevCycleLogger.log("No codes found, exiting update()")
         return null
