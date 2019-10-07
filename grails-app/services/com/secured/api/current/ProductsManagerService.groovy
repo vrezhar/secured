@@ -56,7 +56,7 @@ class ProductsManagerService extends DocumentService{
 
             DevCycleLogger.log("product with code ${it.product_code}, belonging to company with id ${company.companyId} not found, trying to save")
             products = save(it, company)
-            if (!products || products?.validate()) {
+            if (!products || !products?.validate()) {
                 DevCycleLogger.log_validation_errors(products)
                 DevCycleLogger.log("unable to save product with code ${it.product_code}, belonging to company with id ${company.companyId}, rejecting")
                 response.rejectProduct(it)
