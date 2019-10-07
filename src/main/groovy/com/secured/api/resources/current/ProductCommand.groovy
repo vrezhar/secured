@@ -1,6 +1,6 @@
 package com.secured.api.resources.current
 
-
+import com.secured.data.BarCode
 import grails.compiler.GrailsCompileStatic
 import grails.validation.Validateable
 
@@ -25,8 +25,7 @@ class ProductCommand implements Validateable
             return true
         }
         action validator: { String value, ProductCommand object ->
-            if(value != "SAVE" && value != "UPDATE")
-            {
+            if(value != "SAVE" && value != "UPDATE") {
                 return false
             }
         }
@@ -34,9 +33,15 @@ class ProductCommand implements Validateable
             if(object?.action == "SAVE" && !object?.uitu_code && !value ) {
                 return false
             }
+            if(value && BarCode.findWhere(uit_code: value)) {
+                return false
+            }
         }
         uitu_code nullable: true, validator: { String value, ProductCommand object ->
             if(object?.action == "SAVE" && !object?.uit_code && !value ) {
+                return false
+            }
+            if(value && BarCode.findWhere(uitu_code: value)) {
                 return false
             }
         }

@@ -1,6 +1,6 @@
 package com.secured.api.resources.current
 
-
+import com.secured.data.Document
 import grails.compiler.GrailsCompileStatic
 import grails.validation.Validateable
 
@@ -17,7 +17,11 @@ class DocumentCommand implements Validateable
     static constraints = {
         document_date nullable: false, notEqual: 0
         transfer_date nullable: false, notEqual: 0
-        document_number nullable: false, blank: false
+        document_number nullable: false, blank: false, validator: {String value, DocumentCommand object ->
+            if(Document.findByDocumentNumber(value)){
+                return false
+            }
+        }
         turnover_type nullable: false, blank: false
         products nullable: false, validator: { List<ProductCommand> value, DocumentCommand object ->
             if(value?.isEmpty()) {

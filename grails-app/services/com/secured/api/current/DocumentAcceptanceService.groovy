@@ -24,7 +24,11 @@ class DocumentAcceptanceService extends ProductsManagerService
         if(!document){
             return dandr.response
         }
-        DevCycleLogger.log("saving, exiting accept()")
+        if(!document.validate()){
+            DevCycleLogger.log_validation_errors(document, "document not validated exiting accept()")
+            return dandr.response
+        }
+        DevCycleLogger.log("document validated, saving, exiting accept()")
         document.save(true)
         return dandr.response
     }

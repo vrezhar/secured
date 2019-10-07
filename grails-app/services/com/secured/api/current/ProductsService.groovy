@@ -29,7 +29,7 @@ class ProductsService
             DevCycleLogger.log("uitu or uit code detected, trying to register a barcode")
             BarCode barCode = new BarCode(uit_code: cmd.uit_code, uitu_code: cmd.uitu_code, products: products)
             if(!barCode.validate()) {
-                DevCycleLogger.log_validation_errors(barCode as Validateable,"barcode with uit code ${barCode.uit_code} and uitu code ${barCode.uitu_code} not validated, nothing updated, exiting update()")
+                DevCycleLogger.log_validation_errors(barCode,"barcode with uit code ${barCode.uit_code} and uitu code ${barCode.uitu_code} not validated, nothing updated, exiting update()")
                 return null
             }
             barCode.save()
@@ -53,13 +53,13 @@ class ProductsService
         DevCycleLogger.log("trying to save product with code ${cmd.product_code}, belonging to company with id ${company.companyId}")
         Products products = new Products(productCode: cmd.product_code, description: cmd.product_description, tax: cmd.tax, cost: cmd.cost, company: company)
         if(!products.validate()) {
-            DevCycleLogger.log_validation_errors(products as Validateable,"unable to validate the product, nothing saved, exiting save()")
+            DevCycleLogger.log_validation_errors(products,"unable to validate the product, nothing saved, exiting save()")
             return null
         }
         DevCycleLogger.log("product saved, trying to register a barcode")
         BarCode barCode = new BarCode(uit_code: cmd.uit_code, uitu_code: cmd.uitu_code, products: products)
         if(!barCode.validate()) {
-            DevCycleLogger.log_validation_errors(barCode as Validateable, "barcode with uit code ${barCode.uit_code} and uitu code ${barCode.uitu_code} not validated, nothing saved, exiting save()")
+            DevCycleLogger.log_validation_errors(barCode,"barcode with uit code ${barCode.uit_code} and uitu code ${barCode.uitu_code} not validated, nothing saved, exiting save()")
             return null
         }
         products.addToBarCodes(barCode)

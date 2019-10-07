@@ -66,7 +66,7 @@ class ProductsManagerService extends DocumentService{
 
             DevCycleLogger.log("product with code ${it.product_code}, belonging to company with id ${company.companyId} saved, adding to current document")
             products.save()
-            document.addToProducts(products) // necessary, hasMany in document is not defined
+            document.addToProducts(products)
         }
 
         dandr.document = document
@@ -106,7 +106,7 @@ class ProductsManagerService extends DocumentService{
                     continue
                 }
                 if(!contains) {
-                    document.products.add(products) // necessary, belongsTo in products is not defined
+                    document.addToProducts(products)
                 }
                 continue
             }
