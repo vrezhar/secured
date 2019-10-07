@@ -2,7 +2,7 @@ package com.secured.user
 
 import com.secured.auth.User
 import com.secured.data.Company
-import com.secured.signature.Signature
+
 import com.secured.signature.SignatureVerificationService
 import grails.plugin.springsecurity.SpringSecurityService
 import grails.plugin.springsecurity.annotation.Secured

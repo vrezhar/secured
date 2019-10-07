@@ -113,12 +113,14 @@
                     <th>Company Address</th>
                     <th>Date Created</th>
                     <th>Company Id</th>
+                    <th>Token </th>
                 </tr>
                 <g:each var="company" in="${user.companies}">
                     <tr>
                         <td>${company.address}</td>
-                        <td>${company.companyId}</td>
                         <td>${company.dateCreated}</td>
+                        <td>${company.companyId}</td>
+                        <td>${company.token}</td>
                     </tr>
                 </g:each>
             </table>

@@ -32,7 +32,8 @@ function submit()
                 document.getElementById("address").style.color = "#a60000";
                 document.getElementById("companyId").innerHTML = "Not Found";
                 document.getElementById("address").innerHTML = "Not Found";
-                document.getElementById("")
+                document.getElementById("confirm").style.visibility = "hidden";
+                document.getElementById("confirm").style.display = "none";
             }
         }
     };

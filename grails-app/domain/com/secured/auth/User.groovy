@@ -1,7 +1,7 @@
 package com.secured.auth
 
 import com.secured.data.Company
-import com.secured.signature.Signature
+
 import com.secured.user.UserCommand
 import groovy.transform.EqualsAndHashCode
 import groovy.transform.ToString
@@ -24,7 +24,6 @@ class User implements Serializable {
     Date lastUpdated
 
     static hasMany = [companies: Company]
-    static hasOne = [signature: Signature]
 
     boolean enabled = false
     boolean accountExpired
