@@ -20,15 +20,16 @@ class ProductsManagerService extends DocumentService{
         DevCycleLogger.log("acceptProducts() called")
 
         DocumentAndResponse dandr = new DocumentAndResponse()
-        if(!cmd.validate()) {
-            dandr.document = null
-            dandr.response = Response.rejectInput(cmd,"command object not validated, exiting acceptProducts()")
-            return dandr
-        }
         Company company = Company.findWhere(token: cmd.companyToken)
+
         if(!company) {
             dandr.document = null
             dandr.response = Response.rejectToken(cmd.companyToken)
+            return dandr
+        }
+        if(!cmd.validate()) {
+            dandr.document = null
+            dandr.response = Response.rejectInput(cmd,"command object not validated, exiting acceptProducts()")
             return dandr
         }
 
