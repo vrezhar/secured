@@ -45,17 +45,17 @@ class ProductCommand implements Validateable
                 return false
             }
         }
-        product_description validator: { String value, ProductCommand object ->
+        product_description nullable: true, validator: { String value, ProductCommand object ->
             if(object?.action == "SAVE" && !value) {
                 return false
             }
         }
-        cost validator: { int value, ProductCommand object ->
+        cost nullable: true, validator: { int value, ProductCommand object ->
             if(object?.action == "SAVE" && (value == 0)) {
                 return false
             }
         }
-        tax validator: { int value, ProductCommand object ->
+        tax nullable: true, validator: { int value, ProductCommand object ->
             if(object?.action == "SAVE" && (value == 0)) {
                 return false
             }
