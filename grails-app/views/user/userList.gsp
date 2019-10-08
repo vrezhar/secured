@@ -8,36 +8,8 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
 <html>
 <head>
-    <title>
-
-    </title>
-    <style>
-        #users .table{
-            align-content: center;
-        }
-        #users .table a
-        {
-            display:block;
-            text-decoration:none;
-        }
-        #users .table td a{
-            text-align: center;
-            font-size: larger;
-        }
-        #users .table th{
-            font-size: inherit;
-            text-align: center;
-        }
-        body h1
-        {
-            color: inherit;
-            margin-left: 23%;
-        }
-        #users {
-            width: 800px;
-            margin-left: 5%;
-        }
-    </style>
+    <title>List of all users</title>
+    <asset:stylesheet src="web_page/profile/user_list.css"></asset:stylesheet>
 </head>
 
 <body>

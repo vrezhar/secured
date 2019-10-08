@@ -37,6 +37,14 @@
                 </g:eachError>
             </div>
 
+            <div class="loader" id="loader" style="visibility: hidden">
+                <div class="spinner" >
+
+                </div>
+                <label>Please  wait...</label>
+            </div>
+
+
             <div class="company" id="company">
                 <p>
                     <label for="companyId">Company Id: </label>
@@ -48,7 +56,6 @@
                 </p>
             </div>
             <div class = "submits">
-                    <input type="submit" id="submit" onclick="submit()" value="Submit">
                     <input type="submit" id="confirm" onclick="confirm()" value="Confirm">
                     <input type="submit" id="cancel" onclick="cancel()" value="Cancel">
             </div>
@@ -63,5 +70,6 @@
 </script>
 <asset:javascript src="signature/verify.js"></asset:javascript>
 <asset:javascript src="signature/onInput.js"></asset:javascript>
+<asset:javascript src="signature/loader.js"></asset:javascript>
 </body>
 </html>

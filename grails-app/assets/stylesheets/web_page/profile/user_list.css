@@ -1,0 +1,25 @@
+#users .table{
+    align-content: center;
+}
+#users .table a
+{
+    display:block;
+    text-decoration:none;
+}
+#users .table td a{
+    text-align: center;
+    font-size: larger;
+}
+#users .table th{
+    font-size: inherit;
+    text-align: center;
+}
+body h1
+{
+    color: inherit;
+    margin-left: 23%;
+}
+#users {
+    width: 800px;
+    margin-left: 5%;
+}

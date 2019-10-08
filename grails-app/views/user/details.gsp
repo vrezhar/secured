@@ -11,37 +11,7 @@
     <title></title>
     <meta charset="utf-8">
     <meta name="layout" content="${gspLayout ?: 'main'}"/>
-    <style>
-        #details .info
-        {
-            width: 700px;
-        }
-        #details .info-wrapper{
-            clear: left;
-            margin: 0;
-            padding: 4px 0 3px 0;
-            margin-top: 50px;
-            padding-left: 90px;
-            margin-bottom: 20px;
-            height: 1%;
-        }
-        #details .info label
-        {
-            font-weight: bold;
-            float: left;
-            text-align: left;
-            width: 150px;
-        }
-        #details .companies
-        {
-            width: 1000px;
-            margin-top: -200px;
-            margin-left: 500px;
-        }
-        #details .companies table{
-            text-align: center;
-        }
-    </style>
+    <asset:stylesheet src="web_page/profile/details.css"></asset:stylesheet>
 </head>
 
 <body>

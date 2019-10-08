@@ -2,6 +2,8 @@ var clicked = false;
 
 function submit()
 {
+    var clearOnFetch = setTimeout(animate(),1000);
+    var experimental = setTimeout(stopAnimation,300);
     var signature = document.getElementById('signature').value;
     console.log(signature);
     var xhr = new XMLHttpRequest();
@@ -10,24 +12,29 @@ function submit()
     xhr.setRequestHeader("Content-Type", "application/json");
     xhr.onreadystatechange = function () {
         if (xhr.readyState === 4 && xhr.status === 200) {
+            document.getElementById("submit").style.visibility = "hidden";
+            document.getElementById("submit").style.display = "none";
             var json = JSON.parse(xhr.responseText);
+            clearTimeout(clearOnFetch);
+            clearTimeout(experimental);
+            stopAnimation();
             if(json.companyId != null && json.address != null) {
                 document.getElementById("companyId").innerHTML = json.companyId;
                 document.getElementById("address").innerHTML = json.address;
                 document.getElementById("companyId").style.color = "#1e7e34";
                 document.getElementById("address").style.color = "#1e7e34";
                 document.getElementById("company").style.visibility = "visible";
-                document.getElementById("company").style.display = "block";
+                document.getElementById("company").style.display = "inline-block";
                 document.getElementById("cancel").style.visibility = "visible";
-                document.getElementById("cancel").style.display = "block";
+                document.getElementById("cancel").style.display = "inline-block";
                 document.getElementById("confirm").style.visibility = "visible";
-                document.getElementById("confirm").style.display = "block";
+                document.getElementById("confirm").style.display = "inline-block";
             }
             else{
                 document.getElementById("company").style.visibility = "visible";
-                document.getElementById("company").style.display = "block";
+                document.getElementById("company").style.display = "inline-block";
                 document.getElementById("cancel").style.visibility = "visible";
-                document.getElementById("cancel").style.display = "block";
+                document.getElementById("cancel").style.display = "inline-block";
                 document.getElementById("companyId").style.color = "#a60000";
                 document.getElementById("address").style.color = "#a60000";
                 document.getElementById("companyId").innerHTML = "Not Found";
@@ -53,10 +60,13 @@ function cancel() {
     document.getElementById("cancel").style.display = "none";
     document.getElementById("confirm").style.visibility = "hidden";
     document.getElementById("confirm").style.display = "none";
+    document.getElementById("submit").style.visibility = "visible";
+    document.getElementById("submit").style.display = "inline-block";
 }
 
 function confirm()
 {
+    animate();
     var signature = document.getElementById('signature').value;
     console.log("intercepted a submit");
     var xhr = new XMLHttpRequest();
@@ -65,7 +75,9 @@ function confirm()
     xhr.setRequestHeader("Content-Type", "application/json");
     xhr.onreadystatechange = function () {
         if (xhr.readyState === 4 && xhr.status === 200) {
-                window.location.replace("/user/show");
+            stopAnimation();
+            window.location.href = "/user/show";
+            document.getElementById('signature').value = "";
         }
     };
     var data = JSON.stringify({"body": signature});
