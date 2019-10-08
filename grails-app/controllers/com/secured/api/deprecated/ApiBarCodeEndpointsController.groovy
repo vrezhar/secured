@@ -1,7 +1,7 @@
-package com.secured.api
+package com.secured.api.deprecated
 
-import com.secured.api.resources.BarCodeRegisteringSource
-import com.secured.data.BarCode
+
+import com.secured.api.resources.deprecated.BarCodeRegisteringSource
 import com.secured.logs.DevCycleLogger
 import grails.plugin.springsecurity.annotation.Secured
 import grails.rest.RestfulController
@@ -30,8 +30,6 @@ class ApiBarCodeEndpointsController extends RestfulController<BarCodeRegistering
     def save(BarCodeRegisteringSource src)
     {
         def response = barCodeService.save(src)
-        DevCycleLogger.print_logs()
-        DevCycleLogger.cleanup()
         this.response.status = (response.status as int)
         withFormat {
             json{
@@ -44,8 +42,6 @@ class ApiBarCodeEndpointsController extends RestfulController<BarCodeRegistering
     {
         src.productId = (params.id as int)
         def response = barCodeService.update(src)
-        DevCycleLogger.print_logs()
-        DevCycleLogger.cleanup()
         this.response.status = (response.status as int)
         withFormat {
             json{

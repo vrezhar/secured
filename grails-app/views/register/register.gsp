@@ -13,75 +13,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="layout" content="${gspLayout ?: 'main'}"/>
-    <style type="text/css" media="screen">
-    #register {
-        margin: 15px 0px;
-        padding: 0px;
-        text-align: center;
-    }
-
-    body{
-        background-image: linear-gradient(rgb(240,255,255),#f0f0fa);
-    }
-
-    #register .inner {
-        width: 500px;
-        padding-bottom: 6px;
-        margin: 60px auto;
-        text-align: left;
-        border: 1px solid rgb(233, 248, 250);
-        background-color: #f1effa;
-        -moz-box-shadow: 2px 2px 2px #eee;
-        -webkit-box-shadow: 2px 2px 2px #eee;
-        -khtml-box-shadow: 2px 2px 2px #eee;
-        box-shadow: 2px 2px 2px #eee;
-    }
-    #register .inner .cssform  .form-wrapper{
-        clear: left;
-        margin: 0;
-        padding: 4px 0 3px 0;
-        padding-left: 105px;
-        margin-bottom: 20px;
-        height: 1%;
-    }
-
-    #register .inner .cssform  .form-wrapper ul{
-        margin: 0;
-        padding: 0;
-        background-color: #f0f0fa;
-        -moz-box-shadow: 2px 2px 2px #f0f0fa;
-        -webkit-box-shadow: 2px 2px 2px #f0f0fa;
-        -khtml-box-shadow: 2px 2px 2px #f0f0fa;
-        border: #f0f0fa;
-    }
-
-    #register .inner .cssform label {
-        font-weight: bold;
-        float: left;
-        text-align: left;
-        margin-left: -90px;
-        width: 95px;
-        padding-top: 3px;
-        padding-right: 10px;
-    }
-
-    #register .inner .cssform .form-button {
-        margin-left: 190px;
-    }
-
-    #register .inner .cssform .formButton input {
-        width: 100px;
-        height: 25px;
-        align-content: center;
-        font-weight: bold;
-    }
-
-    #register .inner h1{
-        margin-left:  180px;
-        padding-bottom:  25px;
-        font-weight: bolder;
-    }
-    </style>
+    <asset:stylesheet src="web_page/authorization/register.css"></asset:stylesheet>
     <title> Register </title>
 </head>
 

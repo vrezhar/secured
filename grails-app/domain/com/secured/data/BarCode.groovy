@@ -1,6 +1,6 @@
 package com.secured.data
 
-
+import com.secured.logs.DevCycleLogger
 import grails.compiler.GrailsCompileStatic
 import groovy.transform.EqualsAndHashCode
 import groovy.transform.ToString
@@ -15,28 +15,36 @@ class BarCode implements Serializable
 
     String uit_code
     String uitu_code
+    Date dateDeleted = null
+
     Date dateCreated
     Date lastUpdated
-    Date dateDeleted = null
+
 
 
     static belongsTo = [products: Products]
 
     static constraints = {
         dateDeleted nullable: true
-        uit_code validator: { value, object ->
-            if(BarCode.findWhere(uit_code: value))
+        uit_code nullable: true, validator: { String value, BarCode object ->
+            if(value && (findWhere(uitu_code: value))) {
+                DevCycleLogger.log("inside uit's validator, first if")
                 return false
-
-            if((object?.uitu_code == null || object?.uitu_code == "")  && (value == null || value == ""))
+            }
+            if(!object?.uitu_code  && !value && !object?.uit_code) {
+                DevCycleLogger.log("inside uit's validator, second if")
                 return false
+            }
         }
-        uitu_code validator: { value, object ->
-            if(BarCode.findWhere(uitu_code: value))
+        uitu_code nullable: true, validator: { String value, BarCode object ->
+            if(value && (findWhere(uitu_code: value))) {
+                DevCycleLogger.log("inside uitu's validator, first if")
                 return false
-
-            if((object?.uit_code == null || object?.uit_code == "")  && (value == null || value == ""))
+            }
+            if(!object?.uit_code && !value && !object?.uitu_code) {
+                DevCycleLogger.log("inside uitu's validator, second if")
                 return false
+            }
         }
     }
 }

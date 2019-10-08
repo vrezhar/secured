@@ -15,6 +15,7 @@ class Company implements  Serializable
     String address
     String companyId
     String token = UUID.randomUUID().toString()
+
     Date dateCreated
     Date lastUpdated
 

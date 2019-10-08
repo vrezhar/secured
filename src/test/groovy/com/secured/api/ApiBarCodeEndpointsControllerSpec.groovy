@@ -1,5 +1,6 @@
 package com.secured.api
 
+import com.secured.api.deprecated.ApiBarCodeEndpointsController
 import grails.testing.web.controllers.ControllerUnitTest
 import spock.lang.Specification
 

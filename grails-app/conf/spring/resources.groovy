@@ -1,7 +1,7 @@
 package spring
 
-import com.secured.api.BarCodeService
-import com.secured.api.CompanyService
+import com.secured.api.deprecated.BarCodeService
+import com.secured.api.deprecated.CompanyService
 import com.secured.mail.MailErrorHandlingService
 import com.secured.mail.MailingService
 import com.secured.auth.PatternValidatorService
@@ -12,6 +12,9 @@ import org.springframework.security.web.authentication.session.NullAuthenticated
 // Place your Spring DSL code here
 beans = {
 
+//    productsService(ProductsService)
+//
+//    documentService(DocumentService)
 
     companyService(CompanyService)
 
