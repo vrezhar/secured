@@ -26,11 +26,11 @@ class DocumentShipmentService extends ProductsManagerService
             return dandr.response
         }
         if(!document.validate() || document.products?.isEmpty()) {
-            DevCycleLogger.log_validation_errors(document as Validateable, "document with number ${document.documentNumber} not validated, exiting ship()")
+            DevCycleLogger.log_validation_errors(document,"document with number ${document.documentNumber} not validated, exiting ship()")
             return dandr.response
         }
         document.save(true)
-        DevCycleLogger.log("saving document with number ${document.documentNumber}, exiting accept()")
+        DevCycleLogger.log("saving document with number ${document.documentNumber}, exiting ship()")
         return dandr.response
     }
 }

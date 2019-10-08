@@ -37,14 +37,6 @@ class Document
             if(value != "ACCEPTANCE" && value != "SHIPMENT")
                 return false
         }
-        sender nullable: true, validator: { String value, Document object ->
-            if(object?.requestType == "SHIPMENT" && (value == null || value == ""))
-                return false
-        }
-        senderInn nullable: true, validator: { String value, Document object ->
-            if(object?.requestType == "SHIPMENT" && (value == null || value == ""))
-                return false
-        }
         releaseOrderNumber nullable: true, validator: { String value, Document object ->
             if(object?.requestType == "ACCEPTANCE" && (value == null || value == ""))
                 return false
@@ -59,7 +51,7 @@ class Document
                 return false
         }
         tradeSenderName nullable: true, validator: { String value, Document object ->
-            if(object?.requestType == "SHIPMENT" && (value == null || value == ""))
+            if(object?.requestType == "ACCEPTANCE" && (value == null || value == ""))
                 return false
         }
         tradeOwnerInn nullable: true, validator: { String value, Document object ->
@@ -67,7 +59,7 @@ class Document
                 return false
         }
         tradeOwnerName nullable: true, validator: { String value, Document object ->
-            if(object?.requestType == "SHIPMENT" && (value == null || value == ""))
+            if(object?.requestType == "ACCEPTANCE" && (value == null || value == ""))
                 return false
         }
         tradeRecipientInn nullable: true, validator: { String value, Document object ->

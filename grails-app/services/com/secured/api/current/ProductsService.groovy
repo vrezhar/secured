@@ -88,8 +88,7 @@ class ProductsService
             DevCycleLogger.log("barcode with uit code ${cmd.uit_code} and uitu code ${cmd.uitu_code} not found in ownership of product ${products.productCode}, nothing updated, exiting ship()")
         }
         barCode.dateDeleted = new Date()
-        barCode.save()
-        products.save(true)
+        barCode.save(true)
         DevCycleLogger.log("shipping barcode with uit code ${barCode.uit_code} and uitu code ${barCode.uitu_code}, saving changes, exiting ship()")
         return products
     }
