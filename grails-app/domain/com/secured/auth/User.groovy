@@ -18,8 +18,8 @@ class User implements Serializable {
     String password
     String firstName
     String lastName
-    String email
     String mainToken = UUID.randomUUID().toString()
+
     Date dateCreated
     Date lastUpdated
 
@@ -38,16 +38,14 @@ class User implements Serializable {
     static User createUser(UserCommand cmd)
     {
         return new User(username: cmd.username, password: cmd.password,
-                        firstName: cmd.firstName, lastName: cmd.lastName,
-                        email: cmd.email)
+                        firstName: cmd.firstName, lastName: cmd.lastName)
     }
 
     static constraints = {
         password nullable: false, blank: false, password: true
-        username nullable: false, blank: false, unique: true
+        username nullable: false, blank: false, email: true, unique: true
         firstName nullable: false, blank: false
         lastName nullable: false, blank: false
-        email nullable: false,blank: false,email: true,unique: true
         mainToken unique: true
     }
 

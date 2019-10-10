@@ -2,6 +2,8 @@ package com.secured.user
 
 import com.secured.auth.User
 import com.secured.data.Company
+import com.secured.logs.DevCycleLogger
+
 
 import com.secured.signature.SignatureVerificationService
 import grails.plugin.springsecurity.SpringSecurityService
@@ -24,6 +26,13 @@ class UserController  {
         }
         render model: [user: springSecurityService.getCurrentUser()], view: "details"
     }
+
+    @Secured(['ROLE_USER','ROLE_ADMIN'])
+    def show_test()
+    {
+        render view: "profile"
+    }
+
 
     @Secured(['ROLE_USER','ROLE_ADMIN'])
     def createCompany()
@@ -63,12 +72,13 @@ class UserController  {
         }
     }
 
-    @Secured(['permitAll'])
+    @Secured(['ROLE_ADMIN','ROLE_USER'])
     def confirm(SignatureCommand cmd)
     {
+        DevCycleLogger.log("accept called ")
         if(cmd == null)
         {
-            println("am null")
+            DevCycleLogger.log("command object is null, exiting confirm()")
             withFormat{
                 this.response.status = 400
                 json{
@@ -79,7 +89,7 @@ class UserController  {
         Company company = signatureVerificationService.verify(cmd.body)
         if(company)
         {
-            println("saving")
+            DevCycleLogger.log("saving company")
             company.save()
             withFormat{
                 this.response.status = 200
@@ -88,7 +98,7 @@ class UserController  {
                 }
             }
         }
-        println("huh")
+        DevCycleLogger.log("Critical error occurred while creating company(reasons unknown)")
         withFormat{
             this.response.status = 404
             json{

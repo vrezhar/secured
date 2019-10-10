@@ -34,15 +34,26 @@
     margin-bottom: 20px;
     height: 1%;
 }
-
-#login .inner .cssform input[type="text"] {
-    width: 120px;
+#login .inner .cssform #password-wrapper input[type="password"] {
+    width: 200px;
 }
 
-#login .inner .cssform label {
+#login .inner .cssform #username-wrapper input[type="text"] {
+    width: 200px;
+}
+#login .inner .cssform #username-wrapper label {
     font-weight: bold;
     float: left;
-    text-align: right;
+    text-align: center;
+    margin-left: -105px;
+    width: 110px;
+    padding-top: 3px;
+    padding-right: 10px;
+}
+#login .inner .cssform #password-wrapper label {
+    font-weight: bold;
+    float: left;
+    text-align: center;
     margin-left: -105px;
     width: 110px;
     padding-top: 3px;

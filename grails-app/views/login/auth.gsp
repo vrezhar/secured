@@ -23,13 +23,13 @@
         </g:if>
 
         <form action="${postUrl ?: '/login/authenticate'}" method="POST" id="loginForm" class="cssform" autocomplete="off">
-            <p>
-                <label for="username"><g:message code='springSecurity.login.username.label'/>:</label>
+            <p id="username-wrapper">
+                <label for="username">Your Email:</label>
                 <input type="text" class="text_" name="${usernameParameter ?: 'username'}" id="username"/>
             </p>
 
-            <p>
-                <label for="password"><g:message code='springSecurity.login.password.label'/>:</label>
+            <p id="password-wrapper">
+                <label for="password">Password:</label>
                 <input type="password" class="text_" name="${passwordParameter ?: 'password'}" id="password"/>
             </p>
 

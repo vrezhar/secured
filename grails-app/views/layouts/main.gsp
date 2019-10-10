@@ -39,14 +39,5 @@
 
 <g:layoutBody/>
 
-
-<body>
-
-
-
-
-
-<asset:javascript src="application.js"/>
-
 </body>
 </html>

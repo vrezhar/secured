@@ -1,5 +1,6 @@
 package com.secured.auth
 
+import com.secured.logs.DevCycleLogger
 import com.secured.user.UserCommand
 import grails.gorm.transactions.Transactional
 
@@ -9,22 +10,26 @@ class UserValidatorService extends PatternValidatorService {
 
     def isPasswordValid(UserCommand usr)
     {
-
-        if(usr == null || usr.password == "" || usr.password == null)
+        DevCycleLogger.log("validator called")
+        if(usr == null || !usr.password) {
             return false
+        }
 
-        switch(validatePassword(usr.password))
-        {
+        switch(validatePassword(usr.password)) {
             case -2:
+                DevCycleLogger.log("password is too short")
                 usr.errors.rejectValue("password","user.password.tooshort")
                 return false
             case -1:
+                DevCycleLogger.log("password is too long")
                 usr.errors.rejectValue("password","user.password.toolong")
                 return false
             case 0:
+                DevCycleLogger.log("password contains whitespaces")
                 usr.errors.rejectValue("password","user.password.whitespaces")
                 return false
             case 1:
+                DevCycleLogger.log("password is too weak")
                 usr.errors.rejectValue("password","user.password.tooweak")
                 return false
         }
@@ -33,7 +38,7 @@ class UserValidatorService extends PatternValidatorService {
 
     def isUsernameValid(UserCommand usr)
     {
-        if(usr == null || usr.username == "" || usr.username == null)
+        if(usr == null || !usr.username)
             return false
         if(!validateUsername(usr.username))
         {
@@ -50,8 +55,8 @@ class UserValidatorService extends PatternValidatorService {
         User usr = User.findWhere(username: cmd.username)
         if(!usr)
             return false
-        cmd.errors.rejectValue("password",
-                "user.password.doesntmatch")
+        cmd.errors.rejectValue("username",
+                "user.username.exists")
         return true
     }
 
