@@ -1,6 +1,7 @@
 package com.secured.auth
 
 import com.secured.Mail
+import com.secured.logs.DevCycleLogger
 import com.secured.user.UserCommand
 import com.secured.strategy.handlers.RejectEmail
 import com.secured.strategy.senders.SendViaGmail
@@ -21,19 +22,49 @@ class RegisterController
         errorCommand = null
     }
 
-    def confirm()
+    def validate(UserCommand cmd)
     {
-        UserCommand cmd = UserCommand.createCommand(params)
+        boolean haserrors = false
+        if(!cmd.validate() ){
+            haserrors = true
+        }
+        if(!userValidator.isPasswordValid(cmd)) {
+            haserrors = true
+        }
+        if(userValidator.alreadyExists(cmd)){
+            haserrors = true
+        }
+        if(!cmd.confirm || cmd.password != cmd.confirm) {
+            cmd.errors.rejectValue("confirm",
+                    "user.password.doesntmatch")
+            haserrors = true
+        }
+        if(haserrors){
+            withFormat {
+                this.response.status = 400
+                json{
+                    respond([errors: cmd.errors, status: 400])
+                }
+            }
+        }
+        withFormat {
+            this.response.status = 200
+            json{
+                respond([status: 200])
+            }
+        }
+    }
+
+    def confirm(UserCommand cmd)
+    {
         boolean haserrors = false
         if(!cmd.validate() )
             haserrors = true
         if(!userValidator.isPasswordValid(cmd))
             haserrors = true
-        if(!userValidator.isUsernameValid(cmd))
-            haserrors = true
         if(userValidator.alreadyExists(cmd))
             haserrors = true
-        if(params.confirm == null || params.confirm == "" || params.password != params.confirm)
+        if(!cmd.confirm || cmd.password != cmd.confirm)
         {
             cmd.errors.rejectValue("password",
                     "user.password.doesntmatch")
@@ -41,10 +72,13 @@ class RegisterController
         }
         if(haserrors)
         {
+            DevCycleLogger.log_validation_errors(cmd)
             cmd.password = ""
+            cmd.confirm = ""
             errorCommand = cmd
-            //render view: "register", model: [user: cmd]
             redirect(action: "register")
+            DevCycleLogger.print_logs()
+            DevCycleLogger.cleanup()
             return
         }
         User usr = User.createUser(cmd)
@@ -54,7 +88,7 @@ class RegisterController
                 "localhost:8080/verify?token=${usr.mainToken}"
         new Mail()
                 .from("your email")
-                .to(usr.email)
+                .to(usr.username)
                 .withSubject("Confirm your email")
                 .withMessage(message)
                 .useSendingStrategy(SendViaGmail.usingAccount("bronsmailsupreme@gmail.com",
