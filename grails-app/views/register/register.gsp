@@ -13,7 +13,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="layout" content="${gspLayout ?: 'main'}"/>
-    <asset:stylesheet src="web_page/authorization/register.css"></asset:stylesheet>
+    <asset:stylesheet src="web_page/authorization/register/register.css"></asset:stylesheet>
     <asset:javascript src="jquery-3.3.1.min.js"></asset:javascript>
     <title> Register </title>
 </head>

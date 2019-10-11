@@ -1,0 +1,14 @@
+<asset:stylesheet src="boomerang.css"></asset:stylesheet>
+<link href="https://fonts.googleapis.com/css?family=Nunito:400,600,700,800|Roboto:400,500,700" rel="stylesheet">
+<asset:stylesheet src="assets/vendor/swiper/css/swiper.min.css"></asset:stylesheet>
+<asset:stylesheet src="assets/vendor/hamburgers/hamburgers.min.css" ></asset:stylesheet>
+<asset:stylesheet src="assets/vendor/animate/animate.min.css" ></asset:stylesheet>
+<asset:stylesheet src="assets/vendor/fancybox/css/jquery.fancybox.min.css"></asset:stylesheet>
+<asset:stylesheet src="assets/fonts/font-awesome/css/font-awesome.min.css" ></asset:stylesheet>
+<asset:stylesheet src="assets/fonts/ionicons/css/ionicons.min.css" ></asset:stylesheet>
+<asset:stylesheet src="assets/fonts/line-icons/line-icons.css" ></asset:stylesheet>
+<asset:stylesheet src="assets/fonts/line-icons-pro/line-icons-pro.css" ></asset:stylesheet>
+<asset:stylesheet src="assets/fonts/linea/arrows/linea-icons.css" ></asset:stylesheet>
+<asset:stylesheet src="assets/fonts/linea/basic/linea-icons.css" ></asset:stylesheet>
+<asset:stylesheet src="/assets/fonts/linea/ecommerce/linea-icons.css" ></asset:stylesheet>
+<asset:stylesheet src="assets/fonts/linea/software/linea-icons.css"></asset:stylesheet>
