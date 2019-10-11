@@ -37,21 +37,78 @@ function removeOnChange(field)
     errorList.style.visibility = "hidden";
 }
 
-$("#username").on("click input change keyup paste propertychange", function(){
-   removeOnChange("username");
-});
+function alertEmptyInputFor(field)
+{
+    var errorList = document.getElementById(field + "_errors");
+    var message = field + " is a required field";
+    errorList.style.display = "block";
+    errorList.style.width = "250px";
+    errorList.style.visibility = "visible";
+    var messageholder = errorList.childNodes[1];
+    if(!messageholder){
+        var listItem = document.createElement("li");
+        listItem.appendChild(document.createTextNode(message));
+        errorList.appendChild(listItem);
+        return;
+    }
+    if(messageholder.childNodes[0].data !== message)
+    {
+        messageholder.childNodes[0].data = message;
+    }
+}
 
-$("#password").on("click input change keyup paste propertychange", function(){
+function alertMismatch()
+{
+
+    var errorList = document.getElementById("confirm_errors");
+    var message = "passwords don't match";
+    errorList.style.display = "block";
+    errorList.style.width = "250px";
+    errorList.style.visibility = "visible";
+    var messageholder = errorList.childNodes[1];
+    if(!messageholder){
+        var listItem = document.createElement("li");
+        listItem.appendChild(document.createTextNode(message));
+        errorList.appendChild(listItem);
+        return;
+    }
+    if(messageholder.childNodes[0].data !== message)
+    {
+        messageholder.childNodes[0].data = message;
+    }
+}
+$("#username").on("input change keyup paste propertychange", function(){
+   removeOnChange("username");
+   if(!document.getElementById("username").value){
+       alertEmptyInputFor("username");
+   }
+});
+$("#password").on("input change keyup paste propertychange", function(){
     removeOnChange("password");
+    if(!document.getElementById("password").value){
+        alertEmptyInputFor("password");
+    }
+    if(document.getElementById("confirm").value !== document.getElementById("password").value ){
+        alertMismatch();
+    }
 });
-$("#firstName").on("click input change keyup paste propertychange", function(){
+$("#firstName").on("input change keyup paste propertychange", function(){
     removeOnChange("firstName");
+    if(!document.getElementById("firstName").value){
+        alertEmptyInputFor("firstName");
+    }
 });
-$("#lastName").on("click input change keyup paste propertychange", function(){
+$("#lastName").on("input change keyup paste propertychange", function(){
     removeOnChange("lastName");
+    if(!document.getElementById("lastName").value){
+        alertEmptyInputFor("lastName");
+    }
 });
-$("#confirm").on("click input change keyup paste propertychange", function(){
+$("#confirm").on("input change keyup paste propertychange", function(){
     removeOnChange("confirm");
+    if(document.getElementById("confirm").value !== document.getElementById("password").value ){
+        alertMismatch();
+    }
 });
 
 $("#register_form").submit(function (e) {

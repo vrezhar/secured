@@ -141,7 +141,7 @@
 <asset:javascript src="boomerang.js"></asset:javascript>
     <script>
     (function() {
-        document.forms['loginForm'].elements['${usernameParameter ?: 'username'}'].focus();
+        document.forms['form-default'].elements['${usernameParameter ?: 'username'}'].focus();
     })();
     </script>
 
