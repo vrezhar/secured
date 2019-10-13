@@ -13,6 +13,7 @@
     <meta name="layout" content="${gspLayout ?: 'main'}"/>
     <asset:stylesheet src="web_page/authorization/register/register.css"></asset:stylesheet>
     <asset:javascript src="jquery-3.3.1.min.js"></asset:javascript>
+    <asset:stylesheet src="web_page/authorization/register/errors.css"></asset:stylesheet>
     <title> Register </title>
 </head>
 
@@ -21,120 +22,74 @@
 <div class="body-wrap" style="background: transparent;">
     <div id="st-container" class="st-container">
 
-        <section class="slice-lg has-bg-cover bg-size-cover" style="background-image: url(../../assets/images/backgrounds/slider/img-45.jpg); background-position: bottom center;">
+        <section class="slice sct-color-2">
             <div class="container">
-                <div class="row">
+                <div class="row justify-content-center">
                     <div class="col-lg-12">
-                        <div class="card">
+                        <div class="card form-card form-card--style-2">
+                            <div class="form-header text-center">
+                                <div class="form-header-icon">
+                                    <i class="icon ion-log-in"></i>
+                                </div>
+                            </div>
                             <div class="card-title">
-                                <h5 class="heading heading-5 strong-500">
-                                    Create a new account
-                                </h5>
+                                <div class="text-center px-2">
+                                    <h4 class="heading heading-4 strong-400 mb-4">Create a new account</h4>
+                                </div>
                             </div>
                             <div class="card-body">
                                 <g:form class="form-default" method="POST" url="/register/confirm" id="register_form">
                                     <div class="row">
                                         <div class="col-md-6">
-                                            <div class="form-group">
-%{--                                                <label>First name</label>--}%
-                                                <g:textField name="firstName" class="form-control form-control-lg" id="firstName" placeholder="First name" value="${user?.firstName}"></g:textField>
-                                                <ul class="col-md-6"  id="firstName_errors" style="visibility: hidden; display: none;">
-
-                                                </ul>
-                                            </div>
+                                            <g:textField name="firstName" class="form-control form-control-lg" id="firstName" placeholder="First name" value="${user?.firstName}"></g:textField>
+                                            <ul class="error"  id="firstName_errors" style="visibility: visible; display: inline-block">
+                                                <li> </li>
+                                            </ul>
                                         </div>
 
                                         <div class="col-md-6">
-                                            <div class="form-group">
-%{--                                                <label>Last name</label>--}%
-                                                <g:textField type="text" class="form-control form-control-lg" name="lastName" id="lastName" value="${user?.lastName}" placeholder="Last name"></g:textField>
-                                                <ul class="col-md-6" id="lastName_errors" style="visibility: hidden; display: none;">
-
-                                                </ul>
-                                            </div>
+                                            <g:textField type="text" class="form-control form-control-lg" name="lastName" id="lastName" value="${user?.lastName}" placeholder="Last name"></g:textField>
+                                            <ul class="error" id="lastName_errors" style="visibility: visible; display: inline-block">
+                                                <li> </li>
+                                            </ul>
                                         </div>
                                     </div>
 
-                                    <span class="space-md-md"></span>
+                                    <span class="space-lg-only-1"></span>
 
                                     <div class="row">
-%{--                                        <div class="col-md-6">--}%
-%{--                                            <div class="form-group">--}%
-%{--                                                <label>Username</label>--}%
-%{--                                                <input type="text" class="form-control form-control-lg">--}%
-%{--                                            </div>--}%
-%{--                                        </div>--}%
 
                                         <div class="col-md-12">
-                                            <div class="form-group">
-%{--                                                <label>Email</label>--}%
-                                                <g:textField type="email" class="form-control form-control-lg" name="username" id="username" value="${user?.username}" placeholder="Email"></g:textField>
-                                                <ul id="username_errors" style="visibility: hidden; display: none">
-
-                                                </ul>
-                                            </div>
+                                            <g:textField type="email" class="form-control form-control-lg" name="username" id="username" value="${user?.username}" placeholder="Email"></g:textField>
+                                            <ul class="error" id="username_errors" style="visibility: visible; display: inline-block">
+                                                <li> </li>
+                                            </ul>
                                         </div>
                                     </div>
 
-                                    <span class="space-md-md"></span>
+                                    <span class="space-lg-only-1"></span>
 
                                     <div class="row">
                                         <div class="col-md-6">
-                                            <div class="form-group">
-%{--                                                <label>Password</label>--}%
-                                                <g:textField type="password" class="form-control form-control-lg" name="password" id="password" value="${user?.password}" placeholder="Password"></g:textField>
-                                                <ul id="password_errors" style="visibility: hidden; display: none">
-
-                                                </ul>
-                                            </div>
+                                            <g:passwordField type="password" class="form-control form-control-lg" name="password" id="password" value="${user?.password}" placeholder="Password"></g:passwordField>
+                                            <ul class="error" id="password_errors" style="visibility: visible; display: inline-block">
+                                                <li> </li>
+                                            </ul>
                                         </div>
 
                                         <div class="col-md-6">
-                                            <div class="form-group">
-%{--                                                <label>Confirm password</label>--}%
-                                                <g:textField type="password" class="form-control form-control-lg" name="confirm" id="confirm" placeholder="Confirm password" value="${user?.confirm}"></g:textField>
-                                                <ul id="confirm_errors" style="visibility: hidden; display: none">
-
-                                                </ul>
-                                            </div>
+                                            <g:passwordField type="password" class="form-control form-control-lg" name="confirm" id="confirm" placeholder="Confirm password" value="${user?.confirm}"></g:passwordField>
+                                            <ul class="error" id="confirm_errors" style="visibility: visible; display: inline-block">
+                                                <li> </li>
+                                            </ul>
                                         </div>
                                     </div>
 
+                                    <span class="space-lg-only-1"></span>
+
+                                    <input type="submit" class="btn btn-styled btn-base-1 mt-1" style="width: 90%; margin-left: 5%" value="Create account"/>
+
                                     <span class="space-md-md"></span>
-
-%{--                                    <div class="row">--}%
-%{--                                        <div class="col-md-6">--}%
-%{--                                            <div class="form-group">--}%
-%{--                                                <label>Country</label>--}%
-%{--                                                <select class="form-control form-control-lg selectpicker">--}%
-%{--                                                    <option>Argentina</option>--}%
-%{--                                                    <option>Brazil</option>--}%
-%{--                                                    <option>Canada</option>--}%
-%{--                                                    <option>Dominican Republic</option>--}%
-%{--                                                    <option>France</option>--}%
-%{--                                                    <option>Greece</option>--}%
-%{--                                                </select>--}%
-%{--                                            </div>--}%
-%{--                                        </div>--}%
-
-%{--                                        <div class="col-md-6">--}%
-%{--                                            <div class="form-group">--}%
-%{--                                                <label>City</label>--}%
-%{--                                                <input type="text" class="form-control form-control-lg">--}%
-%{--                                            </div>--}%
-%{--                                        </div>--}%
-%{--                                    </div>--}%
-
-%{--                                    <div class="row">--}%
-%{--                                        <div class="col-sm-12">--}%
-%{--                                            <div class="form-group">--}%
-%{--                                                <label>Address</label>--}%
-%{--                                                <input type="text" class="form-control form-control-lg">--}%
-%{--                                            </div>--}%
-%{--                                        </div>--}%
-%{--                                    </div>--}%
-
-                                    <input type="submit" class="btn btn-styled btn-base-1 mt-3" value="Create account"/>
                                 </g:form>
                             </div>
                         </div>

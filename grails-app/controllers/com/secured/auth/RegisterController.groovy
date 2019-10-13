@@ -34,7 +34,7 @@ class RegisterController
         if(userValidator.alreadyExists(cmd)){
             haserrors = true
         }
-        if(!cmd.confirm || cmd.password != cmd.confirm) {
+        if(cmd.password != cmd.confirm) {
             cmd.errors.rejectValue("confirm",
                     "user.password.doesntmatch")
             haserrors = true

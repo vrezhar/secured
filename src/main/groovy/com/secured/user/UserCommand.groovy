@@ -29,5 +29,6 @@ class UserCommand implements Validateable
         username nullable: false, blank: false, email: true
         firstName nullable: false, blank: false
         lastName nullable: false, blank: false
+        confirm nullable: false, blank: false
     }
 }
