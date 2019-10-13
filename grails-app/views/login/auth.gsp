@@ -59,7 +59,7 @@
                                         <div class="col-12">
                                             <div class="form-group">
 %{--                                                <label>Email</label>--}%
-                                                <input type="email" class="text_" name="${usernameParameter ?: 'username'}" id="username"/>
+                                                <input type="email" class="text_" name="${usernameParameter ?: 'username'}" id="username" placeholder="Username"/>
                                             </div>
                                         </div>
                                     </div>
@@ -68,7 +68,7 @@
                                         <div class="col-lg-12">
                                             <div class="form-group has-feedback">
 %{--                                                <label>Password</label>--}%
-                                                <input type="text" class="text_" name="${passwordParameter ?: 'password'}" id="password"/>
+                                                <input type="password" class="text_" name="${passwordParameter ?: 'password'}" id="password" placeholder="Password"/>
                                             </div>
                                         </div>
                                     </div>
