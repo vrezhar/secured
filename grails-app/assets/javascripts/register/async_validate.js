@@ -1,8 +1,8 @@
-var intercepted = false;
+let intercepted = false;
 
 function onFocus(field)
 {
-    var errorList = document.getElementById( field + "_errors");
+    let errorList = document.getElementById( field + "_errors");
     errorList.style.display = "none";
     errorList.style.visibility = "hidden";
     errorList.innerHTML = "";
@@ -10,14 +10,14 @@ function onFocus(field)
 
 function alertError(message,field)
 {
-    var errorList = document.getElementById(field + "_errors");
+    let errorList = document.getElementById(field + "_errors");
     errorList.style.display = "block";
     errorList.style.width = "250px";
     errorList.style.visibility = "visible";
     console.log(errorList.childNodes[1]);
-    var messageholder = errorList.childNodes[1];
+    let messageholder = errorList.childNodes[1];
     if(!messageholder){
-        var listItem = document.createElement("li");
+        let listItem = document.createElement("li");
         listItem.appendChild(document.createTextNode(message));
         errorList.appendChild(listItem);
         return;
@@ -32,19 +32,18 @@ function alertError(message,field)
 
 function removeOnChange(field)
 {
-    var errorList = document.getElementById(field + "_errors");
+    let errorList = document.getElementById(field + "_errors");
     errorList.style.display = "none";
     errorList.style.visibility = "hidden";
 }
 
-function alertEmptyInputFor(field)
+function alertEmptyInputFor(message,field)
 {
-    var errorList = document.getElementById(field + "_errors");
-    var message = field + " is a required field";
+    let errorList = document.getElementById(field + "_errors");
     errorList.style.display = "block";
     errorList.style.width = "250px";
     errorList.style.visibility = "visible";
-    var messageholder = errorList.childNodes[1];
+    let messageholder = errorList.childNodes[1];
     if(!messageholder){
         var listItem = document.createElement("li");
         listItem.appendChild(document.createTextNode(message));
