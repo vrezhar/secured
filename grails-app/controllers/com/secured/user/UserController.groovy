@@ -23,10 +23,10 @@ class UserController  {
         User user = User.findById(id)
         if(user)
         {
-            render model: [user: user], view: "details"
+            render model: [user: user], view: "companies"
             return
         }
-        render model: [user: springSecurityService.getCurrentUser()], view: "details"
+        render model: [user: springSecurityService.getCurrentUser()], view: "companies"
     }
 
     @Secured(['ROLE_USER','ROLE_ADMIN'])
