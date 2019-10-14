@@ -32,7 +32,7 @@ class UserController  {
     @Secured(['ROLE_USER','ROLE_ADMIN'])
     def profile()
     {
-        render view: "profile"
+        render view: "profile",model: [user: springSecurityService.getCurrentUser()]
     }
 
 

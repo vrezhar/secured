@@ -1,20 +1,20 @@
-var clicked = false;
+let clicked = false;
 
 function submit()
 {
-    var clearOnFetch = setTimeout(animate(),1000);
-    var experimental = setTimeout(stopAnimation,300);
-    var signature = document.getElementById('signature').value;
+    let clearOnFetch = setTimeout(animate(),1000);
+    let experimental = setTimeout(stopAnimation,300);
+    let signature = document.getElementById('signature').value;
     console.log(signature);
-    var xhr = new XMLHttpRequest();
-    var url = "/user/company/sign";
+    let xhr = new XMLHttpRequest();
+    let url = "/user/company/sign";
     xhr.open("POST", url, true);
     xhr.setRequestHeader("Content-Type", "application/json");
     xhr.onreadystatechange = function () {
         if (xhr.readyState === 4 && xhr.status === 200) {
             document.getElementById("submit").style.visibility = "hidden";
             document.getElementById("submit").style.display = "none";
-            var json = JSON.parse(xhr.responseText);
+            let json = JSON.parse(xhr.responseText);
             clearTimeout(clearOnFetch);
             clearTimeout(experimental);
             stopAnimation();
@@ -44,7 +44,7 @@ function submit()
             }
         }
     };
-    var data = JSON.stringify({"body": signature});
+    let data = JSON.stringify({"body": signature});
     xhr.send(data);
 }
 
@@ -67,10 +67,10 @@ function cancel() {
 function confirm()
 {
     animate();
-    var signature = document.getElementById('signature').value;
+    let signature = document.getElementById('signature').value;
     console.log("intercepted a submit");
-    var xhr = new XMLHttpRequest();
-    var url_save = "/user/company/confirm";
+    let xhr = new XMLHttpRequest();
+    let url_save = "/user/company/confirm";
     xhr.open("POST", url_save, true);
     xhr.setRequestHeader("Content-Type", "application/json");
     xhr.onreadystatechange = function () {
@@ -80,6 +80,6 @@ function confirm()
             document.getElementById('signature').value = "";
         }
     };
-    var data = JSON.stringify({"body": signature});
+    let data = JSON.stringify({"body": signature});
     xhr.send(data);
 }

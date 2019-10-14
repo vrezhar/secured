@@ -1,6 +1,6 @@
-$("#signature").on("input change keyup paste propertychange",
+$("#signature").on("input change keyup paste propertychange click",
     function() {
-        var signature = document.getElementById("signature").value;
+        let signature = document.getElementById("signature").value;
         if(signature === null || signature === ""){
             document.getElementById("company").style.visibility = "hidden";
             document.getElementById("company").style.display = "none";
@@ -10,13 +10,13 @@ $("#signature").on("input change keyup paste propertychange",
             document.getElementById("cancel").style.display = "none";
             return;
         }
-        var xhr = new XMLHttpRequest();
-        var url = "/user/company/sign";
+        let xhr = new XMLHttpRequest();
+        let url = "/user/company/sign";
         xhr.open("POST", url, true);
         xhr.setRequestHeader("Content-Type", "application/json");
         xhr.onreadystatechange = function () {
             if (xhr.readyState === 4 && xhr.status === 200) {
-                var json = JSON.parse(xhr.responseText);
+                let json = JSON.parse(xhr.responseText);
                 document.getElementById("company").style.visibility = "visible";
                 document.getElementById("company").style.display = "inline-block";
                 document.getElementById("cancel").style.visibility = "visible";
@@ -41,7 +41,7 @@ $("#signature").on("input change keyup paste propertychange",
                 }
             }
         };
-        var data = JSON.stringify({"body": signature});
+        let data = JSON.stringify({"body": signature});
         xhr.send(data);
     }
 );

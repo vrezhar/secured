@@ -41,6 +41,17 @@ class User implements Serializable {
                         firstName: cmd.firstName, lastName: cmd.lastName)
     }
 
+    public int getBarCodes()
+    {
+        int barcodesCount = 0;
+        this.companies.each {
+            it.products.each {
+                barcodesCount += it.barCodes.size()
+            }
+        }
+        return barcodesCount
+    }
+
     static constraints = {
         password nullable: false, blank: false, password: true
         username nullable: false, blank: false, email: true, unique: true
