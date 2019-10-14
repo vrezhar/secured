@@ -29,7 +29,7 @@
                         <div class="card form-card form-card--style-2">
                             <div class="form-header text-center">
                                 <div class="form-header-icon">
-                                    <i class="icon ion-log-in"></i>
+                                    <asset:image src="icons/custom/register_5.png"></asset:image>
                                 </div>
                             </div>
                             <div class="card-title">

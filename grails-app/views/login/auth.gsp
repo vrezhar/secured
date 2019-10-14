@@ -20,7 +20,7 @@
 <asset:stylesheet src="web_page/authorization/login/errors.css"></asset:stylesheet>
 
     </head>
-
+<body>
     <div class="body-wrap">
         <section class="slice sct-color-2">
             <div class="container">
@@ -29,7 +29,7 @@
                         <div class="card form-card form-card--style-2">
                             <div class="form-header text-center">
                                 <div class="form-header-icon">
-                                    <i class="icon ion-log-in"></i>
+                                    <asset:image src="icons/custom/login_4.png"></asset:image>
                                 </div>
                             </div>
                             <div class="form-body">
@@ -77,7 +77,7 @@
 %{--                                <div class="col-6">--}%
 %{--                                    <g:link controller="register" action="register">Recover password</g:link>--}%
 %{--                                </div>--}%
-                              <div class="col-12 text-right"> %{-- change this to six if password recovery will be an option --}%
+                                <div class="col-12 text-right"> %{-- change this to six if password recovery will be an option --}%
                                     <a href="/register" class="">Create a new account</a>
                                 </div>
                             </div>
@@ -87,15 +87,7 @@
             </div>
         </section>
     </div><!-- END: body-wrap -->
-<a href="#" class="back-to-top btn-back-to-top"></a>
+<a href="#" class="back-to-top btn-back-to-top"><</a>
 
-
-    <script>
-    (function() {
-        document.forms['form-default'].elements['${usernameParameter ?: 'username'}'].focus();
-    })();
-    </script>
-
-
-    </body>
+</body>
 </html>

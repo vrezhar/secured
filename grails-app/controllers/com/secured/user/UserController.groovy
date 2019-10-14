@@ -15,6 +15,8 @@ class UserController  {
     SpringSecurityService springSecurityService
     SignatureVerificationService signatureVerificationService
 
+    static defaultAction = "profile()"
+
     @Secured(['ROLE_USER','ROLE_ADMIN'])
     def show(long id)
     {
@@ -28,7 +30,7 @@ class UserController  {
     }
 
     @Secured(['ROLE_USER','ROLE_ADMIN'])
-    def show_test()
+    def profile()
     {
         render view: "profile"
     }
