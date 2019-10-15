@@ -15,6 +15,7 @@
 </head>
 
 <body>
-    <h3>Please verify your email account before proceeding</h3>
+    <h2>Please verify your email account before proceeding.</h2>
+    <h3>Click here to <g:link controller="login">log in </g:link></h3>
 </body>
 </html>

@@ -8,6 +8,7 @@ class Interceptor {
         if(this.intercepted)
         {
             $("#register_form").off("submit");
+            $("#submit").click();
             return true;
         }
         e.preventDefault();

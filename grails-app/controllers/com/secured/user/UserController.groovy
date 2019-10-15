@@ -1,5 +1,6 @@
 package com.secured.user
 
+import com.secured.auth.Role
 import com.secured.auth.User
 import com.secured.data.Company
 import com.secured.logs.DevCycleLogger
@@ -21,11 +22,23 @@ class UserController  {
     def show(long id)
     {
         User user = User.findById(id)
-        if(user)
+        if(user && (springSecurityService.currentUser as User).authorities?.contains(Role.findWhere(authority: 'ROLE_ADMIN')))
         {
-            render model: [user: user], view: "companies"
+            render model: [user: user], view: "profile"
             return
         }
+        render model: [user: springSecurityService.getCurrentUser()], view: "profile"
+    }
+
+    @Secured(['ROLE_ADMIN'])
+    def list()
+    {
+
+    }
+
+    @Secured(['ROLE_USER','ROLE_ADMIN'])
+    def showCompanies()
+    {
         render model: [user: springSecurityService.getCurrentUser()], view: "companies"
     }
 

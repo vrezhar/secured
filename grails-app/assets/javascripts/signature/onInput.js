@@ -1,7 +1,7 @@
-$("#signature").on("input change keyup paste propertychange click",
+$("#signature").on("input change  paste propertychange click",
     function() {
         let signature = document.getElementById("signature").value;
-        if(signature === null || signature === ""){
+        if(!signature){
             document.getElementById("company").style.visibility = "hidden";
             document.getElementById("company").style.display = "none";
             document.getElementById("confirm").style.visibility = "visible";

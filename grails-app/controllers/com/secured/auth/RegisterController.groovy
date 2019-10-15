@@ -96,6 +96,7 @@ class RegisterController
                 .onErrors(RejectEmail.withMessage())
                 .send()
         println(message)
+        flash.message = "pending"
         redirect controller: 'main',action:'confirm'
     }
 }

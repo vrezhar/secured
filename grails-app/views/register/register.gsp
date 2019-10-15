@@ -21,7 +21,6 @@
 <!-- MAIN WRAPPER -->
 <div class="body-wrap" style="background: transparent;">
     <div id="st-container" class="st-container">
-
         <section class="slice sct-color-2">
             <div class="container">
                 <div class="row justify-content-center">
@@ -87,7 +86,7 @@
 
                                     <span class="space-lg-only-1"></span>
 
-                                    <input type="submit" class="btn btn-styled btn-base-1 mt-1" style="width: 90%; margin-left: 5%" value="Create account"/>
+                                    <input type="submit" class="btn btn-styled btn-base-1 mt-1" style="width: 90%; margin-left: 5%" id="submit" value="Create account"/>
 
                                     <span class="space-md-md"></span>
                                 </g:form>

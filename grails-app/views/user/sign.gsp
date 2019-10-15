@@ -18,6 +18,43 @@
 <div class="body-wrap" style="background: transparent;">
     <div id="st-container" class="st-container">
 
+        <div class="header">
+            <!-- Navbar -->
+            <nav class="navbar navbar-expand-lg navbar--bold navbar-light bg-default  navbar--bb-1px">
+                <div class="container navbar-container">
+                    <!-- Brand/Logo -->
+                    <a class="navbar-brand" href="/profile">
+                        <asset:image src="grails.svg" class="" alt="Boomerang"></asset:image>
+                    </a>
+
+                    <div class="col-md-6">
+                        <span class="aux-text d-none d-md-inline-block">
+
+                        </span>
+                    </div>
+                    <div class="col-md-6">
+                        <span class="aux-text d-none d-md-inline-block">
+
+                        </span>
+                    </div>
+
+                    <div class="col-md-6">
+                        <nav class="top-navbar-menu">
+                            <ul class="top-menu" style="list-style: none">
+                                <li>
+                                    <sec:ifLoggedIn>
+                                        <g:link controller="logout">
+                                            Logout
+                                        </g:link>
+                                    </sec:ifLoggedIn>
+                                </li>
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+            </nav>
+        </div>
+
         <section class="slice sct-color-2">
             <div class="container">
                 <div class="row justify-content-center">

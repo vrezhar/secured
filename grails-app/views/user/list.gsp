@@ -1,22 +1,21 @@
 <%--
   Created by IntelliJ IDEA.
   User: vrezh
-  Date: 14.10.19
-  Time: 22:44
+  Date: 22.08.19
+  Time: 01:41
 --%>
 
-<%@ page contentType="text/html;charset=UTF-8" %>
+<%@ page import="com.secured.auth.User" contentType="text/html;charset=UTF-8" %>
 <html>
 <head>
-    <title></title>
-    <title></title>
+    <title>List of all users</title>
     <meta charset="utf-8">
     <meta name="layout" content="${gspLayout ?: 'main'}"/>
-    <asset:stylesheet src="web_page/profile/table.css"></asset:stylesheet>
-    <asset:javascript src="profile/show_more.js"></asset:javascript>
+    <asset:stylesheet src="web_page/admin/table.css"></asset:stylesheet>
 </head>
 
 <body>
+
 <div class="body-wrap" style="background: transparent;">
 
     <div id="st-container" class="st-container">
@@ -64,12 +63,9 @@
                     <div class="col-lg-12">
                         <div class="card form-card form-card--style-2">
                             <div class="form-header text-center">
-                                <div class="form-header-icon">
-                                    <asset:image src="icons/custom/companies.png"></asset:image>
-                                </div>
                                 <div class="card-title">
                                     <div class="text-center px-2">
-                                        <h1 class="heading heading-4 strong-400 mb-4">Your Companies</h1>
+                                        <h1 class="heading heading-4 strong-400 mb-4">All Users</h1>
                                     </div>
                                 </div>
                             </div>
@@ -83,27 +79,24 @@
                                 <div class="row">
                                     <div class = "col-md-12" id="companies" style=" padding: 1% 1% 1% 1%;">
                                         <table>
-                                            <g:each var="company" in="${user?.companies}">
+                                            <tr>
+                                                <td>Username</td>
+                                                <td>First Name</td>
+                                                <td>Last Name</td>
+                                                <td>Profile status</td>
+                                            </tr>
+                                            <g:each var="user" in="${User.list()}">
                                                 <tr>
+                                                    <td><a href = "${createLink(uri: "/user/show?id=${user.id}")}">${user.username}</td>
+                                                    <td>${user.firstName}</td>
+                                                    <td>${user.lastName}</td>
                                                     <td>
-                                                        Id: ${company?.companyId}
-                                                    </td>
-                                                    <td>
-                                                        Token: ${company?.token}
-                                                    </td>
-                                                    <td id = "${company?.token}">
-                                                        <a href="#" class="btn">Show more</a>
-                                                    </td>
-                                                </tr>
-                                                <tr id = "${company?.token}_details" style="visibility: hidden; display: none;">
-                                                    <td>
-                                                        Address: ${company?.address}
-                                                    </td>
-                                                    <td>
-                                                        Date created: ${company?.dateCreated}
-                                                    </td>
-                                                    <td>
-                                                        Products registered: ${company?.products?.size()}
+                                                        <g:if test="${user.enabled}">
+                                                            Enabled
+                                                        </g:if>
+                                                        <g:elseif test="${!user.enabled}">
+                                                            Disabled
+                                                        </g:elseif>
                                                     </td>
                                                 </tr>
                                             </g:each>

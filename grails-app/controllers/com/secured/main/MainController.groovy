@@ -15,7 +15,7 @@ class MainController {
     @Secured(['ROLE_ADMIN'])
     def list()
     {
-        render(view:"/user/userList",model: [users: User.list()])
+        render(view:"/user/list",model: [users: User.list()])
     }
 
 
@@ -28,7 +28,11 @@ class MainController {
     @Secured(["permitAll"])
     def confirm()
     {
-        render view: "confirm", model: [user: springSecurityService.getCurrentUser()]
+        if(flash?.message != "pending"){
+            render view: "/notFound"
+            return false
+        }
+        render view: "confirm"
     }
 
     @Secured(["permitAll"])
