@@ -36,7 +36,6 @@ class Interceptor {
                 "password" : document.getElementById("password").value,
                 "confirm"  : document.getElementById("confirm").value
             });
-        console.log(data);
         xhr.send(data);
     }
 }
@@ -53,7 +52,6 @@ function alertError(message,field)
     errorList.style.display = "block";
     errorList.style.width = "250px";
     errorList.style.visibility = "visible";
-    console.log(errorList.childNodes[1]);
     let messageholder = errorList.childNodes[1];
     if(!messageholder){
         let listItem = document.createElement("li");
@@ -65,8 +63,6 @@ function alertError(message,field)
     {
         messageholder.childNodes[0].data = message;
     }
-    console.log(messageholder.value);
-    console.log(message);
 }
 
 function removeOnChange(field)

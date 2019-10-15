@@ -1,12 +1,12 @@
 document.onclick = function(e)
 {
-    e.preventDefault();
     let link = e.target;
     const detail_id = link.parentElement.id + "_details";
     let detail_row = document.getElementById(detail_id);
     if(!detail_row) {
-        return false;
+        return true;
     }
+    e.preventDefault();
     if(link.innerText === "Show more"){
         link.innerText = "hide";
         detail_row.style.width = "100%";

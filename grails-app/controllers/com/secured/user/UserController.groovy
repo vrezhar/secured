@@ -52,8 +52,7 @@ class UserController  {
     @Secured(['ROLE_USER','ROLE_ADMIN'])
     def createCompany()
     {
-        SignatureCommand signature = flash?.errorCommand ?: new SignatureCommand()
-        render view: "sign", model: [signature: signature]
+        render view: "sign", model: [user: springSecurityService.currentUser as User]
     }
 
     @Secured(['ROLE_USER','ROLE_ADMIN'])

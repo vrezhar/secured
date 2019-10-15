@@ -43,11 +43,16 @@ class MainController {
         {
             userInitializerService.enable(usr)
             springSecurityService.reauthenticate(usr.username,usr.password)
-            redirect controller: 'main', action: 'home'
+            redirect controller: 'user', action: 'profile'
             return
         }
         render view: '/error'
     }
 
+    @Secured(["permitAll"])
+    def respond()
+    {
+
+    }
 
 }

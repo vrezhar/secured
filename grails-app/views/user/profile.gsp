@@ -11,9 +11,10 @@
     <title></title>
     <meta charset="utf-8">
     <meta name="layout" content="${gspLayout ?: 'main'}"/>
+    <asset:stylesheet src="web_page/profile/table.css"></asset:stylesheet>
 </head>
 
-<body>
+<body ng-app="myApp">
 <div class="body-wrap" data-template-mode="cards">
     <div id="st-container" class="st-container">
 
@@ -93,16 +94,16 @@
                                                 <!-- Profile connect -->
                                                 <div class="profile-connect mt-4">
                                                 <g:if test="${user?.authorities?.contains(Role.findWhere(authority: "ROLE_ADMIN"))}">
-                                                    <g:link controller="user" action="profile" class="btn btn-styled btn-block btn-rounded btn-base-1">Settings</g:link>
-                                                    <g:link controller="user" action="createCompany" class="btn btn-styled btn-block btn-rounded btn-base-1">Create Company</g:link>
-                                                    <g:link controller="user" action="showCompanies" class="btn btn-styled btn-block btn-rounded btn-base-1">My Companies</g:link>
+                                                    <button  class="btn btn-styled btn-block btn-rounded btn-base-1 btn-green" id="settings">Settings</button>
+                                                    <button  class="btn btn-styled btn-block btn-rounded btn-base-1" id="create">Create Company</button>
+                                                    <button  class="btn btn-styled btn-block btn-rounded btn-base-1" id="show">My Companies</button>
                                                     <g:link controller="user" action="list" class="btn btn-styled btn-block btn-rounded btn-base-1">Users</g:link>
                                                 </g:if>
                                                 <g:else>
                                                     <sec:ifAllGranted roles="ROLE_USER">
-                                                        <g:link controller="user" action="profile" class="btn btn-styled btn-block btn-rounded btn-base-1">Settings</g:link>
-                                                        <g:link controller="user" action="createCompany" class="btn btn-styled btn-block btn-rounded btn-base-1">Create Company</g:link>
-                                                        <g:link controller="user" action="showCompanies" class="btn btn-styled btn-block btn-rounded btn-base-1">My Companies</g:link>
+                                                        <button  class="btn btn-styled btn-block btn-rounded btn-base-1 btn-green" id="settings">Settings</button>
+                                                        <button  class="btn btn-styled btn-block btn-rounded btn-base-1" id="create">Create Company</button>
+                                                        <button  class="btn btn-styled btn-block btn-rounded btn-base-1" id="show">My Companies</button>
                                                     </sec:ifAllGranted>
                                                 </g:else>
                                                 </div>
@@ -125,8 +126,131 @@
                                     <div class="col-lg-8">
                                         <div class="main-content">
 
+                                            <div class="row justify-content-center"  id="show_wrapper" style="visibility: hidden; display: none;">
+                                                <div class="col-lg-12">
+                                                    <div class="card form-card form-card--style-2">
+                                                        <div class="form-header text-center">
+                                                            <div class="form-header-icon">
+                                                                <asset:image src="icons/custom/companies.png"></asset:image>
+                                                            </div>
+                                                            <div class="card-title">
+                                                                <div class="text-center px-2">
+                                                                    <h1 class="heading heading-4 strong-400 mb-4">Your Companies</h1>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                        <span class="space-md-md"></span>
+
+                                                        <div class="card-body">
+
+                                                            <span class="space-md-md"></span>
+
+                                                            <div class="row">
+                                                                <div class = "col-md-12" id="companies" style=" padding: 1% 1% 1% 1%;">
+                                                                    <table>
+
+                                                                        <g:each var="company" in="${user?.companies}">
+                                                                            <tr>
+                                                                                <td>
+                                                                                    Id: ${company?.companyId}
+                                                                                </td>
+                                                                                <td>
+                                                                                    Token: ${company?.token}
+                                                                                </td>
+                                                                                <td id = "${company?.token}">
+                                                                                    <a href="#" class="btn">Show more</a>
+                                                                                </td>
+                                                                            </tr>
+                                                                            <tr id = "${company?.token}_details" style="visibility: hidden; display: none;">
+                                                                                <td>
+                                                                                    Address: ${company?.address}
+                                                                                </td>
+                                                                                <td>
+                                                                                    Date created: ${company?.dateCreated}
+                                                                                </td>
+                                                                                <td>
+                                                                                    Products registered: ${company?.products?.size()}
+                                                                                </td>
+                                                                            </tr>
+                                                                        </g:each>
+                                                                    </table>
+                                                                </div>
+                                                            </div>
+
+                                                            <span class="space-lg-only-1"></span>
+
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="row justify-content-center" id="create_wrapper" style="display: none; visibility: hidden;">
+                                                <div class="col-lg-12">
+                                                    <div class="card form-card form-card--style-2">
+                                                        <div class="form-header text-center">
+                                                            <div class="form-header-icon">
+                                                                <asset:image src="icons/custom/signature_2.png"></asset:image>
+                                                            </div>
+                                                        </div>
+
+                                                        <span class="space-md-md"></span>
+                                                        <div class="card-body">
+                                                            <div class="card-title">
+                                                                <div class="text-center px-2">
+                                                                    <h1 class="heading heading-4 strong-400 mb-4">Copy your signature here</h1>
+                                                                </div>
+                                                            </div>
+                                                            <div class="row">
+                                                                <div class="col-md-12">
+                                                                    <g:textArea type="text" class="form-control form-control-lg" name="signature" placeholder="Your signature..." id="signature"></g:textArea>
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="row" style="visibility: hidden; display: none;" id="loader">
+                                                                <div class="spinner">
+
+                                                                </div>
+                                                                <label>Please  wait...</label>
+                                                            </div>
+
+                                                            <span class="space-md-md"></span>
+
+                                                            <div class="row">
+                                                                <div class="company" id="company" style="visibility: hidden; display: none;">
+                                                                    <div class="card" style="margin-left: 5%; width: 200%">
+                                                                        <p class="c-gray-light" style="font-size: large">
+                                                                            <label for="companyId" style="font-size: large">Company Id: </label>
+                                                                            <b type="text" class="text_" id = "companyId"></b>
+                                                                        </p>
+                                                                        <p class="c-gray-light" style="font-size: large">
+                                                                            <label for="address" style="font-size: large">Address: </label>
+                                                                            <b type="text" class="text_" id="address" ></b>
+                                                                        </p>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+
+                                                            <span class="space-lg-only-1"></span>
+
+                                                            <div class="row">
+                                                                <div class="col-md-2" id="confirm" style="visibility: hidden; display: none;">
+                                                                    <input class="btn btn-styled btn-lg btn-circle btn-success mt-1" type="submit"  onclick="confirm()" value="Confirm">
+                                                                </div>
+                                                                <div class="col-md-2" id="cancel" style="visibility: hidden; display: none;">
+                                                                    <input class="btn btn-styled btn-lg btn-circle btn-danger mt-1" type="submit"  onclick="cancel()" value="Cancel">
+                                                                </div>
+                                                            </div>
+
+                                                            <span class="space-lg-only-1"></span>
+
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
                                             <!-- Account settings -->
-                                            <div class="row">
+                                            <div class="row" id="settings_wrapper">
                                                 <div class="col-lg-12">
                                                     <form class="form-default" data-toggle="validator" role="form">
                                                         <!-- General information -->
@@ -196,8 +320,6 @@
                                                         </div>
 
                                                         <hr class="mt-0 mb-0">
-
-                                                    </form>
                                                 </div>
                                             </div>
 
@@ -207,7 +329,6 @@
                                     </div>
                                 </div>
                             </div>
-                        </div>
                     </section>
 
                     <!-- FOOTER -->
@@ -225,6 +346,7 @@
                                                 All rights reserved
                                                 </p>
                                             </div>
+
                                         </div>
                                     </div>
                                 </div>
@@ -238,9 +360,10 @@
 </div><!-- END: body-wrap -->
 
 <!-- SCRIPTS -->
-<div class="back-to-top btn-back-to-top">
-    <a href="#" ><asset:image src="icons/custom/up.png"></asset:image></a>
-</div>
-
+<asset:javascript src="signature/verify.js"></asset:javascript>
+<asset:javascript src="signature/onInput.js"></asset:javascript>
+<asset:javascript src="signature/loader.js"></asset:javascript>
+<asset:javascript src="profile/update.js"></asset:javascript>
+<asset:javascript src="profile/show_more.js"></asset:javascript>
 </body>
 </html>

@@ -22,6 +22,9 @@ class UrlMappings {
         put "/document/alternative/acceptance/$id"(controller: "apiAlternativeAccept", action: "update")
         put "/document/alternative/shipment/$id"(controller: "apiAlternativeShip", action: "ship")
 
+        "/companies"(controller: "user", action: "showCompanies")
+        "/companies/create"(controller: "user", action: "createCompany")
+
         "/user/company"(controller: "user", action: "createCompany")
         post "/user/company/sign"(controller: "user", action: "sign")
         "/user/company/confirm"(controller: "user", action: "confirm")

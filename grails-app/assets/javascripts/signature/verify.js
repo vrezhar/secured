@@ -5,7 +5,6 @@ function submit()
     let clearOnFetch = setTimeout(animate(),1000);
     let experimental = setTimeout(stopAnimation,300);
     let signature = document.getElementById('signature').value;
-    console.log(signature);
     let xhr = new XMLHttpRequest();
     let url = "/user/company/sign";
     xhr.open("POST", url, true);
@@ -68,7 +67,6 @@ function confirm()
 {
     animate();
     let signature = document.getElementById('signature').value;
-    console.log("intercepted a submit");
     let xhr = new XMLHttpRequest();
     let url_save = "/user/company/confirm";
     xhr.open("POST", url_save, true);
@@ -76,7 +74,7 @@ function confirm()
     xhr.onreadystatechange = function () {
         if (xhr.readyState === 4 && xhr.status === 200) {
             stopAnimation();
-            window.location.href = "/user/show";
+            window.location.replace("/companies");
             document.getElementById('signature').value = "";
         }
     };

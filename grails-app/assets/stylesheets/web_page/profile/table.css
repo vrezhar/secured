@@ -1,12 +1,13 @@
 table {
     font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+    font-size: small;
     border-collapse: collapse;
     overflow-y: scroll;
     /**/
 }
 
 table td{
-    width: 32%;
+    width: 33%;
     padding: 1px 1px 1px 1px ;
     border: 1px solid #ddd;
     text-align: left;
