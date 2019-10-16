@@ -15,7 +15,7 @@ buildscript {
 
 
 version "0.1"
-group "secured"
+group "ttreport"
 
 apply plugin:"eclipse"
 apply plugin:"idea"

@@ -5,7 +5,7 @@
   Time: 19:13
 --%>
 
-<%@ page import="com.secured.auth.Role; com.secured.auth.User" contentType="text/html;charset=UTF-8" %>
+<%@ page import="com.ttreport.auth.Role; com.ttreport.auth.User" contentType="text/html;charset=UTF-8" %>
 <html>
 <head>
     <title></title>

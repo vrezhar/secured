@@ -5,7 +5,7 @@
   Time: 01:41
 --%>
 
-<%@ page import="com.secured.auth.User" contentType="text/html;charset=UTF-8" %>
+<%@ page import="com.ttreport.auth.User" contentType="text/html;charset=UTF-8" %>
 <html>
 <head>
     <title>List of all users</title>

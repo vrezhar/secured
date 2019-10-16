@@ -8,7 +8,7 @@ status:
 grails:
     profile: web
     codegen:
-        defaultPackage: secured
+        defaultPackage: ttreport
     gorm:
         reactor:
             # Whether to translate GORM events into Reactor events
