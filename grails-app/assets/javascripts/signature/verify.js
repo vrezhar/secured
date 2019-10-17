@@ -1,8 +1,8 @@
 let clicked = false;
 
-function submit()
+function verify()
 {
-    let clearOnFetch = setTimeout(animate(),1000);
+    let clearOnFetch = setTimeout(animate(),200);
     let experimental = setTimeout(stopAnimation,300);
     let signature = document.getElementById('signature').value;
     let xhr = new XMLHttpRequest();
@@ -11,33 +11,31 @@ function submit()
     xhr.setRequestHeader("Content-Type", "application/json");
     xhr.onreadystatechange = function () {
         if (xhr.readyState === 4 && xhr.status === 200) {
-            document.getElementById("submit").style.visibility = "hidden";
-            document.getElementById("submit").style.display = "none";
+            document.getElementById("verify").style.visibility = "hidden";
+            document.getElementById("verify").style.display = "none";
             let json = JSON.parse(xhr.responseText);
             clearTimeout(clearOnFetch);
             clearTimeout(experimental);
             stopAnimation();
+            document.getElementById("company").style.visibility = "visible";
+            document.getElementById("company").style.display = "inline-block";
+            document.getElementById("cancel").style.visibility = "visible";
+            document.getElementById("cancel").style.display = "inline-block";
             if(json.companyId != null && json.address != null) {
                 document.getElementById("companyId").innerHTML = json.companyId;
                 document.getElementById("address").innerHTML = json.address;
                 document.getElementById("companyId").style.color = "#1e7e34";
                 document.getElementById("address").style.color = "#1e7e34";
-                document.getElementById("company").style.visibility = "visible";
-                document.getElementById("company").style.display = "inline-block";
-                document.getElementById("cancel").style.visibility = "visible";
-                document.getElementById("cancel").style.display = "inline-block";
                 document.getElementById("confirm").style.visibility = "visible";
                 document.getElementById("confirm").style.display = "inline-block";
             }
             else{
-                document.getElementById("company").style.visibility = "visible";
-                document.getElementById("company").style.display = "inline-block";
-                document.getElementById("cancel").style.visibility = "visible";
-                document.getElementById("cancel").style.display = "inline-block";
                 document.getElementById("companyId").style.color = "#a60000";
                 document.getElementById("address").style.color = "#a60000";
                 document.getElementById("companyId").innerHTML = "Not Found";
                 document.getElementById("address").innerHTML = "Not Found";
+                document.getElementById("confirm").style.visibility = "visible";
+                document.getElementById("confirm").style.display = "none";
                 document.getElementById("confirm").style.visibility = "hidden";
                 document.getElementById("confirm").style.display = "none";
             }
@@ -59,8 +57,8 @@ function cancel() {
     document.getElementById("cancel").style.display = "none";
     document.getElementById("confirm").style.visibility = "hidden";
     document.getElementById("confirm").style.display = "none";
-    document.getElementById("submit").style.visibility = "visible";
-    document.getElementById("submit").style.display = "inline-block";
+    document.getElementById("verify").style.visibility = "visible";
+    document.getElementById("verify").style.display = "inline-block";
 }
 
 function confirm()
@@ -74,7 +72,7 @@ function confirm()
     xhr.onreadystatechange = function () {
         if (xhr.readyState === 4 && xhr.status === 200) {
             stopAnimation();
-            window.location.replace("/companies");
+            window.location.replace("/user/companies");
             document.getElementById('signature').value = "";
         }
     };

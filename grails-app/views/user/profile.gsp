@@ -14,7 +14,7 @@
     <asset:stylesheet src="web_page/profile/table.css"></asset:stylesheet>
 </head>
 
-<body ng-app="myApp">
+<body>
 <div class="body-wrap" data-template-mode="cards">
     <div id="st-container" class="st-container">
 
@@ -42,7 +42,7 @@
                         <nav class="navbar navbar-expand-lg navbar--bold navbar-light bg-default  navbar--bb-1px">
                             <div class="container navbar-container">
                                 <!-- Brand/Logo -->
-                                <a class="navbar-brand" href="/profile">
+                                <a class="navbar-brand" href="/">
                                     <asset:image src="grails.svg" class="" alt="Boomerang"></asset:image>
                                 </a>
 
@@ -93,19 +93,19 @@
 
                                                 <!-- Profile connect -->
                                                 <div class="profile-connect mt-4">
-                                                <g:if test="${user?.authorities?.contains(Role.findWhere(authority: "ROLE_ADMIN"))}">
-                                                    <button  class="btn btn-styled btn-block btn-rounded btn-base-1 btn-green" id="settings">Settings</button>
-                                                    <button  class="btn btn-styled btn-block btn-rounded btn-base-1" id="create">Create Company</button>
-                                                    <button  class="btn btn-styled btn-block btn-rounded btn-base-1" id="show">My Companies</button>
-                                                    <g:link controller="user" action="list" class="btn btn-styled btn-block btn-rounded btn-base-1">Users</g:link>
-                                                </g:if>
-                                                <g:else>
-                                                    <sec:ifAllGranted roles="ROLE_USER">
+                                                    <g:if test="${user?.authorities?.contains(Role.findWhere(authority: "ROLE_ADMIN"))}">
                                                         <button  class="btn btn-styled btn-block btn-rounded btn-base-1 btn-green" id="settings">Settings</button>
                                                         <button  class="btn btn-styled btn-block btn-rounded btn-base-1" id="create">Create Company</button>
                                                         <button  class="btn btn-styled btn-block btn-rounded btn-base-1" id="show">My Companies</button>
-                                                    </sec:ifAllGranted>
-                                                </g:else>
+                                                        <g:link controller="user" action="list" class="btn btn-styled btn-block btn-rounded btn-base-1">Users</g:link>
+                                                    </g:if>
+                                                    <g:else>
+                                                        <sec:ifAllGranted roles="ROLE_USER">
+                                                            <button  class="btn btn-styled btn-block btn-rounded btn-base-1 btn-green" id="settings">Settings</button>
+                                                            <button  class="btn btn-styled btn-block btn-rounded btn-base-1" id="create">Create Company</button>
+                                                            <button  class="btn btn-styled btn-block btn-rounded btn-base-1" id="show">My Companies</button>
+                                                        </sec:ifAllGranted>
+                                                    </g:else>
                                                 </div>
 
                                                 <!-- Profile stats -->
@@ -126,7 +126,7 @@
                                     <div class="col-lg-8">
                                         <div class="main-content">
 
-                                            <div class="row justify-content-center"  id="show_wrapper" style="visibility: hidden; display: none;">
+                                            <div class="row justify-content-center" id="show_wrapper" style="visibility: hidden; display: none;">
                                                 <div class="col-lg-12">
                                                     <div class="card form-card form-card--style-2">
                                                         <div class="form-header text-center">
@@ -149,7 +149,6 @@
                                                             <div class="row">
                                                                 <div class = "col-md-12" id="companies" style=" padding: 1% 1% 1% 1%;">
                                                                     <table>
-
                                                                         <g:each var="company" in="${user?.companies}">
                                                                             <tr>
                                                                                 <td>
@@ -185,7 +184,7 @@
                                                 </div>
                                             </div>
 
-                                            <div class="row justify-content-center" id="create_wrapper" style="display: none; visibility: hidden;">
+                                            <div class="row justify-content-center" id="create_wrapper" style="display: none;visibility: hidden">
                                                 <div class="col-lg-12">
                                                     <div class="card form-card form-card--style-2">
                                                         <div class="form-header text-center">
@@ -203,14 +202,12 @@
                                                             </div>
                                                             <div class="row">
                                                                 <div class="col-md-12">
-                                                                    <g:textArea type="text" class="form-control form-control-lg" name="signature" placeholder="Your signature..." id="signature"></g:textArea>
+                                                                    <g:textArea type="text" class="form-control form-control-lg" name="signature"  placeholder="Your signature..." id="signature"></g:textArea>
                                                                 </div>
                                                             </div>
 
                                                             <div class="row" style="visibility: hidden; display: none;" id="loader">
-                                                                <div class="spinner">
-
-                                                                </div>
+                                                                <div class="spinner"></div>
                                                                 <label>Please  wait...</label>
                                                             </div>
 
@@ -234,6 +231,9 @@
                                                             <span class="space-lg-only-1"></span>
 
                                                             <div class="row">
+                                                                <div class="col-md-2" id="verify">
+                                                                    <input class="btn btn-styled btn-lg btn-circle btn-success mt-1" type="submit"  onclick="verify()"  value="Verify">
+                                                                </div>
                                                                 <div class="col-md-2" id="confirm" style="visibility: hidden; display: none;">
                                                                     <input class="btn btn-styled btn-lg btn-circle btn-success mt-1" type="submit"  onclick="confirm()" value="Confirm">
                                                                 </div>
@@ -254,28 +254,28 @@
                                                 <div class="col-lg-12">
                                                     <form class="form-default" data-toggle="validator" role="form">
                                                         <!-- General information -->
-                                                        <div class="card no-border bg-transparent">
-                                                            <div class="card-title px-0 pb-0 no-border">
-                                                                <h3 class="heading heading-6 strong-600">
-                                                                    General information
-                                                                </h3>
-                                                            </div>
-                                                        <div class="card-body px-0">
-                                                            <div class="row">
-                                                                <div class="col-md-6 col-lg-4">
-                                                                    <div class="form-group">
-                                                                        <label class="control-label">First name</label>
-                                                                        <input type="text" class="form-control form-control-lg" value="${user?.firstName}" disabled>
-                                                                    </div>
+                                                    <div class="card no-border bg-transparent">
+                                                        <div class="card-title px-0 pb-0 no-border">
+                                                            <h3 class="heading heading-6 strong-600">
+                                                                General information
+                                                            </h3>
+                                                        </div>
+                                                    <div class="card-body px-0">
+                                                        <div class="row">
+                                                            <div class="col-md-6 col-lg-4">
+                                                                <div class="form-group">
+                                                                    <label class="control-label">First name</label>
+                                                                    <input type="text" class="form-control form-control-lg" value="${user?.firstName}" disabled>
                                                                 </div>
+                                                            </div>
 
-                                                                <div class="col-md-6 col-lg-4">
-                                                                    <div class="form-group">
-                                                                        <label class="control-label">Last name</label>
-                                                                        <input type="text" class="form-control form-control-lg" value="${user?.lastName}" disabled>
-                                                                    </div>
+                                                            <div class="col-md-6 col-lg-4">
+                                                                <div class="form-group">
+                                                                    <label class="control-label">Last name</label>
+                                                                    <input type="text" class="form-control form-control-lg" value="${user?.lastName}" disabled>
                                                                 </div>
                                                             </div>
+                                                        </div>
                                                         <g:if test="${user?.authorities?.contains(Role.findWhere(authority: "ROLE_ADMIN"))}">
                                                             <div class="text-right">
                                                                 <a href="#" class="btn btn-base-1">Edit...</a>
@@ -290,45 +290,45 @@
                                                                 </div>
                                                             </sec:ifAllGranted>
                                                         </g:else>
-                                                        </div>
+                                                </div>
 
-                                                        <hr class="mt-0 mb-0">
+                                                <hr class="mt-0 mb-0">
 
-                                                        <!-- Account info -->
-                                                        <div class="card no-border bg-transparent">
-                                                            <div class="card-title px-0 pb-0 no-border">
-                                                                <h3 class="heading heading-6 strong-600">
-                                                                    Account info
-                                                                </h3>
+                                                <!-- Account info -->
+                                                <div class="card no-border bg-transparent">
+                                                    <div class="card-title px-0 pb-0 no-border">
+                                                        <h3 class="heading heading-6 strong-600">
+                                                            Account info
+                                                        </h3>
+                                                    </div>
+                                                    <div class="card-body px-0">
+                                                        <div class="row align-items-center">
+                                                            <div class="col-md-6 col-lg-4">
+                                                                <div class="form-group">
+                                                                    <label class="control-label">Email</label>
+                                                                    <input type="email" class="form-control form-control-lg" value="${user?.username}" disabled>
+                                                                </div>
                                                             </div>
-                                                            <div class="card-body px-0">
-                                                                <div class="row align-items-center">
-                                                                    <div class="col-md-6 col-lg-4">
-                                                                        <div class="form-group">
-                                                                            <label class="control-label">Email</label>
-                                                                            <input type="email" class="form-control form-control-lg" value="${user?.username}" disabled>
-                                                                        </div>
-                                                                    </div>
-                                                                    <div class="col-md-6 col-lg-4">
-                                                                        <div class="form-group">
-                                                                            <label class="control-label">Joined at</label>
-                                                                            <input type="email" class="form-control form-control-lg" value="${user?.dateCreated}" disabled>
-                                                                        </div>
-                                                                    </div>
+                                                            <div class="col-md-6 col-lg-4">
+                                                                <div class="form-group">
+                                                                    <label class="control-label">Joined at</label>
+                                                                    <input type="email" class="form-control form-control-lg" value="${user?.dateCreated}" disabled>
                                                                 </div>
                                                             </div>
                                                         </div>
-
-                                                        <hr class="mt-0 mb-0">
+                                                    </div>
                                                 </div>
+
+                                                <hr class="mt-0 mb-0">
                                             </div>
-
-                                            <hr class="mt-0 mb-0">
-
                                         </div>
+
+                                        <hr class="mt-0 mb-0">
+
                                     </div>
                                 </div>
                             </div>
+                        </div>
                     </section>
 
                     <!-- FOOTER -->

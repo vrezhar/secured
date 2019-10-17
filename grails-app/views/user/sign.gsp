@@ -14,7 +14,7 @@
     <asset:stylesheet src="web_page/profile/table.css"></asset:stylesheet>
 </head>
 
-<body ng-app="myApp">
+<body>
 <div class="body-wrap" data-template-mode="cards">
     <div id="st-container" class="st-container">
 
@@ -207,9 +207,7 @@
                                                             </div>
 
                                                             <div class="row" style="visibility: hidden; display: none;" id="loader">
-                                                                <div class="spinner">
-
-                                                                </div>
+                                                                <div class="spinner"></div>
                                                                 <label>Please  wait...</label>
                                                             </div>
 
@@ -233,6 +231,9 @@
                                                             <span class="space-lg-only-1"></span>
 
                                                             <div class="row">
+                                                                <div class="col-md-2" id="verify">
+                                                                    <input class="btn btn-styled btn-lg btn-circle btn-success mt-1" type="submit"  onclick="verify()"  value="Verify">
+                                                                </div>
                                                                 <div class="col-md-2" id="confirm" style="visibility: hidden; display: none;">
                                                                     <input class="btn btn-styled btn-lg btn-circle btn-success mt-1" type="submit"  onclick="confirm()" value="Confirm">
                                                                 </div>

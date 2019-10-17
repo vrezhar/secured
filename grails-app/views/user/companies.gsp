@@ -14,7 +14,7 @@
     <asset:stylesheet src="web_page/profile/table.css"></asset:stylesheet>
 </head>
 
-<body ng-app="myApp">
+<body>
 <div class="body-wrap" data-template-mode="cards">
     <div id="st-container" class="st-container">
 
@@ -42,7 +42,7 @@
                         <nav class="navbar navbar-expand-lg navbar--bold navbar-light bg-default  navbar--bb-1px">
                             <div class="container navbar-container">
                                 <!-- Brand/Logo -->
-                                <a class="navbar-brand" href="/profile">
+                                <a class="navbar-brand" href="/">
                                     <asset:image src="grails.svg" class="" alt="Boomerang"></asset:image>
                                 </a>
 
@@ -96,7 +96,7 @@
                                                     <g:if test="${user?.authorities?.contains(Role.findWhere(authority: "ROLE_ADMIN"))}">
                                                         <button  class="btn btn-styled btn-block btn-rounded btn-base-1" id="settings">Settings</button>
                                                         <button  class="btn btn-styled btn-block btn-rounded btn-base-1" id="create">Create Company</button>
-                                                        <button  class="btn btn-styled btn-block btn-rounded btn-base-1 btn-green" id="show">My Companies</button>
+                                                        <button  class="btn btn-styled btn-block btn-rounded btn-base-1 btn-green" id="show ">My Companies</button>
                                                         <g:link controller="user" action="list" class="btn btn-styled btn-block btn-rounded btn-base-1">Users</g:link>
                                                     </g:if>
                                                     <g:else>
@@ -184,7 +184,7 @@
                                                 </div>
                                             </div>
 
-                                            <div class="row justify-content-center" id="create_wrapper" style="display: none; visibility: hidden;">
+                                            <div class="row justify-content-center" id="create_wrapper" style="visibility: hidden; display: none;">
                                                 <div class="col-lg-12">
                                                     <div class="card form-card form-card--style-2">
                                                         <div class="form-header text-center">
@@ -207,9 +207,7 @@
                                                             </div>
 
                                                             <div class="row" style="visibility: hidden; display: none;" id="loader">
-                                                                <div class="spinner">
-
-                                                                </div>
+                                                                <div class="spinner"></div>
                                                                 <label>Please  wait...</label>
                                                             </div>
 
@@ -233,6 +231,9 @@
                                                             <span class="space-lg-only-1"></span>
 
                                                             <div class="row">
+                                                                <div class="col-md-2" id="verify">
+                                                                    <input class="btn btn-styled btn-lg btn-circle btn-success mt-1" type="submit"  onclick="verify()"  value="Verify">
+                                                                </div>
                                                                 <div class="col-md-2" id="confirm" style="visibility: hidden; display: none;">
                                                                     <input class="btn btn-styled btn-lg btn-circle btn-success mt-1" type="submit"  onclick="confirm()" value="Confirm">
                                                                 </div>
