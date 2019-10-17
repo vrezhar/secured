@@ -91,9 +91,8 @@ class RegisterController
                 .to(usr.username)
                 .withSubject("Confirm your email")
                 .withMessage(message)
-                .useSendingStrategy(SendViaGmail.usingAccount("bronsmailsupreme@gmail.com",
-                        "bruhMoment"))
-                .onErrors(RejectEmail.withMessage())
+                .useSendingStrategy(SendViaGmail.usingDefaultAccount())
+                .onErrors(RejectEmail.withDefaultMessage())
                 .send()
         println(message)
         flash.message = "pending"

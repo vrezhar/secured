@@ -1,4 +1,4 @@
-let clicked = false;
+// let clicked = false;
 
 function verify()
 {

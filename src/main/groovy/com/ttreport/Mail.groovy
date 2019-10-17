@@ -4,9 +4,12 @@ import com.ttreport.strategy.MailErrorHandlingStrategy
 import com.ttreport.strategy.MailingStrategy
 import com.ttreport.strategy.handlers.RejectEmail
 import com.ttreport.strategy.senders.SendViaGmail
+import grails.config.Config
+import grails.core.support.GrailsConfigurationAware
 
-class Mail
+class Mail implements GrailsConfigurationAware
 {
+    private Map<String,String> conf
     String from
     String to
     String subject
@@ -19,11 +22,14 @@ class Mail
         return this
     }
 
-
     def onErrors(MailErrorHandlingStrategy handler)
     {
         this.handler = handler
         return this
+    }
+    def fromDefaultSender()
+    {
+        from = conf.email
     }
     def from(String senderEmail)
     {
@@ -46,7 +52,7 @@ class Mail
         this.text = text
         return this
     }
-    def send(String username = "dummy", String password = "supersecret")
+    def send(String username = conf.gmail_email, String password = conf.gmail_password)
     {
         try{
             if(!strategy)
@@ -59,5 +65,12 @@ class Mail
                 handler = RejectEmail.withMessage(e.message)
             handler.handleErrors(this,e)
         }
+    }
+
+    @Override
+    void setConfiguration(Config co) {
+        conf.email = co.mail.sender.email
+        conf.gmail_email = co.mail.gmail.email
+        conf.gmail_password = co.mail.gmail.password
     }
 }

@@ -1,4 +1,4 @@
-$("#create").on("click",async function (e) {
+$("#create").on("click",function (e) {
     e.preventDefault();
     toggleOff("settings");
     toggleOff("show");
@@ -6,7 +6,7 @@ $("#create").on("click",async function (e) {
     return false;
 });
 
-$("#settings").on("click",async function (e) {
+$("#settings").on("click",function (e) {
     toggleOff("show");
     toggleOff("create");
     toggleOn("settings");
@@ -14,7 +14,7 @@ $("#settings").on("click",async function (e) {
     return false;
 });
 
-$("#show").on("click",async function (e) {
+$("#show").on("click",function (e) {
     e.preventDefault();
     toggleOff("settings");
     toggleOff("create");

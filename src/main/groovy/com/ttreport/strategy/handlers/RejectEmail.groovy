@@ -14,10 +14,16 @@ class RejectEmail implements MailErrorHandlingStrategy
     {
         return new RejectEmail(message)
     }
+    static RejectEmail withDefaultMessage()
+    {
+        return new RejectEmail(null)
+    }
     @Override
-    //@Publisher('UnableToVerifyEmail')
-    def handleErrors(Mail mail, Exception e) {
-        if(!errorMessage) errorMessage = e.message
+    def handleErrors(Mail mail, Exception e)
+    {
+        if(!errorMessage){
+            errorMessage = e.message
+        }
         println(errorMessage)
         return errorMessage
     }

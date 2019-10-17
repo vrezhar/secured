@@ -2,16 +2,19 @@ package com.ttreport.strategy.senders
 
 import com.ttreport.Mail
 import com.ttreport.strategy.MailingStrategy
+import grails.config.Config
+import grails.core.support.GrailsConfigurationAware
 
 import javax.mail.*;
 import javax.mail.internet.*;
 
-class SendViaGmail implements MailingStrategy
+class SendViaGmail implements MailingStrategy, GrailsConfigurationAware
 {
     private String username
     private String password
+    private static Map<String,String> config
 
-    private SendViaGmail(String username = "example@gmail.com", String password = "SuperSecret")
+    private SendViaGmail(String username, String password)
     {
         this.username = username
         this.password = password
@@ -19,7 +22,13 @@ class SendViaGmail implements MailingStrategy
 
     public static SendViaGmail usingAccount(String username, String password)
     {
-        def sender = new SendViaGmail(username,password)
+        SendViaGmail sender = new SendViaGmail(username,password)
+        return sender
+    }
+
+    public static SendViaGmail usingDefaultAccount()
+    {
+        SendViaGmail sender = new SendViaGmail(config.email,config.password)
         return sender
     }
 
@@ -56,5 +65,11 @@ class SendViaGmail implements MailingStrategy
 
         transport.sendMessage(message, message.getAllRecipients());
         transport.close();
+    }
+
+    @Override
+    void setConfiguration(Config co) {
+        config.email = co.mail.gmail.email
+        config.password = co.mail.gmail.password
     }
 }
