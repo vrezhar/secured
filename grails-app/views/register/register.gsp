@@ -11,7 +11,6 @@
 <head>
     <meta charset="utf-8">
     <meta name="layout" content="${gspLayout ?: 'main'}"/>
-    <asset:stylesheet src="web_page/authorization/register/register.css"></asset:stylesheet>
     <asset:javascript src="jquery-3.3.1.min.js"></asset:javascript>
     <asset:stylesheet src="web_page/authorization/register/errors.css"></asset:stylesheet>
     <title> Register </title>
@@ -41,16 +40,15 @@
                                     <div class="row">
                                         <div class="col-md-6">
                                             <g:textField name="firstName" class="form-control form-control-lg" id="firstName" placeholder="First name" value="${user?.firstName}"></g:textField>
-                                            <ul class="error"  id="firstName_errors" style="visibility: visible; display: inline-block">
-                                                <li> </li>
-                                            </ul>
+                                            <label class="error"  id="firstName_errors" style="visibility: visible; display: inline-block">
+                                            </label>
                                         </div>
 
                                         <div class="col-md-6">
                                             <g:textField type="text" class="form-control form-control-lg" name="lastName" id="lastName" value="${user?.lastName}" placeholder="Last name"></g:textField>
-                                            <ul class="error" id="lastName_errors" style="visibility: visible; display: inline-block">
-                                                <li> </li>
-                                            </ul>
+                                            <label class="error" id="lastName_errors" style="visibility: visible; display: inline-block">
+
+                                            </label>
                                         </div>
                                     </div>
 
@@ -60,9 +58,9 @@
 
                                         <div class="col-md-12">
                                             <g:textField type="email" class="form-control form-control-lg" name="username" id="username" value="${user?.username}" placeholder="Email"></g:textField>
-                                            <ul class="error" id="username_errors" style="visibility: visible; display: inline-block">
-                                                <li> </li>
-                                            </ul>
+                                            <label class="error" id="username_errors" style="visibility: visible; display: inline-block">
+
+                                            </label>
                                         </div>
                                     </div>
 
@@ -71,16 +69,16 @@
                                     <div class="row">
                                         <div class="col-md-6">
                                             <g:passwordField type="password" class="form-control form-control-lg" name="password" id="password" value="${user?.password}" placeholder="Password"></g:passwordField>
-                                            <ul class="error" id="password_errors" style="visibility: visible; display: inline-block">
-                                                <li> </li>
-                                            </ul>
+                                            <label class="error" id="password_errors" style="visibility: visible; display: inline-block">
+
+                                            </label>
                                         </div>
 
                                         <div class="col-md-6">
                                             <g:passwordField type="password" class="form-control form-control-lg" name="confirm" id="confirm" placeholder="Confirm password" value="${user?.confirm}"></g:passwordField>
-                                            <ul class="error" id="confirm_errors" style="visibility: visible; display: inline-block">
-                                                <li> </li>
-                                            </ul>
+                                            <label class="error" id="confirm_errors" style="visibility: visible; display: inline-block">
+
+                                            </label>
                                         </div>
                                     </div>
 

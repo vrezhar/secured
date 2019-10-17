@@ -1,6 +1,6 @@
 package com.ttreport.mail
 
-import com.ttreport.Mail
+
 import grails.gorm.transactions.Transactional
 
 @Transactional

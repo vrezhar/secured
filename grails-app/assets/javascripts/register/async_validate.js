@@ -52,16 +52,16 @@ function alertError(message,field)
     errorList.style.display = "block";
     errorList.style.width = "250px";
     errorList.style.visibility = "visible";
-    let messageholder = errorList.childNodes[1];
-    if(!messageholder){
-        let listItem = document.createElement("li");
-        listItem.appendChild(document.createTextNode(message));
-        errorList.appendChild(listItem);
-        return;
-    }
-    if(!messageholder.childNodes[0] || messageholder.childNodes[0].data !== message)
+    let messageholder = errorList;
+    // if(!messageholder){
+    //     let listItem = document.createElement("li");
+    //     listItem.appendChild(document.createTextNode(message));
+    //     errorList.appendChild(listItem);
+    //     return;
+    // }
+    if(!messageholder || messageholder.innerText !== message)
     {
-        messageholder.childNodes[0].data = message;
+        messageholder.innerText = message;
     }
 }
 
@@ -91,8 +91,9 @@ $("#password").on("input change keyup paste propertychange", function(){
     removeOnChange("password");
     if(!document.getElementById("password").value){
         alertEmptyInputFor("password");
+        return;
     }
-    if(document.getElementById("confirm").value !== document.getElementById("password").value ){
+    if(document.getElementById("confirm").value !== document.getElementById("password").value && document.getElementById("confirm").value){
         alertMismatch();
     }
 });
@@ -114,7 +115,7 @@ $("#confirm").on("input change keyup paste propertychange", function(){
         alertEmptyInputFor("confirm");
         return;
     }
-    if(document.getElementById("confirm").value !== document.getElementById("password").value ){
+    if(document.getElementById("confirm").value !== document.getElementById("password").value && document.getElementById("password").value){
         alertMismatch();
     }
 });

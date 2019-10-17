@@ -1,21 +1,23 @@
-package com.ttreport
+package com.ttreport.mail
 
-import com.ttreport.strategy.MailErrorHandlingStrategy
-import com.ttreport.strategy.MailingStrategy
-import com.ttreport.strategy.handlers.RejectEmail
-import com.ttreport.strategy.senders.SendViaGmail
-import grails.config.Config
-import grails.core.support.GrailsConfigurationAware
+import com.ttreport.mail.strategy.MailErrorHandlingStrategy
+import com.ttreport.mail.strategy.MailingStrategy
+import com.ttreport.mail.strategy.handlers.RejectEmail
+import com.ttreport.mail.strategy.senders.SendViaGmail
 
-class Mail implements GrailsConfigurationAware
+class Mail extends MailingConfigurationAware
 {
-    private Map<String,String> conf
     String from
     String to
     String subject
     String text
     MailingStrategy strategy
     MailErrorHandlingStrategy handler
+    def printConfiguration()
+    {
+        println(mailConfigs)
+        return this
+    }
     def useSendingStrategy(MailingStrategy strategy)
     {
         this.strategy = strategy
@@ -29,7 +31,8 @@ class Mail implements GrailsConfigurationAware
     }
     def fromDefaultSender()
     {
-        from = conf.email
+        from = mailConfigs.default_sender
+        return this
     }
     def from(String senderEmail)
     {
@@ -52,25 +55,20 @@ class Mail implements GrailsConfigurationAware
         this.text = text
         return this
     }
-    def send(String username = conf.gmail_email, String password = conf.gmail_password)
+    def send(String username = mailConfigs.gmail_account, String password = mailConfigs.gmail_password)
     {
         try{
             if(!strategy)
                 strategy = SendViaGmail.usingAccount(username,password)
             strategy.sendEmail(this)
+            return this
         }
         catch(Exception e)
         {
             if(!handler)
                 handler = RejectEmail.withMessage(e.message)
             handler.handleErrors(this,e)
+            return this
         }
-    }
-
-    @Override
-    void setConfiguration(Config co) {
-        conf.email = co.mail.sender.email
-        conf.gmail_email = co.mail.gmail.email
-        conf.gmail_password = co.mail.gmail.password
     }
 }

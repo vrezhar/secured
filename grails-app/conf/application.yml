@@ -1,18 +1,20 @@
 ---
+mail:
+    postmark:
+        api:
+            token: 'postmark_token'
+    gmail:
+        email: 'bronsmailsupreme@gmail.com'
+        password: 'bruhMoment'
+    sender:
+        email: 'bronsmailsupreme@gmail.com'
+
+---
 status:
     INVALID_TOKEN: 401
     INVALID_ACTION: 400
     OK: 200
----
-mail:
-    postmark:
-        api:
-            token: "postmark_token"
-    gmail:
-        email: "bronsmailsupreme@gmail.com"
-        password: "bruhMoment"
-    sender:
-        email: "bronsmailsupreme@gmail.com"
+
 ---
 grails:
     profile: web

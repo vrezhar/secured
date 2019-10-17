@@ -1,7 +1,7 @@
-package com.ttreport.strategy.handlers
+package com.ttreport.mail.strategy.handlers
 
-import com.ttreport.Mail
-import com.ttreport.strategy.MailErrorHandlingStrategy
+import com.ttreport.mail.Mail
+import com.ttreport.mail.strategy.MailErrorHandlingStrategy
 
 class RejectEmail implements MailErrorHandlingStrategy
 {

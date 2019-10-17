@@ -1,22 +1,20 @@
-package com.ttreport.strategy.senders
+package com.ttreport.mail.strategy.senders
 
-import com.ttreport.Mail
-import com.ttreport.strategy.MailingStrategy
+import com.ttreport.mail.Mail
+import com.ttreport.mail.MailingConfigurationAware
+import com.ttreport.mail.strategy.MailingStrategy
 import com.wildbit.java.postmark.Postmark
 import com.wildbit.java.postmark.client.ApiClient
 import com.wildbit.java.postmark.client.data.model.message.Message
 import com.wildbit.java.postmark.client.data.model.message.MessageResponse
-import grails.config.Config
-import grails.core.support.GrailsConfigurationAware
 
-class SendViaPostMark implements MailingStrategy, GrailsConfigurationAware
+class SendViaPostMark extends MailingConfigurationAware implements MailingStrategy
 {
     private String server_token
-    private static String conf
 
     SendViaPostMark(String token)
     {
-        this.server_token = token?: conf
+        this.server_token = token
     }
 
     @Override
@@ -27,7 +25,7 @@ class SendViaPostMark implements MailingStrategy, GrailsConfigurationAware
         return response
     }
 
-    public static SendViaPostMark usingToken(String token)
+    public static SendViaPostMark usingToken(String token = mailConfigs.postmark_token)
     {
         SendViaPostMark sender = SendViaPostMark(token)
         return sender
@@ -35,12 +33,7 @@ class SendViaPostMark implements MailingStrategy, GrailsConfigurationAware
 
     public static SendViaPostMark usingDefaultToken()
     {
-        SendViaPostMark sender = SendViaPostMark(conf)
+        SendViaPostMark sender = SendViaPostMark(mailConfigs.postmark_token)
         return sender
-    }
-
-    @Override
-    void setConfiguration(Config co) {
-        conf = co.mail.postmark.api.token
     }
 }

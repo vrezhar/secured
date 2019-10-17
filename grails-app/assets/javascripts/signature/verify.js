@@ -42,10 +42,12 @@ function verify()
         }
     };
     let data = JSON.stringify({"body": signature});
+    document.getElementById('signature').disabled = "true";
     xhr.send(data);
 }
 
 function cancel() {
+    document.getElementById('signature').disabled = "";
     document.getElementById('signature').value = "";
     document.getElementById("companyId").innerHTML = "";
     document.getElementById("address").innerHTML = "";

@@ -1,10 +1,10 @@
 package com.ttreport.auth
 
-import com.ttreport.Mail
+import com.ttreport.mail.Mail
 import com.ttreport.logs.DevCycleLogger
 import com.ttreport.user.UserCommand
-import com.ttreport.strategy.handlers.RejectEmail
-import com.ttreport.strategy.senders.SendViaGmail
+import com.ttreport.mail.strategy.handlers.RejectEmail
+import com.ttreport.mail.strategy.senders.SendViaGmail
 import grails.plugin.springsecurity.annotation.Secured
 
 @Secured(["permitAll"])
@@ -87,13 +87,14 @@ class RegisterController
         String message = "Click the link below to verify your email\n " +
                 "localhost:8080/verify?token=${usr.mainToken}"
         new Mail()
-                .from("your email")
+                .fromDefaultSender()
                 .to(usr.username)
                 .withSubject("Confirm your email")
                 .withMessage(message)
                 .useSendingStrategy(SendViaGmail.usingDefaultAccount())
                 .onErrors(RejectEmail.withDefaultMessage())
                 .send()
+                .printConfiguration()
         println(message)
         flash.message = "pending"
         redirect controller: 'main',action:'confirm'

@@ -1,6 +1,6 @@
-package com.ttreport.strategy
+package com.ttreport.mail.strategy
 
-import com.ttreport.Mail
+import com.ttreport.mail.Mail
 
 interface MailErrorHandlingStrategy
 {
