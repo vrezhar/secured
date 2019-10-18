@@ -39,7 +39,7 @@ dependencies {
     provided "org.springframework.boot:spring-boot-starter-tomcat"
     compile 'org.grails.plugins:spring-security-core:3.2.3'
     compile "org.springframework.boot:spring-boot-starter-actuator"
-    compile "com.wildbit.java:postmark:1.2.1"
+    //compile "com.wildbit.java:postmark:1.2.1"
     //compile 'org.grails.plugins:spring-security-acl:3.1.1'
     compile "org.grails:grails-web-boot"
     compile "org.grails:grails-logging"

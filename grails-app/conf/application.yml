@@ -114,8 +114,8 @@ dataSource:
     pooled: true
     jmxExport: true
     driverClassName: com.mysql.jdbc.Driver
-    username: dummy
-    password: 'supersecret'
+    username: tomcat
+    password: 't4mc0t_P0ssw4rd'
 
 environments:
     development:
@@ -123,22 +123,22 @@ environments:
             logSql: true
             dbCreate: update
             url: jdbc:mysql://localhost:3306/users
-            username: dummy
-            password: 'supersecret'
+            username: tomcat
+            password: 't4mc0t_P0ssw4rd'
     test:
         dataSource:
             logSql: true
             dbCreate: create-drop
             url: jdbc:mysql://localhost:3306/grails_test
-            username: dummy
-            password: 'supersecret'
+            username: tomcat
+            password: 't4mc0t_P0ssw4rd'
     production:
         dataSource:
             dbCreate: update
             url: jdbc:mysql://localhost:3306/ttreport
             pooled: true
-            username: dummy
-            password: 'supersecret'
+            username: tomcat
+            password: 't4mc0t_P0ssw4rd'
             properties:
                 jmxEnabled: true
                 initialSize: 5
