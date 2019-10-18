@@ -87,17 +87,15 @@
                                             </tr>
                                             <g:each var="user" in="${User.list()}">
                                                 <tr>
-                                                    <td><a href = "${createLink(uri: "/user/show?id=${user.id}")}">${user.username}</td>
+                                                    <td><a href = "${createLink(uri: "/user/show?id=${user.id}")}">${user.username}</a></td>
                                                     <td>${user.firstName}</td>
                                                     <td>${user.lastName}</td>
-                                                    <td>
-                                                        <g:if test="${user.enabled}">
-                                                            Enabled
-                                                        </g:if>
-                                                        <g:elseif test="${!user.enabled}">
-                                                            Disabled
-                                                        </g:elseif>
-                                                    </td>
+                                                    <g:if test="${user.enabled}">
+                                                        <td id="${user.username}" class="btn btn-base-1 btn-green enable_toggler" style="display: table-cell;">Enabled</td>
+                                                    </g:if>
+                                                    <g:elseif test="${!user.enabled}">
+                                                        <td id="${user.username}" class="btn btn-base-1 btn-red disable_toggler"  style="display: table-cell;">Disabled</td>
+                                                    </g:elseif>
                                                 </tr>
                                             </g:each>
                                         </table>
@@ -114,5 +112,6 @@
         </section>
     </div>
 </div>
+<asset:javascript src="admin/grant_ability.js"></asset:javascript>
 </body>
 </html>
