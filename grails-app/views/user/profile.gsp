@@ -149,27 +149,47 @@
                                                             <div class="row">
                                                                 <div class = "col-md-12" id="companies" style=" padding: 1% 1% 1% 1%;">
                                                                     <table>
+                                                                        <tr>
+                                                                            <td>
+                                                                                Id
+                                                                            </td>
+                                                                            <td>
+                                                                                Token
+                                                                            </td>
+                                                                            <td></td>
+                                                                        </tr>
                                                                         <g:each var="company" in="${user?.companies}">
                                                                             <tr>
                                                                                 <td>
-                                                                                    Id: ${company?.companyId}
+                                                                                    ${company?.companyId}
                                                                                 </td>
                                                                                 <td>
-                                                                                    Token: ${company?.token}
+                                                                                    ${company?.token}
                                                                                 </td>
                                                                                 <td id = "${company?.token}">
                                                                                     <a href="#" class="btn">Show more</a>
                                                                                 </td>
                                                                             </tr>
+                                                                            <tr id = "${company?.token}_description" style="visibility: hidden; display: none;">
+                                                                                <td>
+                                                                                    Address
+                                                                                </td>
+                                                                                <td>
+                                                                                    Date created
+                                                                                </td>
+                                                                                <td>
+                                                                                    Products registered
+                                                                                </td>
+                                                                            </tr>
                                                                             <tr id = "${company?.token}_details" style="visibility: hidden; display: none;">
                                                                                 <td>
-                                                                                    Address: ${company?.address}
+                                                                                    ${company?.address}
                                                                                 </td>
                                                                                 <td>
-                                                                                    Date created: ${company?.dateCreated}
+                                                                                    ${company?.dateCreated}
                                                                                 </td>
                                                                                 <td>
-                                                                                    Products registered: ${company?.products?.size()}
+                                                                                    ${company?.products?.size()}
                                                                                 </td>
                                                                             </tr>
                                                                         </g:each>
