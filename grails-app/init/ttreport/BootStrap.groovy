@@ -16,7 +16,9 @@ class BootStrap {
 
     def init = { servletContext ->
         Role adminRole = Role.findOrSaveWhere(authority: 'ROLE_ADMIN')
+        Role userRole = Role.findOrSaveWhere(authority: 'ROLE_USER')
         User admin = User.findWhere(username: 'testmail@gmail.com')
+        User user = User.findWhere(username: "test@test.com")
         if(!admin)
         {
             admin = new User(username: 'testmail@gmail.com', password: '1Test',
@@ -26,8 +28,23 @@ class BootStrap {
             admin.save()
             UserRole.create(admin, adminRole)
         }
+        if(!user){
+            user = new User(username: 'test@test.com', password: '2Test',
+                    firstName: 'User', lastName: 'User',)
+            user.mainToken = "test_user"
+            user.enabled = true
+            user.save()
+            UserRole.create(user, userRole)
+        }
+        user.save()
         admin.save()
         Company company = Company.findWhere(address: "Komitas", companyId: "Initial", user: admin)
+        Company test = Company.findWhere(address: "Komitas", companyId: "test", user: user)
+        if(!test){
+            test = new Company(address: "Komitas", companyId: "Initial",token: "test", user: user)
+            user.addToCompanies(test)
+            test.save()
+        }
         if(!company){
             company = new Company(address: "Komitas", companyId: "Initial", user: admin)
             admin.addToCompanies(company)
