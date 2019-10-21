@@ -43,7 +43,7 @@
                             <div class="container navbar-container">
                                 <!-- Brand/Logo -->
                                 <a class="navbar-brand" href="/">
-                                    <asset:image src="grails.svg" class="" alt="Boomerang"></asset:image>
+%{--                                    <asset:image src="grails.svg" class="" alt="Boomerang"></asset:image>--}%
                                 </a>
 
                                 <div class="col-md-6">
@@ -131,7 +131,7 @@
                                                     <div class="card form-card form-card--style-2">
                                                         <div class="form-header text-center">
                                                             <div class="form-header-icon">
-                                                                <asset:image src="icons/custom/companies.png"></asset:image>
+%{--                                                                <asset:image src="icons/custom/companies.png"></asset:image>--}%
                                                             </div>
                                                             <div class="card-title">
                                                                 <div class="text-center px-2">
@@ -189,7 +189,7 @@
                                                     <div class="card form-card form-card--style-2">
                                                         <div class="form-header text-center">
                                                             <div class="form-header-icon">
-                                                                <asset:image src="icons/custom/signature_2.png"></asset:image>
+%{--                                                                <asset:image src="icons/custom/signature_2.png"></asset:image>--}%
                                                             </div>
                                                         </div>
 

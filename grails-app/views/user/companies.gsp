@@ -43,7 +43,7 @@
                             <div class="container navbar-container">
                                 <!-- Brand/Logo -->
                                 <a class="navbar-brand" href="/">
-                                    <asset:image src="grails.svg" class="" alt="Boomerang"></asset:image>
+%{--                                    <asset:image src="grails.svg" class="" alt="Boomerang"></asset:image>--}%
                                 </a>
 
                                 <div class="col-md-6">
@@ -96,7 +96,7 @@
                                                     <g:if test="${user?.authorities?.contains(Role.findWhere(authority: "ROLE_ADMIN"))}">
                                                         <button  class="btn btn-styled btn-block btn-rounded btn-base-1" id="settings">Settings</button>
                                                         <button  class="btn btn-styled btn-block btn-rounded btn-base-1" id="create">Create Company</button>
-                                                        <button  class="btn btn-styled btn-block btn-rounded btn-base-1 btn-green" id="show ">My Companies</button>
+                                                        <button  class="btn btn-styled btn-block btn-rounded btn-base-1 btn-green" id="show">My Companies</button>
                                                         <g:link controller="user" action="list" class="btn btn-styled btn-block btn-rounded btn-base-1">Users</g:link>
                                                     </g:if>
                                                     <g:else>
@@ -131,7 +131,7 @@
                                                     <div class="card form-card form-card--style-2">
                                                         <div class="form-header text-center">
                                                             <div class="form-header-icon">
-                                                                <asset:image src="icons/custom/companies.png"></asset:image>
+%{--                                                                <asset:image src="icons/custom/companies.png"></asset:image>--}%
                                                             </div>
                                                             <div class="card-title">
                                                                 <div class="text-center px-2">
@@ -189,7 +189,7 @@
                                                     <div class="card form-card form-card--style-2">
                                                         <div class="form-header text-center">
                                                             <div class="form-header-icon">
-                                                                <asset:image src="icons/custom/signature_2.png"></asset:image>
+%{--                                                                <asset:image src="icons/custom/signature_2.png"></asset:image>--}%
                                                             </div>
                                                         </div>
 

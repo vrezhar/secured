@@ -25,6 +25,7 @@ $("#show").on("click",function (e) {
 function toggleOn(id)
 {
     let div = document.getElementById(id + "_wrapper");
+    console.log(id);
     let button = document.getElementById(id);
     button.classList.add("btn-green");
     div.style.visibility = "visible";
@@ -34,6 +35,7 @@ function toggleOn(id)
 function toggleOff(id)
 {
     let div = document.getElementById(id + "_wrapper");
+    console.log(id);
     let button = document.getElementById(id);
     button.classList.remove("btn-green");
     div.style.visiblity = "hidden";
