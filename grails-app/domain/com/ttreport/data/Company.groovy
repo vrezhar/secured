@@ -19,7 +19,7 @@ class Company implements  Serializable
     Date dateCreated
     Date lastUpdated
 
-    boolean hasProducts(Products products)
+    boolean has(Products products)
     {
         return this.products.contains(products)
     }

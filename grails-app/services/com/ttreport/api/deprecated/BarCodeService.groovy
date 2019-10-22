@@ -114,7 +114,7 @@ class BarCodeService extends Responsive
             response.barcode_list = src.barcodes
             return response
         }
-        if(!owner.hasProducts(products))
+        if(!owner.has(products))
         {
             DevCycleLogger.log("product with id ${src.productId} not found in possession of: ${owner.companyId} at ${owner.address}, exiting update()")
             response.status = statusCodes.invalid_input
@@ -188,7 +188,7 @@ class BarCodeService extends Responsive
             response.barcode_list = src.barcodes
             return response
         }
-        if(!owner.hasProducts(products))
+        if(!owner.has(products))
         {
             DevCycleLogger.log("product with id ${src.productId} not found in possession of: ${owner.companyId} at ${owner.address}, exiting delete()")
             response.status = statusCodes.invalid_input

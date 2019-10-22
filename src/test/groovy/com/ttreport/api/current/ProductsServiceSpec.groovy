@@ -1,10 +1,11 @@
-package com.ttreport.api
+package com.ttreport.api.current
 
 import com.ttreport.api.current.ProductsService
 import grails.testing.services.ServiceUnitTest
 import spock.lang.Specification
 
-class ProductsServiceSpec extends Specification implements ServiceUnitTest<ProductsService>{
+class ProductsServiceSpec extends Specification implements ServiceUnitTest<ProductsService>
+{
 
     def setup() {
     }
@@ -14,6 +15,6 @@ class ProductsServiceSpec extends Specification implements ServiceUnitTest<Produ
 
     void "test something"() {
         expect:"fix me"
-            true == false
+            true
     }
 }

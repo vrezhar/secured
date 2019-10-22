@@ -1,5 +1,6 @@
 package com.ttreport.data
 
+import com.ttreport.api.resources.current.ProductCommand
 import com.ttreport.logs.DevCycleLogger
 import grails.compiler.GrailsCompileStatic
 import groovy.transform.ToString
@@ -19,29 +20,36 @@ class BarCode implements Serializable
     Date dateCreated
     Date lastUpdated
 
-
-
     static belongsTo = [products: Products]
+
+    @Override
+    boolean equals(Object o)
+    {
+        if(!(o instanceof BarCode)){
+            return false
+        }
+        BarCode other = o as BarCode
+        if(other.uitu_code == this.uitu_code && other.uit_code == this.uit_code){
+            return true
+        }
+        return false
+    }
+
+    def transferOwnershipTo(Products other){
+        this.products.barCodes.remove(this)
+        this.products = other
+        other.addToBarCodes(this)
+    }
 
     static constraints = {
         dateDeleted nullable: true
         uit_code nullable: true, validator: { String value, BarCode object ->
-            if(value && (findWhere(uitu_code: value))) {
-                DevCycleLogger.log("inside uit's validator, first if")
-                return false
-            }
-            if(!object?.uitu_code  && !value && !object?.uit_code) {
-                DevCycleLogger.log("inside uit's validator, second if")
+            if(!value && !object?.uitu_code) {
                 return false
             }
         }
         uitu_code nullable: true, validator: { String value, BarCode object ->
-            if(value && (findWhere(uitu_code: value))) {
-                DevCycleLogger.log("inside uitu's validator, first if")
-                return false
-            }
-            if(!object?.uit_code && !value && !object?.uitu_code) {
-                DevCycleLogger.log("inside uitu's validator, second if")
+            if(!value && !object?.uit_code) {
                 return false
             }
         }

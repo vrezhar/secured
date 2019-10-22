@@ -3,6 +3,7 @@ package com.ttreport.api.response.current
 import com.ttreport.api.resources.current.DocumentCommand
 import com.ttreport.api.resources.current.ProductCommand
 import com.ttreport.api.response.Responsive
+import com.ttreport.data.Products
 import com.ttreport.logs.DevCycleLogger
 
 class Response extends  Responsive
@@ -10,17 +11,20 @@ class Response extends  Responsive
 
     private int status = statusCodes.success as int
     private List<RejectedProduct> rejected_list = []
+    private List<ProductIdentifier> accepted_list = []
 
-    void rejectProduct(ProductCommand cmd)
+    void accept(Products products)
     {
-        RejectedProduct rejected = new RejectedProduct(product_code: cmd.product_code?: "")
-        if(cmd.uit_code != "") {
-            rejected.uit_code = cmd.uit_code
-        }
-        if(cmd.uitu_code != "") {
-            rejected.uitu_code = cmd.uitu_code
-        }
+        accepted_list.add(new ProductIdentifier(products.description,products.id))
+    }
+
+    RejectedProduct rejectProduct(ProductCommand cmd)
+    {
+        RejectedProduct rejected = new RejectedProduct()
+        rejected.uit_code = cmd.uit_code
+        rejected.uitu_code = cmd.uitu_code
         rejected_list?.add(rejected)
+        return rejected
     }
 
     static Map rejectToken(String token_for_logging = "")
@@ -59,8 +63,12 @@ class Response extends  Responsive
     {
         Map response = [:]
         response.status = this.status
-        if(rejected_list)
+        if(rejected_list){
             response.rejected_list = rejected_list
+        }
+        if(accepted_list){
+            response.accepted_list = accepted_list
+        }
         return response
     }
 }

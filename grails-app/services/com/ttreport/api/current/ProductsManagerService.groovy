@@ -34,27 +34,27 @@ class ProductsManagerService extends DocumentService{
         Response response = new Response()
         Document document = createAcceptanceDocumentMock(cmd)
         for(item in cmd.products) {
-            Products products = Products.findWhere(productCode: item.product_code)
-            if (products) {
+            if (item.product_code) {
                 DevCycleLogger.log("found product with code ${item.product_code}, belonging to company with id ${company.companyId}")
+                Products products = update(item)
                 boolean contains = document.products?.contains(products)
-                products = update(item)
                 if (!products || !products?.validate()) {
                     DevCycleLogger.log("unable to update product with code ${item.product_code}, belonging to company with id ${company.companyId}, rejecting")
                     response.rejectProduct(item)
                     response.reportInvalidInput()
                     continue
                 }
-                products.save()
+                products.save(true)
                 if (!contains) {
                     document.addToProducts(products) // necessary,belongsTo in products is not defined
                 }
+                response.accept(products)
                 DevCycleLogger.log("adding product with code ${item.product_code}, belonging to company with id ${company.companyId}, to the current document")
                 continue
             }
 
             DevCycleLogger.log("product with code ${item.product_code}, belonging to company with id ${company.companyId} not found, trying to save")
-            products = save(item, company)
+            Products products = save(item, company)
             if (!products || !products?.validate()) {
                 DevCycleLogger.log_validation_errors(products)
                 DevCycleLogger.log("unable to save product with code ${item.product_code}, belonging to company with id ${company.companyId}, rejecting")
@@ -64,8 +64,9 @@ class ProductsManagerService extends DocumentService{
             }
 
             DevCycleLogger.log("product with code ${item.product_code}, belonging to company with id ${company.companyId} saved, adding to current document")
-            products.save()
+            products.save(true)
             document.addToProducts(products)
+            response.accept(products)
         }
 
         dandr.document = document
@@ -93,11 +94,11 @@ class ProductsManagerService extends DocumentService{
         Document document = createShipmentDocumentMock(cmd)
 
         for(item in cmd.products) {
-            Products products = Products.findWhere(productCode:  item.product_code)
-            if(products && company?.products?.contains(products)) {
+            Products products = Products.get(item.product_code)
+            if(products && company?.has(products)) {
                 boolean contains = document.products?.contains(products)
                 DevCycleLogger.log("found product with code ${item.product_code}, belonging to company with id ${company.companyId}, trying to delete")
-                products = delete(item)
+                delete(item,products)
                 if(!products) {
                     DevCycleLogger.log("couldn't delete barcode with uit code ${item.uit_code} and uitu code ${item.uitu_code} with code ${item.product_code}, belonging to company with id ${company.companyId}, rejecting")
                     response.rejectProduct(item)
@@ -107,6 +108,7 @@ class ProductsManagerService extends DocumentService{
                 if(!contains) {
                     document.addToProducts(products)
                 }
+                response.accept(products)
                 continue
             }
             DevCycleLogger.log("couldn't find product with code ${item.product_code}, belonging to company with id ${company.companyId}, rejecting")
