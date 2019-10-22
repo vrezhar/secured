@@ -16,6 +16,7 @@ beans = {
 //
 //    documentService(DocumentService)
 
+
     companyService(CompanyService)
 
     barCodeService(BarCodeService)
