@@ -2,6 +2,7 @@ package spring
 
 import com.ttreport.api.deprecated.BarCodeService
 import com.ttreport.api.deprecated.CompanyService
+import com.ttreport.api.current.ValidationErrorResolverService
 import com.ttreport.mail.MailErrorHandlingService
 import com.ttreport.mail.MailingService
 import com.ttreport.auth.PatternValidatorService
@@ -16,6 +17,7 @@ beans = {
 //
 //    documentService(DocumentService)
 
+    validationErrorResolverService(ValidationErrorResolverService)
 
     companyService(CompanyService)
 
@@ -35,3 +37,4 @@ beans = {
 
     sessionAuthenticationStrategy(NullAuthenticatedSessionStrategy)
 }
+

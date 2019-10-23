@@ -5,9 +5,9 @@ class RejectedProduct
     String uit_code = ""
     String uitu_code = ""
     String product_code
-    int reason
-    void withReason(int reason)
+    private int error_code = 500
+    void setErrorCode(int reason)
     {
-        this.reason = reason
+        this.error_code = (reason < this.error_code) ? reason : this.error_code
     }
 }

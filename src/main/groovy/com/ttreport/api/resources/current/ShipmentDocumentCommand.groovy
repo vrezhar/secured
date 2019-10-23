@@ -6,7 +6,6 @@ import grails.compiler.GrailsCompileStatic
 @GrailsCompileStatic
 class ShipmentDocumentCommand extends DocumentCommand
 {
-    String pdf
     String owner
     String owner_inn
     String receiver_inn
@@ -15,7 +14,6 @@ class ShipmentDocumentCommand extends DocumentCommand
     String sender
 
     static  constraints = {
-        pdf nullable: true, blank: true
         owner nullable: false, blank: false
         owner_inn nullable: false, blank: false
         receiver nullable: false, blank: false

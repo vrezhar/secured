@@ -38,9 +38,6 @@ class DocumentService extends ProductsService
     {
         Document document = createDocumentMock(cmd)
         document.requestType = "SHIPMENT"
-        if(cmd.pdf != "" && cmd.pdf != null){
-            document.pdf = cmd.pdf
-        }
         document.owner = cmd.owner
         document.ownerInn = cmd.owner_inn
         document.receiver = cmd.receiver
