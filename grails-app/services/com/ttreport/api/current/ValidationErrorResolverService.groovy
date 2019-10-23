@@ -9,7 +9,7 @@ import com.ttreport.api.response.current.Response
 import grails.gorm.transactions.Transactional
 
 @Transactional
-class ValidationErrorResolverService extends BarCodeService
+class ValidationErrorResolverService
 {
 
     protected static String getMessage(String message) {
