@@ -47,9 +47,6 @@ class ProductCommand implements Validateable
             if(exists && exists?.dateDeleted){
                 return  'command.code.deleted'
             }
-            if(object?.uitu_code && value){
-                return 'command.code.both'
-            }
 
         }
         uitu_code nullable: true, validator: { String value, ProductCommand object ->
@@ -65,9 +62,6 @@ class ProductCommand implements Validateable
             }
             if(exists && exists?.dateDeleted){
                 return  'command.code.deleted'
-            }
-            if(object?.uit_code && value){
-                return 'command.code.both'
             }
 
         }
