@@ -6,6 +6,8 @@ import com.ttreport.api.resources.current.ProductCommand
 import com.ttreport.api.resources.current.ShipmentDocumentCommand
 import com.ttreport.api.response.Responsive
 import com.ttreport.api.response.current.Response
+import com.ttreport.data.Company
+import com.ttreport.data.Products
 import grails.gorm.transactions.Transactional
 
 @Transactional
@@ -89,9 +91,15 @@ class ValidationErrorResolverService
             response.status = getCode("command.document.invalid")
             return response
         }
+        Company company = Company.findWhere(token: cmd.companyToken)
         for(product in cmd.products){
             if(!product.validate()){
                 response.rejectProduct(product).withReason(computeHighestPriorityError(product))
+                product.rejected= true
+                continue
+            }
+            if(product.action != "SAVE" && !company.has(Products.get(product.product_code))){
+                response.rejectProduct(product).withReason(getCode('command.product.notfound'))
                 product.rejected= true
             }
         }

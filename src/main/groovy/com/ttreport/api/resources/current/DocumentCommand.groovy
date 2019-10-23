@@ -30,7 +30,8 @@ class DocumentCommand implements Validateable
             }
         }
         companyToken nullable: false, blank: false, validator: {String value, DocumentCommand object ->
-            if(!Company.findWhere(token: value)){
+            Company company = Company.findWhere(token: value)
+            if(!company){
                 return false
             }
         }

@@ -63,6 +63,12 @@ class ProductCommand implements Validateable
             if(exists && exists?.dateDeleted){
                 return  'command.code.deleted'
             }
+            if(exists && object?.action != "SAVE"){
+                Products products = Products.get(object?.product_code)
+                if(!products?.has(exists)){
+                    return 'command.code.notfound'
+                }
+            }
 
         }
         product_description nullable: true, validator: { String value, ProductCommand object ->
