@@ -31,18 +31,18 @@ class ValidationErrorResolverServiceSpec extends HibernateSpec implements Servic
         Products products = new Products(description: "test", tax: 10, cost: 100)
         company.addToProducts(products)
         products.save()
-        BarCode barCode = new BarCode(uit_code: "", uitu_code: "test1", products: products)
+        BarCode barCode = new BarCode(uit_code: "test", uitu_code: "test1", products: products)
         products.addToBarCodes(barCode)
         barCode.save()
-        error.setAction("UPDATE")
-        error.product_code = 2
+        error.setAction("DELETE")
+        error.product_code = 1
         error.cost = 100
         error.product_description = "Something"
-        error.uit_code = ""
+        error.uit_code = "test"
         error.uitu_code = "test1"
         error.validate()
         expect:"matching error"
-               service.computeHighestPriorityError(error) == 404
+               service.computeHighestPriorityError(error) == -1
 
     }
 }

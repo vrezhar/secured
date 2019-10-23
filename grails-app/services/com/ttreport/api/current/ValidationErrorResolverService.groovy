@@ -39,7 +39,7 @@ class ValidationErrorResolverService
         cmd.errors.fieldErrors.each {
             list.add(getCode(it.code))
         }
-        int min = list[0]
+        int min = list[0]?: -1
         for(item in list){
             if(item < min){
                 min = item
