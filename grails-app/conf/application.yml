@@ -11,8 +11,8 @@ mail:
 
 ---
 status:
-    INVALID_TOKEN: 401
-    INVALID_ACTION: 400
+    INVALID_TOKEN: 400
+    INVALID_ACTION: 401
     OK: 200
 
 ---

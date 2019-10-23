@@ -8,6 +8,7 @@ import grails.validation.Validateable
 @GrailsCompileStatic
 class ProductCommand implements Validateable
 {
+    boolean rejected = false
     int tax = 0
     int cost = 0
     String product_code

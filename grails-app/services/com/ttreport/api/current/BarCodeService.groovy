@@ -4,7 +4,7 @@ import com.ttreport.data.BarCode
 import grails.gorm.transactions.Transactional
 
 @Transactional
-class BarCodeService extends ValidationErrorResolverService
+class BarCodeService
 {
 
     boolean isDeleted(BarCode barCode)

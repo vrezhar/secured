@@ -34,16 +34,15 @@ class ValidationErrorResolverServiceSpec extends HibernateSpec implements Servic
         BarCode barCode = new BarCode(uit_code: "", uitu_code: "test1", products: products)
         products.addToBarCodes(barCode)
         barCode.save()
-        error.setAction("SAVE")
-        error.product_code = 1024
-        error.tax = 10
+        error.setAction("UPDATE")
+        error.product_code = 2
         error.cost = 100
         error.product_description = "Something"
         error.uit_code = ""
         error.uitu_code = "test1"
         error.validate()
         expect:"matching error"
-               service.getCode(error.errors.fieldErrors[0].code) == 412
+               service.computeHighestPriorityError(error) == 404
 
     }
 }

@@ -9,7 +9,7 @@ import com.ttreport.logs.DevCycleLogger
 class Response extends  Responsive
 {
 
-    private int status = statusCodes.success as int
+    int status = statusCodes.success as int
     private List<RejectedProduct> rejected_list = []
     private List<ProductIdentifier> accepted_list = []
 

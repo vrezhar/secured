@@ -6,7 +6,7 @@ class RejectedProduct
     String uitu_code = ""
     String product_code
     private int error_code = 500
-    void setErrorCode(int reason)
+    void withReason(int reason)
     {
         this.error_code = (reason < this.error_code) ? reason : this.error_code
     }

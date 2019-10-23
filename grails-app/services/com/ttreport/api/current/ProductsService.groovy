@@ -8,7 +8,7 @@ import com.ttreport.logs.DevCycleLogger
 import grails.gorm.transactions.Transactional
 
 @Transactional
-class ProductsService extends BarCodeService
+class ProductsService extends ValidationErrorResolverService
 {
 
     Products update(ProductCommand cmd)
