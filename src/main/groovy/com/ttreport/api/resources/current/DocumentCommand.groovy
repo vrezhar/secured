@@ -1,5 +1,6 @@
 package com.ttreport.api.resources.current
 
+import com.ttreport.data.Company
 import com.ttreport.data.Document
 import grails.compiler.GrailsCompileStatic
 import grails.validation.Validateable
@@ -28,7 +29,11 @@ class DocumentCommand implements Validateable
                 return false
             }
         }
-        companyToken nullable: false, blank: false
+        companyToken nullable: false, blank: false, validator: {String value, DocumentCommand object ->
+            if(!Company.findWhere(token: value)){
+                return false
+            }
+        }
     }
 
 }
