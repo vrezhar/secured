@@ -33,16 +33,9 @@
 
 
             <div class = "info">
-                <label for = "username">Username:</label>
+                <label for = "username">Email:</label>
                 <p id = "username">
                     ${user.username}
-                </p>
-            </div>
-
-            <div class = "info">
-                <label for = "email">Email:</label>
-                <p id = "email">
-                    ${user.email}
                 </p>
             </div>
 

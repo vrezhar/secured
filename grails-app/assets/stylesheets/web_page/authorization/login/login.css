@@ -1,0 +1,134 @@
+#login {
+    margin: 15px 0px;
+    padding: 0px;
+    text-align: center;
+}
+
+#login .inner {
+    width: 340px;
+    padding-bottom: 6px;
+    margin: 60px auto;
+    text-align: left;
+    border: 1px solid #aab;
+    background-color: #f0f0fa;
+    -moz-box-shadow: 2px 2px 2px #eee;
+    -webkit-box-shadow: 2px 2px 2px #eee;
+    -khtml-box-shadow: 2px 2px 2px #eee;
+    box-shadow: 2px 2px 2px #eee;
+}
+
+#login .inner .fheader {
+    padding: 18px 26px 14px 26px;
+    background-color: #f7f7ff;
+    margin: 0px 0 14px 0;
+    color: #2e3741;
+    font-size: 18px;
+    font-weight: bold;
+}
+
+#login .inner .cssform p {
+    clear: left;
+    margin: 0;
+    padding: 4px 0 3px 0;
+    margin-bottom: 20px;
+    height: 1%;
+}
+#login .inner .cssform #password-wrapper input[type="password"] {
+    width: 200px;
+    font-style: normal;
+    font-optical-sizing: inherit;
+}
+
+#login .inner .cssform input[type="text"] {
+    border-radius: 30px;
+    width: 300px;
+    margin-left: 10px;
+    font-style: normal;
+    font-optical-sizing: inherit;
+    color: rgba(178,178,178,0.62);
+    visibility: visible;
+}
+
+#login #remember_me_holder {
+    padding-left: 10px;
+}
+
+#login #submit {
+    margin-left: 15px;
+    height: 30px;
+}
+
+#login .inner .register
+{
+    margin-left: 150px;
+
+}
+
+#submit
+{
+    margin-left: 20px;
+    margin-bottom: 25px;
+    border-radius: 10%;
+    color: #495057;
+    width: 150px;
+}
+
+#login .inner .login_message {
+    padding: 6px 25px 20px 25px;
+    color: #c33;
+}
+
+#login .inner #remember_me_holder {
+    margin-left: 15px;
+    float: right;
+    width: 150px;
+    display: inline-block;
+    margin-bottom: 60px;
+    text-align: left;
+    font-size: small;
+}
+
+#login #remember_me_holder input {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+    height: 0;
+    width: 0;
+}
+/*#login #remember_me_holder:hover input ~ .checkmark {*/
+/*    background-color: #efefef;*/
+/*}*/
+
+#login #remember_me_holder input:checked ~ .checkmark {
+    background-color: #2196F3;
+}
+
+#login #remember_me_holder:after {
+    content: "";
+    position: absolute;
+    display: none;
+}
+
+#login #remember_me_holder input:checked ~ .checkmark:after {
+    display: block;
+}
+
+#login #remember_me_holder .checkmark:after {
+    left: 9px;
+    top: 5px;
+    width: 5px;
+    height: 10px;
+    border: solid white;
+    border-width: 0 3px 3px 0;
+    -webkit-transform: rotate(45deg);
+    -ms-transform: rotate(45deg);
+    transform: rotate(45deg);
+}
+#login #remember_me_holder .checkmark{
+    display: inline-block;
+    position: inherit;
+    height: 11px;
+    width: 11px;
+    background-color: #ffffff;
+    border-radius: 20%;
+}
