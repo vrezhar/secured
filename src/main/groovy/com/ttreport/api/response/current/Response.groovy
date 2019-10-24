@@ -13,9 +13,12 @@ class Response extends  Responsive
     private List<RejectedProduct> rejected_list = []
     private List<ProductIdentifier> accepted_list = []
 
-    void accept(Products products)
+    void accept(ProductCommand cmd)
     {
-        accepted_list.add(new ProductIdentifier(products.description,products.id))
+        ProductIdentifier accepted = new ProductIdentifier(cmd.product_description,cmd.product_code)
+        accepted.uit_code = cmd.uit_code
+        accepted.uitu_code = cmd.uitu_code
+        accepted_list.add(accepted)
     }
 
     RejectedProduct rejectProduct(ProductCommand cmd)

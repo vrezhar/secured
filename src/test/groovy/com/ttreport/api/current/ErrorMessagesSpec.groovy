@@ -6,9 +6,9 @@ import grails.testing.spring.AutowiredTest
 import org.grails.testing.GrailsUnitTest
 import spock.lang.Specification
 
-class ErrorMessagesSpec extends HibernateSpec implements AutowiredTest{
+class ErrorMessagesSpec extends Specification implements AutowiredTest{
 
-    List<Class> getDomainClasses(){[]}
+//    List<Class> getDomainClasses(){[]}
 
     Closure doWithSpring()
     {{->

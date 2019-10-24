@@ -36,8 +36,6 @@ class ValidationErrorResolverServiceSpec extends HibernateSpec implements Servic
         barCode.save()
         error.setAction("DELETE")
         error.product_code = 1
-        error.cost = 100
-        error.product_description = "Something"
         error.uit_code = "test"
         error.uitu_code = "test1"
         error.validate()

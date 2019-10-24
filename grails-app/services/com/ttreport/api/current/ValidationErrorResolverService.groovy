@@ -4,7 +4,7 @@ import com.ttreport.api.resources.current.AcceptanceDocumentCommand
 import com.ttreport.api.resources.current.DocumentCommand
 import com.ttreport.api.resources.current.ProductCommand
 import com.ttreport.api.resources.current.ShipmentDocumentCommand
-import com.ttreport.api.response.Responsive
+import com.ttreport.logs.DevCycleLogger
 import com.ttreport.api.response.current.Response
 import com.ttreport.data.Company
 import com.ttreport.data.Products
@@ -29,8 +29,8 @@ class ValidationErrorResolverService
             return -1;
         }
         int result = 0
-        for(int i = 0; i < 3; ++i){
-            result = result*10 + error[i].toInteger()
+        for(literal in error){
+            result = result*10 + literal.toInteger()
         }
         return result
     }
@@ -41,6 +41,7 @@ class ValidationErrorResolverService
         cmd.errors.fieldErrors.each {
             list.add(getCode(it.code))
         }
+        DevCycleLogger.log_validation_errors(cmd)
         int min = list[0]?: -1
         for(item in list){
             if(item < min){
@@ -51,13 +52,16 @@ class ValidationErrorResolverService
     }
 
     protected static void setActions(DocumentCommand cmd) throws Exception{
+        DevCycleLogger.log("Determining actions for command objects")
         if(cmd instanceof AcceptanceDocumentCommand){
             AcceptanceDocumentCommand doc = cmd as AcceptanceDocumentCommand
             for(product in doc.products){
                 if(product.product_code){
+                    DevCycleLogger.log("Command object number ${product.product_code} set to be updated")
                     product.setAction("UPDATE")
                     continue
                 }
+                DevCycleLogger.log("Command object with description ${product.product_description} set to be saved")
                 product.setAction("SAVE")
             }
             return
@@ -65,6 +69,7 @@ class ValidationErrorResolverService
         if(cmd instanceof ShipmentDocumentCommand){
             ShipmentDocumentCommand doc = cmd as ShipmentDocumentCommand
             for(product in doc.products){
+                DevCycleLogger.log("Command object number ${product.product_code} set to be 'deleted'")
                 product.setAction("DELETE")
             }
             return
@@ -73,34 +78,43 @@ class ValidationErrorResolverService
     }
 
     protected Response performCommandValidation(DocumentCommand cmd){
+        DevCycleLogger.log("Starting validation process")
         Response response = new Response()
         try{
             setActions(cmd)
         }
-        catch (Exception ignored){
+        catch (Exception e){
+            DevCycleLogger.log(e.message)
             response.status = getCode("command.document.invalid")
             return response
         }
         if(!cmd.validate()){
+            DevCycleLogger.log("DocumentCommand object not validated")
+            response.reportInvalidInput()
             for(error in cmd.errors.fieldErrors){
                 if(error.field == "companyToken"){
+                    DevCycleLogger.log("authorisation failure")
                     response.rejectCompanyToken()
                     return response
                 }
             }
+            DevCycleLogger.log_validation_errors(cmd)
             response.status = getCode("command.document.invalid")
             return response
         }
         Company company = Company.findWhere(token: cmd.companyToken)
         for(product in cmd.products){
             if(!product.validate()){
+                response.reportInvalidInput()
+                DevCycleLogger.log("ProductCommand object not validated, rejecting")
                 response.rejectProduct(product).withReason(computeHighestPriorityError(product))
-                product.rejected= true
+                product.rejected = true
                 continue
             }
             if(product.action != "SAVE" && !company.has(Products.get(product.product_code))){
+                DevCycleLogger.log("Product doesn't belong to found company's product list")
                 response.rejectProduct(product).withReason(getCode('command.product.notfound'))
-                product.rejected= true
+                product.rejected = true
             }
         }
         return response

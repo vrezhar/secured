@@ -11,7 +11,6 @@ import grails.gorm.transactions.Transactional
 class DocumentShipmentService extends ProductsManagerService
 {
 
-
     Map ship(ShipmentDocumentCommand cmd)
     {
         DevCycleLogger.log("ship() called")
@@ -20,7 +19,7 @@ class DocumentShipmentService extends ProductsManagerService
         if(!document){
             return dandr.response
         }
-        if(!document.validate() || document.products?.isEmpty()) {
+        if(!document.validate()) {
             DevCycleLogger.log_validation_errors(document,"document with number ${document.documentNumber} not validated, exiting ship()")
             return dandr.response
         }

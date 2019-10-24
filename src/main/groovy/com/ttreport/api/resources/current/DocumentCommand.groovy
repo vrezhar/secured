@@ -8,10 +8,10 @@ import grails.validation.Validateable
 @GrailsCompileStatic
 class DocumentCommand implements Validateable
 {
-    List<ProductCommand> products
-    int document_date = 0
-    int transfer_date = 0
-    String turnover_type
+    List<ProductCommand> products = []
+    int document_date = 1
+    int transfer_date = 1
+    String turnover_type = "test"
     String document_number
     String companyToken
 
