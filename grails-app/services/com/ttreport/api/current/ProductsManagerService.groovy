@@ -19,6 +19,7 @@ class ProductsManagerService extends DocumentService{
         DocumentAndResponse dandr = new DocumentAndResponse()
         Response response = performCommandValidation(cmd)
         if(response.status == 400 || response.status == 402){
+            dandr.response = response.getAsMap()
             return  dandr
         }
         Company company = Company.findWhere(token: cmd.companyToken)
@@ -30,7 +31,7 @@ class ProductsManagerService extends DocumentService{
                     DevCycleLogger.log("found product with code ${item.product_code}, belonging to company with id ${company.companyId}")
                     Products products
                     try{
-                        products = update(item)
+                        products = update(item, 0/*,company*/)
                     }
                     catch(Exception e){
                         DevCycleLogger.log(e.message)
@@ -54,12 +55,16 @@ class ProductsManagerService extends DocumentService{
                 }
                 catch (Exception e){
                     DevCycleLogger.log(e.message)
+                    dandr.response = response.getAsMap()
                     dandr.response.status = 505
                     return dandr
                 }
                 DevCycleLogger.log("product with code ${item.product_code}, belonging to company with id ${company.companyId} saved, adding to current document")
+                boolean contains = document.products?.contains(products)
                 products.save(true)
-                document.addToProducts(products)
+                if (!contains) {
+                    document.addToProducts(products) // necessary,belongsTo in products is not defined
+                }
                 response.accept(item)
             }
         }
@@ -79,6 +84,7 @@ class ProductsManagerService extends DocumentService{
         DocumentAndResponse dandr = new DocumentAndResponse()
         Response response = performCommandValidation(cmd)
         if(response.status == 400 || response.status == 402){
+            dandr.response = response.getAsMap()
             return  dandr
         }
         Company company = Company.findWhere(token: cmd.companyToken)

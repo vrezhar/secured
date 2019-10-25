@@ -21,11 +21,13 @@ class Response extends  Responsive
         accepted_list.add(accepted)
     }
 
-    RejectedProduct rejectProduct(ProductCommand cmd)
+    RejectedProduct rejectProduct(ProductCommand cmd, int reason)
     {
         RejectedProduct rejected = new RejectedProduct()
+        rejected.product_code = cmd.product_code
         rejected.uit_code = cmd.uit_code
         rejected.uitu_code = cmd.uitu_code
+        rejected.error_code = reason
         rejected_list?.add(rejected)
         return rejected
     }

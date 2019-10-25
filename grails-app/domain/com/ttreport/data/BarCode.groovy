@@ -12,7 +12,6 @@ class BarCode implements Serializable
 
     private static final long serialVersionUID = 1
 
-
     String uit_code
     String uitu_code
     Date dateDeleted = null

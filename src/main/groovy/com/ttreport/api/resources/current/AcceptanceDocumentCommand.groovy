@@ -21,7 +21,7 @@ class AcceptanceDocumentCommand extends DocumentCommand
         trade_recipient_inn nullable: false, blank: false
         trade_sender_inn nullable: false, blank: false
         trade_sender_name nullable: false, blank: false
-        acceptance_date notEqual: 0
+        acceptance_date notEqual: 0L
     }
 
 }

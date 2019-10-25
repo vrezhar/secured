@@ -107,13 +107,13 @@ class ValidationErrorResolverService
             if(!product.validate()){
                 response.reportInvalidInput()
                 DevCycleLogger.log("ProductCommand object not validated, rejecting")
-                response.rejectProduct(product).withReason(computeHighestPriorityError(product))
+                response.rejectProduct(product,computeHighestPriorityError(product))
                 product.rejected = true
                 continue
             }
             if(product.action != "SAVE" && !company.has(Products.get(product.product_code))){
                 DevCycleLogger.log("Product doesn't belong to found company's product list")
-                response.rejectProduct(product).withReason(getCode('command.product.notfound'))
+                response.rejectProduct(product,computeHighestPriorityError(product))
                 product.rejected = true
             }
         }

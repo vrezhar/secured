@@ -11,10 +11,21 @@ import grails.gorm.transactions.Transactional
 class ProductsService extends ValidationErrorResolverService
 {
 
-    Products update(ProductCommand cmd)
+    Products update(ProductCommand cmd, long carry_id/*,Company company*/) throws Exception
     {
         DevCycleLogger.log('update() called')
-        Products products = Products.get(cmd.product_code)
+        Products products = Products.get(cmd.product_code == 0 ? carry_id : cmd.product_code)
+//        if(!cmd.product_code){
+//            DevCycleLogger.log("No product code detected, redirecting to save")
+//            cmd.setAction("SAVE")
+//            try {
+//                products = save(cmd,company)
+//                return products
+//            }
+//            catch (Exception e){
+//                throw e
+//            }
+//        }
         BarCode barCode = new BarCode(uit_code: cmd.uit_code, uitu_code: cmd.uitu_code, products: products)
         if(!barCode.save()) {
             DevCycleLogger.log_validation_errors(barCode,"barcode with uit code ${barCode.uit_code} and uitu code ${barCode.uitu_code} not validated, nothing updated, exiting update()")
@@ -30,7 +41,18 @@ class ProductsService extends ValidationErrorResolverService
     {
         DevCycleLogger.log("save() called")
         DevCycleLogger.log("trying to save product with code ${cmd.product_code}, belonging to company with id ${company.companyId}")
-        Products products = new Products(description: cmd.product_description, tax: cmd.tax, cost: cmd.cost)
+        Products products = Products.findWhere(cost: cmd.cost, tax: cmd.tax, description: cmd.product_description)
+        if(products)
+        {
+            try {
+                products = update(cmd, products.id/*,company*/)
+                return products
+            }
+            catch (Exception e){
+                throw e
+            }
+        }
+        products = new Products(cost: cmd.cost, tax: cmd.tax, description: cmd.product_description)
         if(!products.validate()) {
             DevCycleLogger.log_validation_errors(products,"unable to validate the product, nothing saved, exiting save()")
             throw new Exception("Product not validated")
