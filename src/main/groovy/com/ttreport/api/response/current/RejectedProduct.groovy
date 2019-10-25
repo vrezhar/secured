@@ -4,6 +4,6 @@ class RejectedProduct
 {
     String uit_code = ""
     String uitu_code = ""
-    long product_code
-    int error_code = 500
+    long id
+    int reason = 500
 }

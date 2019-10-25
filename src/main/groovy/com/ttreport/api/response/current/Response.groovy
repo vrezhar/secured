@@ -24,10 +24,10 @@ class Response extends  Responsive
     RejectedProduct rejectProduct(ProductCommand cmd, int reason)
     {
         RejectedProduct rejected = new RejectedProduct()
-        rejected.product_code = cmd.product_code
+        rejected.id = cmd.product_code
         rejected.uit_code = cmd.uit_code
         rejected.uitu_code = cmd.uitu_code
-        rejected.error_code = reason
+        rejected.reason = reason
         rejected_list?.add(rejected)
         return rejected
     }
@@ -42,12 +42,12 @@ class Response extends  Responsive
         return response.getAsMap()
     }
 
-    static  Map rejectInput(DocumentCommand cmd, log = false, String additional_message = null)
+    static  Map rejectInput(DocumentCommand cmd, int reason, log = false, String additional_message = null)
     {
         Response response = new Response()
         response.reportInvalidInput()
         for(object in cmd.products) {
-            response.rejectProduct(object)
+            response.rejectProduct(object,reason)
         }
         if(log) {
             DevCycleLogger.log_validation_errors(cmd,additional_message)
