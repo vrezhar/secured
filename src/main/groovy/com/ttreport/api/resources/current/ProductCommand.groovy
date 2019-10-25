@@ -8,10 +8,10 @@ import grails.validation.Validateable
 @GrailsCompileStatic
 class ProductCommand implements Validateable {
     boolean rejected = false
-    int tax = 10
-    int cost = 100
+    int tax
+    int cost
     long id
-    String product_description = "test"
+    String product_description
     String uit_code
     String uitu_code
     String action

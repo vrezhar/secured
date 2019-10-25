@@ -31,7 +31,7 @@ class ProductsManagerService extends DocumentService{
                     DevCycleLogger.log("found product with code ${item.id}, belonging to company with id ${company.companyId}")
                     Products products
                     try{
-                        products = update(item, 0/*,company*/)
+                        products = update(item)
                     }
                     catch(Exception e){
                         DevCycleLogger.log(e.message)
@@ -43,6 +43,7 @@ class ProductsManagerService extends DocumentService{
                     if (!contains) {
                         document.addToProducts(products) // necessary,belongsTo in products is not defined
                     }
+                    item.id = products.id
                     response.accept(item)
                     DevCycleLogger.log("adding product with code ${item.id}, belonging to company with id ${company.companyId}, to the current document")
                     continue
@@ -65,6 +66,7 @@ class ProductsManagerService extends DocumentService{
                 if (!contains) {
                     document.addToProducts(products) // necessary,belongsTo in products is not defined
                 }
+                item.id = products.id
                 response.accept(item)
             }
         }
@@ -106,6 +108,7 @@ class ProductsManagerService extends DocumentService{
                 if(!contains) {
                     document.addToProducts(products)
                 }
+                item.id = products.id
                 response.accept(item)
             }
         }

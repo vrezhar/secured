@@ -11,10 +11,10 @@ import grails.gorm.transactions.Transactional
 class ProductsService extends ValidationErrorResolverService
 {
 
-    Products update(ProductCommand cmd, long carry_id/*,Company company*/) throws Exception
+    Products update(ProductCommand cmd) throws Exception
     {
         DevCycleLogger.log('update() called')
-        Products products = Products.get(cmd.id == 0 ? carry_id : cmd.id)
+        Products products = Products.get(cmd.id)
 //        if(!cmd.product_code){
 //            DevCycleLogger.log("No product code detected, redirecting to save")
 //            cmd.setAction("SAVE")
@@ -45,7 +45,8 @@ class ProductsService extends ValidationErrorResolverService
         if(products)
         {
             try {
-                products = update(cmd, products.id/*,company*/)
+                cmd.id = products.id
+                products = update(cmd)
                 return products
             }
             catch (Exception e){

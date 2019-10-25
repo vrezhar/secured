@@ -9,6 +9,7 @@ buildscript {
         classpath "org.grails:grails-gradle-plugin:$grailsVersion"
         classpath "org.grails.plugins:hibernate5:${gormVersion-".RELEASE"}"
         classpath "com.bertramlabs.plugins:asset-pipeline-gradle:2.15.1"
+        classpath 'com.agileorbit:schwartz:1.0.1'
     }
 }
 
@@ -62,6 +63,7 @@ dependencies {
     compile 'javax.mail:mail:1.4.7'
     compile group: 'javax.activation', name: 'activation', version: '1.1'
 
+    compile 'org.grails.plugins:async:3.3.0'
     //compile "org.grails.plugins:jmx"
 
     // https://mvnrepository.com/artifact/mysql/mysql-connector-java
