@@ -9,7 +9,6 @@ import com.ttreport.data.Company
 import com.ttreport.data.Products
 import grails.test.hibernate.HibernateSpec
 import grails.testing.services.ServiceUnitTest
-import spock.lang.Specification
 
 class ValidationErrorResolverServiceSpec extends HibernateSpec implements ServiceUnitTest<ValidationErrorResolverService>{
 
@@ -35,7 +34,7 @@ class ValidationErrorResolverServiceSpec extends HibernateSpec implements Servic
         products.addToBarCodes(barCode)
         barCode.save()
         error.setAction("DELETE")
-        error.product_code = 1
+        error.id = 1
         error.uit_code = "test"
         error.uitu_code = "test1"
         error.validate()

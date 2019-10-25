@@ -10,15 +10,15 @@ class ProductCommand implements Validateable {
     boolean rejected = false
     int tax = 10
     int cost = 100
-    long product_code
+    long id
     String product_description = "test"
     String uit_code
     String uitu_code
     String action
 
     static constraints = {
-        product_code nullable: true, validator: { long value, ProductCommand object ->
-            Products databaseInstance = Products.get(object?.product_code)
+        id nullable: true, validator: { long value, ProductCommand object ->
+            Products databaseInstance = Products.get(object?.id)
             if (!value && object?.action != "SAVE") {
                 return 'command.product.null'
             }
@@ -47,7 +47,7 @@ class ProductCommand implements Validateable {
                 return 'command.code.deleted'
             }
             if (exists && object?.action != "SAVE") {
-                Products products = Products.get(object?.product_code)
+                Products products = Products.get(object?.id)
                 if (!products?.has(exists)) {
                     return 'command.code.notfound'
                 }
@@ -69,7 +69,7 @@ class ProductCommand implements Validateable {
                     return 'command.code.deleted'
                 }
                 if (exists && object?.action != "SAVE") {
-                    Products products = Products.get(object?.product_code)
+                    Products products = Products.get(object?.id)
                     if (!products?.has(exists)) {
                         return 'command.code.notfound'
                     }

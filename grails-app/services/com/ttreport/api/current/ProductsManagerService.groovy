@@ -28,7 +28,7 @@ class ProductsManagerService extends DocumentService{
             if(!item.rejected)
             {
                 if (item.action == "UPDATE") {
-                    DevCycleLogger.log("found product with code ${item.product_code}, belonging to company with id ${company.companyId}")
+                    DevCycleLogger.log("found product with code ${item.id}, belonging to company with id ${company.companyId}")
                     Products products
                     try{
                         products = update(item, 0/*,company*/)
@@ -44,11 +44,11 @@ class ProductsManagerService extends DocumentService{
                         document.addToProducts(products) // necessary,belongsTo in products is not defined
                     }
                     response.accept(item)
-                    DevCycleLogger.log("adding product with code ${item.product_code}, belonging to company with id ${company.companyId}, to the current document")
+                    DevCycleLogger.log("adding product with code ${item.id}, belonging to company with id ${company.companyId}, to the current document")
                     continue
                 }
 
-                DevCycleLogger.log("product with code ${item.product_code}, belonging to company with id ${company.companyId} not found, trying to save")
+                DevCycleLogger.log("product with code ${item.id}, belonging to company with id ${company.companyId} not found, trying to save")
                 Products products
                 try{
                     products = save(item, company)
@@ -59,7 +59,7 @@ class ProductsManagerService extends DocumentService{
                     dandr.response.status = 505
                     return dandr
                 }
-                DevCycleLogger.log("product with code ${item.product_code}, belonging to company with id ${company.companyId} saved, adding to current document")
+                DevCycleLogger.log("product with code ${item.id}, belonging to company with id ${company.companyId} saved, adding to current document")
                 boolean contains = document.products?.contains(products)
                 products.save(true)
                 if (!contains) {
@@ -102,7 +102,7 @@ class ProductsManagerService extends DocumentService{
                     return dandr
                 }
                 boolean contains = document.products?.contains(products)
-                DevCycleLogger.log("found product with code ${item.product_code}, belonging to company with id ${company.companyId}, trying to delete")
+                DevCycleLogger.log("found product with code ${item.id}, belonging to company with id ${company.companyId}, trying to delete")
                 if(!contains) {
                     document.addToProducts(products)
                 }

@@ -10,7 +10,6 @@ import com.ttreport.auth.UserRole
 import com.ttreport.data.BarCode
 import com.ttreport.data.Company
 import com.ttreport.data.Products
-import grails.test.hibernate.HibernateSpec
 import grails.testing.services.ServiceUnitTest
 import spock.lang.Specification
 
@@ -26,7 +25,7 @@ class ActionSetterSpec extends Specification implements ServiceUnitTest<Validati
     {
         AcceptanceDocumentCommand document = new AcceptanceDocumentCommand()
         for(int i = 0; i < 5; ++i){
-            document.products.add(new ProductCommand(uit_code: "test", product_code: 1))
+            document.products.add(new ProductCommand(uit_code: "test", id: 1))
         }
         for(int i = 0; i < 5; ++i){
             document.products.add(new ProductCommand(uit_code: "test"))
@@ -45,7 +44,7 @@ class ActionSetterSpec extends Specification implements ServiceUnitTest<Validati
     {
         ShipmentDocumentCommand document = new ShipmentDocumentCommand()
         for(int i = 0; i < 5; ++i){
-            document.products.add(new ProductCommand(uit_code: "test", product_code: 1))
+            document.products.add(new ProductCommand(uit_code: "test", id: 1))
         }
         for(int i = 0; i < 5; ++i){
             document.products.add(new ProductCommand(uit_code: "test"))

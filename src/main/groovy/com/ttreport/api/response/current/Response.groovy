@@ -3,7 +3,6 @@ package com.ttreport.api.response.current
 import com.ttreport.api.resources.current.DocumentCommand
 import com.ttreport.api.resources.current.ProductCommand
 import com.ttreport.api.response.Responsive
-import com.ttreport.data.Products
 import com.ttreport.logs.DevCycleLogger
 
 class Response extends  Responsive
@@ -15,7 +14,7 @@ class Response extends  Responsive
 
     void accept(ProductCommand cmd)
     {
-        ProductIdentifier accepted = new ProductIdentifier(cmd.product_description,cmd.product_code)
+        ProductIdentifier accepted = new ProductIdentifier(cmd.product_description,cmd.id)
         accepted.uit_code = cmd.uit_code
         accepted.uitu_code = cmd.uitu_code
         accepted_list.add(accepted)
@@ -24,7 +23,7 @@ class Response extends  Responsive
     RejectedProduct rejectProduct(ProductCommand cmd, int reason)
     {
         RejectedProduct rejected = new RejectedProduct()
-        rejected.id = cmd.product_code
+        rejected.id = cmd.id
         rejected.uit_code = cmd.uit_code
         rejected.uitu_code = cmd.uitu_code
         rejected.reason = reason

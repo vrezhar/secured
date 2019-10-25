@@ -56,8 +56,8 @@ class ValidationErrorResolverService
         if(cmd instanceof AcceptanceDocumentCommand){
             AcceptanceDocumentCommand doc = cmd as AcceptanceDocumentCommand
             for(product in doc.products){
-                if(product.product_code){
-                    DevCycleLogger.log("Command object number ${product.product_code} set to be updated")
+                if(product.id){
+                    DevCycleLogger.log("Command object number ${product.id} set to be updated")
                     product.setAction("UPDATE")
                     continue
                 }
@@ -69,7 +69,7 @@ class ValidationErrorResolverService
         if(cmd instanceof ShipmentDocumentCommand){
             ShipmentDocumentCommand doc = cmd as ShipmentDocumentCommand
             for(product in doc.products){
-                DevCycleLogger.log("Command object number ${product.product_code} set to be 'deleted'")
+                DevCycleLogger.log("Command object number ${product.id} set to be 'deleted'")
                 product.setAction("DELETE")
             }
             return
@@ -111,7 +111,7 @@ class ValidationErrorResolverService
                 product.rejected = true
                 continue
             }
-            if(product.action != "SAVE" && !company.has(Products.get(product.product_code))){
+            if(product.action != "SAVE" && !company.has(Products.get(product.id))){
                 DevCycleLogger.log("Product doesn't belong to found company's product list")
                 response.rejectProduct(product,computeHighestPriorityError(product))
                 product.rejected = true
