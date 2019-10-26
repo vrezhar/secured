@@ -16,6 +16,8 @@ class ProductCommand implements Validateable {
     String uitu_code
     String action
 
+    protected static conf
+
     static constraints = {
         id nullable: true, validator: { long value, ProductCommand object ->
             Products databaseInstance = Products.get(object?.id)

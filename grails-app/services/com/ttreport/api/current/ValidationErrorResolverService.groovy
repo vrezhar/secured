@@ -9,28 +9,29 @@ import com.ttreport.api.response.current.Response
 import com.ttreport.data.Company
 import com.ttreport.data.Products
 import grails.gorm.transactions.Transactional
+import org.springframework.context.MessageSource
 
 @Transactional
 class ValidationErrorResolverService
 {
 
-    protected static String getMessage(String message) {
-        def props = new Properties()
-        new File("grails-app/i18n/messages.properties").withInputStream {
-            stream -> props.load(stream)
-        }
-        return props[message]
+    private static final Map<String, Locale> langLocaleMappings = [
+            'en': new Locale('en', 'US'),
+            'ru': new Locale('ru', 'RU'),
+    ].asImmutable()
+
+    MessageSource messageSource
+
+    protected String getMessage(String message) {
+        messageSource.getMessage(message, [].toArray(), langLocaleMappings.ru)
     }
 
     protected int getCode(String message)
     {
         String error = getMessage(message)
-        if(error.length() != 3){
-            return -1;
-        }
         int result = 0
-        for(literal in error){
-            result = result*10 + literal.toInteger()
+        for(int i = 0; i < error.length(); ++i){
+            result = result*10 + error[i].toInteger()
         }
         return result
     }
@@ -57,7 +58,7 @@ class ValidationErrorResolverService
             AcceptanceDocumentCommand doc = cmd as AcceptanceDocumentCommand
             for(product in doc.products){
                 if(product.id){
-                    DevCycleLogger.log("Command object number ${product.id} set to be updated")
+                    DevCycleLogger.log("Command object number ${product.id} set to be updated with ${product.uitu_code?: product.uit_code}")
                     product.setAction("UPDATE")
                     continue
                 }
@@ -69,7 +70,7 @@ class ValidationErrorResolverService
         if(cmd instanceof ShipmentDocumentCommand){
             ShipmentDocumentCommand doc = cmd as ShipmentDocumentCommand
             for(product in doc.products){
-                DevCycleLogger.log("Command object number ${product.id} set to be 'deleted'")
+                DevCycleLogger.log("code ${product.uitu_code?: product.uit_code} of command object number ${product.id} set to be 'deleted'")
                 product.setAction("DELETE")
             }
             return
@@ -85,7 +86,7 @@ class ValidationErrorResolverService
         }
         catch (Exception e){
             DevCycleLogger.log(e.message)
-            response.status = getCode("command.document.invalid")
+            response.status = 402
             return response
         }
         if(!cmd.validate()){
@@ -99,7 +100,7 @@ class ValidationErrorResolverService
                 }
             }
             DevCycleLogger.log_validation_errors(cmd)
-            response.status = getCode("command.document.invalid")
+            response.status = 402
             return response
         }
         Company company = Company.findWhere(token: cmd.companyToken)
@@ -113,11 +114,11 @@ class ValidationErrorResolverService
             }
             if(product.action != "SAVE" && !company.has(Products.get(product.id))){
                 DevCycleLogger.log("Product doesn't belong to found company's product list")
+                product.errors.rejectValue('id','command.product.notfound')
                 response.rejectProduct(product,computeHighestPriorityError(product))
                 product.rejected = true
             }
         }
         return response
     }
-
 }

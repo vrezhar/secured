@@ -37,7 +37,7 @@ dependencies {
     compile "org.springframework.boot:spring-boot-autoconfigure"
     compile "org.grails:grails-core"
     compile "org.springframework.boot:spring-boot-starter-actuator"
-    provided "org.springframework.boot:spring-boot-starter-tomcat"
+    compile "org.springframework.boot:spring-boot-starter-tomcat"
     compile 'org.grails.plugins:spring-security-core:3.2.3'
     compile "org.springframework.boot:spring-boot-starter-actuator"
     //compile "com.wildbit.java:postmark:1.2.1"

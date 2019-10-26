@@ -67,7 +67,7 @@ class DevCycleLogger
     static void log_validation_errors(Validateable cmd, String additional_message = null)
     {
         cmd.errors.fieldErrors.each {
-            log("value ${it.rejectedValue} not validated for field ${it.field}")
+            log("value ${it.rejectedValue} not validated for field ${it.field}, error message: ${it.code}")
         }
         if(additional_message)
         {
@@ -77,7 +77,7 @@ class DevCycleLogger
     static void log_validation_errors(DomainClass cmd, String additional_message = null)
     {
         cmd.errors.fieldErrors.each {
-            log("value ${it.rejectedValue} not validated for field ${it.field}")
+            log("value ${it.rejectedValue} not validated for field ${it.field},  error message: ${it.code}")
         }
         if(additional_message)
         {

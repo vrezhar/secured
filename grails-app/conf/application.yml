@@ -1,19 +1,21 @@
+
 ---
 mail:
+    gmail:
+        email: bronsmailsupreme@gmail.com
+        password: bruhMoment
     postmark:
         api:
-            token: 'postmark_token'
-    gmail:
-        email: 'bronsmailsupreme@gmail.com'
-        password: 'bruhMoment'
+            token: postmark_token
     sender:
-        email: 'bronsmailsupreme@gmail.com'
+        email: bronsmailsupreme@gmail.com
 
 ---
 status:
     INVALID_TOKEN: 400
     INVALID_ACTION: 401
     OK: 200
+
 
 ---
 grails:
