@@ -1,6 +1,5 @@
 package com.ttreport.api.current
 
-
 import com.ttreport.api.resources.current.ShipmentDocumentCommand
 import com.ttreport.logs.DevCycleLogger
 import grails.plugin.springsecurity.annotation.Secured
@@ -29,7 +28,7 @@ class ApiDocumentShipmentEndpointController extends RestfulController<ShipmentDo
 
     def ship(ShipmentDocumentCommand cmd)
     {
-        def response = documentShipmentService.ship(cmd)
+        Map response = documentShipmentService.ship(cmd)
         DevCycleLogger.print_logs()
         DevCycleLogger.cleanup()
         this.response.status = response.status as int

@@ -1,6 +1,8 @@
-package com.ttreport.api.client
+package com.ttreport.datacentre
 
+import com.ttreport.data.Document
 import com.ttreport.logs.DevCycleLogger
+import grails.converters.JSON
 
 import javax.net.ssl.HttpsURLConnection
 
@@ -11,13 +13,13 @@ class APIHttpClient
     String method = "POST"
     String targetUrl
 
-    String sendHttpRequest(String url_ = targetUrl, String params = this.data, String method = this.method, String content_type = this.content_type, boolean usehttps = false) throws Exception
+    String sendHttpRequest(String url_ = targetUrl, String params = this.data, String method = this.method, String content_type = this.content_type, boolean usehttps = false)
     {
         if(!url_ || !params) {
             throw new Exception("Crucial parameters not specified")
         }
         URL url = new URL(url_)
-        HttpURLConnection connection = null
+        HttpURLConnection connection
         if(!usehttps) {
             connection = (HttpsURLConnection)url.openConnection()
         }
@@ -62,4 +64,15 @@ class APIHttpClient
             }
         }
     }
+
+    static String sendRequest(Document document)
+    {
+        APIHttpClient client = new APIHttpClient()
+        client.targetUrl = (document.requestType == "ACCEPT") ? "/test1" : "/test2"
+        client.data = new JSON(document).toString()
+        return client.sendHttpRequest()
+    }
+
+
+
 }

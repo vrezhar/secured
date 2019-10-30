@@ -4,6 +4,7 @@ import com.ttreport.api.resources.current.AcceptanceDocumentCommand
 import com.ttreport.api.resources.current.DocumentAndResponse
 import com.ttreport.api.resources.current.ShipmentDocumentCommand
 import com.ttreport.api.response.current.Response
+import com.ttreport.data.BarCode
 import com.ttreport.data.Company
 import com.ttreport.data.Document
 import com.ttreport.data.Products
@@ -24,60 +25,53 @@ class ProductsManagerService extends DocumentService{
         }
         Company company = Company.findWhere(token: cmd.companyToken)
         Document document = createAcceptanceDocumentMock(cmd)
+        document.company = company
         for(item in cmd.products) {
             if(!item.rejected)
             {
                 if (item.action == "UPDATE") {
                     DevCycleLogger.log("found product with code ${item.id}, belonging to company with id ${company.companyId}")
-                    Products products
+                    BarCode barCode
                     try{
-                        products = update(item)
+                        barCode = update(item)
                     }
                     catch(Exception e){
                         DevCycleLogger.log(e.message)
-                        dandr.response.status = 505
+                        dandr.response.status = 500
                         return dandr
                     }
-                    boolean contains = document.products?.contains(products)
-                    products.save(true)
-                    if (!contains) {
-                        document.addToProducts(products) // necessary,belongsTo in products is not defined
-                    }
-                    item.id = products.id
+                    document.addToBarCodes(barCode) // necessary,belongsTo in BarCode is not defined
+                    item.id = barCode.products.id
                     response.accept(item)
                     DevCycleLogger.log("adding product with code ${item.id}, belonging to company with id ${company.companyId}, to the current document")
                     continue
                 }
 
                 DevCycleLogger.log("product with code ${item.id}, belonging to company with id ${company.companyId} not found, trying to save")
-                Products products
+                BarCode barCode
                 try{
-                    products = save(item, company)
+                    barCode = save(item, company)
                 }
                 catch (Exception e){
                     DevCycleLogger.log(e.message)
                     dandr.response = response.getAsMap()
-                    dandr.response.status = 505
+                    dandr.response.status = 500
                     return dandr
                 }
+                document.addToBarCodes(barCode) // necessary,belongsTo in BarCode is not defined
+                item.id = barCode.products.id
                 DevCycleLogger.log("product with code ${item.id}, belonging to company with id ${company.companyId} saved, adding to current document")
-                boolean contains = document.products?.contains(products)
-                products.save(true)
-                if (!contains) {
-                    document.addToProducts(products) // necessary,belongsTo in products is not defined
-                }
-                item.id = products.id
                 response.accept(item)
             }
         }
-        if(!document.products || document.products?.size() == 0)
+        if(!document.barCodes || document.barCodes?.size() == 0)
         {
             dandr.response = response.getAsMap()
             return dandr
         }
+        company.addToDocuments(document)
         dandr.document = document
         dandr.response = response.getAsMap()
-
         return dandr
     }
 
@@ -94,33 +88,30 @@ class ProductsManagerService extends DocumentService{
 
         for(item in cmd.products) {
             if(!item.rejected){
-                Products products
+                BarCode barCode
                 try{
-                    products = delete(item)
+                    barCode = delete(item)
                 }
                 catch (Exception e){
                     DevCycleLogger.log(e.message)
-                    dandr.response.status = 505
+                    dandr.response.status = 500
                     return dandr
                 }
-                boolean contains = document.products?.contains(products)
+                document.addToBarCodes(barCode)
+                item.id = barCode.products.id
                 DevCycleLogger.log("found product with code ${item.id}, belonging to company with id ${company.companyId}, trying to delete")
-                if(!contains) {
-                    document.addToProducts(products)
-                }
-                item.id = products.id
                 response.accept(item)
             }
         }
-        if(!document.products || document.products?.size() == 0)
+        if(!document.barCodes || document.barCodes?.size() == 0)
         {
             dandr.response = response.getAsMap()
             return dandr
         }
         DevCycleLogger.log("exiting shipProducts()")
+        company.addToDocuments(document)
         dandr.document = document
         dandr.response = response.getAsMap()
-
         return dandr
     }
 }

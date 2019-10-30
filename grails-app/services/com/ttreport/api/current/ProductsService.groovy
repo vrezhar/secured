@@ -11,7 +11,7 @@ import grails.gorm.transactions.Transactional
 class ProductsService extends ValidationErrorResolverService
 {
 
-    Products update(ProductCommand cmd) throws Exception
+    BarCode update(ProductCommand cmd) throws Exception
     {
         DevCycleLogger.log('update() called')
         Products products = Products.get(cmd.id)
@@ -34,10 +34,10 @@ class ProductsService extends ValidationErrorResolverService
         products.addToBarCodes(barCode)
         products.save(true)
         DevCycleLogger.log("success, adding to the found product")
-        return products
+        return barCode
     }
 
-    Products save(ProductCommand cmd, Company company) throws Exception
+    BarCode save(ProductCommand cmd, Company company) throws Exception
     {
         DevCycleLogger.log("save() called")
         DevCycleLogger.log("trying to save product with code ${cmd.id}, belonging to company with id ${company.companyId}")
@@ -46,8 +46,8 @@ class ProductsService extends ValidationErrorResolverService
         {
             try {
                 cmd.id = products.id
-                products = update(cmd)
-                return products
+                BarCode barCode = update(cmd)
+                return barCode
             }
             catch (Exception e){
                 throw e
@@ -61,18 +61,17 @@ class ProductsService extends ValidationErrorResolverService
         company.addToProducts(products)
         DevCycleLogger.log("product saved, trying to register a barcode")
         BarCode barCode = new BarCode(uit_code: cmd.uit_code, uitu_code: cmd.uitu_code, products: products)
-        if(!barCode.validate()) {
+        products.addToBarCodes(barCode)
+        products.save()
+        if(!barCode.save(true)) {
             DevCycleLogger.log_validation_errors(barCode,"bar code with uit code ${barCode.uit_code} and uitu code ${barCode.uitu_code} not validated, nothing saved, exiting save()")
             throw new Exception("Product not validated")
         }
-        products.addToBarCodes(barCode)
-        products.save()
-        barCode.save(true)
         DevCycleLogger.log("bar code registered, product saved, exiting save()")
-        return products
+        return barCode
     }
 
-    Products delete(ProductCommand cmd) throws Exception
+    BarCode delete(ProductCommand cmd) throws Exception
     {
         DevCycleLogger.log("delete() called")
         DevCycleLogger.log("assuming that product corresponding to command object exists")
@@ -89,6 +88,6 @@ class ProductsService extends ValidationErrorResolverService
         barCode.dateDeleted = new Date()
         barCode.save(true)
         DevCycleLogger.log("shipping barcode with uit code ${barCode.uit_code} and uitu code ${barCode.uitu_code}, saving changes, exiting ship()")
-        return products
+        return barCode
     }
 }

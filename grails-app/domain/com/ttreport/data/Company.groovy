@@ -19,13 +19,23 @@ class Company implements  Serializable
     Date dateCreated
     Date lastUpdated
 
-    boolean has(Products products)
+    boolean hasProduct(Products products)
     {
         return this.products.contains(products)
     }
 
+    boolean hasBarCode(BarCode barCode)
+    {
+        for(document in this.documents) {
+            if(document.barCodes.contains(barCode)){
+                return true
+            }
+        }
+        return false
+    }
+
     static belongsTo = [user: User]
-    static hasMany = [products: Products]
+    static hasMany = [products: Products, documents: Document]
 
     static constraints = {
         token nullable: false, blank: false, unique: true

@@ -5,7 +5,6 @@ import grails.compiler.GrailsCompileStatic
 @GrailsCompileStatic
 class Document
 {
-    //TODO implement comparable on Products and substitute the list with a SortedSet
     String requestType
     String releaseOrderNumber
     String documentNumber
@@ -29,7 +28,8 @@ class Document
     Date dateCreated
     Date lastUpdated
 
-    static hasMany = [products: Products]
+    static hasMany = [barCodes: BarCode]
+    static belongsTo = [company: Company]
 
     static constraints = {
 

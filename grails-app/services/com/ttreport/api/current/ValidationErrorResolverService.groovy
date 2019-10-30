@@ -4,6 +4,7 @@ import com.ttreport.api.resources.current.AcceptanceDocumentCommand
 import com.ttreport.api.resources.current.DocumentCommand
 import com.ttreport.api.resources.current.ProductCommand
 import com.ttreport.api.resources.current.ShipmentDocumentCommand
+import com.ttreport.data.BarCode
 import com.ttreport.logs.DevCycleLogger
 import com.ttreport.api.response.current.Response
 import com.ttreport.data.Company
@@ -16,14 +17,14 @@ class ValidationErrorResolverService
 {
 
     private static final Map<String, Locale> langLocaleMappings = [
-            'en': new Locale('en', 'US'),
+            'en': Locale.ENGLISH,
             'ru': new Locale('ru', 'RU'),
     ].asImmutable()
 
     MessageSource messageSource
 
     protected String getMessage(String message) {
-        messageSource.getMessage(message, [].toArray(), langLocaleMappings.ru)
+        messageSource.getMessage(message, [].toArray(), langLocaleMappings.en)
     }
 
     protected int getCode(String message)
@@ -112,7 +113,14 @@ class ValidationErrorResolverService
                 product.rejected = true
                 continue
             }
-            if(product.action != "SAVE" && !company.has(Products.get(product.id))){
+            if(product.action != "SAVE" && !company.hasProduct(Products.get(product.id))){
+                DevCycleLogger.log("Product doesn't belong to found company's product list")
+                product.errors.rejectValue('id','command.product.notfound')
+                response.rejectProduct(product,computeHighestPriorityError(product))
+                product.rejected = true
+            }
+            BarCode barCode = BarCode.findWhere(uitu_code: product.uitu_code ?: null, uit_code: product.uit_code ?: null)
+            if(!company.hasBarCode(barCode) && product.action == "DELETE"){
                 DevCycleLogger.log("Product doesn't belong to found company's product list")
                 product.errors.rejectValue('id','command.product.notfound')
                 response.rejectProduct(product,computeHighestPriorityError(product))
