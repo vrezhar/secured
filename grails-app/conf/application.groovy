@@ -1,8 +1,8 @@
 
 // Added by the Spring Security Core plugin:
-grails.plugin.springsecurity.userLookup.userDomainClassName = 'com.secured.auth.User'
-grails.plugin.springsecurity.userLookup.authorityJoinClassName = 'com.secured.auth.UserRole'
-grails.plugin.springsecurity.authority.className = 'com.com.secured.auth.Role'
+grails.plugin.springsecurity.userLookup.userDomainClassName = 'com.ttreport.auth.User'
+grails.plugin.springsecurity.userLookup.authorityJoinClassName = 'com.ttreport.auth.UserRole'
+grails.plugin.springsecurity.authority.className = 'com.com.ttreport.auth.Role'
 grails.plugin.springsecurity.logout.postOnly = false
 grails.plugin.springsecurity.controllerAnnotations.staticRules = [
 		[pattern: '/',               access: ['permitAll']],

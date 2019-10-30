@@ -9,13 +9,14 @@ buildscript {
         classpath "org.grails:grails-gradle-plugin:$grailsVersion"
         classpath "org.grails.plugins:hibernate5:${gormVersion-".RELEASE"}"
         classpath "com.bertramlabs.plugins:asset-pipeline-gradle:2.15.1"
+        classpath 'com.agileorbit:schwartz:1.0.1'
     }
 }
 
 
 
 version "0.1"
-group "secured"
+group "ttreport"
 
 apply plugin:"eclipse"
 apply plugin:"idea"
@@ -39,6 +40,7 @@ dependencies {
     compile "org.springframework.boot:spring-boot-starter-tomcat"
     compile 'org.grails.plugins:spring-security-core:3.2.3'
     compile "org.springframework.boot:spring-boot-starter-actuator"
+    //compile "com.wildbit.java:postmark:1.2.1"
     //compile 'org.grails.plugins:spring-security-acl:3.1.1'
     compile "org.grails:grails-web-boot"
     compile "org.grails:grails-logging"
@@ -61,6 +63,7 @@ dependencies {
     compile 'javax.mail:mail:1.4.7'
     compile group: 'javax.activation', name: 'activation', version: '1.1'
 
+    compile 'org.grails.plugins:async:3.3.0'
     //compile "org.grails.plugins:jmx"
 
     // https://mvnrepository.com/artifact/mysql/mysql-connector-java
@@ -101,4 +104,11 @@ tasks.withType(Test) {
 assets {
     minifyJs = true
     minifyCss = true
+    minifyOptions = [
+            languageMode: 'ES6',
+            targetLanguage: 'ES5',
+            optimizationLevel: 'SIMPLE',
+            angularPass: true // Can use @ngInject annotation for Angular Apps
+    ]
+
 }
