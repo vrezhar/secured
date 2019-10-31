@@ -120,11 +120,13 @@ class ValidationErrorResolverService
                 product.rejected = true
             }
             BarCode barCode = BarCode.findWhere(uitu_code: product.uitu_code ?: null, uit_code: product.uit_code ?: null)
-            if(!company.hasBarCode(barCode) && product.action == "DELETE"){
-                DevCycleLogger.log("Product doesn't belong to found company's product list")
-                product.errors.rejectValue('id','command.product.notfound')
-                response.rejectProduct(product,computeHighestPriorityError(product))
-                product.rejected = true
+            if(barCode && product.action == "DELETE"){
+                if(!company.hasBarCode(barCode)){
+                    DevCycleLogger.log("Product doesn't belong to found company's product list")
+                    product.errors.rejectValue('id','command.code.notfound')
+                    response.rejectProduct(product,computeHighestPriorityError(product))
+                    product.rejected = true
+                }
             }
         }
         return response

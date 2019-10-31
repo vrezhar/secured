@@ -1,6 +1,8 @@
 package com.ttreport.data
 
+import com.ttreport.logs.DevCycleLogger
 import grails.compiler.GrailsCompileStatic
+import groovy.json.JsonBuilder
 
 @GrailsCompileStatic
 class Document
@@ -30,6 +32,41 @@ class Document
 
     static hasMany = [barCodes: BarCode]
     static belongsTo = [company: Company]
+
+    static String serializeAsJson(Document document)
+    {
+        Map map = [
+                document_number: document.documentNumber,
+                request_type: document.requestType,
+                products: document.barCodes.collect{
+                            Map collected = [:]
+                            collected.tax = it.products.tax
+                            collected.cost = it.products.cost
+                            collected.description = it.products.description
+                            if(it.uit_code){
+                                collected.uit_code = it.uit_code
+                            }
+                            if(it.uitu_code){
+                                collected.uitu_code = it.uitu_code
+                            }
+                            collected
+                        }
+        ]
+        if(document.requestType == "ACCEPTANCE"){
+
+        }
+        if(document.requestType == "SHIPMENT"){
+
+        }
+        def builder = new JsonBuilder(map)
+        DevCycleLogger.log("The document as json, 'prettified': ${builder.toPrettyString()}")
+        return builder.toString()
+    }
+
+    static String encodeAsBase64(Document document)
+    {
+        return serializeAsJson(document).bytes.encodeAsBase64()
+    }
 
     static constraints = {
 
