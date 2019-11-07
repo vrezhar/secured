@@ -6,6 +6,7 @@ import com.ttreport.auth.Role
 import com.ttreport.auth.User
 import com.ttreport.auth.UserRole
 import com.ttreport.data.Company
+import com.ttreport.admin.testKeystoreLoading
 import grails.compiler.GrailsCompileStatic
 
 
@@ -51,6 +52,7 @@ class BootStrap {
             company.save(true)
         }
         println(company.token)
+//        testKeystoreLoading.test()
     }
 
     def destroy = {

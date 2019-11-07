@@ -69,7 +69,7 @@ class Document
     }
 
     static constraints = {
-
+        
         requestType validator: { String value, Document object ->
             if(value != "ACCEPTANCE" && value != "SHIPMENT")
                 return false

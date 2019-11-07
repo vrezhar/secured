@@ -32,6 +32,7 @@ repositories {
 
 
 dependencies {
+
     compile "org.springframework.boot:spring-boot-starter-logging"
     compile "org.springframework.boot:spring-boot-autoconfigure"
     compile "org.grails:grails-core"
@@ -62,22 +63,18 @@ dependencies {
     compile 'javax.mail:mail:1.4.7'
     compile group: 'javax.activation', name: 'activation', version: '1.1'
 
+    compile group: 'org.bouncycastle', name: 'bcpkix-jdk15on', version: '1.50'
+    compile group: 'org.bouncycastle', name: 'bcprov-jdk15on', version: '1.50'
+
+//    compile fileTree(dir: 'libs', include: ['*.jar'])
+
     compile 'org.grails.plugins:async:3.3.0'
-    //compile "org.grails.plugins:jmx"
-
-    // https://mvnrepository.com/artifact/mysql/mysql-connector-java
-    //compile group: 'mysql', name: 'mysql-connector-java', version: '5.1.27'
-
     console "org.grails:grails-console"
     profile "org.grails.profiles:web"
-    //runtime "org.grails.plugins:searchable:0.6.4"
-    //runtime "org.grails.plugins:jquery"
-    //runtime ':jmx:0.7'
     runtime "org.glassfish.web:el-impl:2.1.2-b03"
     runtime "com.h2database:h2"
     runtime "org.apache.tomcat:tomcat-jdbc"
     runtime "com.bertramlabs.plugins:asset-pipeline-grails:2.15.1"
-    //runtime ":prototype:1.0"
     testCompile "org.grails:grails-gorm-testing-support"
     testCompile "org.grails.plugins:geb"
     testCompile "org.grails:grails-web-testing-support"
