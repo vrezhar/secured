@@ -13,9 +13,10 @@ class APIHttpClient
     String method = "POST"
     String targetUrl
 
-    String sendHttpRequest(String url_ = targetUrl, String params = this.data, String method = this.method, String content_type = this.content_type, boolean usehttps = false)
+    String sendHttpRequest(String url_ = this.targetUrl, String data_ = this.data, String method = this.method, String content_type = this.content_type, boolean usehttps = true)
+    throws IOException,Exception
     {
-        if(!url_ || !params) {
+        if(!url_) {
             throw new Exception("Crucial parameters not specified")
         }
         URL url = new URL(url_)
@@ -28,14 +29,17 @@ class APIHttpClient
         }
         try {
             connection.setRequestMethod(method)
-            connection.setRequestProperty("Content-Type", content_type)
-            connection.setRequestProperty("Content-Length", Integer.toString(params.getBytes().length))
+            if(content_type) {
+                connection.setRequestProperty("Content-Type", content_type)
+            }
             connection.setDoOutput(true)
-
-            DataOutputStream wr = new DataOutputStream (
-                    connection.getOutputStream())
-            wr.writeBytes(params)
-            wr.close()
+            if(data_) {
+                connection.setRequestProperty("Content-Length", Integer.toString(data_?.getBytes()?.length))
+                DataOutputStream wr = new DataOutputStream (
+                        connection.getOutputStream())
+                wr.writeBytes(data_)
+                wr.close()
+            }
 
             InputStream is = connection.getInputStream()
             BufferedReader rd = new BufferedReader(new InputStreamReader(is))
@@ -43,20 +47,24 @@ class APIHttpClient
             String line
             while ((line = rd.readLine()) != null) {
                 response.append(line)
-                response.append('\n')
+                response.append(System.lineSeparator())
             }
             rd.close()
             return response.toString()
         }
         catch(IOException ioexception) {
             DevCycleLogger.log("input-output exception occurred when processing the request")
-            ioexception.printStackTrace()
+            ioexception.stackTrace.each {
+                DevCycleLogger.log(it.toString())
+            }
             return null
         }
         catch(Exception e) {
             DevCycleLogger.log("unknown exception occurred when processing the request")
-            e.printStackTrace()
-            return  null
+            e.stackTrace.each {
+                DevCycleLogger.log(it.toString())
+            }
+            return null
         }
         finally {
             if(connection != null){
@@ -65,7 +73,7 @@ class APIHttpClient
         }
     }
 
-    static String sendRequest(Document document)
+    static String sendDocument(Document document)
     {
         APIHttpClient client = new APIHttpClient()
         client.targetUrl = (document.requestType == "ACCEPT") ? "/test1" : "/test2"

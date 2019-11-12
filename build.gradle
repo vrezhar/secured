@@ -9,6 +9,9 @@ buildscript {
         classpath "org.grails:grails-gradle-plugin:$grailsVersion"
         classpath "org.grails.plugins:hibernate5:${gormVersion-".RELEASE"}"
         classpath "com.bertramlabs.plugins:asset-pipeline-gradle:2.15.1"
+//        classpath group: 'org.bouncycastle', name: 'bcpkix-jdk15on', version: '1.50'
+//        classpath group: 'org.bouncycastle', name: 'bcprov-jdk15on', version: '1.50'
+//        classpath files('libs/dependencies/bcpkix-jdk15on-1.50.jar','libs/dependencies/bcprov-jdk15on-1.50.jar')
     }
 }
 
@@ -63,10 +66,11 @@ dependencies {
     compile 'javax.mail:mail:1.4.7'
     compile group: 'javax.activation', name: 'activation', version: '1.1'
 
-    compile group: 'org.bouncycastle', name: 'bcpkix-jdk15on', version: '1.50'
-    compile group: 'org.bouncycastle', name: 'bcprov-jdk15on', version: '1.50'
-
-//    compile fileTree(dir: 'libs', include: ['*.jar'])
+//    compile group: 'org.bouncycastle', name: 'bcpkix-jdk15on', version: '1.50'
+//    compile group: 'org.bouncycastle', name: 'bcprov-jdk15on', version: '1.50'
+//
+//    compile fileTree(dir: 'lib', include: ['*.jar'])
+//    compile fileTree(dir: 'lib/dependencies', include: ['*.jar'])
 
     compile 'org.grails.plugins:async:3.3.0'
     console "org.grails:grails-console"

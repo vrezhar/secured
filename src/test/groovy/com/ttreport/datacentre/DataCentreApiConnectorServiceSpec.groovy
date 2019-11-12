@@ -22,14 +22,10 @@ class DataCentreApiConnectorServiceSpec extends HibernateSpec implements  Servic
         assert service != null
     }
 
-    void "test promises"() {
-       given:
-       def p1 = task{
-           service.getAcceptanceResponse(null)
-       }
-       when:
-       int result = p1.get()
-       then:
-       result == 200
+    void "test api connection"()
+    {
+        service.retrieveToken()
+        expect:
+        true
     }
 }
