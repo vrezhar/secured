@@ -108,7 +108,7 @@ class SigningService {
                 DevCycleLogger.log(it.toString())
             }
         }
-        DevCycleLogger.log(signedCode.encodeBase64().toString())
+        DevCycleLogger.log(signedCode?.encodeBase64()?.toString())
         DevCycleLogger.print_logs()
         DevCycleLogger.cleanup()
         return signedCode
