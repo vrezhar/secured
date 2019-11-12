@@ -7,6 +7,7 @@ import com.ttreport.auth.User
 import com.ttreport.auth.UserRole
 import com.ttreport.data.Company
 import com.ttreport.admin.testKeystoreLoading
+import com.ttreport.datacentre.DataCentreApiConnectorService
 import grails.compiler.GrailsCompileStatic
 
 
@@ -14,7 +15,7 @@ import grails.compiler.GrailsCompileStatic
 @GrailsCompileStatic
 class BootStrap {
 
-
+    DataCentreApiConnectorService dataCentreApiConnectorService
     def init = { servletContext ->
         Role adminRole = Role.findOrSaveWhere(authority: 'ROLE_ADMIN')
         Role userRole = Role.findOrSaveWhere(authority: 'ROLE_USER')
@@ -52,6 +53,7 @@ class BootStrap {
             company.save(true)
         }
         println(company.token)
+        println(dataCentreApiConnectorService.retrieveToken())
 //        testKeystoreLoading.test()
     }
 
