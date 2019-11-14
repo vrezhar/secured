@@ -1,6 +1,7 @@
 package com.ttreport.data.documents.differentiated.remains
 
-class RemainsCirculationDocument {
+class RemainsCirculationDocument
+{
 
     static constraints = {
     }

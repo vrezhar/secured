@@ -60,7 +60,7 @@ class ActionSetterSpec extends Specification implements ServiceUnitTest<Validati
     }
     void "test action setting: invalid document"(){
         DocumentCommand documentCommand = new DocumentCommand()
-        String message
+        String message = nill
         try{
             service.setActions(documentCommand)
         }

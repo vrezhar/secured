@@ -3,11 +3,11 @@ package com.ttreport.data
 import com.ttreport.auth.Role
 import com.ttreport.auth.User
 import com.ttreport.auth.UserRole
-import com.ttreport.data.documents.differentiated.Document
+import com.ttreport.data.documents.differentiated.GenericDocument
 import com.ttreport.logs.DevCycleLogger
 import grails.test.hibernate.HibernateSpec
 
-class DocumentSpec extends HibernateSpec{
+class GenericDocumentSpec extends HibernateSpec{
 
     List<Class> getDomainClasses()
     {
@@ -24,11 +24,11 @@ class DocumentSpec extends HibernateSpec{
         company.save()
         Products products = new Products(description: "test", tax: 10, cost: 100)
         products.save()
-        BarCode barCode = new BarCode(uit_code: "test", uitu_code: "test1", products: products)
-        BarCode barCode1 = new BarCode(uit_code: "ahhh", uitu_code: "duh", products: products)
+        BarCode barCode = new BarCode(uitCode: "test", uituCode: "test1", products: products)
+        BarCode barCode1 = new BarCode(uitCode: "ahhh", uituCode: "duh", products: products)
         barCode1.save()
         barCode.save()
-        Document document = new Document(requestType: "Acceptance")
+        GenericDocument document = new GenericDocument(requestType: "Acceptance")
         document.addToBarCodes(barCode)
         document.addToBarCodes(barCode1)
         String result_json = document.serializeAsJson()

@@ -14,7 +14,7 @@ class AcceptanceDocumentSpec extends HibernateSpec {
 
     List<Class> getDomainClasses()
     {
-        [Company, User, UserRole, Document, BarCode, Products, AcceptanceDocument]
+        [Company, User, UserRole, GenericDocument, BarCode, Products, AcceptanceDocument]
     }
 
     void "test something"() {
@@ -27,11 +27,11 @@ class AcceptanceDocumentSpec extends HibernateSpec {
         company.save()
         Products products = new Products(description: "test", tax: 10, cost: 100)
         products.save()
-        BarCode barCode = new BarCode(uit_code: "test", uitu_code: "test1", products: products)
-        BarCode barCode1 = new BarCode(uit_code: "ahhh", uitu_code: "duh", products: products)
+        BarCode barCode = new BarCode(uitCode: "test", uituCode: "test1", products: products)
+        BarCode barCode1 = new BarCode(uitCode: "ahhh", uituCode: "duh", products: products)
         barCode1.save()
         barCode.save()
-        Document document = new AcceptanceDocument(requestType: "ACCEPTANCE",tradeOwnerInn: "test",
+        GenericDocument document = new AcceptanceDocument(requestType: "ACCEPTANCE",tradeOwnerInn: "test",
                                                    tradeOwnerName: "test", tradeRecipientInn: "test",
                                                    tradeSenderInn: "test",tradeSenderName: "test",transferDate: 1,
                                                    turnoverType: "SALE",acceptanceDate: 1,releaseOrderNumber: 5,

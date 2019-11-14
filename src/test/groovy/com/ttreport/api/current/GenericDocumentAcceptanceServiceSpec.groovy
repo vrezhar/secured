@@ -4,7 +4,7 @@ import com.ttreport.api.current.DocumentAcceptanceService
 import grails.testing.services.ServiceUnitTest
 import spock.lang.Specification
 
-class DocumentAcceptanceServiceSpec extends Specification implements ServiceUnitTest<DocumentAcceptanceService>
+class GenericDocumentAcceptanceServiceSpec extends Specification implements ServiceUnitTest<DocumentAcceptanceService>
 {
 
     def setup() {

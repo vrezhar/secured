@@ -4,7 +4,7 @@ import com.ttreport.data.documents.differentiated.existing.ProductCirculationDoc
 import grails.testing.gorm.DomainUnitTest
 import spock.lang.Specification
 
-class ProductCirculationDocumentSpec extends Specification implements DomainUnitTest<ProductCirculationDocument> {
+class ProductCirculationGenericDocumentSpec extends Specification implements DomainUnitTest<ProductCirculationDocument> {
 
     def setup() {
     }

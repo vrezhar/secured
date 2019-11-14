@@ -2,17 +2,16 @@ package com.ttreport.data.documents.differentiated
 
 import com.ttreport.api.resources.current.DocumentForm
 import com.ttreport.data.BarCode
+import com.ttreport.data.CirculationBarCode
 import com.ttreport.data.Company
 import grails.compiler.GrailsCompileStatic
 
 @GrailsCompileStatic
 class Document implements DocumentForm
 {
-    String requestType
+
+    String documentDate
     String documentNumber
-    String turnoverType
-    long documentDate
-    long transferDate
 
     Date dateCreated
     Date lastUpdated
@@ -23,39 +22,45 @@ class Document implements DocumentForm
     @Override
     Map<String,Object> getAsMap()
     {
-        Map<String,Object> map = [
-//                document_date: new Date(documentDate).toInstant().toString(),
-//                transfer_date: new Date(transferDate).toInstant().toString(),
-                document_number: documentNumber,
-                document_date: documentDate,
-                transfer_date: transferDate,
-                request_type: requestType,
-                products: barCodes.collect{
-                    Map collected = [:]
-                    collected.tax = it.products.tax
-                    collected.cost = it.products.cost
-                    collected.description = it.products.description
-                    if(it.uit_code){
-                        collected.uit_code = it.uit_code
-                    }
-                    if(it.uitu_code){
-                        collected.uitu_code = it.uitu_code
-                    }
-                    collected
-                }
-        ]
+        Map<String,Object> map =
+                [
+                        document_number: documentNumber,
+                        document_date: documentDate,
+                        products: barCodes.collect{
+                            Map collected = [:]
+                            if(it.minified){
+                                collected.cis = it.uitCode?: it.uituCode
+                                collected.tax = it.products.tax
+                                collected.cost = it.products.cost
+                                return collected
+                            }
+                            collected.tax = it.products.tax
+                            collected.cost = it.products.cost
+                            collected.description = it.products.description
+                            if(it.uitCode){
+                                collected.uit_code = it.uitCode
+                            }
+                            if(it.uituCode){
+                                collected.uitu_code = it.uituCode
+                            }
+                            if(it instanceof CirculationBarCode)
+                            {
+                                CirculationBarCode code = it as CirculationBarCode
+                                collected.tnved_code = code.tnvedCode
+                                collected.certificate_document = code.certificateDocument
+                                collected.certificate_document_date = code.certificateDocumentDate
+                                collected.certificate_document_number = code.certificateDocumentNumber
+                                collected.production_date = code.productionDate
+                                collected.producer_inn = code.producerInn
+                                collected.owner_inn = code.ownerInn
+                            }
+                            collected
+                        }
+                ]
         return map
     }
 
-
     static constraints = {
-        documentNumber nullable: false, blank: false, unique: true
-        documentDate nullable: false
-        transferDate nullable: false
-        turnoverType validator: { String value, Document object ->
-            if(value != "SALE" && value != "COMMISSION" && value != "AGENT" && value != "CONTRACT")
-                return false
-        }
     }
     static mapping = {
         tablePerHierarchy false

@@ -1,10 +1,11 @@
 package com.ttreport.data.documents.differentiated.existing
 
-import com.ttreport.data.documents.differentiated.Document
+import com.ttreport.data.documents.differentiated.GenericDocument
 import grails.compiler.GrailsCompileStatic
 
 @GrailsCompileStatic
-class AcceptanceDocument extends Document{
+class AcceptanceDocument extends GenericDocument
+{
 
     String releaseOrderNumber
     String tradeSenderInn
@@ -18,18 +19,18 @@ class AcceptanceDocument extends Document{
     Map<String,Object> getAsMap()
     {
         Map<String,Object> map = super.getAsMap()
-        map.release_order_number = this.releaseOrderNumber
-        map.trade_sender_inn = this.tradeSenderInn
-        map.trade_sender_name = this.tradeSenderName
-        map.trade_owner_inn = this.tradeOwnerInn
-        map.trade_owner_name = this.tradeOwnerName
-        map.trade_recipient_inn = this.tradeRecipientInn
-        map.acceptance_date = this.acceptanceDate
+        map.release_order_number = releaseOrderNumber
+        map.trade_sender_inn = tradeSenderInn
+        map.trade_sender_name = tradeSenderName
+        map.trade_owner_inn = tradeOwnerInn
+        map.trade_owner_name = tradeOwnerName
+        map.trade_recipient_inn = tradeRecipientInn
+        map.acceptance_date = acceptanceDate
         return map
     }
 
     static constraints = {
-        importFrom Document
+        importFrom GenericDocument
         requestType validator: { String value, AcceptanceDocument object ->
             if(value != "ACCEPTANCE"){
                 return false

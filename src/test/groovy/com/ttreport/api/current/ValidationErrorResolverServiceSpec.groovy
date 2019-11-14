@@ -30,7 +30,7 @@ class ValidationErrorResolverServiceSpec extends HibernateSpec implements Servic
         Products products = new Products(description: "test", tax: 10, cost: 100)
         company.addToProducts(products)
         products.save()
-        BarCode barCode = new BarCode(uit_code: "test", uitu_code: "test1", products: products)
+        BarCode barCode = new BarCode(uitCode: "test", uituCode: "test1", products: products)
         products.addToBarCodes(barCode)
         barCode.save()
         error.setAction("DELETE")

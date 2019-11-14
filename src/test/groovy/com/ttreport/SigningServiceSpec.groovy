@@ -12,9 +12,7 @@ class SigningServiceSpec extends HibernateSpec implements ServiceUnitTest<Signin
     }
 
     void "test something"() {
-        String[] files = ["/home/vrezh/grails/ttreport/Certificates/tensor.crt","/home/vrezh/grails/ttreport/Certificates/CA.crt"]
-        println(files)
-        service.sign("a".getBytes(),files)
+        service.sign("".getBytes(),true)
         expect:"fix me"
             true
     }

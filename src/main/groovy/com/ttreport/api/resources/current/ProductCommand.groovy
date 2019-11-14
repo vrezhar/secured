@@ -33,7 +33,7 @@ class ProductCommand implements Validateable {
         }
 
         uit_code nullable: true, validator: { String value, ProductCommand object ->
-            BarCode exists = BarCode.findWhere(uit_code: value ?: null, uitu_code: object?.uitu_code ?: null)
+            BarCode exists = BarCode.findWhere(uitCode: value ?: null, uituCode: object?.uitu_code ?: null)
             if (object?.action == "SAVE" && !(value || object?.uitu_code)) {
                 return 'command.code.uit.null'
             }
@@ -55,7 +55,7 @@ class ProductCommand implements Validateable {
             }
         }
             uitu_code nullable: true, validator: { String value, ProductCommand object ->
-                BarCode exists = BarCode.findWhere(uitu_code: value ?: null, uit_code: object?.uit_code ?: null)
+                BarCode exists = BarCode.findWhere(uitCode: value ?: null, uituCode: object?.uitu_code ?: null)
                 if (object?.action == "SAVE" && !object?.uit_code && !value) {
                     return 'command.code.uitu.null'
                 }

@@ -1,9 +1,10 @@
-package com.ttreport.data.documents.differentiated.existing
+package com.ttreport.data.documents.differentiated
 
+import com.ttreport.data.CirculationBarCode
 import grails.testing.gorm.DomainUnitTest
 import spock.lang.Specification
 
-class RFPProductCirculationDocumentSpec extends Specification implements DomainUnitTest<RFPProductCirculationDocument> {
+class CirculationBarCodeSpec extends Specification implements DomainUnitTest<CirculationBarCode> {
 
     def setup() {
     }

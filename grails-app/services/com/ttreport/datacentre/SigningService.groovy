@@ -1,6 +1,6 @@
 package com.ttreport.datacentre
 
-import com.ttreport.data.documents.differentiated.Document
+import com.ttreport.data.documents.differentiated.GenericDocument
 import com.ttreport.logs.DevCycleLogger
 import grails.gorm.transactions.Transactional
 import org.bouncycastle.asn1.DERSet
@@ -34,7 +34,7 @@ class SigningService {
     protected static final String key_oid = JCP.GOST_PARAMS_EXC_2012_256_KEY_OID
     protected static final String provider = JCP.PROVIDER_NAME
 
-    protected static String serializeAsJson(Document document)
+    protected static String serializeAsJson(GenericDocument document)
     {
        return document.serializeAsJson()
     }

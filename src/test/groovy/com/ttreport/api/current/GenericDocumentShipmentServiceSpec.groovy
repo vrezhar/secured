@@ -4,7 +4,7 @@ import com.ttreport.api.current.DocumentShipmentService
 import grails.testing.services.ServiceUnitTest
 import spock.lang.Specification
 
-class DocumentShipmentServiceSpec extends Specification implements ServiceUnitTest<DocumentShipmentService>
+class GenericDocumentShipmentServiceSpec extends Specification implements ServiceUnitTest<DocumentShipmentService>
 {
 
     def setup() {

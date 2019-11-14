@@ -1,6 +1,6 @@
 package com.ttreport.datacentre
 
-import com.ttreport.data.documents.differentiated.Document
+import com.ttreport.data.documents.differentiated.GenericDocument
 import com.ttreport.logs.DevCycleLogger
 import grails.converters.JSON
 
@@ -73,7 +73,7 @@ class APIHttpClient
         }
     }
 
-    static String sendDocument(Document document)
+    static String sendDocument(GenericDocument document)
     {
         APIHttpClient client = new APIHttpClient()
         client.targetUrl = (document.requestType == "ACCEPT") ? "/test1" : "/test2"

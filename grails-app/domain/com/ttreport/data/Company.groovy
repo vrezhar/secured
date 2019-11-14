@@ -1,7 +1,7 @@
 package com.ttreport.data
 
 import com.ttreport.auth.User
-import com.ttreport.data.documents.differentiated.Document
+import com.ttreport.data.documents.differentiated.GenericDocument
 import grails.compiler.GrailsCompileStatic
 import groovy.transform.EqualsAndHashCode
 
@@ -35,7 +35,7 @@ class Company implements  Serializable
     }
 
     static belongsTo = [user: User]
-    static hasMany = [products: Products, documents: Document]
+    static hasMany = [products: Products, documents: GenericDocument]
 
     static constraints = {
         token nullable: false, blank: false, unique: true

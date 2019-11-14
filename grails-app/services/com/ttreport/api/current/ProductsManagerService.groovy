@@ -6,7 +6,7 @@ import com.ttreport.api.resources.current.ShipmentDocumentCommand
 import com.ttreport.api.response.current.Response
 import com.ttreport.data.BarCode
 import com.ttreport.data.Company
-import com.ttreport.data.documents.differentiated.Document
+import com.ttreport.data.documents.differentiated.GenericDocument
 import com.ttreport.logs.DevCycleLogger
 import grails.gorm.transactions.Transactional
 
@@ -24,7 +24,7 @@ class ProductsManagerService extends DocumentService
             return  dandr
         }
         Company company = Company.findWhere(token: cmd.companyToken)
-        Document document = createAcceptanceDocumentMock(cmd)
+        GenericDocument document = createAcceptanceDocumentMock(cmd)
         document.company = company
         for(item in cmd.products) {
             if(!item.rejected)
@@ -84,7 +84,7 @@ class ProductsManagerService extends DocumentService
             return  dandr
         }
         Company company = Company.findWhere(token: cmd.companyToken)
-        Document document = createShipmentDocumentMock(cmd)
+        GenericDocument document = createShipmentDocumentMock(cmd)
 
         for(item in cmd.products) {
             if(!item.rejected){

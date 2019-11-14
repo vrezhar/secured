@@ -1,9 +1,9 @@
-package com.ttreport.data.documents.differentiated.existing
+package com.ttreport.data.documents.differentiated.remains
 
 import grails.testing.gorm.DomainUnitTest
 import spock.lang.Specification
 
-class ConsumerReleaseDocumentSpec extends Specification implements DomainUnitTest<ConsumerReleaseDocument> {
+class RemainsCirculationGenericDocumentSpec extends Specification implements DomainUnitTest<RemainsCirculationDocument> {
 
     def setup() {
     }

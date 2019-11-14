@@ -41,7 +41,7 @@ class DevCycleLogger
     static void list_all_barcodes()
     {
         BarCode.list().each{
-            println("uit_code: ${it.uit_code}, uitu_code: ${it.uitu_code}, belongs to: ${it.products.productCode} ")
+            println("uitCode: ${it.uitCode}, uitu_code: ${it.uituCode}, belongs to: ${it.products.productCode} ")
         }
     }
     static void list_barcodes_of(Company company)
@@ -49,7 +49,7 @@ class DevCycleLogger
         println("printing barcodes of ${company.user}'s company with id ${company.companyId}")
         company.products.each {
             it.barCodes.each {
-                println("uit_code: ${it.uit_code}, uitu_code: ${it.uitu_code}")
+                println("uitCode: ${it.uitCode}, uitu_code: ${it.uituCode}")
             }
         }
     }
@@ -57,7 +57,7 @@ class DevCycleLogger
     {
         println("printing barcodes assigned to ${products.productCode}")
         products.barCodes.each{
-            println("uit_code: ${it.uit_code}, uitu_code: ${it.uitu_code}")
+            println("uitCode: ${it.uitCode}, uitu_code: ${it.uituCode}")
         }
     }
     static void log(String action)

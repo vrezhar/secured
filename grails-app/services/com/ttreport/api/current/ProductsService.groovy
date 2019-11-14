@@ -26,9 +26,9 @@ class ProductsService extends ValidationErrorResolverService
 //                throw e
 //            }
 //        }
-        BarCode barCode = new BarCode(uit_code: cmd.uit_code, uitu_code: cmd.uitu_code, products: products)
+        BarCode barCode = new BarCode(uitCode: cmd.uit_code, uituCode: cmd.uitu_code, products: products)
         if(!barCode.save()) {
-            DevCycleLogger.log_validation_errors(barCode,"bar code with uit code ${barCode.uit_code} and uitu code ${barCode.uitu_code} not validated, nothing updated, exiting update()")
+            DevCycleLogger.log_validation_errors(barCode,"bar code with uit code ${barCode.uitCode} and uitu code ${barCode.uituCode} not validated, nothing updated, exiting update()")
             throw new Exception("Bar code not saved")
         }
         products.addToBarCodes(barCode)
@@ -60,11 +60,11 @@ class ProductsService extends ValidationErrorResolverService
         }
         company.addToProducts(products)
         DevCycleLogger.log("product saved, trying to register a barcode")
-        BarCode barCode = new BarCode(uit_code: cmd.uit_code, uitu_code: cmd.uitu_code, products: products)
+        BarCode barCode = new BarCode(uitCode: cmd.uit_code, uituCode: cmd.uitu_code, products: products)
         products.addToBarCodes(barCode)
         products.save()
         if(!barCode.save(true)) {
-            DevCycleLogger.log_validation_errors(barCode,"bar code with uit code ${barCode.uit_code} and uitu code ${barCode.uitu_code} not validated, nothing saved, exiting save()")
+            DevCycleLogger.log_validation_errors(barCode,"bar code with uit code ${barCode.uitCode} and uitu code ${barCode.uituCode} not validated, nothing saved, exiting save()")
             throw new Exception("Product not validated")
         }
         DevCycleLogger.log("bar code registered, product saved, exiting save()")
@@ -87,7 +87,7 @@ class ProductsService extends ValidationErrorResolverService
         }
         barCode.dateDeleted = new Date()
         barCode.save(true)
-        DevCycleLogger.log("shipping barcode with uit code ${barCode.uit_code} and uitu code ${barCode.uitu_code}, saving changes, exiting ship()")
+        DevCycleLogger.log("shipping barcode with uit code ${barCode.uitCode} and uitu code ${barCode.uituCode}, saving changes, exiting ship()")
         return barCode
     }
 }
