@@ -12,6 +12,7 @@ class BarCode implements Serializable
 
     private static final long serialVersionUID = 1
 
+    //String cis
     String uit_code
     String uitu_code
     Date dateDeleted = null
@@ -38,6 +39,8 @@ class BarCode implements Serializable
         this.products.barCodes.remove(this)
         this.products = other
         other.addToBarCodes(this)
+        this.save()
+        other.save()
     }
 
     static constraints = {

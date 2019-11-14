@@ -15,6 +15,7 @@ class AcceptanceDocumentCommand extends DocumentCommand
     String trade_recipient_inn = "test"
 
     static constraints = {
+        importFrom DocumentCommand
         release_order_number nullable: false, blank: false
         trade_owner_inn nullable: false, blank: false
         trade_owner_name nullable: false, blank: false

@@ -3,7 +3,7 @@ package com.ttreport.api.current
 
 import com.ttreport.api.resources.current.AcceptanceDocumentCommand
 import com.ttreport.api.resources.current.DocumentAndResponse
-import com.ttreport.data.Document
+import com.ttreport.data.documents.differentiated.Document
 import com.ttreport.datacentre.DataCentreApiConnectorService
 import com.ttreport.logs.DevCycleLogger
 import grails.gorm.transactions.Transactional

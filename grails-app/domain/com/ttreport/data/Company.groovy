@@ -1,7 +1,7 @@
 package com.ttreport.data
 
 import com.ttreport.auth.User
-
+import com.ttreport.data.documents.differentiated.Document
 import grails.compiler.GrailsCompileStatic
 import groovy.transform.EqualsAndHashCode
 

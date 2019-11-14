@@ -1,7 +1,7 @@
 package com.ttreport.datacentre
 
 
-import com.ttreport.data.Document
+import com.ttreport.data.documents.differentiated.Document
 import com.ttreport.logs.DevCycleLogger
 import grails.gorm.transactions.Transactional
 import groovy.json.JsonBuilder
@@ -78,7 +78,13 @@ class DataCentreApiConnectorService extends SigningService {
     {
         return 200
     }
+
     def getShipmentResponse(Document document)
+    {
+        return 200
+    }
+
+    def cancelShipment(String participantInn, String shipmentNumber)
     {
         return 200
     }

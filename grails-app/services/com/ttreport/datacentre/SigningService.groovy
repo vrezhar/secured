@@ -1,6 +1,6 @@
 package com.ttreport.datacentre
 
-import com.ttreport.data.Document
+import com.ttreport.data.documents.differentiated.Document
 import com.ttreport.logs.DevCycleLogger
 import grails.gorm.transactions.Transactional
 import org.bouncycastle.asn1.DERSet
@@ -14,7 +14,6 @@ import ru.CryptoPro.CAdES.CAdESType
 import ru.CryptoPro.Crypto.CryptoProvider
 import ru.CryptoPro.reprov.RevCheck
 
-import java.security.NoSuchAlgorithmException
 import java.security.Security
 import java.security.KeyStore
 import java.security.PrivateKey
@@ -23,8 +22,6 @@ import ru.CryptoPro.JCP.JCP
 import ru.CryptoPro.CAdES.CAdESSignature
 
 import java.security.cert.CertificateFactory
-import java.security.spec.InvalidKeySpecException
-
 
 @Transactional
 class SigningService {
@@ -39,7 +36,7 @@ class SigningService {
 
     protected static String serializeAsJson(Document document)
     {
-       return Document.serializeAsJson(document)
+       return document.serializeAsJson()
     }
 
     def sign(byte[] data = "a".getBytes(), boolean detached = false) throws Exception

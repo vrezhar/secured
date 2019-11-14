@@ -6,13 +6,13 @@ import com.ttreport.api.resources.current.ShipmentDocumentCommand
 import com.ttreport.api.response.current.Response
 import com.ttreport.data.BarCode
 import com.ttreport.data.Company
-import com.ttreport.data.Document
-import com.ttreport.data.Products
+import com.ttreport.data.documents.differentiated.Document
 import com.ttreport.logs.DevCycleLogger
 import grails.gorm.transactions.Transactional
 
 @Transactional
-class ProductsManagerService extends DocumentService{
+class ProductsManagerService extends DocumentService
+{
 
     protected DocumentAndResponse acceptProducts(AcceptanceDocumentCommand cmd)
     {

@@ -1,6 +1,6 @@
 package com.ttreport.datacentre
 
-import com.ttreport.data.Document
+import com.ttreport.data.documents.differentiated.Document
 import com.ttreport.logs.DevCycleLogger
 import grails.converters.JSON
 

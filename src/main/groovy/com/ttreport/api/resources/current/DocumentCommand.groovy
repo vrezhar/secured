@@ -1,7 +1,7 @@
 package com.ttreport.api.resources.current
 
 import com.ttreport.data.Company
-import com.ttreport.data.Document
+import com.ttreport.data.documents.differentiated.Document
 import grails.compiler.GrailsCompileStatic
 import grails.validation.Validateable
 

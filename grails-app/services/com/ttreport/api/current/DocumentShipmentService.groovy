@@ -3,7 +3,8 @@ package com.ttreport.api.current
 
 import com.ttreport.api.resources.current.DocumentAndResponse
 import com.ttreport.api.resources.current.ShipmentDocumentCommand
-import com.ttreport.data.Document
+import com.ttreport.data.documents.differentiated.Document
+import com.ttreport.data.documents.differentiated.existing.ShipmentDocument
 import com.ttreport.datacentre.DataCentreApiConnectorService
 import com.ttreport.logs.DevCycleLogger
 import grails.gorm.transactions.Transactional
@@ -48,5 +49,13 @@ class DocumentShipmentService extends ProductsManagerService
             }
         }
         return dandr.response
+    }
+
+    def cancelShipment(String participantInn, String shipmentNumber)
+    {
+        if(!ShipmentDocument.findWhere(documentNumber: shipmentNumber)){
+            return 404
+        }
+        return dataCentreApiConnectorService.cancelShipment(participantInn,shipmentNumber)
     }
 }

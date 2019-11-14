@@ -1,20 +1,23 @@
-package com.ttreport.data
+package com.ttreport.data.documents.differentiated
 
 import com.ttreport.auth.Role
 import com.ttreport.auth.User
 import com.ttreport.auth.UserRole
-import com.ttreport.data.documents.differentiated.Document
+import com.ttreport.data.BarCode
+import com.ttreport.data.Company
+import com.ttreport.data.Products
+import com.ttreport.data.documents.differentiated.existing.AcceptanceDocument
 import com.ttreport.logs.DevCycleLogger
 import grails.test.hibernate.HibernateSpec
 
-class DocumentSpec extends HibernateSpec{
+class AcceptanceDocumentSpec extends HibernateSpec {
 
     List<Class> getDomainClasses()
     {
-        [BarCode, Products, Company, User, UserRole, User, Role]
+        [Company, User, UserRole, Document, BarCode, Products, AcceptanceDocument]
     }
 
-    void "test serialization"() {
+    void "test something"() {
         Role testRole = new Role(authority: "ROLE_TEST")
         testRole.save()
         User user = new User(firstName: "user", lastName: "userson", username: "user@userson.com", password: "1Test")
@@ -28,13 +31,17 @@ class DocumentSpec extends HibernateSpec{
         BarCode barCode1 = new BarCode(uit_code: "ahhh", uitu_code: "duh", products: products)
         barCode1.save()
         barCode.save()
-        Document document = new Document(requestType: "Acceptance")
+        Document document = new AcceptanceDocument(requestType: "ACCEPTANCE",tradeOwnerInn: "test",
+                                                   tradeOwnerName: "test", tradeRecipientInn: "test",
+                                                   tradeSenderInn: "test",tradeSenderName: "test",transferDate: 1,
+                                                   turnoverType: "SALE",acceptanceDate: 1,releaseOrderNumber: 5,
+                                                   documentNumber: "15", company: company)
         document.addToBarCodes(barCode)
         document.addToBarCodes(barCode1)
-        String result_json = document.serializeAsJson()
-        println(result_json)
+        document.save()
+        DevCycleLogger.log_validation_errors(document)
         DevCycleLogger.print_logs()
-        expect:"test encoding and decoding"
-            true
+        expect:"fix me"
+            AcceptanceDocument.list()
     }
 }

@@ -9,10 +9,13 @@ import com.ttreport.data.Company
 import com.ttreport.admin.testKeystoreLoading
 import com.ttreport.datacentre.DataCentreApiConnectorService
 import grails.compiler.GrailsCompileStatic
+import groovy.util.logging.Slf4j
 
+import java.util.logging.Logger
 
 
 @GrailsCompileStatic
+@Slf4j
 class BootStrap {
 
     DataCentreApiConnectorService dataCentreApiConnectorService
@@ -53,7 +56,6 @@ class BootStrap {
             company.save(true)
         }
         println(company.token)
-        println(dataCentreApiConnectorService.retrieveToken())
 //        testKeystoreLoading.test()
     }
 

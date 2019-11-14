@@ -1,8 +1,9 @@
-package com.ttreport.api.current
+package com.ttreport.datacentre
 
 import grails.gorm.transactions.Transactional
 
 @Transactional
-class TokenRenewingJobService {
+class TokenRenewingJobService
+{
 
 }

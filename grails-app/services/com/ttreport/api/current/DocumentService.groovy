@@ -2,27 +2,22 @@ package com.ttreport.api.current
 
 
 import com.ttreport.api.resources.current.AcceptanceDocumentCommand
-import com.ttreport.api.resources.current.DocumentCommand
 import com.ttreport.api.resources.current.ShipmentDocumentCommand
-import com.ttreport.data.Document
+import com.ttreport.data.documents.differentiated.existing.AcceptanceDocument
+import com.ttreport.data.documents.differentiated.existing.ShipmentDocument
 import grails.gorm.transactions.Transactional
 
 @Transactional
 class DocumentService extends ProductsService
 {
-    Document createDocumentMock(DocumentCommand cmd)
+
+    AcceptanceDocument createAcceptanceDocumentMock(AcceptanceDocumentCommand cmd)
     {
-        Document document = new Document()
+        AcceptanceDocument document = new AcceptanceDocument()
         document.documentDate = cmd.document_date
         document.transferDate = cmd.transfer_date
         document.turnoverType = cmd.turnover_type
         document.documentNumber = cmd.document_number
-        return document
-    }
-
-    Document createAcceptanceDocumentMock(AcceptanceDocumentCommand cmd)
-    {
-        Document document = createDocumentMock(cmd)
         document.requestType = "ACCEPTANCE"
         document.releaseOrderNumber = cmd.release_order_number
         document.acceptanceDate = cmd.acceptance_date
@@ -34,9 +29,13 @@ class DocumentService extends ProductsService
         return document
     }
 
-    Document createShipmentDocumentMock(ShipmentDocumentCommand cmd)
+    ShipmentDocument createShipmentDocumentMock(ShipmentDocumentCommand cmd)
     {
-        Document document = createDocumentMock(cmd)
+        ShipmentDocument document = new ShipmentDocument()
+        document.documentDate = cmd.document_date
+        document.transferDate = cmd.transfer_date
+        document.turnoverType = cmd.turnover_type
+        document.documentNumber = cmd.document_number
         document.requestType = "SHIPMENT"
         document.owner = cmd.owner
         document.ownerInn = cmd.owner_inn
@@ -44,6 +43,10 @@ class DocumentService extends ProductsService
         document.receiverInn = cmd.receiver_inn
         document.sender = cmd.sender
         document.senderInn = cmd.sender_inn
+        document.withdrawalDate = cmd.withdrawal_date
+        document.withdrawalType = cmd.withdrawal_type
+        document.stateContractId = cmd.st_contract_id
+        document.toNotParticipant = cmd.to_not_participant
         return document
     }
 }
