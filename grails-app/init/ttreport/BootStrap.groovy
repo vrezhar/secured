@@ -1,24 +1,15 @@
 
 package ttreport
 
-
 import com.ttreport.auth.Role
 import com.ttreport.auth.User
 import com.ttreport.auth.UserRole
 import com.ttreport.data.Company
-import com.ttreport.admin.testKeystoreLoading
-import com.ttreport.datacentre.DataCentreApiConnectorService
 import grails.compiler.GrailsCompileStatic
-import groovy.util.logging.Slf4j
-
-import java.util.logging.Logger
-
 
 @GrailsCompileStatic
-@Slf4j
 class BootStrap {
 
-    DataCentreApiConnectorService dataCentreApiConnectorService
     def init = { servletContext ->
         Role adminRole = Role.findOrSaveWhere(authority: 'ROLE_ADMIN')
         Role userRole = Role.findOrSaveWhere(authority: 'ROLE_USER')
@@ -56,7 +47,6 @@ class BootStrap {
             company.save(true)
         }
         println(company.token)
-//        testKeystoreLoading.test()
     }
 
     def destroy = {
