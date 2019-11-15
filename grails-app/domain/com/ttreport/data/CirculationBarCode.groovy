@@ -18,8 +18,8 @@ class CirculationBarCode extends BarCode
         certificateDocument nullable: false, blank: false
         certificateDocumentDate nullable: false, blank: false
         certificateDocumentNumber nullable: false, blank: false
-        productionDate nullable: false, blank: false
+        productionDate nullable: true, blank: true
         producerInn nullable: false, blank: false
-        ownerInn nullable: false, blank: false
+        ownerInn nullable: true, blank: true
     }
 }

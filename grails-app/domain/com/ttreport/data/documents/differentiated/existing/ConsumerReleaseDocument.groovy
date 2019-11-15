@@ -1,19 +1,17 @@
 package com.ttreport.data.documents.differentiated.existing
 
-import com.ttreport.data.BarCode
 import com.ttreport.data.documents.differentiated.Document
 
 class ConsumerReleaseDocument extends Document
 {
     String orderNumber
     String orderDate
-    String inn
     String action
     String actionDate
     int documentType
 
     @Override
-    Map<String,Object> getAsMap()
+    transient Map<String,Object> getAsMap()
     {
         barCodes.each {
             it.minified = true
@@ -21,7 +19,7 @@ class ConsumerReleaseDocument extends Document
         Map<String,Object> map = super.getAsMap()
         map.order_number = orderNumber
         map.order_date = orderDate
-        map.inn = inn
+        map.inn = company?.inn
         map.action = action
         map.action_date = actionDate
         map.document_type = documentType
@@ -29,8 +27,7 @@ class ConsumerReleaseDocument extends Document
     }
     static constraints = {
         orderNumber nullable: false, blank: false
-        orderDate nullable: false, blank: false
-        inn nullable: false, blank: false
+        orderDate nullable: true, blank: true
         actionDate nullable: false, blank: false
         action nullable: false, blank: false
 //        documentType notEqual: 0

@@ -17,6 +17,7 @@ class UrlMappings {
 
         post "/api/document/acceptance"(controller: "apiDocumentAcceptanceEndpoint", action: "accept")
         post "/api/document/shipment"(controller: "apiDocumentShipmentEndpoint", action: "ship")
+        post "/api/document/shipment/cancel/$number"(controller: "apiDocumentShipmentEndpoint", action: "cancel")
 
         /*
         post "/document/alternative/acceptance"(controller: "apiAlternativeAccept", action: "accept")
@@ -29,6 +30,7 @@ class UrlMappings {
 
         post "/user/company/sign"(controller: "user", action: "sign") //used by frontend
         "/user/company/confirm"(controller: "user", action: "confirm") //used by frontend
+        "/test"(controller: "test", action: "index")
         "/register"(controller: 'register',action: 'register')
         "/profile"(controller: 'user', action: 'profile')
         "/register/confirm"(controller: 'register', action: "confirm")

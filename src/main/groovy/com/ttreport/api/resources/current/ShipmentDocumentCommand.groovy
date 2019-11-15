@@ -4,12 +4,12 @@ package com.ttreport.api.resources.current
 import grails.compiler.GrailsCompileStatic
 
 @GrailsCompileStatic
-class ShipmentDocumentCommand extends DocumentCommand
+class ShipmentDocumentCommand extends GenericDocumentCommand
 {
-    String owner = "test"
-    String owner_inn = "test"
-    String receiver_inn = "test"
-    String receiver = "test"
+    String owner = null
+    String owner_inn = null
+    String receiver_inn = ""
+    String receiver = ""
     String sender_inn = "test"
     String sender = "test"
     String withdrawal_type = "test"
@@ -18,11 +18,19 @@ class ShipmentDocumentCommand extends DocumentCommand
     boolean to_not_participant = true
 
     static  constraints = {
-        importFrom DocumentCommand
-        owner nullable: false, blank: false
-        owner_inn nullable: false, blank: false
-        receiver nullable: false, blank: false
-        receiver_inn nullable: false, blank: false
+        importFrom GenericDocumentCommand
+        owner nullable: true, blank: true
+        owner_inn nullable: true, blank: true
+        receiver nullable: true, validator: { String value, ShipmentDocumentCommand object ->
+            if(!value && !object?.to_not_participant){
+                return false
+            }
+        }
+        receiver_inn nullable: true, validator: { String value, ShipmentDocumentCommand object ->
+            if(!value && !object?.to_not_participant){
+                return false
+            }
+        }
         sender nullable: false, blank: false
         sender_inn nullable: false, blank: false
         withdrawal_date nullable: false, blank: false

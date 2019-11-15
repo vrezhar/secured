@@ -2,8 +2,12 @@ package com.ttreport.api.current
 
 
 import com.ttreport.api.resources.current.AcceptanceDocumentCommand
+import com.ttreport.api.resources.current.MarketEntranceCommand
+import com.ttreport.api.resources.current.ReleaseCommand
 import com.ttreport.api.resources.current.ShipmentDocumentCommand
 import com.ttreport.data.documents.differentiated.existing.AcceptanceDocument
+import com.ttreport.data.documents.differentiated.existing.ConsumerReleaseDocument
+import com.ttreport.data.documents.differentiated.existing.ProductMarketEntranceDocument
 import com.ttreport.data.documents.differentiated.existing.ShipmentDocument
 import grails.gorm.transactions.Transactional
 
@@ -22,9 +26,7 @@ class DocumentService extends ProductsService
         document.releaseOrderNumber = cmd.release_order_number
         document.acceptanceDate = cmd.acceptance_date
         document.tradeSenderInn = cmd.trade_sender_inn
-        document.tradeOwnerInn = cmd.trade_owner_inn
         document.tradeSenderName = cmd.trade_sender_name
-        document.tradeOwnerName = cmd.trade_owner_name
         document.tradeRecipientInn = cmd.trade_recipient_inn
         return document
     }
@@ -37,8 +39,6 @@ class DocumentService extends ProductsService
         document.turnoverType = cmd.turnover_type
         document.documentNumber = cmd.document_number
         document.requestType = "SHIPMENT"
-        document.owner = cmd.owner
-        document.ownerInn = cmd.owner_inn
         document.receiver = cmd.receiver
         document.receiverInn = cmd.receiver_inn
         document.sender = cmd.sender
@@ -48,5 +48,15 @@ class DocumentService extends ProductsService
         document.stateContractId = cmd.st_contract_id
         document.toNotParticipant = cmd.to_not_participant
         return document
+    }
+
+    ProductMarketEntranceDocument createMarketEntranceDocumentMock(MarketEntranceCommand cmd)
+    {
+
+    }
+
+    ConsumerReleaseDocument createReleaseDocumentMock(ReleaseCommand cmd)
+    {
+
     }
 }

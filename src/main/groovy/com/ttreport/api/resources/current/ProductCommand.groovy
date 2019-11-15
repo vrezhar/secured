@@ -6,7 +6,8 @@ import grails.compiler.GrailsCompileStatic
 import grails.validation.Validateable
 
 @GrailsCompileStatic
-class ProductCommand implements Validateable {
+class ProductCommand implements Validateable
+{
     boolean rejected = false
     int tax
     int cost
@@ -15,6 +16,36 @@ class ProductCommand implements Validateable {
     String uit_code
     String uitu_code
     String action
+
+    private static boolean isExtended(Map rawJson)
+    {
+        return rawJson?.tnved_code || rawJson?.certificate_document ||
+                rawJson?.certificate_document_number || rawJson?.certificate_document_date ||
+                rawJson?.producer_inn || rawJson?.owner_inn || rawJson?.production_date
+    }
+
+    static ProductCommand bind(Map rawJson)
+    {
+        ProductCommand command = new ProductCommand()
+        command.uit_code = rawJson?.uit_code
+        command.uitu_code = rawJson?.uitu_code
+        command.tax = rawJson?.tax as int
+        command.cost = rawJson?.cost as int
+        command.id = rawJson?.id as long
+        command.product_description = rawJson?.product_description
+        if(!rawJson){
+            return command
+        }
+        ExtendedProductCommand productCommand = ExtendedProductCommand.createFromBase(command)
+        productCommand.tnved_code = rawJson?.tnved_code
+        productCommand.certificate_document = rawJson?.certificate_document
+        productCommand.certificate_document_number = rawJson?.certificate_document_number
+        productCommand.certificate_document_date = rawJson?.certificate_document_date
+        productCommand.producer_inn = rawJson?.producer_inn
+        productCommand.owner_inn = rawJson?.owner_inn
+        productCommand.production_date = rawJson?.production_date
+        return productCommand
+    }
 
     static constraints = {
         id nullable: true, validator: { long value, ProductCommand object ->
@@ -48,7 +79,7 @@ class ProductCommand implements Validateable {
             }
             if (exists && object?.action != "SAVE") {
                 Products products = Products.get(object?.id)
-                if (!products?.has(exists)) {
+                if (!products?.hasBarcode(exists)) {
                     return 'command.code.notfound'
                 }
 
@@ -70,7 +101,7 @@ class ProductCommand implements Validateable {
                 }
                 if (exists && object?.action != "SAVE") {
                     Products products = Products.get(object?.id)
-                    if (!products?.has(exists)) {
+                    if (!products?.hasBarcode(exists)) {
                         return 'command.code.notfound'
                     }
                 }

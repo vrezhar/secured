@@ -7,11 +7,19 @@ import com.ttreport.data.Company
 import grails.compiler.GrailsCompileStatic
 
 @GrailsCompileStatic
-class Document implements DocumentForm
+class Document implements DocumentForm,Serializable
 {
 
-    String documentDate
-    String documentNumber
+    private static long document_counter = 0L
+    private static final long serialVersionUID = 1
+
+    String documentDate = new Date().toInstant().toString()
+    String documentNumber = { ->
+        while(findWhere(documentNumber: documentNumber.toString())){
+            ++document_counter
+        }
+        document_counter.toString()
+    }
 
     Date dateCreated
     Date lastUpdated
@@ -20,7 +28,7 @@ class Document implements DocumentForm
     static belongsTo = [company: Company]
 
     @Override
-    Map<String,Object> getAsMap()
+    transient Map<String,Object> getAsMap()
     {
         Map<String,Object> map =
                 [
@@ -43,16 +51,21 @@ class Document implements DocumentForm
                             if(it.uituCode){
                                 collected.uitu_code = it.uituCode
                             }
-                            if(it instanceof CirculationBarCode)
-                            {
+                            if(it instanceof CirculationBarCode) {
                                 CirculationBarCode code = it as CirculationBarCode
                                 collected.tnved_code = code.tnvedCode
                                 collected.certificate_document = code.certificateDocument
                                 collected.certificate_document_date = code.certificateDocumentDate
                                 collected.certificate_document_number = code.certificateDocumentNumber
-                                collected.production_date = code.productionDate
-                                collected.producer_inn = code.producerInn
-                                collected.owner_inn = code.ownerInn
+                                if(code.productionDate) {
+                                    collected.production_date = code.productionDate
+                                }
+                                if(code.producerInn){
+                                    collected.producer_inn = code.producerInn
+                                }
+                                if(code.ownerInn){
+                                    collected.owner_inn = code.ownerInn
+                                }
                             }
                             collected
                         }
@@ -61,6 +74,9 @@ class Document implements DocumentForm
     }
 
     static constraints = {
+        documentNumber nullable: false, blank: false, unique: true
+        company nullable: false
+        barCodes nullable: false
     }
     static mapping = {
         tablePerHierarchy false

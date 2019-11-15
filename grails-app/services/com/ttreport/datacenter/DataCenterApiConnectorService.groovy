@@ -1,13 +1,15 @@
-package com.ttreport.datacentre
+package com.ttreport.datacenter
 
 import com.ttreport.data.documents.differentiated.Document
+import com.ttreport.data.documents.differentiated.existing.ShipmentDocument
 import com.ttreport.logs.DevCycleLogger
 import grails.gorm.transactions.Transactional
 import groovy.json.JsonBuilder
 import groovy.json.JsonSlurper
+import org.springframework.security.access.method.P
 
 @Transactional
-class DataCentreApiConnectorService extends SigningService {
+class DataCenterApiConnectorService extends SigningService {
 
     protected final static String  prod_url = " https://ismp.crpt.ru/api/v3/"
     protected final static String test_url = "https://demo.fashion.crpt.ru/api/v3/"
@@ -83,7 +85,17 @@ class DataCentreApiConnectorService extends SigningService {
         return 200
     }
 
-    def cancelShipment(String participantInn, String shipmentNumber)
+    def getReleaseResponse(Document document)
+    {
+        return 200
+    }
+
+    def getMarketEntryResponse(Document document)
+    {
+        return 200
+    }
+
+    def cancelShipment(ShipmentDocument document)
     {
         return 200
     }

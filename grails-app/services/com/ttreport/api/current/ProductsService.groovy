@@ -1,7 +1,9 @@
 package com.ttreport.api.current
 
+import com.ttreport.api.resources.current.ExtendedProductCommand
 import com.ttreport.api.resources.current.ProductCommand
 import com.ttreport.data.BarCode
+import com.ttreport.data.CirculationBarCode
 import com.ttreport.data.Company
 import com.ttreport.data.Products
 import com.ttreport.logs.DevCycleLogger
@@ -10,6 +12,25 @@ import grails.gorm.transactions.Transactional
 @Transactional
 class ProductsService extends ValidationErrorResolverService
 {
+
+    BarCode initializeBarCode(ProductCommand cmd)
+    {
+        if(cmd instanceof ExtendedProductCommand){
+            ExtendedProductCommand command = cmd as ExtendedProductCommand
+            BarCode barCode = new CirculationBarCode(uitCode: cmd.uit_code, uituCode: cmd.uitu_code,
+                    certificateDocumentNumber: command.certificate_document_number, certificateDocumentDate: command.certificate_document_number,
+                    certificateDocument: command.certificate_document, tnvedCode: command.tnved_code, producerInn: command.producer_inn)
+            if(command.owner_inn){
+                barCode.ownerInn = command.owner_inn
+            }
+            if(command.production_date){
+                barCode.productionDate = command.production_date
+            }
+            return barCode
+        }
+        return new BarCode(uitCode: cmd.uit_code, uituCode: cmd.uitu_code)
+
+    }
 
     BarCode update(ProductCommand cmd) throws Exception
     {
@@ -26,7 +47,8 @@ class ProductsService extends ValidationErrorResolverService
 //                throw e
 //            }
 //        }
-        BarCode barCode = new BarCode(uitCode: cmd.uit_code, uituCode: cmd.uitu_code, products: products)
+        BarCode barCode = initializeBarCode(cmd)
+        barCode.products = products
         if(!barCode.save()) {
             DevCycleLogger.log_validation_errors(barCode,"bar code with uit code ${barCode.uitCode} and uitu code ${barCode.uituCode} not validated, nothing updated, exiting update()")
             throw new Exception("Bar code not saved")
@@ -60,7 +82,8 @@ class ProductsService extends ValidationErrorResolverService
         }
         company.addToProducts(products)
         DevCycleLogger.log("product saved, trying to register a barcode")
-        BarCode barCode = new BarCode(uitCode: cmd.uit_code, uituCode: cmd.uitu_code, products: products)
+        BarCode barCode = initializeBarCode(cmd)
+        barCode.products = products
         products.addToBarCodes(barCode)
         products.save()
         if(!barCode.save(true)) {
@@ -79,9 +102,9 @@ class ProductsService extends ValidationErrorResolverService
         BarCode barCode = BarCode.findWhere(uit_code: cmd.uit_code?: null, uitu_code: cmd.uitu_code?: null)
         if(!barCode) {
             DevCycleLogger.log("barcode with uit code ${cmd.uit_code} and uitu code ${cmd.uitu_code} not found, nothing updated, exiting ship()")
-            throw new Exception("Barcode not validated")
+            throw new Exception("Barcode not found")
         }
-        if(!products.has(barCode)){
+        if(!products.hasBarcode(barCode)){
             DevCycleLogger.log("barcode with uit code ${cmd.uit_code} and uitu code ${cmd.uitu_code} not found in ownership of product ${products.id}, nothing updated, exiting ship()")
             throw new Exception("Bar code not owned by product")
         }

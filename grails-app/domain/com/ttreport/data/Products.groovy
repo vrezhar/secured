@@ -21,18 +21,9 @@ class Products implements Serializable
 
     static  hasMany = [barCodes: BarCode]
 
-    boolean has(BarCode barCode)
+    boolean hasBarcode(BarCode barCode)
     {
         return barCodes.contains(barCode)
-    }
-
-    boolean has(ProductCommand cmd)
-    {
-        BarCode barCode = BarCode.findWhere(uit_code: cmd.uit_code, uitu_code: cmd.uitu_code)
-        if(!barCode){
-            return false
-        }
-        return has(barCode)
     }
 
     static constraints = {

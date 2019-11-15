@@ -9,25 +9,23 @@ class ShipmentDocument extends GenericDocument
 
     String receiverInn
     String receiver
-    String owner
-    String ownerInn
     String sender
     String senderInn
     String withdrawalType
     String withdrawalDate
     String stateContractId
-    boolean toNotParticipant
+    boolean toNotParticipant = true
     String pdf = "string"
 
     @Override
-    Map<String,Object> getAsMap()
+    transient Map<String,Object> getAsMap()
     {
         Map<String,Object> map = super.getAsMap()
         map.pdf = pdf
         map.receiver = receiver
         map.receiver_inn = receiverInn
-        map.owner = owner
-        map.owner_inn = ownerInn
+        map.owner = company?.name
+        map.owner_inn = company?.inn
         map.sender = sender
         map.sender_inn = senderInn
         return map
@@ -41,10 +39,8 @@ class ShipmentDocument extends GenericDocument
             }
         }
         senderInn nullable: false, blank: false
-        ownerInn nullable: false, blank: false
         receiverInn nullable: false, blank: false
         sender nullable: false, blank: false
-        owner nullable: false, blank: false
         receiver nullable: false, blank: false
     }
 }

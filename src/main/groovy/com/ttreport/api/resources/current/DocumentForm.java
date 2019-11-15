@@ -6,10 +6,7 @@ import groovy.json.JsonBuilder;
 import java.util.Map;
 
 public interface DocumentForm {
-    default Map<String,Object> getAsMap()
-    {
-        return null;
-    }
+    Map<String,Object> getAsMap();
     default String serializeAsJson()
     {
         Map<String,Object> map = this.getAsMap();

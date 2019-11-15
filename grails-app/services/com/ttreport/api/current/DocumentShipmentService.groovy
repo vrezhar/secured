@@ -4,9 +4,8 @@ package com.ttreport.api.current
 import com.ttreport.api.resources.current.DocumentAndResponse
 import com.ttreport.api.resources.current.ShipmentDocumentCommand
 import com.ttreport.data.documents.differentiated.Document
-import com.ttreport.data.documents.differentiated.GenericDocument
 import com.ttreport.data.documents.differentiated.existing.ShipmentDocument
-import com.ttreport.datacentre.DataCentreApiConnectorService
+import com.ttreport.datacenter.DataCenterApiConnectorService
 import com.ttreport.logs.DevCycleLogger
 import grails.gorm.transactions.Transactional
 
@@ -17,7 +16,7 @@ import static grails.async.Promises.waitAll
 class DocumentShipmentService extends ProductsManagerService
 {
 
-    DataCentreApiConnectorService dataCentreApiConnectorService
+    DataCenterApiConnectorService dataCenterApiConnectorService
 
     Map ship(ShipmentDocumentCommand cmd)
     {
@@ -28,11 +27,11 @@ class DocumentShipmentService extends ProductsManagerService
             return dandr.response
         }
         if(!document.validate()){
-            DevCycleLogger.log_validation_errors(document, "document not validated exiting accept()")
+            DevCycleLogger.log_validation_errors(document, "document not validated exiting ship()")
             return dandr.response
         }
-        DevCycleLogger.log("document validated, saving, exiting accept()")
-        def sendDocument = task{dataCentreApiConnectorService.getShipmentResponse(document)}
+        DevCycleLogger.log("document validated, saving, exiting ship()")
+        def sendDocument = task{dataCenterApiConnectorService.getShipmentResponse(document)}
         sendDocument.then {
             DevCycleLogger.log("Data centre response received, processing...")
             if(it != 200){
@@ -52,11 +51,12 @@ class DocumentShipmentService extends ProductsManagerService
         return dandr.response
     }
 
-    def cancelShipment(String participantInn, String shipmentNumber)
+    def cancelShipment(String shipmentNumber)
     {
-        if(!ShipmentDocument.findWhere(documentNumber: shipmentNumber)){
+        ShipmentDocument document = ShipmentDocument.findWhere(documentNumber: shipmentNumber)
+        if(!document){
             return 404
         }
-        return dataCentreApiConnectorService.cancelShipment(participantInn,shipmentNumber)
+        return dataCenterApiConnectorService.cancelShipment(document)
     }
 }

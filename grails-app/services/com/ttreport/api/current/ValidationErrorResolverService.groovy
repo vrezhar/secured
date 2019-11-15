@@ -1,8 +1,12 @@
 package com.ttreport.api.current
 
+
 import com.ttreport.api.resources.current.AcceptanceDocumentCommand
 import com.ttreport.api.resources.current.DocumentCommand
+import com.ttreport.api.resources.current.GenericDocumentCommand
+import com.ttreport.api.resources.current.MarketEntranceCommand
 import com.ttreport.api.resources.current.ProductCommand
+import com.ttreport.api.resources.current.ReleaseCommand
 import com.ttreport.api.resources.current.ShipmentDocumentCommand
 import com.ttreport.data.BarCode
 import com.ttreport.logs.DevCycleLogger
@@ -75,10 +79,30 @@ class ValidationErrorResolverService
             }
             return
         }
+        if(cmd instanceof ReleaseCommand) {
+            ReleaseCommand doc = cmd as ReleaseCommand
+            for(product in doc.products){
+                DevCycleLogger.log("code ${product.uitu_code?: product.uit_code} of command object number ${product.id} set to be 'deleted'")
+                product.setAction("DELETE")
+            }
+        }
+        if(cmd instanceof MarketEntranceCommand){
+            MarketEntranceCommand doc = cmd as MarketEntranceCommand
+            for(product in doc.products){
+                if(product.id){
+                    DevCycleLogger.log("Command object number ${product.id} set to be updated with ${product.uitu_code?: product.uit_code}")
+                    product.setAction("UPDATE")
+                    continue
+                }
+                DevCycleLogger.log("Command object with description ${product.product_description} set to be saved")
+                product.setAction("SAVE")
+            }
+            return
+        }
         throw new Exception("Invalid document")
     }
 
-    protected Response performCommandValidation(DocumentCommand cmd){
+    protected Response performCommandValidation(GenericDocumentCommand cmd){
         DevCycleLogger.log("Starting validation process")
         Response response = new Response()
         try{
@@ -90,7 +114,7 @@ class ValidationErrorResolverService
             return response
         }
         if(!cmd.validate()){
-            DevCycleLogger.log("DocumentCommand object not validated")
+            DevCycleLogger.log("GenericDocumentCommand object not validated")
             response.reportInvalidInput()
             for(error in cmd.errors.fieldErrors){
                 if(error.field == "companyToken"){

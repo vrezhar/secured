@@ -14,6 +14,8 @@ class Company implements  Serializable
 
     String address
     String companyId
+    String inn = "000052520"
+    String name = "OOO TEST"
     String token = UUID.randomUUID().toString()
 
     Date dateCreated
@@ -41,5 +43,7 @@ class Company implements  Serializable
         token nullable: false, blank: false, unique: true
         address nullable: false, blank: false
         companyId nullable: false, blank: false
+        inn nullable: false, blank: false
+        name nullable: false, blank: false
     }
 }

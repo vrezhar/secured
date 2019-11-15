@@ -2,10 +2,13 @@ package com.ttreport.api.current
 
 import com.ttreport.api.resources.current.AcceptanceDocumentCommand
 import com.ttreport.api.resources.current.DocumentAndResponse
+import com.ttreport.api.resources.current.MarketEntranceCommand
+import com.ttreport.api.resources.current.ReleaseCommand
 import com.ttreport.api.resources.current.ShipmentDocumentCommand
 import com.ttreport.api.response.current.Response
 import com.ttreport.data.BarCode
 import com.ttreport.data.Company
+import com.ttreport.data.documents.differentiated.Document
 import com.ttreport.data.documents.differentiated.GenericDocument
 import com.ttreport.logs.DevCycleLogger
 import grails.gorm.transactions.Transactional
@@ -24,7 +27,7 @@ class ProductsManagerService extends DocumentService
             return  dandr
         }
         Company company = Company.findWhere(token: cmd.companyToken)
-        GenericDocument document = createAcceptanceDocumentMock(cmd)
+        Document document = createAcceptanceDocumentMock(cmd)
         document.company = company
         for(item in cmd.products) {
             if(!item.rejected)
@@ -84,7 +87,7 @@ class ProductsManagerService extends DocumentService
             return  dandr
         }
         Company company = Company.findWhere(token: cmd.companyToken)
-        GenericDocument document = createShipmentDocumentMock(cmd)
+        Document document = createShipmentDocumentMock(cmd)
 
         for(item in cmd.products) {
             if(!item.rejected){
@@ -114,4 +117,15 @@ class ProductsManagerService extends DocumentService
         dandr.response = response.getAsMap()
         return dandr
     }
+
+    protected DocumentAndResponse enterProductsIntoMarket(MarketEntranceCommand cmd)
+    {
+
+    }
+
+    protected DocumentAndResponse releaseProducts(ReleaseCommand cmd)
+    {
+
+    }
+
 }

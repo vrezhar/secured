@@ -1,7 +1,8 @@
 package com.ttreport.api.current
 
+
 import com.ttreport.api.resources.current.ShipmentDocumentCommand
-import com.ttreport.data.Company
+import com.ttreport.data.documents.differentiated.existing.ShipmentDocument
 import com.ttreport.logs.DevCycleLogger
 import grails.plugin.springsecurity.annotation.Secured
 import grails.rest.RestfulController
@@ -42,9 +43,11 @@ class ApiDocumentShipmentEndpointController extends RestfulController<ShipmentDo
 
     def cancelShipment()
     {
+        def response = documentShipmentService.cancelShipment()
+        this.response.status = response
         withFormat {
             json{
-                respond([:])
+                respond([status: response])
             }
         }
     }

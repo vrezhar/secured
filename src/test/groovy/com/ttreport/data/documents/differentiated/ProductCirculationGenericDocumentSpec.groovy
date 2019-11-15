@@ -1,10 +1,10 @@
 package com.ttreport.data.documents.differentiated
 
-import com.ttreport.data.documents.differentiated.existing.ProductCirculationDocument
+import com.ttreport.data.documents.differentiated.existing.ProductMarketEntranceDocument
 import grails.testing.gorm.DomainUnitTest
 import spock.lang.Specification
 
-class ProductCirculationGenericDocumentSpec extends Specification implements DomainUnitTest<ProductCirculationDocument> {
+class ProductCirculationGenericDocumentSpec extends Specification implements DomainUnitTest<ProductMarketEntranceDocument> {
 
     def setup() {
     }

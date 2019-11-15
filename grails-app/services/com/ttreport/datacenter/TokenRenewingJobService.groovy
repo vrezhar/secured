@@ -1,4 +1,4 @@
-package com.ttreport.datacentre
+package com.ttreport.datacenter
 
 import grails.gorm.transactions.Transactional
 

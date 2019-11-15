@@ -1,41 +1,41 @@
 package com.ttreport.api.current
 
-
-import com.ttreport.api.resources.current.AcceptanceDocumentCommand
 import com.ttreport.api.resources.current.DocumentAndResponse
+import com.ttreport.api.resources.current.ReleaseCommand
 import com.ttreport.data.documents.differentiated.Document
 import com.ttreport.datacenter.DataCenterApiConnectorService
 import com.ttreport.logs.DevCycleLogger
 import grails.gorm.transactions.Transactional
 
-
 import static grails.async.Promises.task
 import static grails.async.Promises.waitAll
 
 @Transactional
-class DocumentAcceptanceService extends ProductsManagerService
+class ConsumerReleaseDocumentService extends ProductsManagerService
 {
     DataCenterApiConnectorService dataCenterApiConnectorService
-    Map accept(AcceptanceDocumentCommand cmd)
+
+    Map release(ReleaseCommand cmd)
     {
-        DevCycleLogger.log("accept() called ")
-        DocumentAndResponse dandr = acceptProducts(cmd)
+        DevCycleLogger.log("release() called")
+        DocumentAndResponse dandr = releaseProducts(cmd)
         Document document = dandr.document
         if(!document){
             return dandr.response
         }
         if(!document.validate()){
-            DevCycleLogger.log_validation_errors(document, "document not validated exiting accept()")
+            DevCycleLogger.log_validation_errors(document, "document not validated exiting release()")
             return dandr.response
         }
-        DevCycleLogger.log("document validated, saving, waiting for Data center's response...")
-        def sendDocument = task{dataCenterApiConnectorService.getAcceptanceResponse(document)}
+        DevCycleLogger.log("document validated, saving, waiting for Data center's response")
+        def sendDocument = task{dataCenterApiConnectorService.getReleaseResponse(document)}
         sendDocument.then {
             DevCycleLogger.log("Data center response received, processing...")
             if(it != 200){
                 //resolve errors or modify response by reporting failure
             }
         }
+
         dandr.response.status = waitAll(sendDocument)[0] as int
         if(dandr.response.status == 200){
             try{
@@ -46,8 +46,7 @@ class DocumentAcceptanceService extends ProductsManagerService
                 dandr.response.status = 500
             }
         }
-        DevCycleLogger.log("exiting accept()")
+        DevCycleLogger.log("exiting release()")
         return dandr.response
     }
-
 }

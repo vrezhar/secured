@@ -10,7 +10,7 @@ class GenericDocument extends Document
     String transferDate
 
     @Override
-    Map<String,Object> getAsMap()
+    transient Map<String,Object> getAsMap()
     {
         Map<String,Object> map = super.getAsMap()
         map.request_type = requestType

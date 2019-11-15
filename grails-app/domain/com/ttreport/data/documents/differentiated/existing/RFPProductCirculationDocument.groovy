@@ -1,30 +1,24 @@
 package com.ttreport.data.documents.differentiated.existing
 
-import com.ttreport.api.resources.current.DocumentForm
-import com.ttreport.data.BarCode
+import com.ttreport.data.documents.differentiated.Document
 
-class RFPProductCirculationDocument implements DocumentForm
+class RFPProductCirculationDocument extends Document
 {
-    String participantInn
-    List<String> barCodes = []
-
-    Date dateCreated
-    Date lastUpdated
 
     @Override
-    Map<String,Object> getAsMap()
+    transient Map<String,Object> getAsMap()
     {
         Map<String,Object> map =
                 [
-                        participant_inn: participantInn,
+                        participant_inn: company?.inn,
                         product_list: barCodes?.collect{
-                            [uit: it]
+                            [uit: it.uitCode]
                         }
                 ]
         return map
     }
 
     static constraints = {
-        participantInn nullable: false, blank: false
+        importFrom Document
     }
 }

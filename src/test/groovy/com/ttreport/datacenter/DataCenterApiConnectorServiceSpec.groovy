@@ -1,9 +1,9 @@
-package com.ttreport.datacentre
+package com.ttreport.datacenter
 
 import grails.test.hibernate.HibernateSpec
 import grails.testing.services.ServiceUnitTest
 
-class DataCentreApiConnectorServiceSpec extends HibernateSpec implements  ServiceUnitTest<DataCentreApiConnectorService>{
+class DataCenterApiConnectorServiceSpec extends HibernateSpec implements  ServiceUnitTest<DataCenterApiConnectorService>{
 
     List<Class> getDomainClasses()
     {
