@@ -7,7 +7,7 @@ import com.ttreport.api.resources.current.ReleaseCommand
 import com.ttreport.api.resources.current.ShipmentDocumentCommand
 import com.ttreport.data.documents.differentiated.existing.AcceptanceDocument
 import com.ttreport.data.documents.differentiated.existing.ConsumerReleaseDocument
-import com.ttreport.data.documents.differentiated.existing.ProductMarketEntranceDocument
+import com.ttreport.data.documents.differentiated.existing.MarketEntranceDocument
 import com.ttreport.data.documents.differentiated.existing.ShipmentDocument
 import grails.gorm.transactions.Transactional
 
@@ -50,13 +50,33 @@ class DocumentService extends ProductsService
         return document
     }
 
-    ProductMarketEntranceDocument createMarketEntranceDocumentMock(MarketEntranceCommand cmd)
+    MarketEntranceDocument createMarketEntranceDocumentMock(MarketEntranceCommand cmd)
     {
-
+        MarketEntranceDocument document = new MarketEntranceDocument()
+        document.documentDate = cmd.document_date
+        document.documentNumber = cmd.document_number
+        document.productionDate = cmd.production_date
+        if(cmd.producer_inn){
+            document.producerInn = cmd.producer_inn
+        }
+        if(cmd.owner_inn){
+            document.ownerInn = cmd.owner_inn
+        }
+        document.productionType = cmd.production_type
+        document.docType = cmd.doc_type
+        return document
     }
 
     ConsumerReleaseDocument createReleaseDocumentMock(ReleaseCommand cmd)
     {
-
+        ConsumerReleaseDocument document = new ConsumerReleaseDocument()
+        document.documentDate = cmd.document_date
+        document.documentNumber = cmd.document_number
+        document.actionDate = cmd.action_date
+        document.orderDate = cmd.order_date
+        document.orderNumber = cmd.order_number
+        document.action = cmd.action
+        document.documentType = cmd.document_type
+        return document
     }
 }

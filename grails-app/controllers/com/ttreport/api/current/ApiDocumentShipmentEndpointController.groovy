@@ -43,7 +43,7 @@ class ApiDocumentShipmentEndpointController extends RestfulController<ShipmentDo
 
     def cancelShipment()
     {
-        def response = documentShipmentService.cancelShipment()
+        def response = documentShipmentService.cancelShipment(params.number as String)
         this.response.status = response
         withFormat {
             json{

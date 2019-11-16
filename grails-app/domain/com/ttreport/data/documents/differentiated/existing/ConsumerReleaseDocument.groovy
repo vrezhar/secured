@@ -18,7 +18,9 @@ class ConsumerReleaseDocument extends Document
         }
         Map<String,Object> map = super.getAsMap()
         map.order_number = orderNumber
-        map.order_date = orderDate
+        if(orderDate) {
+            map.order_date = orderDate
+        }
         map.inn = company?.inn
         map.action = action
         map.action_date = actionDate

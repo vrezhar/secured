@@ -3,6 +3,7 @@ package com.ttreport.api.current
 
 import com.ttreport.api.resources.current.AcceptanceDocumentCommand
 import com.ttreport.api.resources.current.DocumentCommand
+import com.ttreport.api.resources.current.FromPhysCommand
 import com.ttreport.api.resources.current.GenericDocumentCommand
 import com.ttreport.api.resources.current.MarketEntranceCommand
 import com.ttreport.api.resources.current.ProductCommand
@@ -85,6 +86,7 @@ class ValidationErrorResolverService
                 DevCycleLogger.log("code ${product.uitu_code?: product.uit_code} of command object number ${product.id} set to be 'deleted'")
                 product.setAction("DELETE")
             }
+            return
         }
         if(cmd instanceof MarketEntranceCommand){
             MarketEntranceCommand doc = cmd as MarketEntranceCommand
@@ -102,7 +104,27 @@ class ValidationErrorResolverService
         throw new Exception("Invalid document")
     }
 
-    protected Response performCommandValidation(GenericDocumentCommand cmd){
+    protected Response validateFPCommand(FromPhysCommand cmd)
+    {
+        DevCycleLogger.log("Starting validation process")
+        Response response = new Response()
+        if(!cmd.validate()){
+            DevCycleLogger.log("DocumentCommand object not validated")
+            response.reportInvalidInput()
+            for(error in cmd.errors.fieldErrors){
+                if(error.field == "companyToken"){
+                    DevCycleLogger.log("authorisation failure")
+                    response.rejectCompanyToken()
+                    return response
+                }
+            }
+            DevCycleLogger.log_validation_errors(cmd)
+            response.status = 402
+            return response
+        }
+    }
+
+    protected Response performCommandValidation(DocumentCommand cmd){
         DevCycleLogger.log("Starting validation process")
         Response response = new Response()
         try{
@@ -114,7 +136,7 @@ class ValidationErrorResolverService
             return response
         }
         if(!cmd.validate()){
-            DevCycleLogger.log("GenericDocumentCommand object not validated")
+            DevCycleLogger.log("DocumentCommand object not validated")
             response.reportInvalidInput()
             for(error in cmd.errors.fieldErrors){
                 if(error.field == "companyToken"){
@@ -137,14 +159,16 @@ class ValidationErrorResolverService
                 continue
             }
             if(product.action != "SAVE" && !company.hasProduct(Products.get(product.id))){
+                response.reportInvalidInput()
                 DevCycleLogger.log("Product doesn't belong to found company's product list")
                 product.errors.rejectValue('id','command.product.notfound')
                 response.rejectProduct(product,computeHighestPriorityError(product))
                 product.rejected = true
             }
-            BarCode barCode = BarCode.findWhere(uitu_code: product.uitu_code ?: null, uit_code: product.uit_code ?: null)
+            BarCode barCode = BarCode.findWhere(uituCode: product.uitu_code ?: null, uitCode: product.uit_code ?: null)
             if(barCode && product.action == "DELETE"){
                 if(!company.hasBarCode(barCode)){
+                    response.reportInvalidInput()
                     DevCycleLogger.log("Product doesn't belong to found company's product list")
                     product.errors.rejectValue('id','command.code.notfound')
                     response.rejectProduct(product,computeHighestPriorityError(product))

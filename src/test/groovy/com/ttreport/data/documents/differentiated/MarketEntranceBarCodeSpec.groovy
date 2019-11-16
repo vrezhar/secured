@@ -1,10 +1,10 @@
 package com.ttreport.data.documents.differentiated
 
-import com.ttreport.data.CirculationBarCode
+import com.ttreport.data.MarketEntranceBarCode
 import grails.testing.gorm.DomainUnitTest
 import spock.lang.Specification
 
-class CirculationBarCodeSpec extends Specification implements DomainUnitTest<CirculationBarCode> {
+class MarketEntranceBarCodeSpec extends Specification implements DomainUnitTest<MarketEntranceBarCode> {
 
     def setup() {
     }

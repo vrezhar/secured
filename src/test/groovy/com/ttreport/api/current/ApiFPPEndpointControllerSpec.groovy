@@ -1,9 +1,9 @@
 package com.ttreport.api.current
 
-import grails.testing.services.ServiceUnitTest
+import grails.testing.web.controllers.ControllerUnitTest
 import spock.lang.Specification
 
-class ProductMarketEntranceDocumentServiceSpec extends Specification implements ServiceUnitTest<MarketEntranceDocumentService>{
+class ApiFPPEndpointControllerSpec extends Specification implements ControllerUnitTest<ApiFPPEndpointController> {
 
     def setup() {
     }

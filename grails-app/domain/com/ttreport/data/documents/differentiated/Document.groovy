@@ -2,24 +2,18 @@ package com.ttreport.data.documents.differentiated
 
 import com.ttreport.api.resources.current.DocumentForm
 import com.ttreport.data.BarCode
-import com.ttreport.data.CirculationBarCode
+import com.ttreport.data.MarketEntranceBarCode
 import com.ttreport.data.Company
 import grails.compiler.GrailsCompileStatic
+import org.grails.orm.hibernate.HibernateSession
 
 @GrailsCompileStatic
 class Document implements DocumentForm,Serializable
 {
-
-    private static long document_counter = 0L
     private static final long serialVersionUID = 1
 
     String documentDate = new Date().toInstant().toString()
-    String documentNumber = { ->
-        while(findWhere(documentNumber: documentNumber.toString())){
-            ++document_counter
-        }
-        document_counter.toString()
-    }
+    String documentNumber
 
     Date dateCreated
     Date lastUpdated
@@ -37,7 +31,7 @@ class Document implements DocumentForm,Serializable
                         products: barCodes.collect{
                             Map collected = [:]
                             if(it.minified){
-                                collected.cis = it.uitCode?: it.uituCode
+                                collected.cis = it.uitCode?: it.uituCode //more likely only uit should apply
                                 collected.tax = it.products.tax
                                 collected.cost = it.products.cost
                                 return collected
@@ -51,8 +45,8 @@ class Document implements DocumentForm,Serializable
                             if(it.uituCode){
                                 collected.uitu_code = it.uituCode
                             }
-                            if(it instanceof CirculationBarCode) {
-                                CirculationBarCode code = it as CirculationBarCode
+                            if(it instanceof MarketEntranceBarCode) {
+                                MarketEntranceBarCode code = it as MarketEntranceBarCode
                                 collected.tnved_code = code.tnvedCode
                                 collected.certificate_document = code.certificateDocument
                                 collected.certificate_document_date = code.certificateDocumentDate

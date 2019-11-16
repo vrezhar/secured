@@ -3,7 +3,7 @@ package com.ttreport.api.current
 import com.ttreport.api.resources.current.ExtendedProductCommand
 import com.ttreport.api.resources.current.ProductCommand
 import com.ttreport.data.BarCode
-import com.ttreport.data.CirculationBarCode
+import com.ttreport.data.MarketEntranceBarCode
 import com.ttreport.data.Company
 import com.ttreport.data.Products
 import com.ttreport.logs.DevCycleLogger
@@ -17,7 +17,7 @@ class ProductsService extends ValidationErrorResolverService
     {
         if(cmd instanceof ExtendedProductCommand){
             ExtendedProductCommand command = cmd as ExtendedProductCommand
-            BarCode barCode = new CirculationBarCode(uitCode: cmd.uit_code, uituCode: cmd.uitu_code,
+            BarCode barCode = new MarketEntranceBarCode(uitCode: cmd.uit_code, uituCode: cmd.uitu_code,
                     certificateDocumentNumber: command.certificate_document_number, certificateDocumentDate: command.certificate_document_number,
                     certificateDocument: command.certificate_document, tnvedCode: command.tnved_code, producerInn: command.producer_inn)
             if(command.owner_inn){
@@ -36,17 +36,6 @@ class ProductsService extends ValidationErrorResolverService
     {
         DevCycleLogger.log('update() called')
         Products products = Products.get(cmd.id)
-//        if(!cmd.product_code){
-//            DevCycleLogger.log("No product code detected, redirecting to save")
-//            cmd.setAction("SAVE")
-//            try {
-//                products = save(cmd,company)
-//                return products
-//            }
-//            catch (Exception e){
-//                throw e
-//            }
-//        }
         BarCode barCode = initializeBarCode(cmd)
         barCode.products = products
         if(!barCode.save()) {
@@ -99,7 +88,7 @@ class ProductsService extends ValidationErrorResolverService
         DevCycleLogger.log("delete() called")
         DevCycleLogger.log("assuming that product corresponding to command object exists")
         Products products = Products.get(cmd.id)
-        BarCode barCode = BarCode.findWhere(uit_code: cmd.uit_code?: null, uitu_code: cmd.uitu_code?: null)
+        BarCode barCode = BarCode.findWhere(uitCode: cmd.uit_code?: null, uituCode: cmd.uitu_code?: null)
         if(!barCode) {
             DevCycleLogger.log("barcode with uit code ${cmd.uit_code} and uitu code ${cmd.uitu_code} not found, nothing updated, exiting ship()")
             throw new Exception("Barcode not found")

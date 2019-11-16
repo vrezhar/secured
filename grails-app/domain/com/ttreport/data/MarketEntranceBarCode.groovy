@@ -2,7 +2,7 @@ package com.ttreport.data
 
 import com.ttreport.data.BarCode
 
-class CirculationBarCode extends BarCode
+class MarketEntranceBarCode extends BarCode
 {
 
     String tnvedCode

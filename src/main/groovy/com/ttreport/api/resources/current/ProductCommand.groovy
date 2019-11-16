@@ -29,9 +29,9 @@ class ProductCommand implements Validateable
         ProductCommand command = new ProductCommand()
         command.uit_code = rawJson?.uit_code
         command.uitu_code = rawJson?.uitu_code
-        command.tax = rawJson?.tax as int
-        command.cost = rawJson?.cost as int
-        command.id = rawJson?.id as long
+        command.tax = (rawJson?.tax == null) ? 0 : rawJson?.tax as Integer
+        command.cost = (rawJson?.cost == null) ? 0 : rawJson?.cost as Integer
+        command.id = (rawJson?.id == null) ? 0L : rawJson?.id as Long
         command.product_description = rawJson?.product_description
         if(!rawJson){
             return command
@@ -86,7 +86,7 @@ class ProductCommand implements Validateable
             }
         }
             uitu_code nullable: true, validator: { String value, ProductCommand object ->
-                BarCode exists = BarCode.findWhere(uitCode: value ?: null, uituCode: object?.uitu_code ?: null)
+                BarCode exists = BarCode.findWhere(uitCode: object?.uit_code?: null, uituCode: value ?: null)
                 if (object?.action == "SAVE" && !object?.uit_code && !value) {
                     return 'command.code.uitu.null'
                 }

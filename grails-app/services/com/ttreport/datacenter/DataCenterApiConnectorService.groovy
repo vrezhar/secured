@@ -1,6 +1,8 @@
 package com.ttreport.datacenter
 
+import com.ttreport.api.resources.current.FromPhysCommand
 import com.ttreport.data.documents.differentiated.Document
+import com.ttreport.data.documents.differentiated.existing.RFPProductCirculationDocument
 import com.ttreport.data.documents.differentiated.existing.ShipmentDocument
 import com.ttreport.logs.DevCycleLogger
 import grails.gorm.transactions.Transactional
@@ -96,6 +98,10 @@ class DataCenterApiConnectorService extends SigningService {
     }
 
     def cancelShipment(ShipmentDocument document)
+    {
+        return 200
+    }
+    def getFPEntryResponse(RFPProductCirculationDocument document)
     {
         return 200
     }

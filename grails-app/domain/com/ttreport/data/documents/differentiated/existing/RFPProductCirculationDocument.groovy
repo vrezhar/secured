@@ -1,9 +1,14 @@
 package com.ttreport.data.documents.differentiated.existing
 
+import com.ttreport.api.resources.current.DocumentForm
+import com.ttreport.data.BarCode
+import com.ttreport.data.Company
 import com.ttreport.data.documents.differentiated.Document
 
-class RFPProductCirculationDocument extends Document
+class RFPProductCirculationDocument implements DocumentForm
 {
+    static belongsTo = [company: Company]
+    static hasMany = [barCodes: BarCode]
 
     @Override
     transient Map<String,Object> getAsMap()
@@ -19,6 +24,6 @@ class RFPProductCirculationDocument extends Document
     }
 
     static constraints = {
-        importFrom Document
+
     }
 }

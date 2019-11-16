@@ -2,7 +2,7 @@ package com.ttreport.data.documents.differentiated.existing
 
 import com.ttreport.data.documents.differentiated.Document
 
-class ProductMarketEntranceDocument extends Document
+class MarketEntranceDocument extends Document
 {
     String productionDate
     String producerInn = company?.inn

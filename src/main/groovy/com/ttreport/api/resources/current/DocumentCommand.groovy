@@ -13,7 +13,7 @@ class DocumentCommand implements Validateable
     String document_date = new Date().toInstant().toString()
     String companyToken
 
-    private static boolean isCirculation(Map rawJson)
+    private static boolean isMarketEntrance(Map rawJson)
     {
         return rawJson?.production_date || rawJson?.producer_inn || rawJson?.owner_inn ||
                 rawJson?.production_type || rawJson?.doc_type
@@ -25,8 +25,9 @@ class DocumentCommand implements Validateable
                 rawJson?.action_date || rawJson?.document_type
     }
 
-    static DocumentCommand bind(Map rawJson)
+    static DocumentCommand bind(Map rawJson, String bindTo)
     {
+        println(rawJson)
         DocumentCommand cmd = new DocumentCommand()
         (rawJson?.products as List<Map>).each {
             cmd.products.add(ProductCommand.bind(it))
@@ -34,22 +35,26 @@ class DocumentCommand implements Validateable
         cmd.companyToken = rawJson?.companyToken
         cmd.document_number = rawJson?.document_number
         cmd.document_date = rawJson?.document_date
-        if(isCirculation(rawJson)){
+        if(bindTo == "MARKET_ENTRANCE"){
             MarketEntranceCommand command = MarketEntranceCommand.createFromBase(cmd)
             command.production_date = rawJson?.production_date
-            command.producer_inn = rawJson?.producer_inn
-            command.owner_inn = rawJson?.owner_inn
+            if(rawJson?.producer_inn){
+                command.producer_inn = rawJson?.producer_inn
+            }
+            if(rawJson?.owner_inn){
+                command.owner_inn = rawJson?.owner_inn
+            }
             command.production_type = rawJson?.production_type
             command.doc_type = rawJson?.doc_type
             return command
         }
-        if(isRelease(rawJson)){
+        if(bindTo == "RELEASE"){
             ReleaseCommand command = ReleaseCommand.createFromBase(cmd)
             command.order_date = rawJson?.order_date
             command.order_number = rawJson?.order_number
             command.action = rawJson?.action
             command.action_date = rawJson?.action_date
-            command.document_type = rawJson?.document_type as int
+            command.document_type = rawJson?.document_type == null ? 0 : rawJson?.document_type as int
             return  command
         }
         return cmd
