@@ -20,6 +20,7 @@ class UrlMappings {
         post "/api/document/shipment/cancel/$number"(controller: "apiDocumentShipmentEndpoint", action: "cancel")
         post "/api/document/entrance"(controller: "apiEnterMarketEndpoint")
         post "/api/document/shipment/release"(controller: "apiReleaseEndpoint")
+        post "/api/document/individual"(controller: "apiFPPEndpoint", action: "index")
 
         /*
         post "/document/alternative/acceptance"(controller: "apiAlternativeAccept", action: "accept")

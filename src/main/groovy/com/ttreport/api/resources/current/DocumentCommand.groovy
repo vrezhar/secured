@@ -13,24 +13,12 @@ class DocumentCommand implements Validateable
     String document_date = new Date().toInstant().toString()
     String companyToken
 
-    private static boolean isMarketEntrance(Map rawJson)
-    {
-        return rawJson?.production_date || rawJson?.producer_inn || rawJson?.owner_inn ||
-                rawJson?.production_type || rawJson?.doc_type
-    }
-
-    private static boolean isRelease(Map rawJson)
-    {
-        return rawJson?.order_number || rawJson?.order_date || rawJson?.action ||
-                rawJson?.action_date || rawJson?.document_type
-    }
-
     static DocumentCommand bind(Map rawJson, String bindTo)
     {
         println(rawJson)
         DocumentCommand cmd = new DocumentCommand()
         (rawJson?.products as List<Map>).each {
-            cmd.products.add(ProductCommand.bind(it))
+            cmd.products.add(ProductCommand.bind(it,bindTo))
         }
         cmd.companyToken = rawJson?.companyToken
         cmd.document_number = rawJson?.document_number
@@ -50,9 +38,12 @@ class DocumentCommand implements Validateable
         }
         if(bindTo == "RELEASE"){
             ReleaseCommand command = ReleaseCommand.createFromBase(cmd)
+            command.products.each {
+
+            }
             command.order_date = rawJson?.order_date
             command.order_number = rawJson?.order_number
-            command.action = rawJson?.action
+            command.action = rawJson?.action as int
             command.action_date = rawJson?.action_date
             command.document_type = rawJson?.document_type == null ? 0 : rawJson?.document_type as int
             return  command
@@ -73,8 +64,8 @@ class DocumentCommand implements Validateable
                 return false
             }
         }
-        document_number validator: { String value, DocumentCommand object ->
-            if(Document.findByDocumentNumber(value)){
+        document_number nullable: true, validator: { String value, DocumentCommand object ->
+            if( !(object instanceof MarketEntranceCommand || object instanceof FromPhysCommand) && (!value || Document.findByDocumentNumber(value)) ){
                 return false
             }
         }

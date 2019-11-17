@@ -104,25 +104,6 @@ class ValidationErrorResolverService
         throw new Exception("Invalid document")
     }
 
-    protected Response validateFPCommand(FromPhysCommand cmd)
-    {
-        DevCycleLogger.log("Starting validation process")
-        Response response = new Response()
-        if(!cmd.validate()){
-            DevCycleLogger.log("DocumentCommand object not validated")
-            response.reportInvalidInput()
-            for(error in cmd.errors.fieldErrors){
-                if(error.field == "companyToken"){
-                    DevCycleLogger.log("authorisation failure")
-                    response.rejectCompanyToken()
-                    return response
-                }
-            }
-            DevCycleLogger.log_validation_errors(cmd)
-            response.status = 402
-            return response
-        }
-    }
 
     protected Response performCommandValidation(DocumentCommand cmd){
         DevCycleLogger.log("Starting validation process")
@@ -132,7 +113,7 @@ class ValidationErrorResolverService
         }
         catch (Exception e){
             DevCycleLogger.log(e.message)
-            response.status = 402
+            response.status = 401
             return response
         }
         if(!cmd.validate()){
@@ -146,7 +127,7 @@ class ValidationErrorResolverService
                 }
             }
             DevCycleLogger.log_validation_errors(cmd)
-            response.status = 402
+            response.status = 401
             return response
         }
         Company company = Company.findWhere(token: cmd.companyToken)

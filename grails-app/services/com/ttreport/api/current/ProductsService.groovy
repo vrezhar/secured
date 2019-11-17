@@ -28,7 +28,7 @@ class ProductsService extends ValidationErrorResolverService
             }
             return barCode
         }
-        return new BarCode(uitCode: cmd.uit_code, uituCode: cmd.uitu_code)
+        return new BarCode(uitCode: cmd.uit_code, uituCode: cmd.uitu_code, minified: cmd.minified)
 
     }
 

@@ -13,7 +13,7 @@ mail:
 ---
 status:
     INVALID_TOKEN: 400
-    INVALID_ACTION: 401
+    INVALID_ACTION: 402
     OK: 200
 
 

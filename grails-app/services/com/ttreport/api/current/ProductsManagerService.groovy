@@ -14,6 +14,7 @@ import com.ttreport.data.Company
 import com.ttreport.data.Products
 import com.ttreport.data.documents.differentiated.Document
 import com.ttreport.data.documents.differentiated.GenericDocument
+import com.ttreport.data.documents.differentiated.existing.RFPProductCirculationDocument
 import com.ttreport.logs.DevCycleLogger
 import grails.gorm.transactions.Transactional
 
@@ -26,7 +27,7 @@ class ProductsManagerService extends DocumentService
         DevCycleLogger.log("acceptProducts() called")
         DocumentAndResponse dandr = new DocumentAndResponse()
         Response response = performCommandValidation(cmd)
-        if(response.status == 400 || response.status == 402){
+        if(response.status == 400 || response.status == 401){
             dandr.response = response.getAsMap()
             return  dandr
         }
@@ -87,7 +88,7 @@ class ProductsManagerService extends DocumentService
     {
         DocumentAndResponse dandr = new DocumentAndResponse()
         Response response = performCommandValidation(cmd)
-        if(response.status == 400 || response.status == 402){
+        if(response.status == 400 || response.status == 401){
             dandr.response = response.getAsMap()
             return  dandr
         }
@@ -129,7 +130,7 @@ class ProductsManagerService extends DocumentService
         DevCycleLogger.log("enterProductsIntoMarket() called")
         DocumentAndResponse dandr = new DocumentAndResponse()
         Response response = performCommandValidation(cmd)
-        if(response.status == 400 || response.status == 402){
+        if(response.status == 400 || response.status == 401){
             dandr.response = response.getAsMap()
             return  dandr
         }
@@ -191,7 +192,7 @@ class ProductsManagerService extends DocumentService
     {
         DocumentAndResponse dandr = new DocumentAndResponse()
         Response response = performCommandValidation(cmd)
-        if(response.status == 400 || response.status == 402){
+        if(response.status == 400 || response.status == 401){
             dandr.response = response.getAsMap()
             return  dandr
         }
@@ -230,13 +231,13 @@ class ProductsManagerService extends DocumentService
         DevCycleLogger.log("enterfpp() called")
         DocumentAndResponse dandr = new DocumentAndResponse()
         Response response = new Response()
-        Document document = new Document()
+        Document document = new RFPProductCirculationDocument()
         if(!cmd.validate(['companyToken'])) {
-            dandr.response = [status: 401]
+            dandr.response = [status: 400]
             return  dandr
         }
         if(!cmd.validate(['products_list'])) {
-            dandr.response = [status: 402]
+            dandr.response = [status: 401]
             return  dandr
         }
         Company company = Company.findWhere(token: cmd.companyToken)

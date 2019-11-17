@@ -77,6 +77,8 @@ class DataCenterApiConnectorService extends SigningService {
         return (new JsonSlurper().parseText(data) as Map).token
     }
 
+    //TODO make a factory for this instead of individual methods
+
     def getAcceptanceResponse(Document document)
     {
         return 200
@@ -101,7 +103,7 @@ class DataCenterApiConnectorService extends SigningService {
     {
         return 200
     }
-    def getFPEntryResponse(RFPProductCirculationDocument document)
+    def getFPEntryResponse(Document document)
     {
         return 200
     }

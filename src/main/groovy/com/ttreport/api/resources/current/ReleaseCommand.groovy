@@ -4,7 +4,7 @@ class ReleaseCommand extends DocumentCommand
 {
     String order_number
     String order_date
-    String action
+    int action
     String action_date
     int document_type
 
@@ -23,6 +23,10 @@ class ReleaseCommand extends DocumentCommand
         order_number nullable: false, blank: false
         order_date nullable: true, blank: true
         action_date nullable: false, blank: false
-        action nullable: false, blank: false
+        action validator: { int value, ReleaseCommand object ->
+            if(!(value >= 0 && value <= 6)){
+                return  false
+            }
+        }
     }
 }

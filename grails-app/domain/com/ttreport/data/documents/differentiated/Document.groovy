@@ -8,7 +8,7 @@ import grails.compiler.GrailsCompileStatic
 import org.grails.orm.hibernate.HibernateSession
 
 @GrailsCompileStatic
-class Document implements DocumentForm,Serializable
+class Document implements DocumentForm, Serializable
 {
     private static final long serialVersionUID = 1
 
@@ -26,14 +26,13 @@ class Document implements DocumentForm,Serializable
     {
         Map<String,Object> map =
                 [
-                        document_number: documentNumber,
                         document_date: documentDate,
                         products: barCodes.collect{
                             Map collected = [:]
                             if(it.minified){
                                 collected.cis = it.uitCode?: it.uituCode //more likely only uit should apply
-                                collected.tax = it.products.tax
-                                collected.cost = it.products.cost
+                                collected.product_tax = it.products.tax
+                                collected.product_cost = it.products.cost
                                 return collected
                             }
                             collected.tax = it.products.tax

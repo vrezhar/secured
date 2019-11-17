@@ -1,6 +1,6 @@
 package com.ttreport.api.current
 
-import com.ttreport.datacentre.TokenRenewingJobService
+import com.ttreport.datacenter.TokenRenewingJobService
 import grails.testing.services.ServiceUnitTest
 import spock.lang.Specification
 

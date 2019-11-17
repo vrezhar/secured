@@ -14,6 +14,7 @@ class MarketEntranceDocument extends Document
     transient Map<String, Object> getAsMap()
     {
         Map<String, Object> map = super.getAsMap()
+        map.remove("document_number")
         map.doc_type = docType
         map.document_description =
                 [
@@ -27,7 +28,9 @@ class MarketEntranceDocument extends Document
     }
 
     static constraints = {
-        importFrom Document
+        documentNumber nullable: true, blank: true
+        company nullable: false
+        barCodes nullable: false
         productionType nullable: false, blank: false
         producerInn nullable: false, blank: false
         productionDate nullable: false, blank: false

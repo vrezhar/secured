@@ -10,7 +10,7 @@ class BarCode implements Serializable
 {
 
     private static final long serialVersionUID = 1
-    transient boolean minified = 0
+    boolean minified = false
 
     String uitCode
     String uituCode

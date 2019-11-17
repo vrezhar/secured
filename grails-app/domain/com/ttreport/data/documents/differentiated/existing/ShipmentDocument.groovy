@@ -21,6 +21,8 @@ class ShipmentDocument extends GenericDocument
     transient Map<String,Object> getAsMap()
     {
         Map<String,Object> map = super.getAsMap()
+        map.remove("document_number")
+        map.document_num = documentNumber
         map.pdf = pdf
         map.receiver = receiver
         map.receiver_inn = receiverInn

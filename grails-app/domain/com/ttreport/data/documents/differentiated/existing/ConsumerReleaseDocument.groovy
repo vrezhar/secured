@@ -1,12 +1,13 @@
 package com.ttreport.data.documents.differentiated.existing
 
 import com.ttreport.data.documents.differentiated.Document
+import com.ttreport.data.documents.differentiated.GenericDocument
 
 class ConsumerReleaseDocument extends Document
 {
     String orderNumber
     String orderDate
-    String action
+    int action
     String actionDate
     int documentType
 
@@ -31,7 +32,11 @@ class ConsumerReleaseDocument extends Document
         orderNumber nullable: false, blank: false
         orderDate nullable: true, blank: true
         actionDate nullable: false, blank: false
-        action nullable: false, blank: false
+        action validator: { int value, ConsumerReleaseDocument object ->
+            if(!(value >= 0 && value <= 6)){
+                return  false
+            }
+        }
 //        documentType notEqual: 0
     }
 }

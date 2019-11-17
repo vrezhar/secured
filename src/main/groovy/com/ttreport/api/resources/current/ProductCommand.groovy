@@ -8,6 +8,7 @@ import grails.validation.Validateable
 @GrailsCompileStatic
 class ProductCommand implements Validateable
 {
+    boolean minified = false
     boolean rejected = false
     int tax
     int cost
@@ -17,34 +18,33 @@ class ProductCommand implements Validateable
     String uitu_code
     String action
 
-    private static boolean isExtended(Map rawJson)
-    {
-        return rawJson?.tnved_code || rawJson?.certificate_document ||
-                rawJson?.certificate_document_number || rawJson?.certificate_document_date ||
-                rawJson?.producer_inn || rawJson?.owner_inn || rawJson?.production_date
-    }
-
-    static ProductCommand bind(Map rawJson)
+    static ProductCommand bind(Map rawJson, String bindTo)
     {
         ProductCommand command = new ProductCommand()
+        if(!rawJson){
+            return command
+        }
         command.uit_code = rawJson?.uit_code
         command.uitu_code = rawJson?.uitu_code
         command.tax = (rawJson?.tax == null) ? 0 : rawJson?.tax as Integer
         command.cost = (rawJson?.cost == null) ? 0 : rawJson?.cost as Integer
         command.id = (rawJson?.id == null) ? 0L : rawJson?.id as Long
         command.product_description = rawJson?.product_description
-        if(!rawJson){
-            return command
+        if(bindTo == "MARKET_ENTRANCE"){
+            ExtendedProductCommand productCommand = ExtendedProductCommand.createFromBase(command)
+            productCommand.tnved_code = rawJson?.tnved_code
+            productCommand.certificate_document = rawJson?.certificate_document
+            productCommand.certificate_document_number = rawJson?.certificate_document_number
+            productCommand.certificate_document_date = rawJson?.certificate_document_date
+            productCommand.producer_inn = rawJson?.producer_inn
+            productCommand.owner_inn = rawJson?.owner_inn
+            productCommand.production_date = rawJson?.production_date
+            return productCommand
         }
-        ExtendedProductCommand productCommand = ExtendedProductCommand.createFromBase(command)
-        productCommand.tnved_code = rawJson?.tnved_code
-        productCommand.certificate_document = rawJson?.certificate_document
-        productCommand.certificate_document_number = rawJson?.certificate_document_number
-        productCommand.certificate_document_date = rawJson?.certificate_document_date
-        productCommand.producer_inn = rawJson?.producer_inn
-        productCommand.owner_inn = rawJson?.owner_inn
-        productCommand.production_date = rawJson?.production_date
-        return productCommand
+        if(bindTo == "RELEASE"){
+            command.minified = true
+        }
+        return command
     }
 
     static constraints = {
