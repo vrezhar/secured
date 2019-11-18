@@ -66,7 +66,7 @@ class Document implements DocumentForm, Serializable
     }
 
     static constraints = {
-        documentNumber nullable: false, blank: false, unique: true
+        documentNumber nullable: true, blank: true
         company nullable: false
         barCodes nullable: false
     }

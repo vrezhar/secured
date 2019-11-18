@@ -11,7 +11,7 @@ class DocumentCommand implements Validateable
 {
     List<ProductCommand> products = []
     String document_number
-    String document_date = new Date().toInstant().toString()
+    String document_date
     String companyToken
 
     static DocumentCommand bind(Map rawJson, String bindTo)
@@ -24,7 +24,7 @@ class DocumentCommand implements Validateable
             }
             cmd.companyToken = rawJson?.companyToken
             cmd.document_number = rawJson?.document_number
-            cmd.document_date = rawJson?.document_date
+            cmd.document_date = rawJson?.document_date?: new Date().toInstant().toString()
             if(bindTo == "MARKET_ENTRANCE"){
                 MarketEntranceCommand command = MarketEntranceCommand.createFromBase(cmd)
                 command.production_date = rawJson?.production_date
@@ -71,7 +71,7 @@ class DocumentCommand implements Validateable
             }
         }
         document_number nullable: true, validator: { String value, DocumentCommand object ->
-            if( !(object instanceof MarketEntranceCommand || object instanceof FromPhysCommand) && (!value || Document.findByDocumentNumber(value)) ){
+            if( !(object instanceof MarketEntranceCommand || object instanceof FromPhysCommand) && (!value) ){
                 return false
             }
         }
