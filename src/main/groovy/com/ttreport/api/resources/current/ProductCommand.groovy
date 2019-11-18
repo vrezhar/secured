@@ -2,6 +2,7 @@ package com.ttreport.api.resources.current
 
 import com.ttreport.data.BarCode
 import com.ttreport.data.Products
+import com.ttreport.logs.DevCycleLogger
 import grails.compiler.GrailsCompileStatic
 import grails.validation.Validateable
 
@@ -24,25 +25,30 @@ class ProductCommand implements Validateable
         if(!rawJson){
             return command
         }
-        command.uit_code = rawJson?.uit_code
-        command.uitu_code = rawJson?.uitu_code
-        command.tax = (rawJson?.tax == null) ? 0 : rawJson?.tax as Integer
-        command.cost = (rawJson?.cost == null) ? 0 : rawJson?.cost as Integer
-        command.id = (rawJson?.id == null) ? 0L : rawJson?.id as Long
-        command.product_description = rawJson?.product_description
-        if(bindTo == "MARKET_ENTRANCE"){
-            ExtendedProductCommand productCommand = ExtendedProductCommand.createFromBase(command)
-            productCommand.tnved_code = rawJson?.tnved_code
-            productCommand.certificate_document = rawJson?.certificate_document
-            productCommand.certificate_document_number = rawJson?.certificate_document_number
-            productCommand.certificate_document_date = rawJson?.certificate_document_date
-            productCommand.producer_inn = rawJson?.producer_inn
-            productCommand.owner_inn = rawJson?.owner_inn
-            productCommand.production_date = rawJson?.production_date
-            return productCommand
+        try{
+            command.uit_code = rawJson?.uit_code
+            command.uitu_code = rawJson?.uitu_code
+            command.tax = (rawJson?.tax == null) ? 0 : rawJson?.tax as Integer
+            command.cost = (rawJson?.cost == null) ? 0 : rawJson?.cost as Integer
+            command.id = (rawJson?.id == null) ? 0L : rawJson?.id as Long
+            command.product_description = rawJson?.product_description
+            if(bindTo == "MARKET_ENTRANCE"){
+                ExtendedProductCommand productCommand = ExtendedProductCommand.createFromBase(command)
+                productCommand.tnved_code = rawJson?.tnved_code
+                productCommand.certificate_document = rawJson?.certificate_document
+                productCommand.certificate_document_number = rawJson?.certificate_document_number
+                productCommand.certificate_document_date = rawJson?.certificate_document_date
+                productCommand.producer_inn = rawJson?.producer_inn
+                productCommand.owner_inn = rawJson?.owner_inn
+                productCommand.production_date = rawJson?.production_date
+                return productCommand
+            }
+            if(bindTo == "RELEASE"){
+                command.minified = true
+            }
         }
-        if(bindTo == "RELEASE"){
-            command.minified = true
+        catch(Exception ignored) {
+            DevCycleLogger.log(ignored.message)
         }
         return command
     }

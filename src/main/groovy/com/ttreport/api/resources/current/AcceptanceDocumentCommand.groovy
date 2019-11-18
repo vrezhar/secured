@@ -7,7 +7,7 @@ import grails.compiler.GrailsCompileStatic
 class AcceptanceDocumentCommand extends GenericDocumentCommand
 {
     String release_order_number = "test"
-    long acceptance_date = new Date().toInstant().getEpochSecond()
+    String acceptance_date = new Date().toInstant().toString()
     String trade_sender_inn = "test"
     String trade_owner_inn = null
     String trade_sender_name = "test"
@@ -21,7 +21,7 @@ class AcceptanceDocumentCommand extends GenericDocumentCommand
         trade_recipient_inn nullable: true, blank: true
         trade_sender_inn nullable: false, blank: false
         trade_sender_name nullable: false, blank: false
-        acceptance_date notEqual: 0L
+        acceptance_date nullable: false, blank: false
     }
 
 }

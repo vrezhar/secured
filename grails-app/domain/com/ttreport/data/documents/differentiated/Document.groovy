@@ -2,10 +2,9 @@ package com.ttreport.data.documents.differentiated
 
 import com.ttreport.api.resources.current.DocumentForm
 import com.ttreport.data.BarCode
-import com.ttreport.data.MarketEntranceBarCode
 import com.ttreport.data.Company
+import com.ttreport.data.MarketEntranceBarCode
 import grails.compiler.GrailsCompileStatic
-import org.grails.orm.hibernate.HibernateSession
 
 @GrailsCompileStatic
 class Document implements DocumentForm, Serializable
@@ -35,9 +34,9 @@ class Document implements DocumentForm, Serializable
                                 collected.product_cost = it.products.cost
                                 return collected
                             }
-                            collected.tax = it.products.tax
-                            collected.cost = it.products.cost
-                            collected.description = it.products.description
+                            collected.produc_tax = it.products.tax
+                            collected.product_cost = it.products.cost
+                            collected.product_description = it.products.description
                             if(it.uitCode){
                                 collected.uit_code = it.uitCode
                             }

@@ -11,7 +11,7 @@ class AcceptanceDocument extends GenericDocument
     String tradeSenderInn
     String tradeSenderName
     String tradeRecipientInn
-    long acceptanceDate
+    String acceptanceDate
 
     @Override
     transient Map<String,Object> getAsMap()
@@ -38,6 +38,6 @@ class AcceptanceDocument extends GenericDocument
         tradeSenderInn nullable: false, blank: false
         tradeSenderName nullable: false, blank: false
         tradeRecipientInn nullable: true, blank: true
-        acceptanceDate notEqual: 0L
+        acceptanceDate nullable: false, blank: false
     }
 }

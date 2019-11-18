@@ -13,8 +13,8 @@ import org.springframework.security.access.method.P
 @Transactional
 class DataCenterApiConnectorService extends SigningService {
 
-    protected final static String  prod_url = " https://ismp.crpt.ru/api/v3/"
-    protected final static String test_url = "https://demo.fashion.crpt.ru/api/v3/"
+    protected final static String  prod_url = "https://ismp.crpt.ru/api/v3/"
+    protected final static String test_url = "https://demo.lp.crpt.tech/api/v3/"
 
     protected static Map<String,String> retrieveRandomData(boolean testing = true) throws RandomDataRetrievalFailureException
     {
