@@ -8,13 +8,13 @@ import grails.validation.Validateable
 @GrailsCompileStatic
 class GenericDocumentCommand extends DocumentCommand
 {
-    String transfer_date = "2019"
-    String turnover_type = "test"
+    String document_number
+    String document_date = new Date().toInstant().toString()
 
     static constraints = {
         importFrom DocumentCommand
-        transfer_date nullable: false, blank: false
-        turnover_type nullable: false, blank: false
+        document_date nullable: false, blank: false
+        document_number nullable: false, blank: false
     }
 
 }

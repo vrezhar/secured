@@ -1,17 +1,27 @@
 package com.ttreport.datacenter
 
-import com.ttreport.data.documents.differentiated.GenericDocument
+
 import com.ttreport.logs.DevCycleLogger
-import grails.converters.JSON
 
 import javax.net.ssl.HttpsURLConnection
 
 class APIHttpClient
 {
+    private static String token
+
     String data
     String content_type = "application/json"
     String method = "POST"
     String targetUrl
+
+    synchronized static String getToken()
+    {
+        return token
+    }
+    synchronized static void setToken(String s)
+    {
+       token = s
+    }
 
     String sendHttpRequest(String url_ = this.targetUrl, String data_ = this.data, String method = this.method, String content_type = this.content_type, boolean usehttps = true)
     throws IOException,Exception
@@ -32,6 +42,9 @@ class APIHttpClient
             if(content_type) {
                 connection.setRequestProperty("Content-Type", content_type)
             }
+            if(getToken()){
+                connection.setRequestProperty("Authorization", "Bearer " + getToken())
+            }
             connection.setDoOutput(true)
             if(data_) {
                 connection.setRequestProperty("Content-Length", Integer.toString(data_?.getBytes()?.length))
@@ -40,6 +53,7 @@ class APIHttpClient
                 wr.writeBytes(data_)
                 wr.close()
             }
+
 
             InputStream is = connection.getInputStream()
             BufferedReader rd = new BufferedReader(new InputStreamReader(is))
@@ -72,15 +86,6 @@ class APIHttpClient
             }
         }
     }
-
-    static String sendDocument(GenericDocument document)
-    {
-        APIHttpClient client = new APIHttpClient()
-        client.targetUrl = (document.requestType == "ACCEPT") ? "/test1" : "/test2"
-        client.data = new JSON(document).toString()
-        return client.sendHttpRequest()
-    }
-
 
 
 }

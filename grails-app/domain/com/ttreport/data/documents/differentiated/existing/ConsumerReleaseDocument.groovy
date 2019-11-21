@@ -1,9 +1,8 @@
 package com.ttreport.data.documents.differentiated.existing
 
-import com.ttreport.data.documents.differentiated.Document
 import com.ttreport.data.documents.differentiated.GenericDocument
 
-class ConsumerReleaseDocument extends Document
+class ConsumerReleaseDocument extends GenericDocument
 {
     String orderNumber
     String orderDate
@@ -29,6 +28,7 @@ class ConsumerReleaseDocument extends Document
         return map
     }
     static constraints = {
+        importFrom GenericDocument
         orderNumber nullable: false, blank: false
         orderDate nullable: true, blank: true
         actionDate nullable: false, blank: false

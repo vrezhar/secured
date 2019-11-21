@@ -5,15 +5,15 @@ import com.ttreport.data.BarCode
 import com.ttreport.data.Company
 import com.ttreport.data.documents.differentiated.Document
 
-class RFPProductCirculationDocument extends Document
+class RFIEntranceDocument extends Document
 {
-
+    String participantInn
     @Override
     transient Map<String,Object> getAsMap()
     {
         Map<String,Object> map =
                 [
-                        participant_inn: company?.inn,
+                        participant_inn: participantInn?: company?.inn,
                         product_list: barCodes?.collect{
                             [uit: it.uitCode]
                         }
@@ -22,6 +22,7 @@ class RFPProductCirculationDocument extends Document
     }
 
     static constraints = {
-        documentNumber nullable: true, blank: true
+        importFrom Document
+        participantInn nullable: true, blank: false
     }
 }

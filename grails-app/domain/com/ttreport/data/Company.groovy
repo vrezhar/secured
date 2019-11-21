@@ -11,7 +11,7 @@ import groovy.transform.EqualsAndHashCode
 class Company implements  Serializable
 {
 
-    private static final long serialVersionUID = 1
+    private static final long serialVersionUID = 3L
 
     String address
     String companyId
@@ -29,16 +29,11 @@ class Company implements  Serializable
 
     boolean hasBarCode(BarCode barCode)
     {
-        for(document in this.documents) {
-            if(document.barCodes.contains(barCode)){
-                return true
-            }
-        }
-        return false
+        return barCodes?.contains(barCode)
     }
 
     static belongsTo = [user: User]
-    static hasMany = [products: Products, documents: Document]
+    static hasMany = [products: Products, barCodes: BarCode, documents: Document]
 
     static constraints = {
         token nullable: false, blank: false, unique: true

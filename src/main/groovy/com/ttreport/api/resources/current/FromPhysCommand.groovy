@@ -2,21 +2,22 @@ package com.ttreport.api.resources.current
 
 import com.ttreport.data.Company
 import com.ttreport.data.Products
+import com.ttreport.data.documents.differentiated.Document
 import grails.validation.Validateable
 
-class FromPhysCommand implements Validateable
+class FromPhysCommand extends DocumentCommand
 {
-    String companyToken
-    List<ProductCommand> products_list
-
+    String participant_inn
+    List<ProductCommand> getProducts_list()
+    {
+        return products
+    }
+    void setProducts_list(List<ProductCommand> products)
+    {
+        this.products = products
+    }
     static constraints = {
-        companyToken nullable: false, validator: { String value, FromPhysCommand object ->
-            Company company = Company.findWhere(token: value)
-            if(!company){
-                return false
-            }
-        }
-        products_list nullable: false
-
+        importFrom DocumentCommand
+        participant_inn nullable: true, blank: true
     }
 }

@@ -5,26 +5,21 @@ import grails.compiler.GrailsCompileStatic
 @GrailsCompileStatic
 class GenericDocument extends Document
 {
-    String requestType
-    String turnoverType
-    String transferDate
+    String documentDate
+    String documentNumber
 
     @Override
     transient Map<String,Object> getAsMap()
     {
         Map<String,Object> map = super.getAsMap()
-        map.request_type = requestType
-        map.turnover_type = turnoverType
-        map.transfer_date = transferDate
+        map.document_date = documentDate
+        map.document_number = documentNumber
         return map
     }
 
     static constraints = {
         importFrom Document
-        transferDate nullable: false
-        turnoverType validator: { String value, GenericDocument object ->
-            if(value != "SALE" && value != "COMMISSION" && value != "AGENT" && value != "CONTRACT")
-                return false
-        }
+        documentNumber nullable: false, blank: false
+        documentDate nullable: false, blank: false
     }
 }

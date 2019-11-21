@@ -34,11 +34,6 @@ class SigningService {
     protected static final String key_oid = JCP.GOST_PARAMS_EXC_2012_256_KEY_OID
     protected static final String provider = JCP.PROVIDER_NAME
 
-    protected static String serializeAsJson(GenericDocument document)
-    {
-       return document.serializeAsJson()
-    }
-
     def sign(byte[] data = "a".getBytes(), boolean detached = false) throws Exception
     {
         System.setProperty("com.sun.security.enableAIAcaIssuers", "true")

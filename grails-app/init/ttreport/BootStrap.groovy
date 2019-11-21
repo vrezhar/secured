@@ -5,10 +5,14 @@ import com.ttreport.auth.Role
 import com.ttreport.auth.User
 import com.ttreport.auth.UserRole
 import com.ttreport.data.Company
+import com.ttreport.datacenter.APIHttpClient
+import com.ttreport.datacenter.DataCenterApiConnectorService
 import grails.compiler.GrailsCompileStatic
 
 @GrailsCompileStatic
 class BootStrap {
+
+    DataCenterApiConnectorService dataCenterApiConnectorService
 
     def init = { servletContext ->
         Role adminRole = Role.findOrSaveWhere(authority: 'ROLE_ADMIN')
@@ -47,6 +51,7 @@ class BootStrap {
             company.save(true)
         }
         println(company.token)
+        APIHttpClient.setToken(dataCenterApiConnectorService.retrieveToken(true))
     }
 
     def destroy = {

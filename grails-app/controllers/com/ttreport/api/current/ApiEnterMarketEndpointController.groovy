@@ -13,7 +13,7 @@ class ApiEnterMarketEndpointController {
 
     def index()
     {
-        MarketEntranceCommand cmd = DocumentCommand.bind(request?.JSON as Map,"MARKET_ENTRANCE") as MarketEntranceCommand
+        MarketEntranceCommand cmd = DocumentCommand.bind(request?.JSON as Map,"ENTRANCE") as MarketEntranceCommand
         Map response = marketEntranceDocumentService.enterMarket(cmd)
         DevCycleLogger.print_logs()
         DevCycleLogger.cleanup()

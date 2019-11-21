@@ -13,8 +13,6 @@ class MarketEntranceCommand extends DocumentCommand
         MarketEntranceCommand command = new MarketEntranceCommand()
         command.products = cmd?.products
         command.companyToken = cmd?.companyToken
-        command.document_number = cmd?.document_number
-        command.document_date = cmd?.document_date
         return command
     }
 

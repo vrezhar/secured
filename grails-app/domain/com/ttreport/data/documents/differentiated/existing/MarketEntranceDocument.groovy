@@ -28,7 +28,6 @@ class MarketEntranceDocument extends Document
     }
 
     static constraints = {
-        documentNumber nullable: true, blank: true
         company nullable: false
         barCodes nullable: false
         productionType nullable: false, blank: false

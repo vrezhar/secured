@@ -17,7 +17,7 @@ class ProductsService extends ValidationErrorResolverService
     {
         if(cmd instanceof ExtendedProductCommand){
             ExtendedProductCommand command = cmd as ExtendedProductCommand
-            BarCode barCode = new MarketEntranceBarCode(uitCode: cmd.uit_code, uituCode: cmd.uitu_code,
+            BarCode barCode = new MarketEntranceBarCode(uitCode: cmd.uit_code, uituCode: cmd.uitu_code, tax: cmd.tax, cost: cmd.tax, description: cmd.product_description,
                     certificateDocumentNumber: command.certificate_document_number, certificateDocumentDate: command.certificate_document_number,
                     certificateDocument: command.certificate_document, tnvedCode: command.tnved_code, producerInn: command.producer_inn)
             if(command.owner_inn){
@@ -28,7 +28,7 @@ class ProductsService extends ValidationErrorResolverService
             }
             return barCode
         }
-        return new BarCode(uitCode: cmd.uit_code, uituCode: cmd.uitu_code, minified: cmd.minified)
+        return new BarCode(uitCode: cmd.uit_code, uituCode: cmd.uitu_code, minified: cmd.minified, tax: cmd.tax, cost: cmd.tax, description: cmd.product_description)
 
     }
 
@@ -74,6 +74,7 @@ class ProductsService extends ValidationErrorResolverService
         BarCode barCode = initializeBarCode(cmd)
         barCode.products = products
         products.addToBarCodes(barCode)
+        company.addToBarCodes(barCode)
         products.save()
         if(!barCode.save(true)) {
             DevCycleLogger.log_validation_errors(barCode,"bar code with uit code ${barCode.uitCode} and uitu code ${barCode.uituCode} not validated, nothing saved, exiting save()")

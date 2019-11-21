@@ -10,8 +10,6 @@ import grails.validation.Validateable
 class DocumentCommand implements Validateable
 {
     List<ProductCommand> products = []
-    String document_number
-    String document_date
     String companyToken
 
     static DocumentCommand bind(Map rawJson, String bindTo)
@@ -23,8 +21,6 @@ class DocumentCommand implements Validateable
                 cmd.products.add(ProductCommand.bind(it,bindTo))
             }
             cmd.companyToken = rawJson?.companyToken
-            cmd.document_number = rawJson?.document_number
-            cmd.document_date = rawJson?.document_date?: new Date().toInstant().toString()
             if(bindTo == "MARKET_ENTRANCE"){
                 MarketEntranceCommand command = MarketEntranceCommand.createFromBase(cmd)
                 command.production_date = rawJson?.production_date
@@ -40,9 +36,8 @@ class DocumentCommand implements Validateable
             }
             if(bindTo == "RELEASE"){
                 ReleaseCommand command = ReleaseCommand.createFromBase(cmd)
-                command.products.each {
-
-                }
+                command.document_number = rawJson?.document_number
+                command.document_date = rawJson?.document_date?: new Date().toInstant().toString()
                 command.order_date = rawJson?.order_date
                 command.order_number = rawJson?.order_number
                 command.action = rawJson?.action as int
@@ -58,7 +53,6 @@ class DocumentCommand implements Validateable
     }
 
     static constraints = {
-        document_date nullable: false, blank: false
         products nullable: false, validator: { List<ProductCommand> value, DocumentCommand object ->
             if(value?.isEmpty()) {
                 return false
@@ -67,11 +61,6 @@ class DocumentCommand implements Validateable
         companyToken nullable: false, blank: false, validator: { String value, DocumentCommand object ->
             Company company = Company.findWhere(token: value)
             if(!company){
-                return false
-            }
-        }
-        document_number nullable: true, validator: { String value, DocumentCommand object ->
-            if( !(object instanceof MarketEntranceCommand || object instanceof FromPhysCommand) && (!value) ){
                 return false
             }
         }

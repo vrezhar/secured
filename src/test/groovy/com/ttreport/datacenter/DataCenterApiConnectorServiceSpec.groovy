@@ -2,6 +2,8 @@ package com.ttreport.datacenter
 
 import grails.test.hibernate.HibernateSpec
 import grails.testing.services.ServiceUnitTest
+import static grails.async.Promises.task
+import static grails.async.Promises.waitAll
 
 class DataCenterApiConnectorServiceSpec extends HibernateSpec implements  ServiceUnitTest<DataCenterApiConnectorService>{
 
@@ -17,8 +19,12 @@ class DataCenterApiConnectorServiceSpec extends HibernateSpec implements  Servic
 
     void "test api connection"()
     {
-        println(service.retrieveToken())
+        String token = waitAll(task{
+            service.retrieveToken()
+        })
+        println(new Date().toInstant().epochSecond)
+        println(service.parseToken(token).exp)
         expect:
-        true
+        !service.isExpired(token)
     }
 }

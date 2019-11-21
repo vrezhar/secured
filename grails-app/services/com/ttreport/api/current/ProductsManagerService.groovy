@@ -2,10 +2,8 @@ package com.ttreport.api.current
 
 import com.ttreport.api.resources.current.AcceptanceDocumentCommand
 import com.ttreport.api.resources.current.DocumentAndResponse
-import com.ttreport.api.resources.current.DocumentCommand
 import com.ttreport.api.resources.current.FromPhysCommand
 import com.ttreport.api.resources.current.MarketEntranceCommand
-import com.ttreport.api.resources.current.ProductCommand
 import com.ttreport.api.resources.current.ReleaseCommand
 import com.ttreport.api.resources.current.ShipmentDocumentCommand
 import com.ttreport.api.response.current.Response
@@ -13,8 +11,7 @@ import com.ttreport.data.BarCode
 import com.ttreport.data.Company
 import com.ttreport.data.Products
 import com.ttreport.data.documents.differentiated.Document
-import com.ttreport.data.documents.differentiated.GenericDocument
-import com.ttreport.data.documents.differentiated.existing.RFPProductCirculationDocument
+import com.ttreport.data.documents.differentiated.existing.RFIEntranceDocument
 import com.ttreport.logs.DevCycleLogger
 import grails.gorm.transactions.Transactional
 
@@ -231,7 +228,7 @@ class ProductsManagerService extends DocumentService
         DevCycleLogger.log("enterfpp() called")
         DocumentAndResponse dandr = new DocumentAndResponse()
         Response response = new Response()
-        Document document = new RFPProductCirculationDocument()
+        Document document = new RFIEntranceDocument(participantInn: cmd.participant_inn)
         if(!cmd.validate(['companyToken'])) {
             dandr.response = [status: 400]
             return  dandr

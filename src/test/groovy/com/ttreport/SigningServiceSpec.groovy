@@ -12,7 +12,6 @@ class SigningServiceSpec extends HibernateSpec implements ServiceUnitTest<Signin
     }
 
     void "test something"() {
-        service.sign("".getBytes(),true)
         expect:"fix me"
             true
     }

@@ -1,6 +1,6 @@
 package com.ttreport.api.resources.current
 
-class ReleaseCommand extends DocumentCommand
+class ReleaseCommand extends GenericDocumentCommand
 {
     String order_number
     String order_date
@@ -13,8 +13,6 @@ class ReleaseCommand extends DocumentCommand
         ReleaseCommand command = new ReleaseCommand()
         command.products = cmd?.products
         command.companyToken = cmd?.companyToken
-        command.document_number = cmd?.document_number
-        command.document_date = cmd?.document_date
         return command
     }
 

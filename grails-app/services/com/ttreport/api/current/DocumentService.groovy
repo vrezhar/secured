@@ -22,7 +22,6 @@ class DocumentService extends ProductsService
         document.transferDate = cmd.transfer_date
         document.turnoverType = cmd.turnover_type
         document.documentNumber = cmd.document_number
-        document.requestType = "ACCEPTANCE"
         document.releaseOrderNumber = cmd.release_order_number
         document.acceptanceDate = cmd.acceptance_date
         document.tradeSenderInn = cmd.trade_sender_inn
@@ -38,7 +37,6 @@ class DocumentService extends ProductsService
         document.transferDate = cmd.transfer_date
         document.turnoverType = cmd.turnover_type
         document.documentNumber = cmd.document_number
-        document.requestType = "SHIPMENT"
         document.receiver = cmd.receiver
         document.receiverInn = cmd.receiver_inn
         document.sender = cmd.sender
@@ -53,8 +51,6 @@ class DocumentService extends ProductsService
     MarketEntranceDocument createMarketEntranceDocumentMock(MarketEntranceCommand cmd)
     {
         MarketEntranceDocument document = new MarketEntranceDocument()
-        document.documentDate = cmd.document_date
-        document.documentNumber = cmd.document_number
         document.productionDate = cmd.production_date
         if(cmd.producer_inn){
             document.producerInn = cmd.producer_inn

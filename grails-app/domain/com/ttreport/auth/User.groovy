@@ -12,7 +12,7 @@ import grails.compiler.GrailsCompileStatic
 @ToString(includes='username', includeNames=true, includePackage=false)
 class User implements Serializable {
 
-    private static final long serialVersionUID = 1
+    private static final long serialVersionUID = 10L
 
     String username
     String password
