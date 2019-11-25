@@ -6,7 +6,7 @@ import groovy.transform.EqualsAndHashCode
 import groovy.transform.ToString
 
 @GrailsCompileStatic
-@EqualsAndHashCode(includes=['description', 'cost', 'tax'])
+@EqualsAndHashCode(includes=['description', 'cost', 'tax', 'company'])
 @ToString(cache=true, includes = ['description','dateCreated'], includePackage=false)
 class Products implements Serializable
 {
@@ -20,6 +20,7 @@ class Products implements Serializable
     Date lastUpdated
 
     static  hasMany = [barCodes: BarCode]
+    static belongsTo = [company: Company]
 
     boolean hasBarcode(BarCode barCode)
     {

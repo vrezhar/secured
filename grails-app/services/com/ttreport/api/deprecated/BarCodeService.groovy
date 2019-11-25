@@ -114,18 +114,18 @@ class BarCodeService extends Responsive
             response.barcode_list = src.barcodes
             return response
         }
-        if(!owner.has(products))
+        if(!owner.hasProduct(products))
         {
             DevCycleLogger.log("product with id ${src.productId} not found in possession of: ${owner.companyId} at ${owner.address}, exiting update()")
             response.status = statusCodes.invalid_input
             response.barcode_list = src.barcodes
             return response
         }
-        DevCycleLogger.log("found product ${products.productCode} with id ${src.productId}")
+        DevCycleLogger.log("found product ${products.id} with id ${src.productId}")
 
         if(src.productDescription != null || src.productDescription != "")
         {
-            DevCycleLogger.log("updating description of product ${products.productCode} with id ${src.productId}")
+            DevCycleLogger.log("updating description of product ${products.id} with id ${src.productId}")
             products.description = src.productDescription
         }
 
@@ -188,7 +188,7 @@ class BarCodeService extends Responsive
             response.barcode_list = src.barcodes
             return response
         }
-        if(!owner.has(products))
+        if(!owner.hasProduct(products))
         {
             DevCycleLogger.log("product with id ${src.productId} not found in possession of: ${owner.companyId} at ${owner.address}, exiting delete()")
             response.status = statusCodes.invalid_input

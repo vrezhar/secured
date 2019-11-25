@@ -22,24 +22,24 @@ class DataCenterApiConnectorService extends SigningService {
 
     protected final static Map<Endpoint,String> endpoint_urls =
             [
-                    Endpoint.RANDOM_DATA: "/auth/cert/key",
-                    Endpoint.TOKEN: "/auth/cert/",
-                    Endpoint.ENTRANCE: "/api/v3/lk/documents/send",
-                    Endpoint.RELEASE: " /api/v3/lk/receipt/send",
-                    Endpoint.ACCEPTANCE: "/api/v3/lk/documents/acceptance/create",
-                    Endpoint.SHIPMENT: "/api/v3/lk/documents/shipment/create",
-                    Endpoint.CANCEL_SHIPMENT: "/api/v3/lk/documents/shipment/cancel",
-                    Endpoint.INDIVIDUAL: "/api/v3/lk/documents/commissioning/indi/create"
+                    (Endpoint.RANDOM_DATA): "/auth/cert/key",
+                    (Endpoint.TOKEN): "/auth/cert/",
+                    (Endpoint.ENTRANCE): "/api/v3/lk/documents/send",
+                    (Endpoint.RELEASE): " /api/v3/lk/receipt/send",
+                    (Endpoint.ACCEPTANCE): "/api/v3/lk/documents/acceptance/create",
+                    (Endpoint.SHIPMENT): "/api/v3/lk/documents/shipment/create",
+                    (Endpoint.CANCEL_SHIPMENT): "/api/v3/lk/documents/shipment/cancel",
+                    (Endpoint.INDIVIDUAL): "/api/v3/lk/documents/commissioning/indi/create"
             ]
 
     protected final static Map<DocumentType,String> document_types =
             [
-                    DocumentType.ENTRANCE: "LP_INTRODUCE_GOODS",
-                    DocumentType.RELEASE: "LK_RECEIPT",
-                    DocumentType.ACCEPTANCE: "LP_ACCEPT_GOODS",
-                    DocumentType.SHIPMENT: "LP_SHIP_GOODS",
-                    DocumentType.CANCEL_SHIPMENT: "LP_CANCEL_SHIPMENT",
-                    DocumentType.INDIVIDUAL: "LK_INDI_COMMISSIONING"
+                    (DocumentType.ENTRANCE): "LP_INTRODUCE_GOODS",
+                    (DocumentType.RELEASE): "LK_RECEIPT",
+                    (DocumentType.ACCEPTANCE): "LP_ACCEPT_GOODS",
+                    (DocumentType.SHIPMENT): "LP_SHIP_GOODS",
+                    (DocumentType.CANCEL_SHIPMENT): "LP_CANCEL_SHIPMENT",
+                    (DocumentType.INDIVIDUAL): "LK_INDI_COMMISSIONING"
             ]
 
 

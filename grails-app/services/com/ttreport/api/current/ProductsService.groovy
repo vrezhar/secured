@@ -17,7 +17,7 @@ class ProductsService extends ValidationErrorResolverService
     {
         if(cmd instanceof ExtendedProductCommand){
             ExtendedProductCommand command = cmd as ExtendedProductCommand
-            BarCode barCode = new MarketEntranceBarCode(uitCode: cmd.uit_code, uituCode: cmd.uitu_code, tax: cmd.tax, cost: cmd.tax, description: cmd.product_description,
+            BarCode barCode = new MarketEntranceBarCode(uitCode: cmd.uit_code, uituCode: cmd.uitu_code,
                     certificateDocumentNumber: command.certificate_document_number, certificateDocumentDate: command.certificate_document_number,
                     certificateDocument: command.certificate_document, tnvedCode: command.tnved_code, producerInn: command.producer_inn)
             if(command.owner_inn){
@@ -28,7 +28,7 @@ class ProductsService extends ValidationErrorResolverService
             }
             return barCode
         }
-        return new BarCode(uitCode: cmd.uit_code, uituCode: cmd.uitu_code, minified: cmd.minified, tax: cmd.tax, cost: cmd.tax, description: cmd.product_description)
+        return BarCode.findOrSaveWhere(uitCode: cmd.uit_code, uituCode: cmd.uitu_code, minified: cmd.minified)
 
     }
 
@@ -38,6 +38,7 @@ class ProductsService extends ValidationErrorResolverService
         Products products = Products.get(cmd.id)
         BarCode barCode = initializeBarCode(cmd)
         barCode.products = products
+        barCode.dateDeleted = null
         if(!barCode.save()) {
             DevCycleLogger.log_validation_errors(barCode,"bar code with uit code ${barCode.uitCode} and uitu code ${barCode.uituCode} not validated, nothing updated, exiting update()")
             throw new Exception("Bar code not saved")
@@ -52,7 +53,7 @@ class ProductsService extends ValidationErrorResolverService
     {
         DevCycleLogger.log("save() called")
         DevCycleLogger.log("trying to save product with code ${cmd.id}, belonging to company with id ${company.companyId}")
-        Products products = Products.findWhere(cost: cmd.cost, tax: cmd.tax, description: cmd.product_description)
+        Products products = Products.findWhere(cost: cmd.cost, tax: cmd.tax, description: cmd.product_description, company: company)
         if(products)
         {
             try {
@@ -64,17 +65,17 @@ class ProductsService extends ValidationErrorResolverService
                 throw e
             }
         }
-        products = new Products(cost: cmd.cost, tax: cmd.tax, description: cmd.product_description)
+        products = new Products(cost: cmd.cost, tax: cmd.tax, description: cmd.product_description, company: company)
         if(!products.validate()) {
             DevCycleLogger.log_validation_errors(products,"unable to validate the product, nothing saved, exiting save()")
             throw new Exception("Product not validated")
         }
-        company.addToProducts(products)
         DevCycleLogger.log("product saved, trying to register a barcode")
         BarCode barCode = initializeBarCode(cmd)
+        barCode.dateDeleted = null
         barCode.products = products
         products.addToBarCodes(barCode)
-        company.addToBarCodes(barCode)
+        company.addToProducts(products)
         products.save()
         if(!barCode.save(true)) {
             DevCycleLogger.log_validation_errors(barCode,"bar code with uit code ${barCode.uitCode} and uitu code ${barCode.uituCode} not validated, nothing saved, exiting save()")

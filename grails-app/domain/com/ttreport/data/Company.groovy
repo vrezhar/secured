@@ -29,11 +29,19 @@ class Company implements  Serializable
 
     boolean hasBarCode(BarCode barCode)
     {
-        return barCodes?.contains(barCode)
+        if(barCode.dateDeleted){
+            return false
+        }
+        for(product in products) {
+            if(product.barCodes?.contains(barCode)){
+                return true
+            }
+        }
+        return false
     }
 
     static belongsTo = [user: User]
-    static hasMany = [products: Products, barCodes: BarCode, documents: Document]
+    static hasMany = [products: Products, documents: Document]
 
     static constraints = {
         token nullable: false, blank: false, unique: true

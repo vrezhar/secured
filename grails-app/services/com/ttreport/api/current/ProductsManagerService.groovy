@@ -239,7 +239,7 @@ class ProductsManagerService extends DocumentService
         }
         Company company = Company.findWhere(token: cmd.companyToken)
         for(product in cmd.products_list){
-            if(product.id || Products.findWhere(description: product.product_description, tax: product.tax, cost: product.cost)){
+            if(product.id || Products.findWhere(description: product.product_description, tax: product.tax, cost: product.cost, company: company)){
                 product.action = "UPDATE"
             }
             else {

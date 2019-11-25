@@ -12,9 +12,6 @@ class BarCode implements Serializable
     private static final long serialVersionUID = 1L
     boolean minified = false
 
-    String description
-    int cost
-    int tax
     String uitCode
     String uituCode
     Date dateDeleted = null
@@ -22,7 +19,7 @@ class BarCode implements Serializable
     Date dateCreated
     Date lastUpdated
 
-    static belongsTo = [products: Products, company: Company]
+    static belongsTo = [products: Products]
 
     @Override
     boolean equals(Object o)
@@ -31,7 +28,7 @@ class BarCode implements Serializable
             return false
         }
         BarCode other = o as BarCode
-        if(other?.uituCode == this.uituCode && other?.uitCode == this.uitCode){
+        if(other?.uituCode == this.uituCode && other?.uitCode == this.uitCode && this.dateDeleted == other?.dateDeleted){
             return true
         }
         return false
@@ -39,9 +36,6 @@ class BarCode implements Serializable
 
     static constraints = {
         dateDeleted nullable: true
-        description nullable: false, blank: false
-        cost nullable: false, blank: false
-        tax nullable: false, blank: false
         uitCode nullable: true, validator: { String value, BarCode object ->
             if(!value && !object?.uituCode) {
                 return false
@@ -53,7 +47,6 @@ class BarCode implements Serializable
             }
         }
         products nullable: true
-        company nullable: true
     }
     static mapping = {
         tablePerHierarchy false

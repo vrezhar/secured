@@ -3,15 +3,17 @@ package com.ttreport.data
 import com.ttreport.auth.Role
 import com.ttreport.auth.User
 import com.ttreport.auth.UserRole
+import com.ttreport.data.documents.differentiated.Document
 import com.ttreport.data.documents.differentiated.GenericDocument
+import com.ttreport.data.documents.differentiated.existing.MarketEntranceDocument
 import com.ttreport.logs.DevCycleLogger
 import grails.test.hibernate.HibernateSpec
 
-class GenericDocumentSpec extends HibernateSpec{
+class DocumentSpec extends HibernateSpec{
 
     List<Class> getDomainClasses()
     {
-        [BarCode, Products, Company, User, UserRole, User, Role]
+        [Document, MarketEntranceDocument, MarketEntranceBarCode, BarCode, Products, Company, User, UserRole, User, Role]
     }
 
     void "test serialization"() {
@@ -26,11 +28,13 @@ class GenericDocumentSpec extends HibernateSpec{
         products.save()
         BarCode barCode = new BarCode(uitCode: "test", uituCode: "test1", products: products)
         BarCode barCode1 = new BarCode(uitCode: "ahhh", uituCode: "duh", products: products)
+        BarCode barCode2 = new MarketEntranceBarCode(tnvedCode: "test")
         barCode1.save()
         barCode.save()
-        GenericDocument document = new GenericDocument(requestType: "Acceptance")
+        Document document = new Document()
         document.addToBarCodes(barCode)
         document.addToBarCodes(barCode1)
+        document.addToBarCodes(barCode2)
         String result_json = document.serializeAsJson()
         println(result_json)
         DevCycleLogger.print_logs()
