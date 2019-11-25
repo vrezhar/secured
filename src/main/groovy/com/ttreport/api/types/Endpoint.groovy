@@ -9,7 +9,9 @@ enum Endpoint
     CANCEL_SHIPMENT,
     ENTRANCE,
     RELEASE,
-    INDIVIDUAL
+    INDIVIDUAL,
+    STATUS,
+    FULL_INFO
 
     Object asType(Class clazz)
     {

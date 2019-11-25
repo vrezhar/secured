@@ -71,14 +71,14 @@ class APIHttpClient
             ioexception.stackTrace.each {
                 DevCycleLogger.log(it.toString())
             }
-            return null
+            throw ioexception
         }
         catch(Exception e) {
             DevCycleLogger.log("unknown exception occurred when processing the request")
             e.stackTrace.each {
                 DevCycleLogger.log(it.toString())
             }
-            return null
+            throw e
         }
         finally {
             if(connection != null){

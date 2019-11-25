@@ -5,6 +5,7 @@ import com.ttreport.api.resources.current.MarketEntranceCommand
 import com.ttreport.data.documents.differentiated.Document
 import com.ttreport.datacenter.DataCenterApiConnectorService
 import com.ttreport.logs.DevCycleLogger
+import grails.async.Promise
 import grails.gorm.transactions.Transactional
 
 import static grails.async.Promises.task
@@ -28,17 +29,15 @@ class MarketEntranceDocumentService extends ProductsManagerService
             return dandr.response
         }
         DevCycleLogger.log("document validated, saving, waiting for Data center's response")
-        def sendDocument = task{
+        Promise<Map> sendDocument = task {
             dataCenterApiConnectorService.getMarketEntryResponse(document)
         }
         sendDocument.then {
             DevCycleLogger.log("Data center response received, processing...")
-            if(it != 200){
-                //resolve errors or modify response by reporting failure
-            }
+            //Process the response
         }
 
-        dandr.response.status = waitAll(sendDocument)[0] as int
+        dandr.response.status = sendDocument.get().status as int
         if(dandr.response.status == 200){
             try{
                 document.save(true)

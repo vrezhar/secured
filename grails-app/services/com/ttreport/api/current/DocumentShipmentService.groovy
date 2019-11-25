@@ -7,6 +7,7 @@ import com.ttreport.data.documents.differentiated.Document
 import com.ttreport.data.documents.differentiated.existing.ShipmentDocument
 import com.ttreport.datacenter.DataCenterApiConnectorService
 import com.ttreport.logs.DevCycleLogger
+import grails.async.Promise
 import grails.gorm.transactions.Transactional
 
 import static grails.async.Promises.task
@@ -31,14 +32,15 @@ class DocumentShipmentService extends ProductsManagerService
             return dandr.response
         }
         DevCycleLogger.log("document validated, saving, exiting ship()")
-        def sendDocument = task{dataCenterApiConnectorService.getShipmentResponse(document)}
-        sendDocument.then {
-            DevCycleLogger.log("Data centre response received, processing...")
-            if(it != 200){
-                //resolve errors or modify response by reporting failure
-            }
+        Promise<Map> sendDocument = task {
+            dataCenterApiConnectorService.getShipmentResponse(document)
         }
-        dandr.response.status = waitAll(sendDocument)[0] as int
+        sendDocument.then {
+            DevCycleLogger.log("Data center response received, processing...")
+            //Process the response
+        }
+
+        dandr.response.status = sendDocument.get().status as int
         if(dandr.response.status == 200){
             try{
                 document.save(true)

@@ -6,6 +6,7 @@ import com.ttreport.api.resources.current.DocumentAndResponse
 import com.ttreport.data.documents.differentiated.Document
 import com.ttreport.datacenter.DataCenterApiConnectorService
 import com.ttreport.logs.DevCycleLogger
+import grails.async.Promise
 import grails.gorm.transactions.Transactional
 
 
@@ -29,14 +30,15 @@ class DocumentAcceptanceService extends ProductsManagerService
             return dandr.response
         }
         DevCycleLogger.log("document validated, saving, waiting for Data center's response...")
-        def sendDocument = task{dataCenterApiConnectorService.getAcceptanceResponse(document)}
+        Promise<Map> sendDocument = task {
+            dataCenterApiConnectorService.getAcceptanceResponse(document)
+        }
         sendDocument.then {
             DevCycleLogger.log("Data center response received, processing...")
-            if(it != 200){
-                //resolve errors or modify response by reporting failure
-            }
+            //Process the response
         }
-        dandr.response.status = waitAll(sendDocument)[0] as int
+
+        dandr.response.status = sendDocument.get().status as int
         if(dandr.response.status == 200){
             try{
                 document.save(true)

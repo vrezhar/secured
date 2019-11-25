@@ -29,7 +29,9 @@ class DataCenterApiConnectorService extends SigningService {
                     (Endpoint.ACCEPTANCE): "/api/v3/lk/documents/acceptance/create",
                     (Endpoint.SHIPMENT): "/api/v3/lk/documents/shipment/create",
                     (Endpoint.CANCEL_SHIPMENT): "/api/v3/lk/documents/shipment/cancel",
-                    (Endpoint.INDIVIDUAL): "/api/v3/lk/documents/commissioning/indi/create"
+                    (Endpoint.INDIVIDUAL): "/api/v3/lk/documents/commissioning/indi/create",
+                    (Endpoint.STATUS): "/api/v3/facade/doc/",
+                    (Endpoint.FULL_INFO): "/api/v3/facade/doc/listV2"
             ]
 
     protected final static Map<DocumentType,String> document_types =
@@ -42,6 +44,28 @@ class DataCenterApiConnectorService extends SigningService {
                     (DocumentType.INDIVIDUAL): "LK_INDI_COMMISSIONING"
             ]
 
+    protected final static List<String> accepted_statuses =
+            [
+                    "IN_PROGRESS", "CHECKED_OK", "CANCELLED", "ACCEPTED", "WAIT_ACCEPTANCE", "WAIT_PARTICIPANT_REGISTRATION"
+            ]
+
+    protected String formUrl(String root, Map params = null)
+    {
+        StringBuilder url = new StringBuilder(root)
+        if(params){
+            url.append('?')
+            params.each {
+                url.append(it.key)
+                url.append('=')
+                url.append(it.value)
+                url.append('&')
+            }
+            if(url.length() > 0) {
+                url.deleteCharAt(url.length() - 1)
+            }
+        }
+        return url.toString()
+    }
 
     protected String formPayload(Document document, DocumentType type)
     {
@@ -159,13 +183,9 @@ class DataCenterApiConnectorService extends SigningService {
 
     //TODO make a factory for this instead of individual methods
 
-    String sendDocument(Document document, DocumentType type, boolean testing = true)
+    protected static boolean updateToken(boolean testing = true)
     {
-        String response = null
-        APIHttpClient client = new APIHttpClient()
-        client.targetUrl = (testing ? test_url : prod_url) + endpoint_urls[type as Endpoint]
-        client.data = formPayload(document,type)
-        Promise tokenChecked = task {
+        return task {
             if(isExpired(APIHttpClient.getToken())) {
                 try{
                     APIHttpClient.setToken(retrieveToken(testing))
@@ -176,55 +196,127 @@ class DataCenterApiConnectorService extends SigningService {
                 }
             }
             return true
-        }
-        Promise connectionEstablished = task {
-            client.sendHttpRequest()
-        }
-        boolean ok = tokenChecked.get()
-        tokenChecked.then {
-            response = connectionEstablished.get()
-        }
-        connectionEstablished.then {
-            try{
-                Map error = new JsonSlurper().parseText(response) as Map
-                if(error.error_message) {
-                    response = error.error_message
-                }
+        }.get()
+    }
+    protected static Promise<String> establishConnection(APIHttpClient client)
+    {
+        return task {
+            try {
+                client.sendHttpRequest()
             }
             catch (Exception ignored){
-                document.documentId = response
-                document.save()
+                return null
             }
+        }
+    }
+
+
+    Map getFullInfo(Map params, boolean testing = true)
+    {
+        Map response = null
+        APIHttpClient client = new APIHttpClient()
+        client.targetUrl = formUrl((testing ? test_url : prod_url) + endpoint_urls[Endpoint.FULL_INFO],params)
+        client.method = "GET"
+        boolean ok = updateToken(testing)
+        Promise<String> connectionEstablished = establishConnection(client)
+        if(ok){
+            response = new JsonSlurper().parseText(connectionEstablished.get()) as Map
         }
         return response
     }
 
-    def getAcceptanceResponse(Document document)
+    Map getInfo(Document document, boolean testing = true)
     {
-        return 200
+        Map response = null
+        APIHttpClient client = new APIHttpClient()
+        client.targetUrl = (testing ? test_url : prod_url) + endpoint_urls[Endpoint.STATUS] + document.documentId + "/body"
+        client.method = "GET"
+        boolean ok = updateToken(testing)
+        Promise<String> connectionEstablished = establishConnection(client)
+        if(ok){
+            response = new JsonSlurper().parseText(connectionEstablished.get()) as Map
+        }
+        return response
     }
 
-    def getShipmentResponse(Document document)
+    Map sendDocument(Document document, DocumentType type, boolean testing = true)
     {
-        return 200
+        Map response = null
+        String message = null
+        int status = 500
+        APIHttpClient client = new APIHttpClient()
+        client.targetUrl = (testing ? test_url : prod_url) + endpoint_urls[type as Endpoint]
+        client.data = formPayload(document,type)
+        boolean ok = updateToken(testing)
+        Promise<String> connectionEstablished = establishConnection(client)
+        if(ok){
+            message = connectionEstablished.get()
+        }
+
+        connectionEstablished.then {
+            try{
+                response = new JsonSlurper().parseText(message) as Map
+                response.status = status.toString()
+            }
+            catch (Exception ignored){
+                document.documentId = message
+                document.save()
+                response = getInfo(document,testing)
+                document.documentStatus = response.status
+                for(okStatus in accepted_statuses){
+                    int retries = 5
+                    while (document.documentStatus == "IN_PROGRESS"){
+                        if(retries){
+                            try{
+                                sleep(500)
+                                --retries
+                                response = getInfo(document,testing)
+                                document.documentStatus = response.status
+                            }
+                            catch (InterruptedException e){
+                                DevCycleLogger.log(e.message)
+                                return response
+                            }
+                        }
+
+                    }
+                    if(okStatus == document.documentStatus){
+                        response.status = 200
+                        return response
+                    }
+                }
+            }
+        }
+        response.status = status
+        return response
     }
 
-    def getReleaseResponse(Document document)
+    Map getAcceptanceResponse(Document document)
     {
-        return 200
+        return [status: 200]
     }
 
-    def getMarketEntryResponse(Document document)
+    Map getShipmentResponse(Document document)
     {
-        return 200
+        return [status: 200]
     }
 
-    def cancelShipment(Document document)
+    Map getReleaseResponse(Document document)
     {
-        return 200
+        return [status: 200]
     }
-    def getFPEntryResponse(Document document)
+
+    Map getMarketEntryResponse(Document document)
     {
-        return 200
+        return [status: 200]
+    }
+
+    Map cancelShipment(Document document)
+    {
+        return [status: 200]
+    }
+    Map getFPEntryResponse(Document document)
+    {
+        return [status: 200]
     }
 }

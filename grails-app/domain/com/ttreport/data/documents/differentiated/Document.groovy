@@ -13,6 +13,7 @@ class Document implements DocumentForm, Serializable
     private static final long serialVersionUID = 2L
 
     String documentId
+    String documentStatus
 
     Date dateCreated
     Date lastUpdated
@@ -75,6 +76,7 @@ class Document implements DocumentForm, Serializable
 
     static constraints = {
         documentId nullable: true, blank: true
+        documentStatus nullable: true, blank: true
         company nullable: false
         barCodes nullable: false
     }
