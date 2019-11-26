@@ -1,3 +1,10 @@
+<%--
+  Created by IntelliJ IDEA.
+  User: vrezh
+  Date: 25.11.19
+  Time: 20:56
+--%>
+
 <!doctype html>
 <html lang="en">
 <head>
@@ -6,11 +13,13 @@
     <title>
         <g:layoutTitle default="TTReport"/>
     </title>
-    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 
-%{--    <asset:stylesheet src="application.css"/>--}%
+    %{--    <asset:stylesheet src="application.css"/>--}%
     <asset:stylesheet src="bootstrap.css"></asset:stylesheet>
     <link href="https://fonts.googleapis.com/css?family=Nunito:400,600,700,800|Roboto:400,500,700" rel="stylesheet">
+    <link href='https://fonts.googleapis.com/css?family=Roboto:400,300,500,700' rel='stylesheet' type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=Montserrat:400,700' rel='stylesheet' type='text/css'>
     <asset:stylesheet src="old/assets/vendor/swiper/css/swiper.min.css"></asset:stylesheet>
     <asset:stylesheet src="old/assets/vendor/hamburgers/hamburgers.min.css" ></asset:stylesheet>
     <asset:stylesheet src="old/assets/vendor/animate/animate.min.css" ></asset:stylesheet>
@@ -24,42 +33,40 @@
     <asset:stylesheet src="old/assets/fonts/linea/ecommerce/linea-icons.css" ></asset:stylesheet>
     <asset:stylesheet src="old/assets/fonts/linea/software/linea-icons.css"></asset:stylesheet>
     <asset:stylesheet src="old/boomerang.css"></asset:stylesheet>
+    <asset:stylesheet src="animate.css"></asset:stylesheet>
+    <asset:stylesheet src="bootstrap-grid.css"></asset:stylesheet>
+    <asset:stylesheet src="bootstrap-reboot.css"></asset:stylesheet>
+    <asset:stylesheet src="material-design-iconic-font.min.css"></asset:stylesheet>
+    <asset:stylesheet src="owl.carousel.css"></asset:stylesheet>
+    <asset:stylesheet src="owl.theme.css"></asset:stylesheet>
+    <asset:stylesheet src="style.css"></asset:stylesheet>
+    <asset:stylesheet src="colors/blue.css"></asset:stylesheet>
+    <asset:stylesheet src="colors/brown.css"></asset:stylesheet>
+    <asset:stylesheet src="colors/red.css"></asset:stylesheet>
+    <asset:stylesheet src="colors/default.css"></asset:stylesheet>
+    <asset:stylesheet src="colors/cyan.css"></asset:stylesheet>
+    <asset:stylesheet src="colors/green.css"></asset:stylesheet>
+    <asset:stylesheet src="colors/pink.css"></asset:stylesheet>
+    <asset:stylesheet src="colors/purple.css"></asset:stylesheet>
+    <asset:stylesheet src="colors/teal.css"></asset:stylesheet>
+    <asset:stylesheet src="colors/yellow.css"></asset:stylesheet>
 
     <asset:javascript src="jquery-3.3.1.min.js"></asset:javascript>
     <asset:javascript src="popper.min.js"></asset:javascript>
     <asset:javascript src="bootstrap.js"></asset:javascript>
-    <asset:javascript src="old/slidebar/slidebar.js"></asset:javascript>
     <asset:javascript src="classie.js"></asset:javascript>
-    <asset:javascript src="old/assets/vendor/bootstrap-notify/bootstrap-growl.min.js"></asset:javascript>
-    <asset:javascript src="old/assets/vendor/scrollpos-styler/scrollpos-styler.js"></asset:javascript>
-    <asset:javascript src="old/assets/vendor/adaptive-backgrounds/adaptive-backgrounds.js"></asset:javascript>
-    <asset:javascript src="old/assets/vendor/countdown/js/jquery.countdown.min.js"></asset:javascript>
-    <asset:javascript src="old/assets/vendor/dropzone/dropzone.min.js"></asset:javascript>
-    <asset:javascript src="old/assets/vendor/easy-pie-chart/jquery.easypiechart.min.js"></asset:javascript>
-    <asset:javascript src="old/assets/vendor/fancybox/js/jquery.fancybox.min.js"></asset:javascript>
-    <asset:javascript src="old/assets/vendor/flatpickr/flatpickr.min.js"></asset:javascript>
-    <asset:javascript src="old/assets/vendor/flip/flip.min.js"></asset:javascript>
-    <asset:javascript src="old/assets/vendor/footer-reveal/footer-reveal.min.js"></asset:javascript>
-    <asset:javascript src="old/assets/vendor/gradientify/jquery.gradientify.min.js"></asset:javascript>
-    <asset:javascript src="old/assets/vendor/headroom/headroom.min.js"></asset:javascript>
-    <asset:javascript src="old/assets/vendor/headroom/jquery.headroom.min.js"></asset:javascript>
-    <asset:javascript src="old/assets/vendor/input-mask/input-mask.min.js"></asset:javascript>
-    <asset:javascript src="old/assets/vendor/instafeed/instafeed.js"></asset:javascript>
-    <asset:javascript src="old/assets/vendor/milestone-counter/jquery.countTo.js"></asset:javascript>
-    <asset:javascript src="old/assets/vendor/nouislider/js/nouislider.min.js"></asset:javascript>
-    <asset:javascript src="old/assets/vendor/paraxify/paraxify.min.js"></asset:javascript>
-    <asset:javascript src="old/assets/vendor/select2/js/select2.min.js"></asset:javascript>
-    <asset:javascript src="old/assets/vendor/sticky-kit/sticky-kit.min.js"></asset:javascript>
-    <asset:javascript src="old/assets/vendor/swiper/js/swiper.min.js"></asset:javascript>
-    <asset:javascript src="old/assets/vendor/textarea-autosize/autosize.min.js"></asset:javascript>
-    <asset:javascript src="old/assets/vendor/typeahead/typeahead.bundle.min.js"></asset:javascript>
-    <asset:javascript src="old/assets/vendor/typed/typed.min.js"></asset:javascript>
-    <asset:javascript src="old/assets/vendor/vide/vide.min.js"></asset:javascript>
-    <asset:javascript src="old/assets/vendor/viewport-checker/viewportchecker.min.js"></asset:javascript>
-    <asset:javascript src="old/assets/vendor/wow/wow.min.js"></asset:javascript>
-    <asset:javascript src="old/assets/vendor/isotope/isotope.min.js"></asset:javascript>
-    <asset:javascript src="old/assets/vendor/imagesloaded/imagesloaded.pkgd.min.js"></asset:javascript>
-    <asset:javascript src="old/boomerang.js"></asset:javascript>
+    <asset:javascript src="bootstrap.bundle.min.js"></asset:javascript>
+    <asset:javascript src="ie10-viewport-bug-workaround.js"></asset:javascript>
+    <asset:javascript src="jquery.app.js"></asset:javascript>
+    <asset:javascript src="jquery.easing.min.js"></asset:javascript>
+    <asset:javascript src="jquery.sticky.js"></asset:javascript>
+    <asset:javascript src="wow.min.js"></asset:javascript>
+    <asset:javascript src="scrollspy.min.js"></asset:javascript>
+    <asset:javascript src="owl.carousel.min.js"></asset:javascript>
+    <asset:javascript src="isotope.pkgd.min.js"></asset:javascript>
+    <asset:javascript src="masonry.pkgd.min.js"></asset:javascript>
+    <asset:javascript src="npm.js"></asset:javascript>
+    <asset:javascript src="imagesloaded.pkgd.min.js"></asset:javascript>
 
     <g:layoutHead/>
 </head>

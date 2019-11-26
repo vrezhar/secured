@@ -29,23 +29,13 @@ class MarketEntranceDocumentService extends ProductsManagerService
             return dandr.response
         }
         DevCycleLogger.log("document validated, saving, waiting for Data center's response")
-        Promise<Map> sendDocument = task {
-            dataCenterApiConnectorService.getMarketEntryResponse(document)
+        dandr.response.status = 200
+        try{
+            document.save(true)
         }
-        sendDocument.then {
-            DevCycleLogger.log("Data center response received, processing...")
-            //Process the response
-        }
-
-        dandr.response.status = sendDocument.get().status as int
-        if(dandr.response.status == 200){
-            try{
-                document.save(true)
-            }
-            catch (Exception e){
-                DevCycleLogger.log(e.message)
-                dandr.response.status = 500
-            }
+        catch (Exception e){
+            DevCycleLogger.log(e.message)
+            dandr.response.status = 500
         }
         DevCycleLogger.log("exiting enterMarket()")
         return dandr.response

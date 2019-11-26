@@ -34,20 +34,13 @@ class EnterFPPDocumentService extends ProductsManagerService
         Promise<Map> sendDocument = task{
             dataCenterApiConnectorService.getFPEntryResponse(document)
         }
-        sendDocument.then {
-            DevCycleLogger.log("Data center response received, processing...")
-            //Process the response
+        dandr.response.status = 200
+        try{
+            document.save(true)
         }
-
-        dandr.response.status = sendDocument.get().status as int
-        if(dandr.response.status == 200){
-            try{
-                document.save(true)
-            }
-            catch (Exception e){
-                DevCycleLogger.log(e.message)
-                dandr.response.status = 500
-            }
+        catch (Exception e){
+            DevCycleLogger.log(e.message)
+            dandr.response.status = 500
         }
         return dandr.response
     }

@@ -24,10 +24,10 @@ class UserController  {
         User user = User.findById(id)
         if(user && (springSecurityService.currentUser as User).authorities?.contains(Role.findWhere(authority: 'ROLE_ADMIN')))
         {
-            render model: [user: user], view: "profile"
+            render model: [user: user], view: "profile_old"
             return
         }
-        render model: [user: springSecurityService.getCurrentUser()], view: "profile"
+        render model: [user: springSecurityService.getCurrentUser()], view: "profile_old"
     }
 
     @Secured(['ROLE_ADMIN'])
@@ -39,20 +39,20 @@ class UserController  {
     @Secured(['ROLE_USER','ROLE_ADMIN'])
     def showCompanies()
     {
-        render model: [user: springSecurityService.getCurrentUser()], view: "companies"
+        render model: [user: springSecurityService.getCurrentUser()], view: "companies_old"
     }
 
     @Secured(['ROLE_USER','ROLE_ADMIN'])
     def profile()
     {
-        render view: "profile",model: [user: springSecurityService.getCurrentUser()]
+        render view: "profile_old",model: [user: springSecurityService.getCurrentUser()]
     }
 
 
     @Secured(['ROLE_USER','ROLE_ADMIN'])
     def createCompany()
     {
-        render view: "sign", model: [user: springSecurityService.currentUser as User]
+        render view: "sign_old", model: [user: springSecurityService.currentUser as User]
     }
 
     @Secured(['ROLE_USER','ROLE_ADMIN'])

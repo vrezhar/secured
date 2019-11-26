@@ -11,6 +11,8 @@ import grails.plugin.springsecurity.annotation.Secured
 class RegisterController
 {
 
+    static defaultAction = "register"
+
     UserInitializerService userInitializer
     UserValidatorService userValidator
     private UserCommand errorCommand

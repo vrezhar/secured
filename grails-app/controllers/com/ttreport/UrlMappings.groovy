@@ -37,7 +37,7 @@ class UrlMappings {
         "/register"(controller: 'register',action: 'register')
         "/profile"(controller: 'user', action: 'profile')
         "/register/confirm"(controller: 'register', action: "confirm")
-        "/"(controller: 'user', action:'profile')
+        "/"(controller: 'main', action:'home')
         "/verify"(controller: "main", action: "verify")
 
         "500"(view:'/error')

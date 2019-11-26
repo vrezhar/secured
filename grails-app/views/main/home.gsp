@@ -10,15 +10,13 @@
 <head>
     <title>
     </title>
-
-    <div style = "alignment: center" >
-        <h1>
-            <b>Welcome, ${user}!</b>
-        </h1>
-    </div>
 </head>
 
 <body>
+
+    <h1 style = "alignment: center" >
+        <b>Welcome, ${user}!</b>
+    </h1>
     <div class = "navbar">
         <sec:ifAllGranted roles="ROLE_ADMIN" >
             <h1>

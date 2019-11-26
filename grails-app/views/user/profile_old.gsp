@@ -94,16 +94,16 @@
                                                 <!-- Profile connect -->
                                                 <div class="profile-connect mt-4">
                                                     <g:if test="${user?.authorities?.contains(Role.findWhere(authority: "ROLE_ADMIN"))}">
-                                                        <button  class="btn btn-styled btn-block btn-rounded btn-base-1" id="settings">Settings</button>
+                                                        <button  class="btn btn-styled btn-block btn-rounded btn-base-1 btn-green" id="settings">Settings</button>
                                                         <button  class="btn btn-styled btn-block btn-rounded btn-base-1" id="create">Create Company</button>
-                                                        <button  class="btn btn-styled btn-block btn-rounded btn-base-1 btn-green" id="show">My Companies</button>
+                                                        <button  class="btn btn-styled btn-block btn-rounded btn-base-1" id="show">My Companies</button>
                                                         <g:link controller="user" action="list" class="btn btn-styled btn-block btn-rounded btn-base-1">Users</g:link>
                                                     </g:if>
                                                     <g:else>
                                                         <sec:ifAllGranted roles="ROLE_USER">
-                                                            <button  class="btn btn-styled btn-block btn-rounded btn-base-1" id="settings">Settings</button>
+                                                            <button  class="btn btn-styled btn-block btn-rounded btn-base-1 btn-green" id="settings">Settings</button>
                                                             <button  class="btn btn-styled btn-block btn-rounded btn-base-1" id="create">Create Company</button>
-                                                            <button  class="btn btn-styled btn-block btn-rounded btn-base-1 btn-green" id="show">My Companies</button>
+                                                            <button  class="btn btn-styled btn-block btn-rounded btn-base-1" id="show">My Companies</button>
                                                         </sec:ifAllGranted>
                                                     </g:else>
                                                 </div>
@@ -126,7 +126,7 @@
                                     <div class="col-lg-8">
                                         <div class="main-content">
 
-                                            <div class="row justify-content-center" id="show_wrapper">
+                                            <div class="row justify-content-center" id="show_wrapper" style="visibility: hidden; display: none;">
                                                 <div class="col-lg-12">
                                                     <div class="card form-card form-card--style-2">
                                                         <div class="form-header text-center">
@@ -209,7 +209,7 @@
                                                 </div>
                                             </div>
 
-                                            <div class="row justify-content-center" id="create_wrapper" style="visibility: hidden; display: none;">
+                                            <div class="row justify-content-center" id="create_wrapper" style="display: none;visibility: hidden">
                                                 <div class="col-lg-12">
                                                     <div class="card form-card form-card--style-2">
                                                         <div class="form-header text-center">
@@ -275,7 +275,7 @@
                                             </div>
 
                                             <!-- Account settings -->
-                                            <div class="row" id="settings_wrapper" style="display: none;visibility: hidden">
+                                            <div class="row" id="settings_wrapper">
                                                 <div class="col-lg-12">
                                                     <form class="form-default" data-toggle="validator" role="form">
                                                         <!-- General information -->

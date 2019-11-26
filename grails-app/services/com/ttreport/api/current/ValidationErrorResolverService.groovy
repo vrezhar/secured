@@ -33,6 +33,9 @@ class ValidationErrorResolverService
 
     protected int getCode(String message)
     {
+        if(message == 'nullable'){
+            return 413
+        }
         String error = getMessage(message)
         int result = 0
         for(int i = 0; i < error.length(); ++i){
