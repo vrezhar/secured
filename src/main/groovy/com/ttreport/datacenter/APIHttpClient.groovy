@@ -7,24 +7,25 @@ import javax.net.ssl.HttpsURLConnection
 
 class APIHttpClient
 {
-    private static String token
+    private String token
 
     String data
     String content_type = "application/json"
     String method = "POST"
     String targetUrl
+    int timeout = 10000
 
-    synchronized static String getToken()
+    synchronized String getToken()
     {
         return token
     }
-    synchronized static void setToken(String s)
+    synchronized void setToken(String s)
     {
        token = s
     }
 
-    String sendHttpRequest(String url_ = this.targetUrl, String data_ = this.data, String method = this.method, String content_type = this.content_type, boolean usehttps = true)
-    throws IOException,Exception
+    String sendHttpRequest(String url_ = this.targetUrl, String data_ = this.data, String method = this.method, String content_type = this.content_type, int timeout = this.timeout, boolean usehttps = false)
+    throws IOException,SocketTimeoutException,Exception
     {
         if(!url_) {
             throw new Exception("Crucial parameters not specified")
@@ -44,6 +45,9 @@ class APIHttpClient
             }
             if(getToken()){
                 connection.setRequestProperty("Authorization", "Bearer " + getToken())
+            }
+            if(timeout){
+                connection.setConnectTimeout(timeout)
             }
             connection.setDoOutput(true)
             if(data_) {
@@ -66,18 +70,19 @@ class APIHttpClient
             rd.close()
             return response.toString()
         }
-        catch(IOException ioexception) {
-            DevCycleLogger.log("input-output exception occurred when processing the request")
-            ioexception.stackTrace.each {
-                DevCycleLogger.log(it.toString())
-            }
-            throw ioexception
+        catch (SocketTimeoutException socketTimeoutException){
+            DevCycleLogger.log("Socket timeout exception occurred while sending the request")
+            DevCycleLogger.log_stack_trace(socketTimeoutException)
+            throw socketTimeoutException
+        }
+        catch(IOException ioException) {
+            DevCycleLogger.log("input-output exception occurred while sending the request")
+            DevCycleLogger.log_stack_trace(ioException)
+            throw ioException
         }
         catch(Exception e) {
-            DevCycleLogger.log("unknown exception occurred when processing the request")
-            e.stackTrace.each {
-                DevCycleLogger.log(it.toString())
-            }
+            DevCycleLogger.log("unknown exception occurred while sending the request")
+            DevCycleLogger.log_stack_trace(e)
             throw e
         }
         finally {

@@ -49,7 +49,7 @@ class DataCenterApiConnectorService extends SigningService {
                     "IN_PROGRESS", "CHECKED_OK", "CANCELLED", "ACCEPTED", "WAIT_ACCEPTANCE", "WAIT_PARTICIPANT_REGISTRATION"
             ]
 
-    protected String formUrl(String root, Map params = null)
+    protected static String formUrl(String root, Map params = null)
     {
         StringBuilder url = new StringBuilder(root)
         if(params){
@@ -108,6 +108,7 @@ class DataCenterApiConnectorService extends SigningService {
         }
         catch (Exception e){
             RandomDataRetrievalFailureException exception = new RandomDataRetrievalFailureException(e)
+            exception.log()
             throw exception
         }
         DevCycleLogger.log("Retrieved random data")
@@ -183,15 +184,16 @@ class DataCenterApiConnectorService extends SigningService {
 
     //TODO make a factory for this instead of individual methods
 
-    protected static boolean updateToken(boolean testing = true)
+    protected static boolean updateToken(APIHttpClient client, boolean testing = true)
     {
         return task {
-            if(isExpired(APIHttpClient.getToken())) {
+            if(isExpired(client.getToken())) {
                 try{
-                    APIHttpClient.setToken(retrieveToken(testing))
+                    client.setToken(retrieveToken(testing))
                     DevCycleLogger.log("token updated")
                 }
                 catch (Exception ignored) {
+                    DevCycleLogger.log("unable to update token")
                     return false
                 }
             }
@@ -217,7 +219,7 @@ class DataCenterApiConnectorService extends SigningService {
         APIHttpClient client = new APIHttpClient()
         client.targetUrl = formUrl((testing ? test_url : prod_url) + endpoint_urls[Endpoint.FULL_INFO],params)
         client.method = "GET"
-        boolean ok = updateToken(testing)
+        boolean ok = updateToken(client,testing)
         Promise<String> connectionEstablished = establishConnection(client)
         if(ok){
             response = new JsonSlurper().parseText(connectionEstablished.get()) as Map
@@ -231,9 +233,9 @@ class DataCenterApiConnectorService extends SigningService {
         APIHttpClient client = new APIHttpClient()
         client.targetUrl = (testing ? test_url : prod_url) + endpoint_urls[Endpoint.STATUS] + document.documentId + "/body"
         client.method = "GET"
-        boolean ok = updateToken(testing)
+        boolean ok = updateToken(client,testing)
         Promise<String> connectionEstablished = establishConnection(client)
-        if(ok){
+        if(ok && connectionEstablished){
             response = new JsonSlurper().parseText(connectionEstablished.get()) as Map
         }
         return response
@@ -241,19 +243,22 @@ class DataCenterApiConnectorService extends SigningService {
 
     Map sendDocument(Document document, DocumentType type, boolean testing = true)
     {
+        if(!type){
+            return null
+        }
         Map response = null
         String message = null
         int status = 500
         APIHttpClient client = new APIHttpClient()
         client.targetUrl = (testing ? test_url : prod_url) + endpoint_urls[type as Endpoint]
         client.data = formPayload(document,type)
-        boolean ok = updateToken(testing)
+        boolean ok = updateToken(client,testing)
         Promise<String> connectionEstablished = establishConnection(client)
-        if(ok){
+        if(ok && connectionEstablished){
             message = connectionEstablished.get()
         }
 
-        connectionEstablished.then {
+        connectionEstablished?.then {
             try{
                 response = new JsonSlurper().parseText(message) as Map
                 response.status = status.toString()
@@ -268,7 +273,7 @@ class DataCenterApiConnectorService extends SigningService {
                     while (document.documentStatus == "IN_PROGRESS"){
                         if(retries){
                             try{
-                                sleep(500)
+                                sleep(100)
                                 --retries
                                 response = getInfo(document,testing)
                                 document.documentStatus = response.status
@@ -288,6 +293,16 @@ class DataCenterApiConnectorService extends SigningService {
             }
         }
         response.status = status
+        try {
+            document.save(true)
+        }
+        catch (Exception e){
+            DevCycleLogger.log(e.message)
+            DevCycleLogger.log("stacktrace: ")
+            e.stackTrace.each {
+                DevCycleLogger.log(it.toString())
+            }
+        }
         return response
     }
 

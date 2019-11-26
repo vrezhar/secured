@@ -14,12 +14,10 @@ class RandomDataRetrievalFailureException extends Exception {
     {
         return this.message
     }
-    def log()
+    void log()
     {
         DevCycleLogger.log("message: ${this.message}")
         DevCycleLogger.log("stacktrace: ")
-        this?.stackTrace?.each {
-            DevCycleLogger.log(it.toString())
-        }
+        DevCycleLogger.log_stack_trace(this)
     }
 }

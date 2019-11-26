@@ -28,16 +28,14 @@ class ProductsManagerService extends DocumentService
         Response response = performCommandValidation(cmd)
         if(response.status == 400 ||
                 response.status == 401 ||
-                { List<ProductCommand> products ->
-                    boolean hasErrors = false
+                ({ List<ProductCommand> products ->
                     for(item in products){
                         if(item.rejected){
-                            hasErrors = true
-                            break
+                            return true
                         }
                     }
-                    return hasErrors
-                }.call(cmd.products)){
+                    return false
+                }).call(cmd.products)){
             dandr.response = response.getAsMap()
             return  dandr
         }
@@ -98,16 +96,14 @@ class ProductsManagerService extends DocumentService
         Response response = performCommandValidation(cmd)
         if(response.status == 400 ||
                 response.status == 401 ||
-                { List<ProductCommand> products ->
-                    boolean hasErrors = false
+                ({ List<ProductCommand> products ->
                     for(item in products){
                         if(item.rejected){
-                            hasErrors = true
-                            break
+                            return true
                         }
                     }
-                    return hasErrors
-                }.call(cmd.products)){
+                    return false
+                }).call(cmd.products)){
             dandr.response = response.getAsMap()
             return  dandr
         }
@@ -149,16 +145,14 @@ class ProductsManagerService extends DocumentService
         Response response = performCommandValidation(cmd)
         if(response.status == 400 ||
                 response.status == 401 ||
-                { List<ProductCommand> products ->
-                    boolean hasErrors = false
+                ({ List<ProductCommand> products ->
                     for(item in products){
                         if(item.rejected){
-                            hasErrors = true
-                            break
+                            return true
                         }
                     }
-                    return hasErrors
-                }.call(cmd.products)){
+                    return false
+                }).call(cmd.products)){
             dandr.response = response.getAsMap()
             return  dandr
         }
@@ -219,16 +213,14 @@ class ProductsManagerService extends DocumentService
         Response response = performCommandValidation(cmd)
         if(response.status == 400 ||
                 response.status == 401 ||
-                { List<ProductCommand> products ->
-                    boolean hasErrors = false
+                ({ List<ProductCommand> products ->
                     for(item in products){
                         if(item.rejected){
-                            hasErrors = true
-                            break
+                            return true
                         }
                     }
-                    return hasErrors
-                }.call(cmd.products)){
+                    return false
+                }).call(cmd.products)){
             dandr.response = response.getAsMap()
             return  dandr
         }
