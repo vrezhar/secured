@@ -109,6 +109,7 @@ class ValidationErrorResolverService
 
 
     protected Response performCommandValidation(DocumentCommand cmd){
+        boolean hasErrors = false
         DevCycleLogger.log("Starting validation process")
         Response response = new Response()
         try{

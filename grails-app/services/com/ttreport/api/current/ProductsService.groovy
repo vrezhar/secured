@@ -28,7 +28,7 @@ class ProductsService extends ValidationErrorResolverService
             }
             return barCode
         }
-        return BarCode.findOrSaveWhere(uitCode: cmd.uit_code, uituCode: cmd.uitu_code, minified: cmd.minified)
+        return BarCode.findWhere(uitCode: cmd.uit_code, uituCode: cmd.uitu_code, minified: cmd.minified)?: new BarCode(uitCode: cmd.uit_code, uituCode: cmd.uitu_code, minified: cmd.minified)
 
     }
 
@@ -44,7 +44,7 @@ class ProductsService extends ValidationErrorResolverService
             throw new Exception("Bar code not saved")
         }
         products.addToBarCodes(barCode)
-        products.save(true)
+        products.save()
         DevCycleLogger.log("success, adding to the found product")
         return barCode
     }
@@ -77,7 +77,7 @@ class ProductsService extends ValidationErrorResolverService
         products.addToBarCodes(barCode)
         company.addToProducts(products)
         products.save()
-        if(!barCode.save(true)) {
+        if(!barCode.save()) {
             DevCycleLogger.log_validation_errors(barCode,"bar code with uit code ${barCode.uitCode} and uitu code ${barCode.uituCode} not validated, nothing saved, exiting save()")
             throw new Exception("Product not validated")
         }
@@ -100,7 +100,7 @@ class ProductsService extends ValidationErrorResolverService
             throw new Exception("Bar code not owned by product")
         }
         barCode.dateDeleted = new Date()
-        barCode.save(true)
+        barCode.save()
         DevCycleLogger.log("shipping barcode with uit code ${barCode.uitCode} and uitu code ${barCode.uituCode}, saving changes, exiting ship()")
         return barCode
     }
