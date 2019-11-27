@@ -3,10 +3,8 @@ package com.ttreport.datacenter
 import com.ttreport.api.types.DocumentType
 import com.ttreport.api.types.Endpoint
 import grails.async.Promise
-import grails.compiler.GrailsCompileStatic
-
 import static grails.async.Promises.task
-import static grails.async.Promises.waitAll
+
 import com.ttreport.data.documents.differentiated.Document
 import com.ttreport.logs.DevCycleLogger
 import grails.gorm.transactions.Transactional
@@ -184,29 +182,35 @@ class DataCenterApiConnectorService extends SigningService {
 
     //TODO make a factory for this instead of individual methods
 
-    protected static boolean updateToken(APIHttpClient client, boolean testing = true)
+    protected static boolean updateToken(boolean testing = true)
     {
-        return task {
-            if(isExpired(client.getToken())) {
+        return task ({
+            if(isExpired(APIHttpClient.getToken())) {
+                APIHttpClient.acquireTokenLock()
                 try{
-                    client.setToken(retrieveToken(testing))
+                    APIHttpClient.setToken(retrieveToken(testing))
                     DevCycleLogger.log("token updated")
                 }
                 catch (Exception ignored) {
                     DevCycleLogger.log("unable to update token")
                     return false
                 }
+                finally {
+                    APIHttpClient.releaseTokenLock()
+                }
             }
             return true
-        }.get()
+        }).get()
     }
     protected static Promise<String> establishConnection(APIHttpClient client)
     {
         return task {
             try {
+                DevCycleLogger.log("Trying to establish connection to ${client.targetUrl}")
                 client.sendHttpRequest()
             }
             catch (Exception ignored){
+                DevCycleLogger.log("Failed to establish connection")
                 return null
             }
         }
@@ -219,9 +223,9 @@ class DataCenterApiConnectorService extends SigningService {
         APIHttpClient client = new APIHttpClient()
         client.targetUrl = formUrl((testing ? test_url : prod_url) + endpoint_urls[Endpoint.FULL_INFO],params)
         client.method = "GET"
-        boolean ok = updateToken(client,testing)
+        boolean ok = updateToken(testing)
         Promise<String> connectionEstablished = establishConnection(client)
-        if(ok){
+        if(ok && connectionEstablished){
             response = new JsonSlurper().parseText(connectionEstablished.get()) as Map
         }
         return response
@@ -233,7 +237,7 @@ class DataCenterApiConnectorService extends SigningService {
         APIHttpClient client = new APIHttpClient()
         client.targetUrl = (testing ? test_url : prod_url) + endpoint_urls[Endpoint.STATUS] + document.documentId + "/body"
         client.method = "GET"
-        boolean ok = updateToken(client,testing)
+        boolean ok = updateToken(testing)
         Promise<String> connectionEstablished = establishConnection(client)
         if(ok && connectionEstablished){
             response = new JsonSlurper().parseText(connectionEstablished.get()) as Map
@@ -252,10 +256,10 @@ class DataCenterApiConnectorService extends SigningService {
         APIHttpClient client = new APIHttpClient()
         client.targetUrl = (testing ? test_url : prod_url) + endpoint_urls[type as Endpoint]
         client.data = formPayload(document,type)
-        boolean ok = updateToken(client,testing)
+        boolean ok = updateToken(testing)
         Promise<String> connectionEstablished = establishConnection(client)
         if(ok && connectionEstablished){
-            message = connectionEstablished.get()
+            message = connectionEstablished?.get()
         }
 
         connectionEstablished?.then {
@@ -264,29 +268,30 @@ class DataCenterApiConnectorService extends SigningService {
                 response.status = status.toString()
             }
             catch (Exception ignored){
+                document.lock()
                 document.documentId = message
                 document.save()
                 response = getInfo(document,testing)
+                if(!response){
+                    return [status: 500]
+                }
                 document.documentStatus = response.status
-                for(okStatus in accepted_statuses){
-                    int retries = 5
-                    while (document.documentStatus == "IN_PROGRESS"){
-                        if(retries){
-                            try{
-                                sleep(100)
-                                --retries
-                                response = getInfo(document,testing)
-                                document.documentStatus = response.status
-                            }
-                            catch (InterruptedException e){
-                                DevCycleLogger.log(e.message)
-                                return response
-                            }
-                        }
-
+                for(int retries = 5; document.documentStatus == "IN_PROGRESS" && retries; --retries){
+                    try{
+                        sleep(100)
+                        response = getInfo(document,testing)
+                        document.documentStatus = response.status
                     }
+                    catch (InterruptedException e){
+                        DevCycleLogger.log(e.message)
+                        document.save(true)
+                        return response
+                    }
+                }
+                for(okStatus in accepted_statuses){
                     if(okStatus == document.documentStatus){
                         response.status = 200
+                        document.save(true)
                         return response
                     }
                 }
@@ -297,11 +302,10 @@ class DataCenterApiConnectorService extends SigningService {
             document.save(true)
         }
         catch (Exception e){
+            DevCycleLogger.log("Exception occurred while trying to save the document")
             DevCycleLogger.log(e.message)
             DevCycleLogger.log("stacktrace: ")
-            e.stackTrace.each {
-                DevCycleLogger.log(it.toString())
-            }
+            DevCycleLogger.log_stack_trace(e)
         }
         return response
     }

@@ -4,10 +4,14 @@ package com.ttreport.datacenter
 import com.ttreport.logs.DevCycleLogger
 
 import javax.net.ssl.HttpsURLConnection
+import java.util.concurrent.atomic.AtomicBoolean
+import java.util.concurrent.locks.ReentrantLock
 
 class APIHttpClient
 {
-    private String token
+    private static String token
+    private static final ReentrantLock tokenLock = new ReentrantLock()
+    static AtomicBoolean updating
 
     String data
     String content_type = "application/json"
@@ -15,14 +19,38 @@ class APIHttpClient
     String targetUrl
     int timeout = 10000
 
-    synchronized String getToken()
+    static String getToken()
     {
+        try{
+            while (updating.get()){
+                updating.wait()
+            }
+        }
+        catch (InterruptedException interruptedException){
+            DevCycleLogger.log("Thread waiting to retrieve toke interrupted")
+            DevCycleLogger.log(interruptedException.message)
+            DevCycleLogger.log_stack_trace()
+        }
         return token
     }
-    synchronized void setToken(String s)
+    static void setToken(String s)
     {
-       token = s
+        token = s
     }
+
+    static void acquireTokenLock()
+    {
+        updating.set(true)
+        tokenLock.lock()
+    }
+
+    static void releaseTokenLock()
+    {
+        tokenLock.unlock()
+        updating.set(false)
+        updating.notifyAll()
+    }
+
 
     String sendHttpRequest(String url_ = this.targetUrl, String data_ = this.data, String method = this.method, String content_type = this.content_type, int timeout = this.timeout, boolean usehttps = false)
     throws IOException,SocketTimeoutException,Exception

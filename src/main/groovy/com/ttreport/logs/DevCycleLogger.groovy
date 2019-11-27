@@ -75,7 +75,7 @@ class DevCycleLogger
             PrintWriter writer = null
             try {
                 writer = new PrintWriter(new BufferedOutputStream(Files.newOutputStream(path,CREATE,APPEND)))
-                writer.println(action)
+                writer.println(action + ", logged at ${new Date()}")
                 writer.flush()
             }
             catch (IOException ioException){
@@ -104,11 +104,11 @@ class DevCycleLogger
                 writer.println("Showing validation errors of a command object of class ${cmd.class.simpleName}:")
                 cmd.errors.fieldErrors.each{
                     action_logs.add("value ${it.rejectedValue} not validated for field ${it.field}, error code: ${it.code}")
-                    writer.println("value ${it.rejectedValue} not validated for field ${it.field}, error code: ${it.code}")
+                    writer.println("value ${it.rejectedValue} not validated for field ${it.field}, error code: ${it.code}" + ", logged at ${new Date()}")
                 }
                 if(additional_message){
                     action_logs.add(additional_message)
-                    writer.println(additional_message)
+                    writer.println(additional_message + ", logged at ${new Date()}")
                 }
                 writer.flush()
                 return
@@ -146,11 +146,11 @@ class DevCycleLogger
                 writer.println("Showing validation errors of a ${domain.class.simpleName} domain class object:")
                 domain.errors.fieldErrors.each{
                     action_logs.add("value ${it.rejectedValue} not validated for field ${it.field}, error code: ${it.code}")
-                    writer.println("value ${it.rejectedValue} not validated for field ${it.field}, error code: ${it.code}")
+                    writer.println("value ${it.rejectedValue} not validated for field ${it.field}, error code: ${it.code}" + ", logged at ${new Date()}")
                 }
                 if(additional_message){
                     action_logs.add(additional_message)
-                    writer.println(additional_message)
+                    writer.println(additional_message + ", logged at ${new Date()}")
                 }
                 writer.flush()
                 return
@@ -179,7 +179,7 @@ class DevCycleLogger
         }
     }
 
-    static void log_stack_trace(Exception e, boolean writeToFile = true)
+    static void log_stack_trace(Throwable e, boolean writeToFile = true)
     {
         if(writeToFile){
             Path path = Paths.get("logs.txt")

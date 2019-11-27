@@ -17,6 +17,7 @@ import grails.compiler.GrailsCompileStatic
 import java.util.concurrent.Executors
 import java.util.concurrent.TimeUnit
 
+import static grails.async.Promises.onComplete
 import static grails.async.Promises.task
 import static grails.async.Promises.waitAll
 
@@ -86,26 +87,31 @@ class BootStrap {
                 @Override
                 void run() {
                     DevCycleLogger.log("Document sender executor started, iterating over all documents")
-                    List<Promise> promises = []
-                    Document.list().each {
-                        synchronized (it){
-                            if (!it.documentId) {
-                                DevCycleLogger.log("found unsent document, sending")
-                                Closure<Map> sendDocument = { ->
-                                    dataCenterApiConnectorService.sendDocument(delegate as Document, inferType(delegate as Document), true)
-                                }
-                                sendDocument.delegate = it
-                                promises.add(task(sendDocument))
-                                if (promises.size() == 4) {
-                                    waitAll(promises)
-                                    promises.clear()
-                                }
+                    final Object monitor = new Object()
+                    int threadCount = 1
+                    for(document in Document.list()){
+                        if (!document.documentId) {
+                            DevCycleLogger.log("found unsent document, sending")
+                            Promise p = task({
+                                ++threadCount
+                                dataCenterApiConnectorService.sendDocument(document,inferType(document),true)
+                            })
+                            p.onError { Throwable t ->
+                                --threadCount
+                                DevCycleLogger.log("Error occurred while sending document")
+                                DevCycleLogger.log(t.message)
+                                DevCycleLogger.log_stack_trace(t)
+                                monitor.notifyAll()
+                            }
+                            p.onComplete { Object ignored ->
+                                DevCycleLogger.log("document sent")
+                                --threadCount
+                                monitor.notifyAll()
                             }
                         }
-                        sleep(500)
-                    }
-                    if (!promises.empty) {
-                        waitAll(promises)
+                        while (threadCount > 4){
+                            monitor.wait()
+                        }
                     }
                 }
             }, 2, 2, TimeUnit.HOURS)
