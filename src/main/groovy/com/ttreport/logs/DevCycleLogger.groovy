@@ -67,16 +67,32 @@ class DevCycleLogger
             println("uitCode: ${it.uitCode}, uitu_code: ${it.uituCode}")
         }
     }
-    static void log(String action, boolean writeToFile = true)
+    static void log(String ...actions)
     {
-        action_logs.add(action)
-        if(writeToFile){
-            Path path = Paths.get("logs.txt")
-            PrintWriter writer = null
+        Path path = Paths.get("logs.txt")
+        PrintWriter writer = null
+        try {
+            writer = new PrintWriter(new BufferedOutputStream(Files.newOutputStream(path,CREATE,APPEND)))
+        }
+        catch (IOException ioException){
+            action_logs.add("Failed to create printwriter, input-output exception")
+            ioException.stackTrace.each {
+                action_logs.add(it.toString())
+            }
+            try{
+                writer.close()
+            }
+            catch (Exception ignored){}
+        }
+        finally{
+            if(writer){
+                writer.println("New log entry: [logged at ${new Date()}]")
+            }
+        }
+        for(action in actions){
+            action_logs.add(action)
             try {
-                writer = new PrintWriter(new BufferedOutputStream(Files.newOutputStream(path,CREATE,APPEND)))
-                writer.println(action + ", logged at ${new Date()}")
-                writer.flush()
+                writer.println("\t" + action)
             }
             catch (IOException ioException){
                 action_logs.add("Failed to write some logs to file, input-output exception")
@@ -87,6 +103,9 @@ class DevCycleLogger
             finally{
                 if(writer){
                     try{
+                        writer.println("End of the new log entry")
+                        writer.println("\n")
+                        writer.flush()
                         writer.close()
                     }
                     catch (Exception ignored){}
@@ -101,16 +120,15 @@ class DevCycleLogger
             PrintWriter writer = null
             try {
                 writer = new PrintWriter(new BufferedOutputStream(Files.newOutputStream(path,CREATE,APPEND)))
-                writer.println("Showing validation errors of a command object of class ${cmd.class.simpleName}:")
+                writer.println("Showing validation errors of a command object of class ${cmd.class.simpleName}:[logged at ${new Date()}]")
                 cmd.errors.fieldErrors.each{
                     action_logs.add("value ${it.rejectedValue} not validated for field ${it.field}, error code: ${it.code}")
-                    writer.println("value ${it.rejectedValue} not validated for field ${it.field}, error code: ${it.code}" + ", logged at ${new Date()}")
+                    writer.println("\t" + "value ${it.rejectedValue} not validated for field ${it.field}, error code: ${it.code}")
                 }
                 if(additional_message){
                     action_logs.add(additional_message)
-                    writer.println(additional_message + ", logged at ${new Date()}")
+                    writer.println("\t" + additional_message)
                 }
-                writer.flush()
                 return
             }
             catch (IOException ioException){
@@ -123,6 +141,9 @@ class DevCycleLogger
             finally{
                 if(writer){
                     try{
+                        writer.println("End of validation errors' logs")
+                        writer.println("\n")
+                        writer.flush()
                         writer.close()
                     }
                     catch (Exception ignored){return}
@@ -143,16 +164,15 @@ class DevCycleLogger
             PrintWriter writer = null
             try {
                 writer = new PrintWriter(new BufferedOutputStream(Files.newOutputStream(path,CREATE,APPEND)))
-                writer.println("Showing validation errors of a ${domain.class.simpleName} domain class object:")
+                writer.println("Showing validation errors of a ${domain.class.simpleName} domain class object:[logged at ${new Date()}]")
                 domain.errors.fieldErrors.each{
                     action_logs.add("value ${it.rejectedValue} not validated for field ${it.field}, error code: ${it.code}")
-                    writer.println("value ${it.rejectedValue} not validated for field ${it.field}, error code: ${it.code}" + ", logged at ${new Date()}")
+                    writer.println("value ${it.rejectedValue} not validated for field ${it.field}, error code: ${it.code}")
                 }
                 if(additional_message){
                     action_logs.add(additional_message)
-                    writer.println(additional_message + ", logged at ${new Date()}")
+                    writer.println(additional_message)
                 }
-                writer.flush()
                 return
             }
             catch (IOException ioException){
@@ -165,6 +185,9 @@ class DevCycleLogger
             finally{
                 if(writer){
                     try{
+                        writer.println("End of validation errors' logs")
+                        writer.println("\n")
+                        writer.flush()
                         writer.close()
                     }
                     catch (Exception ignored){return}
@@ -179,19 +202,22 @@ class DevCycleLogger
         }
     }
 
-    static void log_stack_trace(Throwable e, boolean writeToFile = true)
+    static void log_exception(Throwable e, boolean writeToFile = true)
     {
         if(writeToFile){
             Path path = Paths.get("logs.txt")
             PrintWriter writer = null
             try {
                 writer = new PrintWriter(new BufferedOutputStream(Files.newOutputStream(path,CREATE,APPEND)))
-                writer.println("Stacktrace of the exception of type ${e.class.simpleName}:")
+                writer.println("Exception was thrown, type ${e.class.simpleName}:[logged at ${new Date()}]")
+                writer.println("Message:")
+                writer.println("\t" + e.message)
+                action_logs.add(e.message)
+                writer.println("Stacktrace:")
                 e?.stackTrace?.each{
                     action_logs.add(it.toString())
-                    writer.println(it.toString())
+                    writer.println("\t" + it.toString())
                 }
-                writer.flush()
                 return
             }
             catch (IOException ioException){
@@ -204,6 +230,9 @@ class DevCycleLogger
             finally{
                 if(writer){
                     try{
+                        writer.println("End of exception's logs")
+                        writer.println("\n")
+                        writer.flush()
                         writer.close()
                     }
                     catch (Exception ignored){return}

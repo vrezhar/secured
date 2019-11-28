@@ -28,8 +28,6 @@
             <i class="zmdi zmdi-menu"></i>
         </button>
         <div class="collapse navbar-collapse" id="navbarCollapse">
-
-
             <ul class="nav navbar-nav navbar-right ml-auto">
                 <li class="nav-item">
                     <g:link controller="register" class="btn btn-inverse navbar-btn">
@@ -49,7 +47,20 @@
     <!-- <div class="bg-overlay"></div> -->
     <div class="container">
         <div class="row">
-            <div class="col-lg-12">
+            <div class="col-lg-6">
+                <div class="home-wrapper">
+                    <h2 class="animated fadeInDown wow" data-wow-delay=".1s">
+                        <span class="text-colored"><g:message code="website.title"></g:message></span> - <g:message code="website.dummy.headline"></g:message>
+                    </h2>
+                    <p class="animated fadeInDown wow text-muted" data-wow-delay=".2s">
+                        <g:message code="website.dummy.text"></g:message>
+                    </p>
+                    <g:link controller="register" class="btn btn-primary btn-shadow btn-rounded w-lg animated fadeInDown wow" data-wow-delay=".4s">Get Started</g:link>
+                    <div class="clearfix"></div>
+                </div><!-- home wrapper -->
+
+            </div> <!-- end col -->
+            <div class="col-lg-6">
                 <div class="home-wrapper">
                     <h3 class="text-center"> Log In To Your Account</h3>
 

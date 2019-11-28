@@ -17,9 +17,7 @@ import grails.compiler.GrailsCompileStatic
 import java.util.concurrent.Executors
 import java.util.concurrent.TimeUnit
 
-import static grails.async.Promises.onComplete
 import static grails.async.Promises.task
-import static grails.async.Promises.waitAll
 
 @GrailsCompileStatic
 class BootStrap {
@@ -98,9 +96,7 @@ class BootStrap {
                             })
                             p.onError { Throwable t ->
                                 --threadCount
-                                DevCycleLogger.log("Error occurred while sending document")
-                                DevCycleLogger.log(t.message)
-                                DevCycleLogger.log_stack_trace(t)
+                                DevCycleLogger.log_exception(t)
                                 monitor.notifyAll()
                             }
                             p.onComplete { Object ignored ->

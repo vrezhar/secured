@@ -29,7 +29,7 @@ class APIHttpClient
         catch (InterruptedException interruptedException){
             DevCycleLogger.log("Thread waiting to retrieve toke interrupted")
             DevCycleLogger.log(interruptedException.message)
-            DevCycleLogger.log_stack_trace()
+            DevCycleLogger.log_exception()
         }
         return token
     }
@@ -100,17 +100,17 @@ class APIHttpClient
         }
         catch (SocketTimeoutException socketTimeoutException){
             DevCycleLogger.log("Socket timeout exception occurred while sending the request")
-            DevCycleLogger.log_stack_trace(socketTimeoutException)
+            DevCycleLogger.log_exception(socketTimeoutException)
             throw socketTimeoutException
         }
         catch(IOException ioException) {
             DevCycleLogger.log("input-output exception occurred while sending the request")
-            DevCycleLogger.log_stack_trace(ioException)
+            DevCycleLogger.log_exception(ioException)
             throw ioException
         }
         catch(Exception e) {
             DevCycleLogger.log("unknown exception occurred while sending the request")
-            DevCycleLogger.log_stack_trace(e)
+            DevCycleLogger.log_exception(e)
             throw e
         }
         finally {
