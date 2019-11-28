@@ -96,7 +96,7 @@
         <div class="row">
 
             <div class="col-lg-6">
-                <img src="images/about.jpg" alt="about Img" class="img-fluid about-img rounded">
+                <asset:image src="about.jpg" alt="about Img" class="img-fluid about-img rounded"></asset:image>
             </div>
             <!-- end col -->
 
@@ -164,7 +164,7 @@
                     <!-- team-member -->
                     <div class="col-lg-4">
                         <div class="team-member animated fadeInDown wow" data-wow-delay=".1s">
-                            <img src="images/team/team-1.jpg" alt="team-member" class="img-fluid rounded-circle">
+                            <asset:image src="team/team-1.jpg" alt="team-member" class="img-fluid rounded-circle"></asset:image>
                             <h4>Holden McGroin</h4>
                             <p class="text-muted">Product Designer & Founder</p>
                         </div>
@@ -173,7 +173,7 @@
                     <!-- team-member -->
                     <div class="col-lg-4">
                         <div class="team-member animated fadeInDown wow" data-wow-delay=".3s">
-                            <img src="images/team/team-2.jpg" alt="team-member" class="img-fluid rounded-circle">
+                            <asset:image src="team/team-2.jpg" alt="team-member" class="img-fluid rounded-circle"></asset:image>
                             <h4>Mike Oxbigg</h4>
                             <p class="text-muted">Developer & Co-founder</p>
                         </div>
@@ -182,7 +182,7 @@
                     <!-- team-member -->
                     <div class="col-lg-4">
                         <div class="team-member animated fadeInDown wow" data-wow-delay=".5s">
-                            <img src="images/team/team-3.jpg" alt="team-member" class="img-fluid rounded-circle">
+                            <asset:image src="team/team-3.jpg" alt="team-member" class="img-fluid rounded-circle"></asset:image>
                             <h4>Eilean Dover</h4>
                             <p class="text-muted">UI/UX Designer</p>
                         </div>

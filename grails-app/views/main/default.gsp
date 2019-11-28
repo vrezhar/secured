@@ -110,7 +110,7 @@
         <div class="row text-center">
             <div class="col-lg-4">
                 <div class="service-item animated fadeInLeft wow" data-wow-delay=".1s">
-                    <img src="images/icons/cup.svg" width="48" alt="img">
+                    <asset:image src="icons/cup.svg" width="48" alt="img"></asset:image>
                     <div class="service-detail">
                         <h4 class="mb-3">
                             <g:message code="website.home.features.name.dummy"></g:message>
@@ -124,7 +124,7 @@
 
             <div class="col-lg-4">
                 <div class="service-item animated fadeInDown wow" data-wow-delay=".3s">
-                    <img src="images/icons/diploma.svg" width="48" alt="img">
+                    <asset:image src="icons/diploma.svg" width="48" alt="img"></asset:image>
                     <div class="service-detail">
                         <h4 class="mb-3">
                             <g:message code="website.home.features.name.dummy"></g:message>
@@ -138,7 +138,7 @@
 
             <div class="col-lg-4">
                 <div class="service-item animated fadeInRight wow" data-wow-delay=".5s">
-                    <img src="images/icons/combo_chart.svg" width="48" alt="img">
+                    <asset:image src="icons/combo_chart.svg" width="48" alt="img"></asset:image>
                     <div class="service-detail">
                         <h4 class="mb-3">
                             <g:message code="website.home.features.name.dummy"></g:message>
@@ -155,7 +155,7 @@
         <div class="row text-center">
             <div class="col-lg-4">
                 <div class="service-item animated fadeInLeft wow" data-wow-delay=".1s">
-                    <img src="images/icons/space-rocket.svg" width="48" alt="img">
+                    <asset:image src="icons/space-rocket.svg" width="48" alt="img"></asset:image>
                     <div class="service-detail">
                         <h4 class="mb-3">
                             <g:message code="website.home.features.name.dummy"></g:message>
@@ -169,7 +169,7 @@
 
             <div class="col-lg-4">
                 <div class="service-item animated fadeInDown wow" data-wow-delay=".3s">
-                    <img src="images/icons/umbrella.svg" width="48" alt="img">
+                    <asset:image src="icons/umbrella.svg" width="48" alt="img"></asset:image>
                     <div class="service-detail">
                         <h4 class="mb-3">
                             <g:message code="website.home.features.name.dummy"></g:message>
@@ -183,7 +183,7 @@
 
             <div class="col-lg-4">
                 <div class="service-item animated fadeInRight wow" data-wow-delay=".5s">
-                    <img src="images/icons/support.svg" width="48" alt="img">
+                    <asset:image src="icons/support.svg" width="48" alt="img"></asset:image>
                     <div class="service-detail">
                         <h4 class="mb-3">
                             <g:message code="website.home.features.name.dummy"></g:message>
