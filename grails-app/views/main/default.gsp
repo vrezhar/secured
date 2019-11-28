@@ -77,9 +77,11 @@
                     <p class="animated fadeInDown wow text-light" data-wow-delay=".2s">
                         <g:message code="website.home.info"></g:message>
                     </p>
-                    <g:link controller="register" class="btn btn-primary btn-shadow btn-rounded w-lg animated fadeInDown wow" data-wow-delay=".4s">
-                        <g:message code="website.home.get.started"></g:message>
-                    </g:link>
+                    <sec:ifNotLoggedIn>
+                        <g:link controller="register" class="btn btn-primary btn-shadow btn-rounded w-lg animated fadeInDown wow" data-wow-delay=".4s">
+                            <g:message code="website.home.get.started"></g:message>
+                        </g:link>
+                    </sec:ifNotLoggedIn>
                     <div class="clearfix"></div>
                 </div><!-- home wrapper -->
 

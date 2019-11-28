@@ -102,7 +102,7 @@
                                 </div>
                             </div>
                         </div>
-                        <button type="submit" class="class=btn btn-primary btn-shadow btn-rounded w-lg" style="width: 90%; margin-left: 5%" id="submit" value= <g:message code="website.register.form.submit"></g:message>>Sign in</button>
+                        <input type="submit" class="class=btn btn-primary btn-shadow btn-rounded w-lg" style="width: 90%; margin-left: 5%" id="submit" value= <g:message code="website.log.in.message"></g:message>></input>
                     </form>
 %{--                    <g:form role="form" id="register_form" class="intro-form" method="POST" url="/register/confirm">--}%
 
