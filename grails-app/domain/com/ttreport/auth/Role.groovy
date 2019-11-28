@@ -9,7 +9,7 @@ import grails.compiler.GrailsCompileStatic
 @ToString(includes='authority', includeNames=true, includePackage=false)
 class Role implements Serializable {
 
-	private static final long serialVersionUID = 1
+	private static final long serialVersionUID = 10L
 
 	String authority
 

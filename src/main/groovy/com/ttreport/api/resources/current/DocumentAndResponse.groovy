@@ -1,8 +1,9 @@
 package com.ttreport.api.resources.current
 
+import com.ttreport.data.documents.differentiated.Document
+import grails.compiler.GrailsCompileStatic
 
-import com.ttreport.data.Document
-
+@GrailsCompileStatic
 class DocumentAndResponse
 {
     Document document

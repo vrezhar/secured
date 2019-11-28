@@ -1,7 +1,6 @@
 package com.ttreport.data
 
-import com.ttreport.api.resources.current.ProductCommand
-import com.ttreport.logs.DevCycleLogger
+
 import grails.compiler.GrailsCompileStatic
 import groovy.transform.ToString
 
@@ -10,10 +9,11 @@ import groovy.transform.ToString
 class BarCode implements Serializable
 {
 
-    private static final long serialVersionUID = 1
+    private static final long serialVersionUID = 1L
+    boolean minified = false
 
-    String uit_code
-    String uitu_code
+    String uitCode
+    String uituCode
     Date dateDeleted = null
 
     Date dateCreated
@@ -28,29 +28,27 @@ class BarCode implements Serializable
             return false
         }
         BarCode other = o as BarCode
-        if(other.uitu_code == this.uitu_code && other.uit_code == this.uit_code){
+        if(other?.uituCode == this.uituCode && other?.uitCode == this.uitCode && this.dateDeleted == other?.dateDeleted){
             return true
         }
         return false
     }
 
-    def transferOwnershipTo(Products other){
-        this.products.barCodes.remove(this)
-        this.products = other
-        other.addToBarCodes(this)
-    }
-
     static constraints = {
         dateDeleted nullable: true
-        uit_code nullable: true, validator: { String value, BarCode object ->
-            if(!value && !object?.uitu_code) {
+        uitCode nullable: true, validator: { String value, BarCode object ->
+            if(!value && !object?.uituCode) {
                 return false
             }
         }
-        uitu_code nullable: true, validator: { String value, BarCode object ->
-            if(!value && !object?.uit_code) {
+        uituCode nullable: true, validator: { String value, BarCode object ->
+            if(!value && !object?.uitCode) {
                 return false
             }
         }
+        products nullable: true
+    }
+    static mapping = {
+        tablePerHierarchy false
     }
 }

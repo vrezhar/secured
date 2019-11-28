@@ -1,7 +1,7 @@
 package com.ttreport.api.current
 
 import com.ttreport.api.resources.current.AcceptanceDocumentCommand
-import com.ttreport.api.resources.current.DocumentCommand
+import com.ttreport.api.resources.current.GenericDocumentCommand
 import com.ttreport.api.resources.current.ProductCommand
 import com.ttreport.api.resources.current.ShipmentDocumentCommand
 import com.ttreport.auth.Role
@@ -59,8 +59,8 @@ class ActionSetterSpec extends Specification implements ServiceUnitTest<Validati
                 results.get(7) == "DELETE"
     }
     void "test action setting: invalid document"(){
-        DocumentCommand documentCommand = new DocumentCommand()
-        String message
+        GenericDocumentCommand documentCommand = new GenericDocumentCommand()
+        String message = null
         try{
             service.setActions(documentCommand)
         }

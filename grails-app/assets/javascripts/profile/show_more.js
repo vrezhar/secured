@@ -11,12 +11,10 @@ document.onclick = function(e)
     e.preventDefault();
     if(link.innerText === "Show more"){
         link.innerText = "hide";
-        detail_row.style.width = "100%";
         detail_row.style.padding = "1px 1px 1px 1px";
         detail_row.style.textAlign = "left";
         detail_row.style.visibility = "visible";
         detail_row.style.display = "table-row";
-        description_row.style.width = "100%";
         description_row.style.padding = "1px 1px 1px 1px";
         description_row.style.textAlign = "left";
         description_row.style.visibility = "visible";

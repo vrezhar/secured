@@ -1,6 +1,6 @@
 package com.ttreport.api.current
 
-import com.ttreport.api.current.ProductsService
+
 import com.ttreport.api.resources.current.ProductCommand
 import com.ttreport.auth.Role
 import com.ttreport.auth.User
@@ -10,7 +10,6 @@ import com.ttreport.data.Company
 import com.ttreport.data.Products
 import grails.test.hibernate.HibernateSpec
 import grails.testing.services.ServiceUnitTest
-import spock.lang.Specification
 
 class ProductsServiceSpec extends HibernateSpec implements ServiceUnitTest<ProductsService>
 {
@@ -34,7 +33,7 @@ class ProductsServiceSpec extends HibernateSpec implements ServiceUnitTest<Produ
         Products products = new Products(description: "test", tax: 10, cost: 100)
         company.addToProducts(products)
         products.save()
-        BarCode barCode = new BarCode(uit_code: "test", uitu_code: "test1", products: products)
+        BarCode barCode = new BarCode(uitCode: "test", uituCode: "test1", products: products)
         products.addToBarCodes(barCode)
         barCode.save()
         error.setAction("SAVE")

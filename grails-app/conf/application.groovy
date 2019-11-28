@@ -4,6 +4,7 @@ grails.plugin.springsecurity.userLookup.userDomainClassName = 'com.ttreport.auth
 grails.plugin.springsecurity.userLookup.authorityJoinClassName = 'com.ttreport.auth.UserRole'
 grails.plugin.springsecurity.authority.className = 'com.com.ttreport.auth.Role'
 grails.plugin.springsecurity.logout.postOnly = false
+//grails.plugin.springsecurity.adh.errorPage = null
 grails.plugin.springsecurity.controllerAnnotations.staticRules = [
 		[pattern: '/',               access: ['permitAll']],
 		[pattern: '/error',          access: ['permitAll']],
@@ -17,6 +18,9 @@ grails.plugin.springsecurity.controllerAnnotations.staticRules = [
 		[pattern: '/**/favicon.ico', access: ['permitAll']],
 		[pattern: '/user/register', access:['permitAll']],
 		[pattern: '/register', access:['permitAll']]
+//		,[pattern: '/assets/stylesheets/bootstrap-reboot.css', access:['permitAll']],
+//		[pattern: '/assets/stylesheets/bootstrap-reboot.css', access:['permitAll']],
+//		[pattern: '/assets/stylesheets/bootstrap-grid.css', access:['permitAll']]
 ]
 
 grails.plugin.springsecurity.filterChain.chainMap = [

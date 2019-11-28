@@ -1,7 +1,9 @@
 package com.ttreport.api.current
 
+import com.ttreport.api.resources.current.ExtendedProductCommand
 import com.ttreport.api.resources.current.ProductCommand
 import com.ttreport.data.BarCode
+import com.ttreport.data.MarketEntranceBarCode
 import com.ttreport.data.Company
 import com.ttreport.data.Products
 import com.ttreport.logs.DevCycleLogger
@@ -11,84 +13,104 @@ import grails.gorm.transactions.Transactional
 class ProductsService extends ValidationErrorResolverService
 {
 
-    Products update(ProductCommand cmd) throws Exception
+    protected static checkRejections(List<ProductCommand> products){
+        for (item in products) {
+            if (item.rejected) {
+                return true
+            }
+        }
+        return false
+    }
+
+    BarCode initializeBarCode(ProductCommand cmd)
+    {
+        if(cmd instanceof ExtendedProductCommand){
+            ExtendedProductCommand command = cmd as ExtendedProductCommand
+            BarCode barCode = new MarketEntranceBarCode(uitCode: cmd.uit_code, uituCode: cmd.uitu_code,
+                    certificateDocumentNumber: command.certificate_document_number, certificateDocumentDate: command.certificate_document_number,
+                    certificateDocument: command.certificate_document, tnvedCode: command.tnved_code, producerInn: command.producer_inn)
+            if(command.owner_inn){
+                barCode.ownerInn = command.owner_inn
+            }
+            if(command.production_date){
+                barCode.productionDate = command.production_date
+            }
+            return barCode
+        }
+        return BarCode.findWhere(uitCode: cmd.uit_code, uituCode: cmd.uitu_code, minified: cmd.minified)?: new BarCode(uitCode: cmd.uit_code, uituCode: cmd.uitu_code, minified: cmd.minified)
+
+    }
+
+    BarCode update(ProductCommand cmd) throws Exception
     {
         DevCycleLogger.log('update() called')
         Products products = Products.get(cmd.id)
-//        if(!cmd.product_code){
-//            DevCycleLogger.log("No product code detected, redirecting to save")
-//            cmd.setAction("SAVE")
-//            try {
-//                products = save(cmd,company)
-//                return products
-//            }
-//            catch (Exception e){
-//                throw e
-//            }
-//        }
-        BarCode barCode = new BarCode(uit_code: cmd.uit_code, uitu_code: cmd.uitu_code, products: products)
+        BarCode barCode = initializeBarCode(cmd)
+        barCode.products = products
+        barCode.dateDeleted = null
         if(!barCode.save()) {
-            DevCycleLogger.log_validation_errors(barCode,"bar code with uit code ${barCode.uit_code} and uitu code ${barCode.uitu_code} not validated, nothing updated, exiting update()")
+            DevCycleLogger.log_validation_errors(barCode,"bar code with uit code ${barCode.uitCode} and uitu code ${barCode.uituCode} not validated, nothing updated, exiting update()")
             throw new Exception("Bar code not saved")
         }
         products.addToBarCodes(barCode)
-        products.save(true)
+        products.save()
         DevCycleLogger.log("success, adding to the found product")
-        return products
+        return barCode
     }
 
-    Products save(ProductCommand cmd, Company company) throws Exception
+    BarCode save(ProductCommand cmd, Company company) throws Exception
     {
         DevCycleLogger.log("save() called")
         DevCycleLogger.log("trying to save product with code ${cmd.id}, belonging to company with id ${company.companyId}")
-        Products products = Products.findWhere(cost: cmd.cost, tax: cmd.tax, description: cmd.product_description)
+        Products products = Products.findWhere(cost: cmd.cost, tax: cmd.tax, description: cmd.product_description, company: company)
         if(products)
         {
             try {
                 cmd.id = products.id
-                products = update(cmd)
-                return products
+                BarCode barCode = update(cmd)
+                return barCode
             }
             catch (Exception e){
                 throw e
             }
         }
-        products = new Products(cost: cmd.cost, tax: cmd.tax, description: cmd.product_description)
+        products = new Products(cost: cmd.cost, tax: cmd.tax, description: cmd.product_description, company: company)
         if(!products.validate()) {
             DevCycleLogger.log_validation_errors(products,"unable to validate the product, nothing saved, exiting save()")
             throw new Exception("Product not validated")
         }
-        company.addToProducts(products)
         DevCycleLogger.log("product saved, trying to register a barcode")
-        BarCode barCode = new BarCode(uit_code: cmd.uit_code, uitu_code: cmd.uitu_code, products: products)
-        if(!barCode.validate()) {
-            DevCycleLogger.log_validation_errors(barCode,"bar code with uit code ${barCode.uit_code} and uitu code ${barCode.uitu_code} not validated, nothing saved, exiting save()")
+        BarCode barCode = initializeBarCode(cmd)
+        barCode.dateDeleted = null
+        barCode.products = products
+        products.addToBarCodes(barCode)
+        company.addToProducts(products)
+        products.save()
+        if(!barCode.save()) {
+            DevCycleLogger.log_validation_errors(barCode,"bar code with uit code ${barCode.uitCode} and uitu code ${barCode.uituCode} not validated, nothing saved, exiting save()")
             throw new Exception("Product not validated")
         }
-        products.addToBarCodes(barCode)
-        products.save()
-        barCode.save(true)
         DevCycleLogger.log("bar code registered, product saved, exiting save()")
-        return products
+        return barCode
     }
 
-    Products delete(ProductCommand cmd) throws Exception
+    BarCode delete(ProductCommand cmd) throws Exception
     {
         DevCycleLogger.log("delete() called")
         DevCycleLogger.log("assuming that product corresponding to command object exists")
         Products products = Products.get(cmd.id)
-        BarCode barCode = BarCode.findWhere(uit_code: cmd.uit_code?: null, uitu_code: cmd.uitu_code?: null)
+        BarCode barCode = BarCode.findWhere(uitCode: cmd.uit_code?: null, uituCode: cmd.uitu_code?: null)
         if(!barCode) {
             DevCycleLogger.log("barcode with uit code ${cmd.uit_code} and uitu code ${cmd.uitu_code} not found, nothing updated, exiting ship()")
-            throw new Exception("Barcode not validated")
+            throw new Exception("Barcode not found")
         }
-        if(!products.has(barCode)){
+        if(!products.hasBarcode(barCode)){
             DevCycleLogger.log("barcode with uit code ${cmd.uit_code} and uitu code ${cmd.uitu_code} not found in ownership of product ${products.id}, nothing updated, exiting ship()")
             throw new Exception("Bar code not owned by product")
         }
         barCode.dateDeleted = new Date()
-        barCode.save(true)
-        DevCycleLogger.log("shipping barcode with uit code ${barCode.uit_code} and uitu code ${barCode.uitu_code}, saving changes, exiting ship()")
-        return products
+        barCode.save()
+        DevCycleLogger.log("shipping barcode with uit code ${barCode.uitCode} and uitu code ${barCode.uituCode}, saving changes, exiting ship()")
+        return barCode
     }
 }

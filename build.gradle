@@ -9,7 +9,9 @@ buildscript {
         classpath "org.grails:grails-gradle-plugin:$grailsVersion"
         classpath "org.grails.plugins:hibernate5:${gormVersion-".RELEASE"}"
         classpath "com.bertramlabs.plugins:asset-pipeline-gradle:2.15.1"
-        classpath 'com.agileorbit:schwartz:1.0.1'
+//        classpath group: 'org.bouncycastle', name: 'bcpkix-jdk15on', version: '1.50'
+//        classpath group: 'org.bouncycastle', name: 'bcprov-jdk15on', version: '1.50'
+//        classpath files('libs/dependencies/bcpkix-jdk15on-1.50.jar','libs/dependencies/bcprov-jdk15on-1.50.jar')
     }
 }
 
@@ -33,6 +35,7 @@ repositories {
 
 
 dependencies {
+
     compile "org.springframework.boot:spring-boot-starter-logging"
     compile "org.springframework.boot:spring-boot-autoconfigure"
     compile "org.grails:grails-core"
@@ -63,22 +66,20 @@ dependencies {
     compile 'javax.mail:mail:1.4.7'
     compile group: 'javax.activation', name: 'activation', version: '1.1'
 
+    compile group: 'io.jsonwebtoken', name: 'jjwt', version: '0.2'
+//    compile group: 'org.bouncycastle', name: 'bcpkix-jdk15on', version: '1.50'
+//    compile group: 'org.bouncycastle', name: 'bcprov-jdk15on', version: '1.50'
+//
+//    compile fileTree(dir: 'lib', include: ['*.jar'])
+//    compile fileTree(dir: 'lib/dependencies', include: ['*.jar'])
+
     compile 'org.grails.plugins:async:3.3.0'
-    //compile "org.grails.plugins:jmx"
-
-    // https://mvnrepository.com/artifact/mysql/mysql-connector-java
-    //compile group: 'mysql', name: 'mysql-connector-java', version: '5.1.27'
-
     console "org.grails:grails-console"
     profile "org.grails.profiles:web"
-    //runtime "org.grails.plugins:searchable:0.6.4"
-    //runtime "org.grails.plugins:jquery"
-    //runtime ':jmx:0.7'
     runtime "org.glassfish.web:el-impl:2.1.2-b03"
     runtime "com.h2database:h2"
     runtime "org.apache.tomcat:tomcat-jdbc"
     runtime "com.bertramlabs.plugins:asset-pipeline-grails:2.15.1"
-    //runtime ":prototype:1.0"
     testCompile "org.grails:grails-gorm-testing-support"
     testCompile "org.grails.plugins:geb"
     testCompile "org.grails:grails-web-testing-support"

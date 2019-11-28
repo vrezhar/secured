@@ -10,7 +10,7 @@ import grails.compiler.GrailsCompileStatic
 @ToString(cache=true, includeNames=true, includePackage=false)
 class UserRole implements Serializable {
 
-	private static final long serialVersionUID = 1
+	private static final long serialVersionUID = 10L
 
 	User user
 	Role role
@@ -22,6 +22,7 @@ class UserRole implements Serializable {
 		if (other instanceof UserRole) {
 			other.userId == user?.id && other.roleId == role?.id
 		}
+		return false
 	}
 
     @Override

@@ -1,9 +1,15 @@
 package com.ttreport.api.current
 
+
 import com.ttreport.api.resources.current.AcceptanceDocumentCommand
 import com.ttreport.api.resources.current.DocumentCommand
+import com.ttreport.api.resources.current.FromPhysCommand
+import com.ttreport.api.resources.current.GenericDocumentCommand
+import com.ttreport.api.resources.current.MarketEntranceCommand
 import com.ttreport.api.resources.current.ProductCommand
+import com.ttreport.api.resources.current.ReleaseCommand
 import com.ttreport.api.resources.current.ShipmentDocumentCommand
+import com.ttreport.data.BarCode
 import com.ttreport.logs.DevCycleLogger
 import com.ttreport.api.response.current.Response
 import com.ttreport.data.Company
@@ -14,20 +20,22 @@ import org.springframework.context.MessageSource
 @Transactional
 class ValidationErrorResolverService
 {
-
     private static final Map<String, Locale> langLocaleMappings = [
-            'en': new Locale('en', 'US'),
+            'en': Locale.ENGLISH,
             'ru': new Locale('ru', 'RU'),
     ].asImmutable()
 
     MessageSource messageSource
 
     protected String getMessage(String message) {
-        messageSource.getMessage(message, [].toArray(), langLocaleMappings.ru)
+        messageSource.getMessage(message, [].toArray(), langLocaleMappings.en)
     }
 
     protected int getCode(String message)
     {
+        if(message == 'nullable'){
+            return 413
+        }
         String error = getMessage(message)
         int result = 0
         for(int i = 0; i < error.length(); ++i){
@@ -75,10 +83,33 @@ class ValidationErrorResolverService
             }
             return
         }
+        if(cmd instanceof ReleaseCommand) {
+            ReleaseCommand doc = cmd as ReleaseCommand
+            for(product in doc.products){
+                DevCycleLogger.log("code ${product.uitu_code?: product.uit_code} of command object number ${product.id} set to be 'deleted'")
+                product.setAction("DELETE")
+            }
+            return
+        }
+        if(cmd instanceof MarketEntranceCommand){
+            MarketEntranceCommand doc = cmd as MarketEntranceCommand
+            for(product in doc.products){
+                if(product.id){
+                    DevCycleLogger.log("Command object number ${product.id} set to be updated with ${product.uitu_code?: product.uit_code}")
+                    product.setAction("UPDATE")
+                    continue
+                }
+                DevCycleLogger.log("Command object with description ${product.product_description} set to be saved")
+                product.setAction("SAVE")
+            }
+            return
+        }
         throw new Exception("Invalid document")
     }
 
+
     protected Response performCommandValidation(DocumentCommand cmd){
+        boolean hasErrors = false
         DevCycleLogger.log("Starting validation process")
         Response response = new Response()
         try{
@@ -86,7 +117,7 @@ class ValidationErrorResolverService
         }
         catch (Exception e){
             DevCycleLogger.log(e.message)
-            response.status = 402
+            response.status = 401
             return response
         }
         if(!cmd.validate()){
@@ -100,7 +131,7 @@ class ValidationErrorResolverService
                 }
             }
             DevCycleLogger.log_validation_errors(cmd)
-            response.status = 402
+            response.status = 401
             return response
         }
         Company company = Company.findWhere(token: cmd.companyToken)
@@ -112,11 +143,22 @@ class ValidationErrorResolverService
                 product.rejected = true
                 continue
             }
-            if(product.action != "SAVE" && !company.has(Products.get(product.id))){
+            if(product.action != "SAVE" && !company.hasProduct(Products.get(product.id))){
+                response.reportInvalidInput()
                 DevCycleLogger.log("Product doesn't belong to found company's product list")
                 product.errors.rejectValue('id','command.product.notfound')
                 response.rejectProduct(product,computeHighestPriorityError(product))
                 product.rejected = true
+            }
+            BarCode barCode = BarCode.findWhere(uituCode: product.uitu_code ?: null, uitCode: product.uit_code ?: null)
+            if(barCode && product.action == "DELETE"){
+                if(!company.hasBarCode(barCode)){
+                    response.reportInvalidInput()
+                    DevCycleLogger.log("Product doesn't belong to found company's product list")
+                    product.errors.rejectValue('id','command.code.notfound')
+                    response.rejectProduct(product,computeHighestPriorityError(product))
+                    product.rejected = true
+                }
             }
         }
         return response

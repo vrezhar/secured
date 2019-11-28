@@ -28,7 +28,7 @@ class ApiDocumentAcceptanceEndpointController extends RestfulController<Acceptan
 
     def accept(AcceptanceDocumentCommand cmd)
     {
-        def response = documentAcceptanceService.accept(cmd)
+        Map response = documentAcceptanceService.accept(cmd)
         DevCycleLogger.print_logs()
         DevCycleLogger.cleanup()
         this.response.status = response.status as int

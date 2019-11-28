@@ -1,79 +1,99 @@
---%>
 <%--
   Created by IntelliJ IDEA.
   User: vrezh
-  Date: 22.08.19
-  Time: 01:38
+  Date: 13.10.19
+  Time: 21:28
 --%>
 
-<%@ page import="org.springframework.validation.FieldError" contentType="text/html;charset=UTF-8" %>
-<!DOCTYPE html>
+<%@ page contentType="text/html;charset=UTF-8" %>
 <html>
 
 <head>
     <meta charset="utf-8">
     <meta name="layout" content="${gspLayout ?: 'main'}"/>
-    <asset:stylesheet src="web_page/authorization/register/register.css"></asset:stylesheet>
     <asset:javascript src="jquery-3.3.1.min.js"></asset:javascript>
+    <asset:stylesheet src="web_page/authorization/register/errors.css"></asset:stylesheet>
     <title> Register </title>
 </head>
 
 <body>
+<!-- MAIN WRAPPER -->
+<div class="body-wrap" style="background: transparent;">
+    <div id="st-container" class="st-container">
+        <section class="slice sct-color-2">
+            <div class="container">
+                <div class="row justify-content-center">
+                    <div class="col-lg-12">
+                        <div class="card form-card form-card--style-2">
+                            <div class="form-header text-center">
+                                <div class="form-header-icon">
+                                    <asset:image src="icons/custom/register_5.png"></asset:image>
+                                </div>
+                            </div>
+                            <div class="card-title">
+                                <div class="text-center px-2">
+                                    <h4 class="heading heading-4 strong-400 mb-4">Create a new account</h4>
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <g:form class="form-default" method="POST" url="/register/confirm" id="register_form">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <g:textField name="firstName" class="form-control form-control-lg" id="firstName" placeholder="First name" value="${user?.firstName}"></g:textField>
+                                            <label class="error"  id="firstName_errors" style="visibility: visible; display: inline-block">
+                                            </label>
+                                        </div>
 
+                                        <div class="col-md-6">
+                                            <g:textField type="text" class="form-control form-control-lg" name="lastName" id="lastName" value="${user?.lastName}" placeholder="Last name"></g:textField>
+                                            <label class="error" id="lastName_errors" style="visibility: visible; display: inline-block">
 
-<div class="wrapper" id="register" >
-    <div class="inner">
-        <h1>Registration Form</h1>
-        <g:if test="${flash.message}">
-            <div class="message" role="status">${flash.message}</div>
-        </g:if>
+                                            </label>
+                                        </div>
+                                    </div>
 
-        <g:form id ="register_form" url="${postUrl ?: '/register/confirm'}" class="cssform">
+                                    <span class="space-lg-only-1"></span>
 
-            <div class="form-wrapper">
-                <label for="firstName">First Name:</label>
-                <g:textField id="firstName" name="firstName" value="${user?.firstName}"></g:textField>
-                <ul class = "errors" role="alert" id="firstName_errors" style="visibility: hidden; display: none">
+                                    <div class="row">
 
-                </ul>
+                                        <div class="col-md-12">
+                                            <g:textField type="email" class="form-control form-control-lg" name="username" id="username" value="${user?.username}" placeholder="Email"></g:textField>
+                                            <label class="error" id="username_errors" style="visibility: visible; display: inline-block">
+
+                                            </label>
+                                        </div>
+                                    </div>
+
+                                    <span class="space-lg-only-1"></span>
+
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <g:passwordField type="password" class="form-control form-control-lg" name="password" id="password" value="${user?.password}" placeholder="Password"></g:passwordField>
+                                            <label class="error" id="password_errors" style="visibility: visible; display: inline-block">
+
+                                            </label>
+                                        </div>
+
+                                        <div class="col-md-6">
+                                            <g:passwordField type="password" class="form-control form-control-lg" name="confirm" id="confirm" placeholder="Confirm password" value="${user?.confirm}"></g:passwordField>
+                                            <label class="error" id="confirm_errors" style="visibility: visible; display: inline-block">
+
+                                            </label>
+                                        </div>
+                                    </div>
+
+                                    <span class="space-lg-only-1"></span>
+
+                                    <input type="submit" class="btn btn-styled btn-base-1 mt-1" style="width: 90%; margin-left: 5%" id="submit" value="Create account"/>
+
+                                    <span class="space-md-md"></span>
+                                </g:form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
-
-            <div class="form-wrapper">
-                <label for="lastName">Last Name:</label>
-                <g:textField id="lastName" name="lastName" value="${user?.lastName}"></g:textField>
-                <ul class = "errors" role="alert" id="lastName_errors" style="visibility: hidden; display: none">
-
-                </ul>
-            </div>
-
-            <div class="form-wrapper">
-                <label for="username">Email: </label>
-                <g:textField id="username" name="username" value="${user?.username}"></g:textField>
-                <ul class = "errors" role="alert" id="username_errors" style="visibility: hidden; display: none">
-
-                </ul>
-            </div>
-
-            <div class="form-wrapper">
-                <label for="password">Password:  </label>
-                <g:passwordField id="password" name="password" value="${user?.password}"></g:passwordField>
-                <ul class = "errors" role="alert" id="password_errors" style="visibility: hidden; display: none">
-
-                </ul>
-            </div>
-
-            <div class="form-wrapper">
-                <label for="confirm">Confirm:</label>
-                <g:passwordField id="confirm" name="confirm" value="${user?.confirm}"></g:passwordField>
-                <ul class = "errors" role="alert" id="confirm_errors" style="visibility: hidden; display: none">
-
-                </ul>
-            </div>
-
-            <div class="form-button">
-                <input type="submit" id="submit" value="Register"/>
-            </div>
-        </g:form>
+        </section>
     </div>
 </div>
 

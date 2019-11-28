@@ -45,10 +45,14 @@ class MainController {
         render(view:"/user/list",model: [users: User.list()])
     }
 
-    @Secured(['ROLE_ADMIN','ROLE_USER'])
+    @Secured(['permitAll'])
     def home()
     {
-        render view:"home", model: [user: springSecurityService.getCurrentUser().username ]
+        if(!springSecurityService.isLoggedIn()){
+            render view: "default"
+            return
+        }
+        redirect controller: "user", action: "profile"
     }
 
     @Secured(["permitAll"])

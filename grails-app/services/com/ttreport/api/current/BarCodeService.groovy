@@ -21,13 +21,13 @@ class BarCodeService
 
     BarCode findNotDeletedByUitCode(String uit){
         return BarCode.where{
-            uit_code == uit
+            uitCode == uit
             dateDeleted == null
         }.get()
     }
     boolean uitExists(String uit)
     {
-        BarCode barCode = BarCode.findWhere(uit_code: uit)
+        BarCode barCode = BarCode.findWhere(uitCode: uit)
         if(!barCode){
             return false
         }
@@ -38,7 +38,7 @@ class BarCodeService
     }
     boolean uituExists(String uitu)
     {
-        BarCode barCode = BarCode.findWhere(uitu_code: uitu)
+        BarCode barCode = BarCode.findWhere(uituCode: uitu)
         if(!barCode){
             return false
         }

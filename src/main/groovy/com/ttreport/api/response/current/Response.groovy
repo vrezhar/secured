@@ -1,6 +1,7 @@
 package com.ttreport.api.response.current
 
-import com.ttreport.api.resources.current.DocumentCommand
+
+import com.ttreport.api.resources.current.GenericDocumentCommand
 import com.ttreport.api.resources.current.ProductCommand
 import com.ttreport.api.response.Responsive
 import com.ttreport.logs.DevCycleLogger
@@ -41,7 +42,7 @@ class Response extends  Responsive
         return response.getAsMap()
     }
 
-    static  Map rejectInput(DocumentCommand cmd, int reason, log = false, String additional_message = null)
+    static  Map rejectInput(GenericDocumentCommand cmd, int reason, log = false, String additional_message = null)
     {
         Response response = new Response()
         response.reportInvalidInput()
