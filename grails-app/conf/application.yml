@@ -1,14 +1,27 @@
+
+---
+mail:
+    gmail:
+        email: bronsmailsupreme@gmail.com
+        password: bruhMoment
+    postmark:
+        api:
+            token: postmark_token
+    sender:
+        email: bronsmailsupreme@gmail.com
+
 ---
 status:
-    INVALID_TOKEN: 401
-    INVALID_ACTION: 400
+    INVALID_TOKEN: 400
+    INVALID_ACTION: 402
     OK: 200
+
 
 ---
 grails:
     profile: web
     codegen:
-        defaultPackage: secured
+        defaultPackage: ttreport
     gorm:
         reactor:
             # Whether to translate GORM events into Reactor events
@@ -103,8 +116,8 @@ dataSource:
     pooled: true
     jmxExport: true
     driverClassName: com.mysql.jdbc.Driver
-    username: dummy
-    password: 'supersecret'
+    username: tomcat
+    password: 't4mc0t_P0ssw4rd'
 
 environments:
     development:
@@ -112,22 +125,22 @@ environments:
             logSql: true
             dbCreate: update
             url: jdbc:mysql://localhost:3306/users
-            username: dummy
-            password: 'supersecret'
+            username: tomcat
+            password: 't4mc0t_P0ssw4rd'
     test:
         dataSource:
             logSql: true
             dbCreate: create-drop
             url: jdbc:mysql://localhost:3306/grails_test
-            username: dummy
-            password: 'supersecret'
+            username: tomcat
+            password: 't4mc0t_P0ssw4rd'
     production:
         dataSource:
             dbCreate: update
-            url: jdbc:mysql://localhost:3306/users
+            url: jdbc:mysql://localhost:3306/ttreport
             pooled: true
-            username: dummy
-            password: 'supersecret'
+            username: tomcat
+            password: 't4mc0t_P0ssw4rd'
             properties:
                 jmxEnabled: true
                 initialSize: 5

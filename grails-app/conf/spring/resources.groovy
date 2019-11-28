@@ -1,13 +1,15 @@
 package spring
 
-import com.secured.api.deprecated.BarCodeService
-import com.secured.api.deprecated.CompanyService
-import com.secured.mail.MailErrorHandlingService
-import com.secured.mail.MailingService
-import com.secured.auth.PatternValidatorService
-import com.secured.auth.UserInitializerService
-import com.secured.auth.UserPasswordEncoderListener
-import com.secured.auth.UserValidatorService
+import com.ttreport.api.current.EnterFPPDocumentService
+import com.ttreport.api.deprecated.BarCodeService
+import com.ttreport.api.deprecated.CompanyService
+import com.ttreport.api.current.ValidationErrorResolverService
+import com.ttreport.mail.MailErrorHandlingService
+import com.ttreport.mail.MailingService
+import com.ttreport.auth.PatternValidatorService
+import com.ttreport.auth.UserInitializerService
+import com.ttreport.auth.UserPasswordEncoderListener
+import com.ttreport.auth.UserValidatorService
 import org.springframework.security.web.authentication.session.NullAuthenticatedSessionStrategy
 // Place your Spring DSL code here
 beans = {
@@ -15,6 +17,8 @@ beans = {
 //    productsService(ProductsService)
 //
 //    documentService(DocumentService)
+
+    validationErrorResolverService(ValidationErrorResolverService)
 
     companyService(CompanyService)
 
@@ -34,3 +38,4 @@ beans = {
 
     sessionAuthenticationStrategy(NullAuthenticatedSessionStrategy)
 }
+
