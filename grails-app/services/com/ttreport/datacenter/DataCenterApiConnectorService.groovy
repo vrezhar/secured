@@ -305,7 +305,7 @@ class DataCenterApiConnectorService extends SigningService {
             DevCycleLogger.log("Exception occurred while trying to save the document")
             DevCycleLogger.log(e.message)
             DevCycleLogger.log("stacktrace: ")
-            DevCycleLogger.log_stack_trace(e)
+            DevCycleLogger.log_exception(e)
         }
         return response
     }

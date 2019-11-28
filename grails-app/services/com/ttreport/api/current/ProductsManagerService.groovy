@@ -39,7 +39,7 @@ class ProductsManagerService extends DocumentService
                     barCode = update(item)
                 }
                 catch(Exception e){
-                    DevCycleLogger.log(e.message)
+                    DevCycleLogger.log_exception(e)
                     dandr.response = response.getAsMap()
                     dandr.response.status = 500
                     return dandr
@@ -57,7 +57,7 @@ class ProductsManagerService extends DocumentService
                 barCode = save(item, company)
             }
             catch (Exception e){
-                DevCycleLogger.log(e.message)
+                DevCycleLogger.log_exception(e)
                 dandr.response = response.getAsMap()
                 dandr.response.status = 500
                 return dandr
@@ -96,7 +96,7 @@ class ProductsManagerService extends DocumentService
                 barCode = delete(item)
             }
             catch (Exception e){
-                DevCycleLogger.log(e.message)
+                DevCycleLogger.log_exception(e)
                 dandr.response = response.getAsMap()
                 dandr.response.status = 500
                 return dandr
@@ -137,7 +137,7 @@ class ProductsManagerService extends DocumentService
                     barCode = update(item)
                 }
                 catch(Exception e){
-                    DevCycleLogger.log(e.message)
+                    DevCycleLogger.log_exception(e)
                     dandr.response = response.getAsMap()
                     dandr.response.status = 500
                     return dandr
@@ -155,7 +155,7 @@ class ProductsManagerService extends DocumentService
                 barCode = save(item, company)
             }
             catch (Exception e){
-                DevCycleLogger.log(e.message)
+                DevCycleLogger.log_exception(e)
                 dandr.response = response.getAsMap()
                 dandr.response.status = 500
                 return dandr
@@ -194,7 +194,7 @@ class ProductsManagerService extends DocumentService
                 barCode = delete(item)
             }
             catch (Exception e){
-                DevCycleLogger.log(e.message)
+                DevCycleLogger.log_exception(e)
                 dandr.response.status = 500
                 return dandr
             }
@@ -262,7 +262,7 @@ class ProductsManagerService extends DocumentService
                         barCode = update(product)
                     }
                     catch(Exception e){
-                        DevCycleLogger.log(e.message)
+                        DevCycleLogger.log_exception(e)
                         dandr.response = response.getAsMap()
                         dandr.response.status = 500
                         return dandr
@@ -280,7 +280,7 @@ class ProductsManagerService extends DocumentService
                     barCode = save(product, company)
                 }
                 catch (Exception e){
-                    DevCycleLogger.log(e.message)
+                    DevCycleLogger.log_exception(e)
                     dandr.response = response.getAsMap()
                     dandr.response.status = 500
                     return dandr

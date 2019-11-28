@@ -48,7 +48,19 @@
     <!-- <div class="bg-overlay"></div> -->
     <div class="container">
         <div class="row">
-            <div class="col-lg-12">
+            <div class="col-lg-6">
+                <div class="home-wrapper">
+                    <h2 class="animated fadeInDown wow" data-wow-delay=".1s">
+                        <span class="text-colored"><g:message code="website.title"></g:message></span> - <g:message code="website.dummy.headline"></g:message>
+                    </h2>
+                    <p class="animated fadeInDown wow text-muted" data-wow-delay=".2s">
+                        <g:message code="website.dummy.text"></g:message>
+                    </p>
+                    <div class="clearfix"></div>
+                </div><!-- home wrapper -->
+
+            </div> <!-- end col -->
+            <div class="col-lg-6">
                 <div class="home-wrapper">
                     <h3 class="text-center"> Register Now </h3>
                     <g:form role="form" id="register_form" class="intro-form" method="POST" url="/register/confirm">
@@ -370,7 +382,7 @@
         <div class="row">
             <div class="col-lg-12">
                 <div class="text-center">
-                    <g:link class="navbar-brand logo" controller="main">
+                    <g:link class="navbar-brand logo" controller="main" action="">
                         <i class="zmdi zmdi-navigation"></i> <span class="text-uppercase">TTReport</span>
                     </g:link>
 

@@ -48,11 +48,7 @@ class MainController {
     @Secured(['permitAll'])
     def home()
     {
-        if(!springSecurityService.isLoggedIn()){
-            render view: "default"
-            return
-        }
-        redirect controller: "user", action: "profile"
+        render view: "default"
     }
 
     @Secured(["permitAll"])

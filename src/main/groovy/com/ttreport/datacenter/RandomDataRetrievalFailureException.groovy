@@ -16,8 +16,6 @@ class RandomDataRetrievalFailureException extends Exception {
     }
     void log()
     {
-        DevCycleLogger.log("message: ${this.message}")
-        DevCycleLogger.log("stacktrace: ")
-        DevCycleLogger.log_stack_trace(this)
+        DevCycleLogger.log_exception(this)
     }
 }
