@@ -39,13 +39,13 @@ class UserController  {
     @Secured(['ROLE_USER','ROLE_ADMIN'])
     def showCompanies()
     {
-        render model: [user: springSecurityService.getCurrentUser()], view: "companies_old"
+        render model: [user: springSecurityService.getCurrentUser()], view: "companies"
     }
 
     @Secured(['ROLE_USER','ROLE_ADMIN'])
     def profile()
     {
-        render view: "profile_old",model: [user: springSecurityService.getCurrentUser()]
+        render view: "profile",model: [user: springSecurityService.getCurrentUser()]
     }
 
 

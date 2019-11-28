@@ -366,6 +366,7 @@
 <footer class="section bg-gray footer footer-sm">
     <div class="container">
 
+
         <div class="row">
             <div class="col-lg-12">
                 <div class="text-center">
@@ -386,14 +387,16 @@
                         <li class="list-inline-item"><a href=""> Help & Support</a></li>
                         <li class="list-inline-item"><a href=""> Terms & Conditions</a></li>
                         <li class="list-inline-item"><a href=""> Privacy Policy</a></li>
+
                     </ul>
-
-                    <p class="text-muted m-b-0">
-                        <g:message code="website.copyright"></g:message>
-                    </p>
-
                 </div>
             </div>
+            <div class="col-lg-4">
+                <ul class="list-inline menu-list m-t-30">
+                    <li class="text-muted m-b-0"><g:message code="website.copyright"></g:message></li>
+                </ul>
+            </div>
+
         </div>
         <!-- end row -->
 

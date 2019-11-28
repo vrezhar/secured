@@ -5,6 +5,7 @@ import com.ttreport.logs.DevCycleLogger
 import com.ttreport.user.UserCommand
 import com.ttreport.mail.strategy.handlers.RejectEmail
 import com.ttreport.mail.strategy.senders.SendViaGmail
+import grails.plugin.springsecurity.SpringSecurityService
 import grails.plugin.springsecurity.annotation.Secured
 
 @Secured(["permitAll"])
@@ -15,10 +16,15 @@ class RegisterController
 
     UserInitializerService userInitializer
     UserValidatorService userValidator
+    SpringSecurityService springSecurityService
     private UserCommand errorCommand
 
     def register()
     {
+        if(springSecurityService.isLoggedIn()){
+            redirect controller: "user", action: "profile"
+            return
+        }
         UserCommand usercommand = errorCommand ?: new UserCommand()
         render view: 'register', model: [user: usercommand]
         errorCommand = null

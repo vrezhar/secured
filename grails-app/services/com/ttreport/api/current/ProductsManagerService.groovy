@@ -4,7 +4,6 @@ import com.ttreport.api.resources.current.AcceptanceDocumentCommand
 import com.ttreport.api.resources.current.DocumentAndResponse
 import com.ttreport.api.resources.current.FromPhysCommand
 import com.ttreport.api.resources.current.MarketEntranceCommand
-import com.ttreport.api.resources.current.ProductCommand
 import com.ttreport.api.resources.current.ReleaseCommand
 import com.ttreport.api.resources.current.ShipmentDocumentCommand
 import com.ttreport.api.response.current.Response
@@ -23,19 +22,9 @@ class ProductsManagerService extends DocumentService
     protected DocumentAndResponse acceptProducts(AcceptanceDocumentCommand cmd)
     {
         DevCycleLogger.log("acceptProducts() called")
-        boolean save = true
         DocumentAndResponse dandr = new DocumentAndResponse()
         Response response = performCommandValidation(cmd)
-        if(response.status == 400 ||
-                response.status == 401 ||
-                ({ List<ProductCommand> products ->
-                    for(item in products){
-                        if(item.rejected){
-                            return true
-                        }
-                    }
-                    return false
-                }).call(cmd.products)){
+        if(response.status == 400 || response.status == 401 || checkRejections(cmd.products)){
             dandr.response = response.getAsMap()
             return  dandr
         }
@@ -94,16 +83,7 @@ class ProductsManagerService extends DocumentService
     {
         DocumentAndResponse dandr = new DocumentAndResponse()
         Response response = performCommandValidation(cmd)
-        if(response.status == 400 ||
-                response.status == 401 ||
-                ({ List<ProductCommand> products ->
-                    for(item in products){
-                        if(item.rejected){
-                            return true
-                        }
-                    }
-                    return false
-                }).call(cmd.products)){
+        if(response.status == 400 || response.status == 401 || checkRejections(cmd.products)){
             dandr.response = response.getAsMap()
             return  dandr
         }
@@ -143,16 +123,7 @@ class ProductsManagerService extends DocumentService
         DevCycleLogger.log("enterProductsIntoMarket() called")
         DocumentAndResponse dandr = new DocumentAndResponse()
         Response response = performCommandValidation(cmd)
-        if(response.status == 400 ||
-                response.status == 401 ||
-                ({ List<ProductCommand> products ->
-                    for(item in products){
-                        if(item.rejected){
-                            return true
-                        }
-                    }
-                    return false
-                }).call(cmd.products)){
+        if(response.status == 400 || response.status == 401 || checkRejections(cmd.products)){
             dandr.response = response.getAsMap()
             return  dandr
         }
@@ -211,16 +182,7 @@ class ProductsManagerService extends DocumentService
     {
         DocumentAndResponse dandr = new DocumentAndResponse()
         Response response = performCommandValidation(cmd)
-        if(response.status == 400 ||
-                response.status == 401 ||
-                ({ List<ProductCommand> products ->
-                    for(item in products){
-                        if(item.rejected){
-                            return true
-                        }
-                    }
-                    return false
-                }).call(cmd.products)){
+        if(response.status == 400 || response.status == 401 || checkRejections(cmd.products)){
             dandr.response = response.getAsMap()
             return  dandr
         }

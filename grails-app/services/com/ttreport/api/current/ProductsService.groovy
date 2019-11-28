@@ -13,6 +13,15 @@ import grails.gorm.transactions.Transactional
 class ProductsService extends ValidationErrorResolverService
 {
 
+    protected static checkRejections(List<ProductCommand> products){
+        for (item in products) {
+            if (item.rejected) {
+                return true
+            }
+        }
+        return false
+    }
+
     BarCode initializeBarCode(ProductCommand cmd)
     {
         if(cmd instanceof ExtendedProductCommand){
