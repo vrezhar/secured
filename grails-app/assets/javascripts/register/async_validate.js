@@ -1,5 +1,5 @@
+const field_list = ['username', 'firstName', 'lastName', 'password', 'confirm'];
 class Interceptor {
-    field_list = ['username', 'firstName', 'lastName', 'password', 'confirm'];
     constructor(intercepted = false){
         this.intercepted = intercepted;
     };
@@ -14,9 +14,9 @@ class Interceptor {
         }
         e.preventDefault();
         let has_obvious_errors = false;
-        for(let i = 0; i < this.field_list.length; ++i){
-            if(document.getElementById(this.field_list[i]).value.length > 50){
-                alertError("Entered value is too long",this.field_list[i]);
+        for(let i = 0; i < field_list.length; ++i){
+            if(document.getElementById(field_list[i]).value.length > 50){
+                alertError("Entered value is too long",field_list[i]);
                 has_obvious_errors = true;
             }
         }
