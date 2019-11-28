@@ -76,9 +76,15 @@ class MainController {
     }
 
     @Secured(["permitAll"])
-    def respond()
+    def aboutUs()
     {
+        render view: 'aboutus'
+    }
 
+    @Secured(["permitAll"])
+    def contactUs()
+    {
+        render view: 'contactus'
     }
 
 }

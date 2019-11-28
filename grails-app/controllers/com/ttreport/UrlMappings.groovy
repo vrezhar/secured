@@ -39,6 +39,8 @@ class UrlMappings {
         "/register/confirm"(controller: 'register', action: "confirm")
         "/home"(controller: 'user', action:'profile')
         "/"(controller: "main", action: "home")
+        "/about"(controller: "main", action: "aboutUs")
+        "/contact"(controller: "main", action: "contactUs")
         "/verify"(controller: "main", action: "verify")
 
         "500"(view:'/error')

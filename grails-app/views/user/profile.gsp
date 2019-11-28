@@ -188,76 +188,43 @@
 
 
 <!-- FOOTER -->
-<footer class="section bg-gray footer">
+<footer class="section bg-gray footer footer-sm">
     <div class="container">
-        <div class="row">
-            <div class="col-lg-3">
-                <h5>
-                    <g:message code="website.title"></g:message>
-                </h5>
-                <ul class="list-unstyled">
-                    <li>
-                        <a href="">
-                            <g:message code="website.footer.about.us"></g:message>
-                        </a>
-                    </li>
-                </ul>
-            </div>
 
-            <div class="col-lg-3">
-                <h5>
-                    <g:message code="website.footer.social"></g:message>
-                </h5>
-                <ul class="list-unstyled">
-                    <li><a href="">Facebook</a></li>
-                    <li><a href="">Twitter</a></li>
-                    <li><a href="">Vk</a></li>
-                </ul>
-            </div>
-
-            <div class="col-lg-3">
-                <h5>Support</h5>
-                <ul class="list-unstyled">
-                    <li><a href="">Help & Support</a></li>
-                    <li><a href="">Privacy Policy</a></li>
-                    <li><a href="">Terms & Conditions</a></li>
-                </ul>
-            </div>
-
-            <div class="col-lg-3">
-                <h5>
-                    <g:message code="website.footer.contact.us"></g:message>
-                </h5>
-                <address style="color: #000000">
-                    795 Folsom Ave, Suite 600<br>
-                    San Francisco, CA 94107<br>
-                    <abbr title="Phone">Phone:</abbr> <g:message code="website.footer.contact.number"></g:message> <br/>
-                    Email: <a href="mailto: <g:message code="website.footer.contact.email"></g:message> "> <g:message code="website.footer.contact.email"></g:message> </a>
-                </address>
-            </div>
-
-        </div>
 
         <div class="row">
             <div class="col-lg-12">
-                <div class="footer-alt">
-                    <div class="float-left pull-none ">
-                        <g:link class="navbar-brand logo" controller="main">
-                            <i class="zmdi zmdi-navigation"></i>
-                            <span>
-                                <g:message code="website.title"></g:message>
-                            </span>
-                        </g:link>
+                <div class="text-center">
+                    <g:link class="navbar-brand logo" controller="main">
+                        <i class="zmdi zmdi-navigation"></i> <span class="text-uppercase">TTReport</span>
+                    </g:link>
 
-                    </div>
-                    <div class="float-right pull-none ">
-                        <p class="pull-right text-muted m-b-0">
-                            <g:message code="website.copyright"></g:message>
-                        </p>
-                    </div>
+                    <ul class="list-inline social-circle">
+                        <li class="list-inline-item"><a href=""> <i class="zmdi zmdi-facebook"></i> </a></li>
+                        <li class="list-inline-item"><a href=""> <i class="zmdi zmdi-twitter"></i> </a></li>
+                        <li class="list-inline-item"><a href=""> <i class="zmdi zmdi-google-plus"></i> </a></li>
+                        <li class="list-inline-item"><a href=""> <i class="zmdi zmdi-apple"></i> </a></li>
+                        <li class="list-inline-item"><a href=""> <i class="zmdi zmdi-instagram"></i> </a></li>
+                    </ul>
+
+                    <ul class="list-inline menu-list m-t-30">
+                        <li class="list-inline-item"><g:link controller="main" action="aboutUs"> About Us</g:link></li>
+                        <li class="list-inline-item"><a href=""> Help & Support</a></li>
+                        <li class="list-inline-item"><a href=""> Terms & Conditions</a></li>
+                        <li class="list-inline-item"><a href=""> Privacy Policy</a></li>
+                        <li class="list-inline-item"><g:link controller="main" action="contactUs"> Contact Us</g:link></li>
+                    </ul>
                 </div>
             </div>
+            <div class="col-lg-4">
+                <ul class="list-inline menu-list m-t-30">
+                    <li class="text-muted m-b-0"><g:message code="website.copyright"></g:message></li>
+                </ul>
+            </div>
+
         </div>
+        <!-- end row -->
+
     </div>
 </footer>
 

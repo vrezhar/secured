@@ -77,7 +77,7 @@
         <div class="row">
             <div class="col-lg-12">
                 <div class="text-center">
-                    <g:link class="navbar-brand logo" controller="main" action="">
+                    <g:link class="navbar-brand logo" controller="main">
                         <i class="zmdi zmdi-navigation"></i> <span class="text-uppercase">TTReport</span>
                     </g:link>
 
@@ -90,11 +90,11 @@
                     </ul>
 
                     <ul class="list-inline menu-list m-t-30">
-                        <li class="list-inline-item"><a href=""> About Us</a></li>
+                        <li class="list-inline-item"><g:link controller="main" action="aboutUs"> About Us</g:link></li>
                         <li class="list-inline-item"><a href=""> Help & Support</a></li>
                         <li class="list-inline-item"><a href=""> Terms & Conditions</a></li>
                         <li class="list-inline-item"><a href=""> Privacy Policy</a></li>
-
+                        <li class="list-inline-item"><g:link controller="main" action="contactUs"> Contact Us</g:link></li>
                     </ul>
                 </div>
             </div>
