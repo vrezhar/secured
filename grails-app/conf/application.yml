@@ -29,8 +29,7 @@ grails:
             events: false
     cors:
         enabled: true
-        allowedOrigins:
-            -http://localhost:8080
+
 info:
     app:
         name: '@info.app.name@'
