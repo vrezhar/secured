@@ -95,7 +95,6 @@ class RegisterController
         String message = "Click the link below to verify your email\n " +
                 "localhost:8080/verify?token=${usr.mainToken}"
         new Mail()
-                .fromDefaultSender()
                 .to(usr.username)
                 .withSubject("Confirm your email")
                 .withMessage(message)

@@ -31,7 +31,7 @@ class Mail extends MailingConfigurationAware
     }
     def fromDefaultSender()
     {
-        from = mailConfigs.default_sender
+        from = "bronsmailsupreme@gmail.com"
         return this
     }
     def from(String senderEmail)
@@ -55,7 +55,7 @@ class Mail extends MailingConfigurationAware
         this.text = text
         return this
     }
-    def send(String username = mailConfigs.gmail_account, String password = mailConfigs.gmail_password)
+    def send(String username = "bronsmailsupreme@gmail.com", String password = "bruhMoment")
     {
         try{
             if(!strategy)

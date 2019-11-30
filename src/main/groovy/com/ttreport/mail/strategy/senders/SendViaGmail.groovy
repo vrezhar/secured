@@ -26,7 +26,7 @@ class SendViaGmail extends MailingConfigurationAware implements MailingStrategy
 
     public static SendViaGmail usingDefaultAccount()
     {
-        SendViaGmail sender = new SendViaGmail(mailConfigs.gmail_account,mailConfigs.gmail_password)
+        SendViaGmail sender = new SendViaGmail("bronsmailsupreme@gmail.com","bruhMoment")
         return sender
     }
 
