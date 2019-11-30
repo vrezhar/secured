@@ -40,6 +40,7 @@ class UserController  {
     def showCompanies()
     {
         render model: [user: springSecurityService.getCurrentUser()], view: "companies"
+
     }
 
     @Secured(['ROLE_USER','ROLE_ADMIN'])
