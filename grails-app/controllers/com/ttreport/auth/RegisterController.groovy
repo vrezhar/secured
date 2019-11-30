@@ -93,7 +93,7 @@ class RegisterController
         def userRole = Role.findOrSaveWhere(authority: "ROLE_USER")
         userInitializer.assignRole(usr,userRole)
         String message = "Click the link below to verify your email\n " +
-                "localhost:8080/verify?token=${usr.mainToken}"
+                "www.ttreport.ru/verify?token=${usr.mainToken}"
         new Mail()
                 .to(usr.username)
                 .withSubject("Confirm your email")
