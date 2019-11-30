@@ -36,6 +36,8 @@ class Interceptor {
                 for(let i = 0; i < json.errors.errors.length; ++i){
                     alertError(json.errors.errors[i].message,json.errors.errors[i].field);
                 }
+                document.getElementById('password').value = "";
+                document.getElementById('confirm').value = "";
                 return false;
             }
         };
