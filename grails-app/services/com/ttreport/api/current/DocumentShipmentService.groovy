@@ -4,16 +4,11 @@ package com.ttreport.api.current
 import com.ttreport.api.resources.current.DocumentAndResponse
 import com.ttreport.api.resources.current.ShipmentDocumentCommand
 import com.ttreport.api.types.DocumentType
-import com.ttreport.api.types.Endpoint
 import com.ttreport.data.documents.differentiated.Document
 import com.ttreport.data.documents.differentiated.existing.ShipmentDocument
 import com.ttreport.datacenter.DataCenterApiConnectorService
-import com.ttreport.logs.DevCycleLogger
-import grails.async.Promise
+import com.ttreport.logs.ServerLogger
 import grails.gorm.transactions.Transactional
-
-import static grails.async.Promises.task
-import static grails.async.Promises.waitAll
 
 @Transactional
 class DocumentShipmentService extends ProductsManagerService
@@ -23,23 +18,23 @@ class DocumentShipmentService extends ProductsManagerService
 
     Map ship(ShipmentDocumentCommand cmd)
     {
-        DevCycleLogger.log("ship() called")
+        ServerLogger.log("ship() called")
         DocumentAndResponse dandr = shipProducts(cmd)
         Document document = dandr.document
         if(!document){
             return dandr.response
         }
         if(!document.validate()){
-            DevCycleLogger.log_validation_errors(document, "document not validated exiting ship()")
+            ServerLogger.log_validation_errors(document, "document not validated exiting ship()")
             return dandr.response
         }
-        DevCycleLogger.log("document validated, saving, exiting ship()")
+        ServerLogger.log("document validated, saving, exiting ship()")
         dandr.response.status = 200
         try{
             document.save(true)
         }
         catch (Exception e){
-            DevCycleLogger.log(e.message)
+            ServerLogger.log(e.message)
             dandr.response.status = 500
         }
         return dandr.response

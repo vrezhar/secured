@@ -1,7 +1,7 @@
 package com.ttreport.auth
 
 import com.ttreport.mail.Mail
-import com.ttreport.logs.DevCycleLogger
+import com.ttreport.logs.ServerLogger
 import com.ttreport.user.UserCommand
 import com.ttreport.mail.strategy.handlers.RejectEmail
 import com.ttreport.mail.strategy.senders.SendViaGmail
@@ -80,13 +80,13 @@ class RegisterController
         }
         if(haserrors)
         {
-            DevCycleLogger.log_validation_errors(cmd)
+            ServerLogger.log_validation_errors(cmd)
             cmd.password = ""
             cmd.confirm = ""
             errorCommand = cmd
             redirect(action: "register")
-            DevCycleLogger.print_logs()
-            DevCycleLogger.cleanup()
+            ServerLogger.print_logs()
+            ServerLogger.cleanup()
             return
         }
         User usr = User.createUser(cmd)

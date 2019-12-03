@@ -3,14 +3,12 @@ package com.ttreport.api.current
 
 import com.ttreport.api.resources.current.AcceptanceDocumentCommand
 import com.ttreport.api.resources.current.DocumentCommand
-import com.ttreport.api.resources.current.FromPhysCommand
-import com.ttreport.api.resources.current.GenericDocumentCommand
 import com.ttreport.api.resources.current.MarketEntranceCommand
 import com.ttreport.api.resources.current.ProductCommand
 import com.ttreport.api.resources.current.ReleaseCommand
 import com.ttreport.api.resources.current.ShipmentDocumentCommand
 import com.ttreport.data.BarCode
-import com.ttreport.logs.DevCycleLogger
+import com.ttreport.logs.ServerLogger
 import com.ttreport.api.response.current.Response
 import com.ttreport.data.Company
 import com.ttreport.data.Products
@@ -51,7 +49,7 @@ class ValidationErrorResolverService
         cmd.errors.fieldErrors.each {
             list.add(getCode(it.code))
         }
-        DevCycleLogger.log_validation_errors(cmd)
+        ServerLogger.log_validation_errors(cmd)
         int min = list[0]?: -1
         for(item in list){
             if(item < min){
@@ -62,16 +60,16 @@ class ValidationErrorResolverService
     }
 
     protected static void setActions(DocumentCommand cmd) throws Exception{
-        DevCycleLogger.log("Determining actions for command objects")
+        ServerLogger.log("Determining actions for command objects")
         if(cmd instanceof AcceptanceDocumentCommand){
             AcceptanceDocumentCommand doc = cmd as AcceptanceDocumentCommand
             for(product in doc.products){
                 if(product.id){
-                    DevCycleLogger.log("Command object number ${product.id} set to be updated with ${product.uitu_code?: product.uit_code}")
+                    ServerLogger.log("Command object number ${product.id} set to be updated with ${product.uitu_code?: product.uit_code}")
                     product.setAction("UPDATE")
                     continue
                 }
-                DevCycleLogger.log("Command object with description ${product.product_description} set to be saved")
+                ServerLogger.log("Command object with description ${product.product_description} set to be saved")
                 product.setAction("SAVE")
             }
             return
@@ -79,7 +77,7 @@ class ValidationErrorResolverService
         if(cmd instanceof ShipmentDocumentCommand){
             ShipmentDocumentCommand doc = cmd as ShipmentDocumentCommand
             for(product in doc.products){
-                DevCycleLogger.log("code ${product.uitu_code?: product.uit_code} of command object number ${product.id} set to be 'deleted'")
+                ServerLogger.log("code ${product.uitu_code?: product.uit_code} of command object number ${product.id} set to be 'deleted'")
                 product.setAction("DELETE")
             }
             return
@@ -87,7 +85,7 @@ class ValidationErrorResolverService
         if(cmd instanceof ReleaseCommand) {
             ReleaseCommand doc = cmd as ReleaseCommand
             for(product in doc.products){
-                DevCycleLogger.log("code ${product.uitu_code?: product.uit_code} of command object number ${product.id} set to be 'deleted'")
+                ServerLogger.log("code ${product.uitu_code?: product.uit_code} of command object number ${product.id} set to be 'deleted'")
                 product.setAction("DELETE")
             }
             return
@@ -96,11 +94,11 @@ class ValidationErrorResolverService
             MarketEntranceCommand doc = cmd as MarketEntranceCommand
             for(product in doc.products){
                 if(product.id){
-                    DevCycleLogger.log("Command object number ${product.id} set to be updated with ${product.uitu_code?: product.uit_code}")
+                    ServerLogger.log("Command object number ${product.id} set to be updated with ${product.uitu_code?: product.uit_code}")
                     product.setAction("UPDATE")
                     continue
                 }
-                DevCycleLogger.log("Command object with description ${product.product_description} set to be saved")
+                ServerLogger.log("Command object with description ${product.product_description} set to be saved")
                 product.setAction("SAVE")
             }
             return
@@ -111,27 +109,27 @@ class ValidationErrorResolverService
 
     protected Response performCommandValidation(DocumentCommand cmd){
         boolean hasErrors = false
-        DevCycleLogger.log("Starting validation process")
+        ServerLogger.log("Starting validation process")
         Response response = new Response()
         try{
             setActions(cmd)
         }
         catch (Exception e){
-            DevCycleLogger.log(e.message)
+            ServerLogger.log(e.message)
             response.status = 401
             return response
         }
         if(!cmd.validate()){
-            DevCycleLogger.log("DocumentCommand object not validated")
+            ServerLogger.log("DocumentCommand object not validated")
             response.reportInvalidInput()
             for(error in cmd.errors.fieldErrors){
                 if(error.field == "companyToken"){
-                    DevCycleLogger.log("authorisation failure")
+                    ServerLogger.log("authorisation failure")
                     response.rejectCompanyToken()
                     return response
                 }
             }
-            DevCycleLogger.log_validation_errors(cmd)
+            ServerLogger.log_validation_errors(cmd)
             response.status = 401
             return response
         }
@@ -139,14 +137,14 @@ class ValidationErrorResolverService
         for(product in cmd.products){
             if(!product.validate()){
                 response.reportInvalidInput()
-                DevCycleLogger.log("ProductCommand object not validated, rejecting")
+                ServerLogger.log("ProductCommand object not validated, rejecting")
                 response.rejectProduct(product,computeHighestPriorityError(product))
                 product.rejected = true
                 continue
             }
             if(product.action != "SAVE" && !company.hasProduct(Products.get(product.id))){
                 response.reportInvalidInput()
-                DevCycleLogger.log("Product doesn't belong to found company's product list")
+                ServerLogger.log("Product doesn't belong to found company's product list")
                 product.errors.rejectValue('id','command.product.notfound')
                 response.rejectProduct(product,computeHighestPriorityError(product))
                 product.rejected = true
@@ -155,7 +153,7 @@ class ValidationErrorResolverService
             if(barCode && product.action == "DELETE"){
                 if(!company.hasBarCode(barCode)){
                     response.reportInvalidInput()
-                    DevCycleLogger.log("Product doesn't belong to found company's product list")
+                    ServerLogger.log("Product doesn't belong to found company's product list")
                     product.errors.rejectValue('id','command.code.notfound')
                     response.rejectProduct(product,computeHighestPriorityError(product))
                     product.rejected = true

@@ -8,14 +8,14 @@ import grails.artefact.DomainClass
 import grails.validation.Validateable
 
 import java.nio.file.Files
-import java.nio.file.OpenOption
 import java.nio.file.Path
 import java.nio.file.Paths
 import static java.nio.file.StandardOpenOption.*
 
-class DevCycleLogger
+class ServerLogger
 {
     static List<String> action_logs = Collections.synchronizedList(new ArrayList<String>())
+    final static String log_location = "/var/log/custom/server_logs.txt"
 
     static void list_all_companies()
     {
@@ -69,7 +69,7 @@ class DevCycleLogger
     }
     static void log(String ...actions)
     {
-        Path path = Paths.get("logs.txt")
+        Path path = Paths.get(log_location)
         PrintWriter writer = null
         try {
             writer = new PrintWriter(new BufferedOutputStream(Files.newOutputStream(path,CREATE,APPEND)))
@@ -116,7 +116,7 @@ class DevCycleLogger
     static void log_validation_errors(Validateable cmd, String additional_message = null, boolean writeToFile = true)
     {
         if(writeToFile){
-            Path path = Paths.get("logs.txt")
+            Path path = Paths.get(log_location)
             PrintWriter writer = null
             try {
                 writer = new PrintWriter(new BufferedOutputStream(Files.newOutputStream(path,CREATE,APPEND)))
@@ -160,7 +160,7 @@ class DevCycleLogger
     static void log_validation_errors(DomainClass domain, String additional_message = null, boolean writeToFile = true)
     {
         if(writeToFile){
-            Path path = Paths.get("logs.txt")
+            Path path = Paths.get(log_location)
             PrintWriter writer = null
             try {
                 writer = new PrintWriter(new BufferedOutputStream(Files.newOutputStream(path,CREATE,APPEND)))
@@ -205,7 +205,7 @@ class DevCycleLogger
     static void log_exception(Throwable e, boolean writeToFile = true)
     {
         if(writeToFile){
-            Path path = Paths.get("logs.txt")
+            Path path = Paths.get(log_location)
             PrintWriter writer = null
             try {
                 writer = new PrintWriter(new BufferedOutputStream(Files.newOutputStream(path,CREATE,APPEND)))

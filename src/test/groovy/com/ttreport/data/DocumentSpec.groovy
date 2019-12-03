@@ -4,9 +4,8 @@ import com.ttreport.auth.Role
 import com.ttreport.auth.User
 import com.ttreport.auth.UserRole
 import com.ttreport.data.documents.differentiated.Document
-import com.ttreport.data.documents.differentiated.GenericDocument
 import com.ttreport.data.documents.differentiated.existing.MarketEntranceDocument
-import com.ttreport.logs.DevCycleLogger
+import com.ttreport.logs.ServerLogger
 import grails.test.hibernate.HibernateSpec
 
 class DocumentSpec extends HibernateSpec{
@@ -37,7 +36,7 @@ class DocumentSpec extends HibernateSpec{
         document.addToBarCodes(barCode2)
         String result_json = document.serializeAsJson()
         println(result_json)
-        DevCycleLogger.print_logs()
+        ServerLogger.print_logs()
         expect:"test encoding and decoding"
             true
     }

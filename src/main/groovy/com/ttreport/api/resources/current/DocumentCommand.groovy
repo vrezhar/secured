@@ -1,8 +1,7 @@
 package com.ttreport.api.resources.current
 
 import com.ttreport.data.Company
-import com.ttreport.data.documents.differentiated.Document
-import com.ttreport.logs.DevCycleLogger
+import com.ttreport.logs.ServerLogger
 import grails.compiler.GrailsCompileStatic
 import grails.validation.Validateable
 
@@ -47,7 +46,7 @@ class DocumentCommand implements Validateable
             }
         }
         catch (Exception e){
-            DevCycleLogger.log(e.message)
+            ServerLogger.log(e.message)
         }
         return cmd
     }

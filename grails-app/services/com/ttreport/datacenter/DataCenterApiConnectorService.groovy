@@ -6,7 +6,7 @@ import grails.async.Promise
 import static grails.async.Promises.task
 
 import com.ttreport.data.documents.differentiated.Document
-import com.ttreport.logs.DevCycleLogger
+import com.ttreport.logs.ServerLogger
 import grails.gorm.transactions.Transactional
 import groovy.json.JsonBuilder
 import groovy.json.JsonSlurper
@@ -110,12 +110,12 @@ class DataCenterApiConnectorService extends SigningService {
             exception.log()
             throw exception
         }
-        DevCycleLogger.log("Retrieved random data")
-        DevCycleLogger.log(randomData)
+        ServerLogger.log("Retrieved random data")
+        ServerLogger.log(randomData)
         Map response = new JsonSlurper().parseText(randomData) as Map
-        DevCycleLogger.log("parsed, uuid: ${response.uuid}, data: ${response.data}")
-        DevCycleLogger.print_logs()
-        DevCycleLogger.cleanup()
+        ServerLogger.log("parsed, uuid: ${response.uuid}, data: ${response.data}")
+        ServerLogger.print_logs()
+        ServerLogger.cleanup()
         return response
     }
 
@@ -142,7 +142,7 @@ class DataCenterApiConnectorService extends SigningService {
         String url = testing ? test_url : prod_url
         client.targetUrl = url + endpoint_urls[Endpoint.TOKEN]
         client.method = "POST"
-        DevCycleLogger.log("built token retrieval body: ${body}")
+        ServerLogger.log("built token retrieval body: ${body}")
         client.data = builder.toString()
         String data
         try {
@@ -154,14 +154,14 @@ class DataCenterApiConnectorService extends SigningService {
             exception.log()
             throw exception
         }
-        DevCycleLogger.log("retrieved data: ${data}")
-        DevCycleLogger.print_logs()
-        DevCycleLogger.cleanup()
+        ServerLogger.log("retrieved data: ${data}")
+        ServerLogger.print_logs()
+        ServerLogger.cleanup()
         try{
             return (new JsonSlurper().parseText(data) as Map).token
         }
         catch (Exception e){
-            DevCycleLogger.log_exception(e)
+            ServerLogger.log_exception(e)
             return null
         }
 
@@ -181,7 +181,7 @@ class DataCenterApiConnectorService extends SigningService {
             ) as Map
         }
         catch(Exception e){
-            DevCycleLogger.log_exception(e)
+            ServerLogger.log_exception(e)
             return [exp: 0]
         }
 
@@ -202,12 +202,12 @@ class DataCenterApiConnectorService extends SigningService {
             try {
                 if (isExpired(APIHttpClient.getToken())) {
                     APIHttpClient.setToken(retrieveToken(testing))
-                    DevCycleLogger.log("token updated")
+                    ServerLogger.log("token updated")
                 }
             }
             catch (Exception ignored) {
-                DevCycleLogger.log_exception(ignored)
-                DevCycleLogger.log("unable to update token")
+                ServerLogger.log_exception(ignored)
+                ServerLogger.log("unable to update token")
                 return false
             }
             finally {
@@ -220,11 +220,11 @@ class DataCenterApiConnectorService extends SigningService {
     {
         return task {
             try {
-                DevCycleLogger.log("Trying to establish connection to ${client.targetUrl}")
+                ServerLogger.log("Trying to establish connection to ${client.targetUrl}")
                 client.sendHttpRequest()
             }
             catch (Exception ignored){
-                DevCycleLogger.log("Failed to establish connection")
+                ServerLogger.log("Failed to establish connection")
                 return null
             }
         }
@@ -239,11 +239,11 @@ class DataCenterApiConnectorService extends SigningService {
         client.method = "GET"
         Promise<String> connectionEstablished = task {
             try {
-                DevCycleLogger.log("Trying to establish connection to ${client.targetUrl}")
+                ServerLogger.log("Trying to establish connection to ${client.targetUrl}")
                 client.sendHttpRequest()
             }
             catch (Exception ignored){
-                DevCycleLogger.log("Failed to establish connection")
+                ServerLogger.log("Failed to establish connection")
                 return null
             }
         }
@@ -261,19 +261,19 @@ class DataCenterApiConnectorService extends SigningService {
         client.method = "GET"
         Promise<String> connectionEstablished = task {
             try {
-                DevCycleLogger.log("Trying to establish connection to ${client.targetUrl}")
+                ServerLogger.log("Trying to establish connection to ${client.targetUrl}")
                 client.sendHttpRequest()
             }
             catch (Exception e){
-                DevCycleLogger.log("Failed to establish connection")
-                DevCycleLogger.log_exception(e)
+                ServerLogger.log("Failed to establish connection")
+                ServerLogger.log_exception(e)
                 return null
             }
         }
         String message = connectionEstablished.get()
         if(connectionEstablished && message){
             response = new JsonSlurper().parseText(message) as Map
-            DevCycleLogger.log("retrieved document info:\n",message)
+            ServerLogger.log("retrieved document info:\n",message)
         }
         return response
     }
@@ -311,7 +311,7 @@ class DataCenterApiConnectorService extends SigningService {
                             document.documentStatus = response.status
                         }
                         catch (InterruptedException e){
-                            DevCycleLogger.log(e.message)
+                            ServerLogger.log(e.message)
                         }
                     }
                     for(okStatus in accepted_statuses){
@@ -329,7 +329,7 @@ class DataCenterApiConnectorService extends SigningService {
                     return
                 }
                 catch (Exception e){
-                    DevCycleLogger.log_exception(e)
+                    ServerLogger.log_exception(e)
                     return
                 }
             }

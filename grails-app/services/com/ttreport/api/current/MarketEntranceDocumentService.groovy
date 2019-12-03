@@ -4,12 +4,8 @@ import com.ttreport.api.resources.current.DocumentAndResponse
 import com.ttreport.api.resources.current.MarketEntranceCommand
 import com.ttreport.data.documents.differentiated.Document
 import com.ttreport.datacenter.DataCenterApiConnectorService
-import com.ttreport.logs.DevCycleLogger
-import grails.async.Promise
+import com.ttreport.logs.ServerLogger
 import grails.gorm.transactions.Transactional
-
-import static grails.async.Promises.task
-import static grails.async.Promises.waitAll
 
 @Transactional
 class MarketEntranceDocumentService extends ProductsManagerService
@@ -18,26 +14,26 @@ class MarketEntranceDocumentService extends ProductsManagerService
 
     Map enterMarket(MarketEntranceCommand cmd)
     {
-        DevCycleLogger.log("enterMarket() called")
+        ServerLogger.log("enterMarket() called")
         DocumentAndResponse dandr = enterProductsIntoMarket(cmd)
         Document document = dandr.document
         if(!document){
             return dandr.response
         }
         if(!document.validate()){
-            DevCycleLogger.log_validation_errors(document, "document not validated exiting enterMarket()")
+            ServerLogger.log_validation_errors(document, "document not validated exiting enterMarket()")
             return dandr.response
         }
-        DevCycleLogger.log("document validated, saving, waiting for Data center's response")
+        ServerLogger.log("document validated, saving, waiting for Data center's response")
         dandr.response.status = 200
         try{
             document.save(true)
         }
         catch (Exception e){
-            DevCycleLogger.log(e.message)
+            ServerLogger.log(e.message)
             dandr.response.status = 500
         }
-        DevCycleLogger.log("exiting enterMarket()")
+        ServerLogger.log("exiting enterMarket()")
         return dandr.response
     }
 }

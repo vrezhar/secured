@@ -1,10 +1,9 @@
 package com.ttreport.datacenter
 
 
-import com.ttreport.logs.DevCycleLogger
+import com.ttreport.logs.ServerLogger
 
 import javax.net.ssl.HttpsURLConnection
-import java.util.concurrent.atomic.AtomicBoolean
 import java.util.concurrent.locks.ReentrantLock
 
 class APIHttpClient
@@ -88,18 +87,18 @@ class APIHttpClient
             return response.toString()
         }
         catch (SocketTimeoutException socketTimeoutException){
-            DevCycleLogger.log("Socket timeout exception occurred while sending the request")
-            DevCycleLogger.log_exception(socketTimeoutException)
+            ServerLogger.log("Socket timeout exception occurred while sending the request")
+            ServerLogger.log_exception(socketTimeoutException)
             throw socketTimeoutException
         }
         catch(IOException ioException) {
-            DevCycleLogger.log("input-output exception occurred while sending the request")
-            DevCycleLogger.log_exception(ioException)
+            ServerLogger.log("input-output exception occurred while sending the request")
+            ServerLogger.log_exception(ioException)
             throw ioException
         }
         catch(Exception e) {
-            DevCycleLogger.log("unknown exception occurred while sending the request")
-            DevCycleLogger.log_exception(e)
+            ServerLogger.log("unknown exception occurred while sending the request")
+            ServerLogger.log_exception(e)
             throw e
         }
         finally {

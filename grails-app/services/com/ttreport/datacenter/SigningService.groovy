@@ -1,7 +1,7 @@
 package com.ttreport.datacenter
 
-import com.ttreport.data.documents.differentiated.GenericDocument
-import com.ttreport.logs.DevCycleLogger
+
+import com.ttreport.logs.ServerLogger
 import grails.gorm.transactions.Transactional
 import org.bouncycastle.asn1.DERSet
 import org.bouncycastle.asn1.cms.Attribute
@@ -54,14 +54,14 @@ class SigningService {
             certificates.add(readCertificate("/certs/tensor.crt"))
             certificates.add(readCertificate("/certs/CA.crt"))
             List<X509CertificateHolder> x509Certificates = new ArrayList<X509CertificateHolder>()
-            DevCycleLogger.log("key is ${key.toString()}")
+            ServerLogger.log("key is ${key.toString()}")
             certificates.each {
                 try{
                     x509Certificates.add(new X509CertificateHolder(it.getEncoded()))
                 }
                 catch (Exception e)
                 {
-                    DevCycleLogger.log("exception occurred while building x509 certificate, message: ${e.message}")
+                    ServerLogger.log("exception occurred while building x509 certificate, message: ${e.message}")
                 }
 
             }
@@ -93,11 +93,11 @@ class SigningService {
         }
         catch (Exception e)
         {
-            DevCycleLogger.log_exception(e)
+            ServerLogger.log_exception(e)
         }
-        DevCycleLogger.log("signed data is:",signedCode?.encodeBase64()?.toString())
-        DevCycleLogger.print_logs()
-        DevCycleLogger.cleanup()
+        ServerLogger.log("signed data is:",signedCode?.encodeBase64()?.toString())
+        ServerLogger.print_logs()
+        ServerLogger.cleanup()
         return signedCode
     }
 

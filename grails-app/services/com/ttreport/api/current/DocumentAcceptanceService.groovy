@@ -5,13 +5,8 @@ import com.ttreport.api.resources.current.AcceptanceDocumentCommand
 import com.ttreport.api.resources.current.DocumentAndResponse
 import com.ttreport.data.documents.differentiated.Document
 import com.ttreport.datacenter.DataCenterApiConnectorService
-import com.ttreport.logs.DevCycleLogger
-import grails.async.Promise
+import com.ttreport.logs.ServerLogger
 import grails.gorm.transactions.Transactional
-
-
-import static grails.async.Promises.task
-import static grails.async.Promises.waitAll
 
 @Transactional
 class DocumentAcceptanceService extends ProductsManagerService
@@ -19,14 +14,14 @@ class DocumentAcceptanceService extends ProductsManagerService
     DataCenterApiConnectorService dataCenterApiConnectorService
     Map accept(AcceptanceDocumentCommand cmd)
     {
-        DevCycleLogger.log("accept() called ")
+        ServerLogger.log("accept() called ")
         DocumentAndResponse dandr = acceptProducts(cmd)
         Document document = dandr.document
         if(!document){
             return dandr.response
         }
         if(!document.validate()){
-            DevCycleLogger.log_validation_errors(document, "document not validated exiting accept()")
+            ServerLogger.log_validation_errors(document, "document not validated exiting accept()")
             return dandr.response
         }
 //        DevCycleLogger.log("document validated, saving, waiting for Data center's response...")
@@ -43,10 +38,10 @@ class DocumentAcceptanceService extends ProductsManagerService
             document.save(true)
         }
         catch (Exception e){
-            DevCycleLogger.log(e.message)
+            ServerLogger.log(e.message)
             dandr.response.status = 500
         }
-        DevCycleLogger.log("exiting accept()")
+        ServerLogger.log("exiting accept()")
         return dandr.response
     }
 

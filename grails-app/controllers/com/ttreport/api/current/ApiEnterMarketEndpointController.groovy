@@ -1,9 +1,9 @@
 package com.ttreport.api.current
 
-import com.ttreport.api.resources.current.DocumentAndResponse
+
 import com.ttreport.api.resources.current.DocumentCommand
 import com.ttreport.api.resources.current.MarketEntranceCommand
-import com.ttreport.logs.DevCycleLogger
+import com.ttreport.logs.ServerLogger
 import grails.plugin.springsecurity.annotation.Secured
 
 @Secured(['permitAll'])
@@ -15,8 +15,8 @@ class ApiEnterMarketEndpointController {
     {
         MarketEntranceCommand cmd = DocumentCommand.bind(request?.JSON as Map,"MARKET_ENTRANCE") as MarketEntranceCommand
         Map response = marketEntranceDocumentService.enterMarket(cmd)
-        DevCycleLogger.print_logs()
-        DevCycleLogger.cleanup()
+        ServerLogger.print_logs()
+        ServerLogger.cleanup()
         this.response.status = response.status as int
         withFormat {
             json {

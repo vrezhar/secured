@@ -1,6 +1,6 @@
 package com.ttreport.auth
 
-import com.ttreport.logs.DevCycleLogger
+import com.ttreport.logs.ServerLogger
 import com.ttreport.user.UserCommand
 import grails.gorm.transactions.Transactional
 
@@ -10,26 +10,26 @@ class UserValidatorService extends PatternValidatorService {
 
     def isPasswordValid(UserCommand usr)
     {
-        DevCycleLogger.log("validator called")
+        ServerLogger.log("validator called")
         if(usr == null || !usr.password) {
             return false
         }
 
         switch(validatePassword(usr.password)) {
             case -2:
-                DevCycleLogger.log("password is too short")
+                ServerLogger.log("password is too short")
                 usr.errors.rejectValue("password","user.password.tooshort")
                 return false
             case -1:
-                DevCycleLogger.log("password is too long")
+                ServerLogger.log("password is too long")
                 usr.errors.rejectValue("password","user.password.toolong")
                 return false
             case 0:
-                DevCycleLogger.log("password contains whitespaces")
+                ServerLogger.log("password contains whitespaces")
                 usr.errors.rejectValue("password","user.password.whitespaces")
                 return false
             case 1:
-                DevCycleLogger.log("password is too weak")
+                ServerLogger.log("password is too weak")
                 usr.errors.rejectValue("password","user.password.tooweak")
                 return false
         }

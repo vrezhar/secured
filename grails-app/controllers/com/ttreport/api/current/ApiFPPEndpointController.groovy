@@ -1,7 +1,7 @@
 package com.ttreport.api.current
 
 import com.ttreport.api.resources.current.FromPhysCommand
-import com.ttreport.logs.DevCycleLogger
+import com.ttreport.logs.ServerLogger
 import grails.plugin.springsecurity.annotation.Secured
 import grails.rest.RestfulController
 
@@ -26,8 +26,8 @@ class ApiFPPEndpointController extends RestfulController<FromPhysCommand>
     def index(FromPhysCommand cmd)
     {
         Map response = enterFPPDocumentService.enter(cmd)
-        DevCycleLogger.print_logs()
-        DevCycleLogger.cleanup()
+        ServerLogger.print_logs()
+        ServerLogger.cleanup()
         this.response.status = response.status as int
         withFormat {
             json {

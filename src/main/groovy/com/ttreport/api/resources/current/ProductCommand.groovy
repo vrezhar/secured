@@ -2,7 +2,7 @@ package com.ttreport.api.resources.current
 
 import com.ttreport.data.BarCode
 import com.ttreport.data.Products
-import com.ttreport.logs.DevCycleLogger
+import com.ttreport.logs.ServerLogger
 import grails.compiler.GrailsCompileStatic
 import grails.validation.Validateable
 
@@ -48,7 +48,7 @@ class ProductCommand implements Validateable
             }
         }
         catch(Exception ignored) {
-            DevCycleLogger.log(ignored.message)
+            ServerLogger.log(ignored.message)
         }
         return command
     }

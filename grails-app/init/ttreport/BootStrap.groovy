@@ -10,7 +10,7 @@ import com.ttreport.data.Company
 import com.ttreport.data.documents.differentiated.Document
 import com.ttreport.data.documents.differentiated.existing.*
 import com.ttreport.datacenter.DataCenterApiConnectorService
-import com.ttreport.logs.DevCycleLogger
+import com.ttreport.logs.ServerLogger
 import grails.async.Promise
 import grails.compiler.GrailsCompileStatic
 
@@ -87,12 +87,12 @@ class BootStrap {
 
                 @Override
                 void run() {
-                    DevCycleLogger.log("Document sender executor started, iterating over all documents")
+                    ServerLogger.log("Document sender executor started, iterating over all documents")
                     final Object monitor = new Object()
                     int threadCount = 1
                     for(document in Document.list()){
                         if (!document.documentId) {
-                            DevCycleLogger.log("found unsent document, sending")
+                            ServerLogger.log("found unsent document, sending")
                             Promise p = task({
                                 ++threadCount
                                 dataCenterApiConnectorService.sendDocument(document,inferType(document),true)
@@ -100,13 +100,13 @@ class BootStrap {
                             p.onError { Throwable t ->
                                 synchronized (monitor){
                                     --threadCount
-                                    DevCycleLogger.log_exception(t)
+                                    ServerLogger.log_exception(t)
                                     monitor.notifyAll()
                                 }
                             }
                             p.onComplete { Object ignored ->
                                synchronized(monitor){
-                                   DevCycleLogger.log("document sent")
+                                   ServerLogger.log("document sent")
                                    --threadCount
                                    monitor.notifyAll()
                                }

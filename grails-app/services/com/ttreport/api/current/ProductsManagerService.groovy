@@ -12,7 +12,7 @@ import com.ttreport.data.Company
 import com.ttreport.data.Products
 import com.ttreport.data.documents.differentiated.Document
 import com.ttreport.data.documents.differentiated.existing.RFIEntranceDocument
-import com.ttreport.logs.DevCycleLogger
+import com.ttreport.logs.ServerLogger
 import grails.gorm.transactions.Transactional
 
 @Transactional
@@ -21,7 +21,7 @@ class ProductsManagerService extends DocumentService
 
     protected DocumentAndResponse acceptProducts(AcceptanceDocumentCommand cmd)
     {
-        DevCycleLogger.log("acceptProducts() called")
+        ServerLogger.log("acceptProducts() called")
         DocumentAndResponse dandr = new DocumentAndResponse()
         Response response = performCommandValidation(cmd)
         if(response.status == 400 || response.status == 401 || checkRejections(cmd.products)){
@@ -33,13 +33,13 @@ class ProductsManagerService extends DocumentService
         document.company = company
         for(item in cmd.products) {
             if (item.action == "UPDATE") {
-                DevCycleLogger.log("found product with code ${item.id}, belonging to company with id ${company.companyId}")
+                ServerLogger.log("found product with code ${item.id}, belonging to company with id ${company.companyId}")
                 BarCode barCode
                 try{
                     barCode = update(item)
                 }
                 catch(Exception e){
-                    DevCycleLogger.log_exception(e)
+                    ServerLogger.log_exception(e)
                     dandr.response = response.getAsMap()
                     dandr.response.status = 500
                     return dandr
@@ -47,24 +47,24 @@ class ProductsManagerService extends DocumentService
                 document.addToBarCodes(barCode) // necessary,belongsTo in BarCode is not defined
                 item.id = barCode.products.id
                 response.accept(item)
-                DevCycleLogger.log("adding product with code ${item.id}, belonging to company with id ${company.companyId}, to the current document")
+                ServerLogger.log("adding product with code ${item.id}, belonging to company with id ${company.companyId}, to the current document")
                 continue
             }
 
-            DevCycleLogger.log("product with code ${item.id}, belonging to company with id ${company.companyId} not found, trying to save")
+            ServerLogger.log("product with code ${item.id}, belonging to company with id ${company.companyId} not found, trying to save")
             BarCode barCode
             try{
                 barCode = save(item, company)
             }
             catch (Exception e){
-                DevCycleLogger.log_exception(e)
+                ServerLogger.log_exception(e)
                 dandr.response = response.getAsMap()
                 dandr.response.status = 500
                 return dandr
             }
             document.addToBarCodes(barCode) // necessary,belongsTo in BarCode is not defined
             item.id = barCode.products.id
-            DevCycleLogger.log("product with code ${item.id}, belonging to company with id ${company.companyId} saved, adding to current document")
+            ServerLogger.log("product with code ${item.id}, belonging to company with id ${company.companyId} saved, adding to current document")
             response.accept(item)
         }
 
@@ -96,14 +96,14 @@ class ProductsManagerService extends DocumentService
                 barCode = delete(item)
             }
             catch (Exception e){
-                DevCycleLogger.log_exception(e)
+                ServerLogger.log_exception(e)
                 dandr.response = response.getAsMap()
                 dandr.response.status = 500
                 return dandr
             }
             document.addToBarCodes(barCode)
             item.id = barCode.products.id
-            DevCycleLogger.log("found product with code ${item.id}, belonging to company with id ${company.companyId}, trying to delete")
+            ServerLogger.log("found product with code ${item.id}, belonging to company with id ${company.companyId}, trying to delete")
             response.accept(item)
         }
         if(!document.barCodes || document.barCodes?.size() == 0)
@@ -111,7 +111,7 @@ class ProductsManagerService extends DocumentService
             dandr.response = response.getAsMap()
             return dandr
         }
-        DevCycleLogger.log("exiting shipProducts()")
+        ServerLogger.log("exiting shipProducts()")
         company.addToDocuments(document)
         dandr.document = document
         dandr.response = response.getAsMap()
@@ -120,7 +120,7 @@ class ProductsManagerService extends DocumentService
 
     protected DocumentAndResponse enterProductsIntoMarket(MarketEntranceCommand cmd)
     {
-        DevCycleLogger.log("enterProductsIntoMarket() called")
+        ServerLogger.log("enterProductsIntoMarket() called")
         DocumentAndResponse dandr = new DocumentAndResponse()
         Response response = performCommandValidation(cmd)
         if(response.status == 400 || response.status == 401 || checkRejections(cmd.products)){
@@ -131,13 +131,13 @@ class ProductsManagerService extends DocumentService
         Document document = createMarketEntranceDocumentMock(cmd)
         for(item in cmd.products) {
             if (item.action == "UPDATE") {
-                DevCycleLogger.log("found product with code ${item.id}, belonging to company with id ${company.companyId}")
+                ServerLogger.log("found product with code ${item.id}, belonging to company with id ${company.companyId}")
                 BarCode barCode
                 try{
                     barCode = update(item)
                 }
                 catch(Exception e){
-                    DevCycleLogger.log_exception(e)
+                    ServerLogger.log_exception(e)
                     dandr.response = response.getAsMap()
                     dandr.response.status = 500
                     return dandr
@@ -145,24 +145,24 @@ class ProductsManagerService extends DocumentService
                 document.addToBarCodes(barCode) // necessary,belongsTo in BarCode is not defined
                 item.id = barCode.products.id
                 response.accept(item)
-                DevCycleLogger.log("adding product with code ${item.id}, belonging to company with id ${company.companyId}, to the current document")
+                ServerLogger.log("adding product with code ${item.id}, belonging to company with id ${company.companyId}, to the current document")
                 continue
             }
 
-            DevCycleLogger.log("product with code ${item.id}, belonging to company with id ${company.companyId} not found, trying to save")
+            ServerLogger.log("product with code ${item.id}, belonging to company with id ${company.companyId} not found, trying to save")
             BarCode barCode
             try{
                 barCode = save(item, company)
             }
             catch (Exception e){
-                DevCycleLogger.log_exception(e)
+                ServerLogger.log_exception(e)
                 dandr.response = response.getAsMap()
                 dandr.response.status = 500
                 return dandr
             }
             document.addToBarCodes(barCode) // necessary,belongsTo in BarCode is not defined
             item.id = barCode.products.id
-            DevCycleLogger.log("product with code ${item.id}, belonging to company with id ${company.companyId} saved, adding to current document")
+            ServerLogger.log("product with code ${item.id}, belonging to company with id ${company.companyId} saved, adding to current document")
             response.accept(item)
         }
 
@@ -171,7 +171,7 @@ class ProductsManagerService extends DocumentService
             dandr.response = response.getAsMap()
             return dandr
         }
-        DevCycleLogger.log("exiting enterProductsIntoMarket()")
+        ServerLogger.log("exiting enterProductsIntoMarket()")
         company.addToDocuments(document)
         dandr.document = document
         dandr.response = response.getAsMap()
@@ -194,20 +194,20 @@ class ProductsManagerService extends DocumentService
                 barCode = delete(item)
             }
             catch (Exception e){
-                DevCycleLogger.log_exception(e)
+                ServerLogger.log_exception(e)
                 dandr.response.status = 500
                 return dandr
             }
             document.addToBarCodes(barCode)
             item.id = barCode.products.id
-            DevCycleLogger.log("found product with code ${item.id}, belonging to company with id ${company.companyId}, trying to delete")
+            ServerLogger.log("found product with code ${item.id}, belonging to company with id ${company.companyId}, trying to delete")
             response.accept(item)
         }
         dandr.response = response.getAsMap()
         if(!document.barCodes || document.barCodes?.size() == 0) {
             return dandr
         }
-        DevCycleLogger.log("exiting shipProducts()")
+        ServerLogger.log("exiting shipProducts()")
         company.addToDocuments(document)
         dandr.document = document
         dandr.response = response.getAsMap()
@@ -216,7 +216,7 @@ class ProductsManagerService extends DocumentService
 
     protected DocumentAndResponse enterFPP(FromPhysCommand cmd)
     {
-        DevCycleLogger.log("enterfpp() called")
+        ServerLogger.log("enterfpp() called")
         DocumentAndResponse dandr = new DocumentAndResponse()
         Response response = new Response()
         Document document = new RFIEntranceDocument(participantInn: cmd.participant_inn)
@@ -238,14 +238,14 @@ class ProductsManagerService extends DocumentService
             }
             if(!product.validate()){
                 response.reportInvalidInput()
-                DevCycleLogger.log("ProductCommand object not validated, rejecting")
+                ServerLogger.log("ProductCommand object not validated, rejecting")
                 response.rejectProduct(product,computeHighestPriorityError(product))
                 product.rejected = true
                 shouldSave = false
                 continue
             }
             if(product.action != "SAVE" && !company.hasProduct(Products.get(product.id))){
-                DevCycleLogger.log("Product doesn't belong to found company's product list")
+                ServerLogger.log("Product doesn't belong to found company's product list")
                 response.reportInvalidInput()
                 product.errors.rejectValue('id','command.product.notfound')
                 response.rejectProduct(product,computeHighestPriorityError(product))
@@ -256,13 +256,13 @@ class ProductsManagerService extends DocumentService
         if(shouldSave) {
             for (product in cmd.products_list) {
                 if(product.action == "UPDATE") {
-                    DevCycleLogger.log("found product with code ${product.id}, belonging to company with id ${company.companyId}")
+                    ServerLogger.log("found product with code ${product.id}, belonging to company with id ${company.companyId}")
                     BarCode barCode
                     try{
                         barCode = update(product)
                     }
                     catch(Exception e){
-                        DevCycleLogger.log_exception(e)
+                        ServerLogger.log_exception(e)
                         dandr.response = response.getAsMap()
                         dandr.response.status = 500
                         return dandr
@@ -270,24 +270,24 @@ class ProductsManagerService extends DocumentService
                     document.addToBarCodes(barCode) // necessary,belongsTo in BarCode is not defined
                     product.id = barCode.products.id
                     response.accept(product)
-                    DevCycleLogger.log("adding product with code ${product.id}, belonging to company with id ${company.companyId}, to the current document")
+                    ServerLogger.log("adding product with code ${product.id}, belonging to company with id ${company.companyId}, to the current document")
                     continue
                 }
 
-                DevCycleLogger.log("product with code ${product.id}, belonging to company with id ${company.companyId} not found, trying to save")
+                ServerLogger.log("product with code ${product.id}, belonging to company with id ${company.companyId} not found, trying to save")
                 BarCode barCode
                 try{
                     barCode = save(product, company)
                 }
                 catch (Exception e){
-                    DevCycleLogger.log_exception(e)
+                    ServerLogger.log_exception(e)
                     dandr.response = response.getAsMap()
                     dandr.response.status = 500
                     return dandr
                 }
                 document.addToBarCodes(barCode) // necessary,belongsTo in BarCode is not defined
                 product.id = barCode.products.id
-                DevCycleLogger.log("product with code ${product.id}, belonging to company with id ${company.companyId} saved, adding to current document")
+                ServerLogger.log("product with code ${product.id}, belonging to company with id ${company.companyId} saved, adding to current document")
                 response.accept(product)
             }
         }
@@ -295,7 +295,7 @@ class ProductsManagerService extends DocumentService
         if(!document.barCodes || document.barCodes?.size() == 0) {
             return dandr
         }
-        DevCycleLogger.log("exiting enterFPP()")
+        ServerLogger.log("exiting enterFPP()")
         company.addToDocuments(document)
         dandr.document = document
         dandr.response = response.getAsMap()

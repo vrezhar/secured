@@ -1,6 +1,6 @@
 package com.ttreport.api.resources.current;
 
-import com.ttreport.logs.DevCycleLogger;
+import com.ttreport.logs.ServerLogger;
 import groovy.json.JsonBuilder;
 
 import java.util.Map;
@@ -11,7 +11,7 @@ public interface DocumentForm {
     {
         Map<String,Object> map = this.getAsMap();
         JsonBuilder builder = new JsonBuilder(map);
-        DevCycleLogger.log("The document as json, 'prettified':", builder.toPrettyString());
+        ServerLogger.log("The document as json, 'prettified':", builder.toPrettyString());
         return  builder.toString();
     }
 }

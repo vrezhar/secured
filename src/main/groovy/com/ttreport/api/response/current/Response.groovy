@@ -4,7 +4,7 @@ package com.ttreport.api.response.current
 import com.ttreport.api.resources.current.GenericDocumentCommand
 import com.ttreport.api.resources.current.ProductCommand
 import com.ttreport.api.response.Responsive
-import com.ttreport.logs.DevCycleLogger
+import com.ttreport.logs.ServerLogger
 
 class Response extends  Responsive
 {
@@ -37,7 +37,7 @@ class Response extends  Responsive
         Response response = new Response()
         response.rejectCompanyToken()
         if(token_for_logging) {
-            DevCycleLogger.log("token ${token_for_logging} rejected")
+            ServerLogger.log("token ${token_for_logging} rejected")
         }
         return response.getAsMap()
     }
@@ -50,7 +50,7 @@ class Response extends  Responsive
             response.rejectProduct(object,reason)
         }
         if(log) {
-            DevCycleLogger.log_validation_errors(cmd,additional_message)
+            ServerLogger.log_validation_errors(cmd,additional_message)
         }
         return response.getAsMap()
     }

@@ -14,7 +14,7 @@ import com.ttreport.data.documents.differentiated.existing.ConsumerReleaseDocume
 import com.ttreport.data.documents.differentiated.existing.MarketEntranceDocument
 import com.ttreport.data.documents.differentiated.existing.RFIEntranceDocument
 import com.ttreport.data.documents.differentiated.existing.ShipmentDocument
-import com.ttreport.logs.DevCycleLogger
+import com.ttreport.logs.ServerLogger
 import grails.async.Promise
 import grails.test.hibernate.HibernateSpec
 import grails.testing.services.ServiceUnitTest
@@ -128,7 +128,7 @@ class DataCenterApiConnectorServiceSpec extends HibernateSpec implements  Servic
             document.addToBarCodes(barCode)
             document.addToBarCodes(anotherBarCode)
             if(!document.save()){
-                DevCycleLogger.log_validation_errors(document,"",true)
+                ServerLogger.log_validation_errors(document,"",true)
                 throw new Exception("document not created")
             }
         }
@@ -137,7 +137,7 @@ class DataCenterApiConnectorServiceSpec extends HibernateSpec implements  Servic
         int threadCount = 1
         for(document in Document.list()){
             if (!document.documentId) {
-                DevCycleLogger.log("found unsent document, sending")
+                ServerLogger.log("found unsent document, sending")
                 Promise p = task({
                     ++threadCount
                     service.sendDocument(document,inferType(document),true)
@@ -145,13 +145,13 @@ class DataCenterApiConnectorServiceSpec extends HibernateSpec implements  Servic
                 p.onError { Throwable t ->
                     synchronized (monitor){
                         --threadCount
-                        DevCycleLogger.log_exception(t)
+                        ServerLogger.log_exception(t)
                         monitor.notifyAll()
                     }
                 }
                 p.onComplete { Object ignored ->
                     synchronized(monitor){
-                        DevCycleLogger.log("document sent")
+                        ServerLogger.log("document sent")
                         --threadCount
                         monitor.notifyAll()
                     }

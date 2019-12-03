@@ -7,7 +7,7 @@ import com.ttreport.data.BarCode
 import com.ttreport.data.Company
 import com.ttreport.data.Products
 import com.ttreport.data.documents.differentiated.existing.AcceptanceDocument
-import com.ttreport.logs.DevCycleLogger
+import com.ttreport.logs.ServerLogger
 import grails.test.hibernate.HibernateSpec
 
 class AcceptanceDocumentSpec extends HibernateSpec {
@@ -39,8 +39,8 @@ class AcceptanceDocumentSpec extends HibernateSpec {
         document.addToBarCodes(barCode)
         document.addToBarCodes(barCode1)
         document.save()
-        DevCycleLogger.log_validation_errors(document)
-        DevCycleLogger.print_logs()
+        ServerLogger.log_validation_errors(document)
+        ServerLogger.print_logs()
         expect:"fix me"
             AcceptanceDocument.list()
     }
