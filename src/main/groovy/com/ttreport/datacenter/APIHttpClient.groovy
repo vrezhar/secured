@@ -11,7 +11,6 @@ class APIHttpClient
 {
     private static String token
     private static final ReentrantLock tokenLock = new ReentrantLock()
-    static AtomicBoolean updating
 
     String data
     String content_type = "application/json"
@@ -21,16 +20,6 @@ class APIHttpClient
 
     static String getToken()
     {
-        try{
-            while (updating.get()){
-                updating.wait()
-            }
-        }
-        catch (InterruptedException interruptedException){
-            DevCycleLogger.log("Thread waiting to retrieve toke interrupted")
-            DevCycleLogger.log(interruptedException.message)
-            DevCycleLogger.log_exception()
-        }
         return token
     }
     static void setToken(String s)
@@ -40,15 +29,12 @@ class APIHttpClient
 
     static void acquireTokenLock()
     {
-        updating.set(true)
         tokenLock.lock()
     }
 
     static void releaseTokenLock()
     {
         tokenLock.unlock()
-        updating.set(false)
-        updating.notifyAll()
     }
 
 
@@ -96,6 +82,9 @@ class APIHttpClient
                 response.append(System.lineSeparator())
             }
             rd.close()
+            if(response[response.length() - 1] == '\n'){
+                response.deleteCharAt(response.length() - 1)
+            }
             return response.toString()
         }
         catch (SocketTimeoutException socketTimeoutException){

@@ -54,7 +54,7 @@ class Document implements DocumentForm, Serializable
             }
             return map
         }
-        map.products = barCodes.collect{
+        map.products = barCodes?.collect{
             Map collected = [:]
             collected.product_tax = it?.products?.tax
             collected.product_cost = it?.products?.cost

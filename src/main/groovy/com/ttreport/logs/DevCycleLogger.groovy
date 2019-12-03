@@ -15,7 +15,7 @@ import static java.nio.file.StandardOpenOption.*
 
 class DevCycleLogger
 {
-    static ArrayList<String> action_logs = new ArrayList<String>()
+    static List<String> action_logs = Collections.synchronizedList(new ArrayList<String>())
 
     static void list_all_companies()
     {
@@ -247,8 +247,10 @@ class DevCycleLogger
     static void print_logs()
     {
         println("showing all registered logs:")
-        action_logs.each {
-            println(it)
+        synchronized (action_logs){
+            for(Iterator<String> iterator = action_logs.iterator(); iterator.hasNext(); ) {
+                println(iterator.next())
+            }
         }
     }
     static void cleanup()

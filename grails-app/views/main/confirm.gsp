@@ -70,7 +70,7 @@
 
 
 <!-- FOOTER -->
-<footer class="section bg-gray footer footer-sm">
+<footer class="section bg-gray footer">
     <div class="container">
 
 

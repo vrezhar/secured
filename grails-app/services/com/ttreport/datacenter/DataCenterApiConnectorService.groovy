@@ -22,14 +22,14 @@ class DataCenterApiConnectorService extends SigningService {
             [
                     (Endpoint.RANDOM_DATA): "/auth/cert/key",
                     (Endpoint.TOKEN): "/auth/cert/",
-                    (Endpoint.ENTRANCE): "/api/v3/lk/documents/send",
-                    (Endpoint.RELEASE): " /api/v3/lk/receipt/send",
-                    (Endpoint.ACCEPTANCE): "/api/v3/lk/documents/acceptance/create",
-                    (Endpoint.SHIPMENT): "/api/v3/lk/documents/shipment/create",
-                    (Endpoint.CANCEL_SHIPMENT): "/api/v3/lk/documents/shipment/cancel",
-                    (Endpoint.INDIVIDUAL): "/api/v3/lk/documents/commissioning/indi/create",
-                    (Endpoint.STATUS): "/api/v3/facade/doc/",
-                    (Endpoint.FULL_INFO): "/api/v3/facade/doc/listV2"
+                    (Endpoint.ENTRANCE): "/lk/documents/send",
+                    (Endpoint.RELEASE): " /lk/receipt/send",
+                    (Endpoint.ACCEPTANCE): "/lk/documents/acceptance/create",
+                    (Endpoint.SHIPMENT): "/lk/documents/shipment/create",
+                    (Endpoint.CANCEL_SHIPMENT): "/lk/documents/shipment/cancel",
+                    (Endpoint.INDIVIDUAL): "/lk/documents/commissioning/indi/create",
+                    (Endpoint.STATUS): "/facade/doc/",
+                    (Endpoint.FULL_INFO): "/facade/doc/listV2"
             ]
 
     protected final static Map<DocumentType,String> document_types =
@@ -65,7 +65,7 @@ class DataCenterApiConnectorService extends SigningService {
         return url.toString()
     }
 
-    protected String formPayload(Document document, DocumentType type)
+    protected static String formPayload(Document document, DocumentType type)
     {
         if(type == DocumentType.CANCEL_SHIPMENT){
             String cancelDocument = new JsonBuilder(
@@ -83,12 +83,13 @@ class DataCenterApiConnectorService extends SigningService {
                     ]
             ).toString()
         }
+        String serialized = document.serializeAsJson()
         return new JsonBuilder(
             [
                     type: document_types[type],
                     document_format: "MANUAL",
-                    product_document: document.serializeAsJson().encodeAsBase64().toString(),
-                    signature: sign(document.serializeAsJson().getBytes(),true).encodeBase64().toString()
+                    product_document: serialized.encodeAsBase64().toString(),
+                    signature: sign(serialized.getBytes(),true).encodeBase64().toString()
             ]
         ).toString()
     }
@@ -118,7 +119,7 @@ class DataCenterApiConnectorService extends SigningService {
         return response
     }
 
-    String retrieveToken(boolean testing = true) throws TokenRetrievalFailureException
+    protected static String retrieveToken(boolean testing = true) throws TokenRetrievalFailureException
     {
         Map randomData
         try{
@@ -156,7 +157,14 @@ class DataCenterApiConnectorService extends SigningService {
         DevCycleLogger.log("retrieved data: ${data}")
         DevCycleLogger.print_logs()
         DevCycleLogger.cleanup()
-        return (new JsonSlurper().parseText(data) as Map).token
+        try{
+            return (new JsonSlurper().parseText(data) as Map).token
+        }
+        catch (Exception e){
+            DevCycleLogger.log_exception(e)
+            return null
+        }
+
     }
 
     protected static Map parseToken(String token)
@@ -164,12 +172,19 @@ class DataCenterApiConnectorService extends SigningService {
         if(!token){
             return null
         }
-        return new JsonSlurper().parseText(
-                new String(
-                        Base64.getUrlDecoder()
-                                .decode(token.split("\\.")[1])
-                )
-        ) as Map
+        try{
+            return new JsonSlurper().parseText(
+                    new String(
+                            Base64.getUrlDecoder()
+                                    .decode(token.split("\\.")[1])
+                    )
+            ) as Map
+        }
+        catch(Exception e){
+            DevCycleLogger.log_exception(e)
+            return [exp: 0]
+        }
+
     }
 
     protected static isExpired(String token)
@@ -180,24 +195,23 @@ class DataCenterApiConnectorService extends SigningService {
         return (new Date().toInstant().epochSecond >= (parseToken(token).exp as Long))
     }
 
-    //TODO make a factory for this instead of individual methods
-
-    protected static boolean updateToken(boolean testing = true)
+    static boolean updateToken(boolean testing = true)
     {
         return task ({
-            if(isExpired(APIHttpClient.getToken())) {
-                APIHttpClient.acquireTokenLock()
-                try{
+            APIHttpClient.acquireTokenLock()
+            try {
+                if (isExpired(APIHttpClient.getToken())) {
                     APIHttpClient.setToken(retrieveToken(testing))
                     DevCycleLogger.log("token updated")
                 }
-                catch (Exception ignored) {
-                    DevCycleLogger.log("unable to update token")
-                    return false
-                }
-                finally {
-                    APIHttpClient.releaseTokenLock()
-                }
+            }
+            catch (Exception ignored) {
+                DevCycleLogger.log_exception(ignored)
+                DevCycleLogger.log("unable to update token")
+                return false
+            }
+            finally {
+                APIHttpClient.releaseTokenLock()
             }
             return true
         }).get()
@@ -223,9 +237,17 @@ class DataCenterApiConnectorService extends SigningService {
         APIHttpClient client = new APIHttpClient()
         client.targetUrl = formUrl((testing ? test_url : prod_url) + endpoint_urls[Endpoint.FULL_INFO],params)
         client.method = "GET"
-        boolean ok = updateToken(testing)
-        Promise<String> connectionEstablished = establishConnection(client)
-        if(ok && connectionEstablished){
+        Promise<String> connectionEstablished = task {
+            try {
+                DevCycleLogger.log("Trying to establish connection to ${client.targetUrl}")
+                client.sendHttpRequest()
+            }
+            catch (Exception ignored){
+                DevCycleLogger.log("Failed to establish connection")
+                return null
+            }
+        }
+        if(connectionEstablished){
             response = new JsonSlurper().parseText(connectionEstablished.get()) as Map
         }
         return response
@@ -237,77 +259,84 @@ class DataCenterApiConnectorService extends SigningService {
         APIHttpClient client = new APIHttpClient()
         client.targetUrl = (testing ? test_url : prod_url) + endpoint_urls[Endpoint.STATUS] + document.documentId + "/body"
         client.method = "GET"
-        boolean ok = updateToken(testing)
-        Promise<String> connectionEstablished = establishConnection(client)
-        if(ok && connectionEstablished){
-            response = new JsonSlurper().parseText(connectionEstablished.get()) as Map
+        Promise<String> connectionEstablished = task {
+            try {
+                DevCycleLogger.log("Trying to establish connection to ${client.targetUrl}")
+                client.sendHttpRequest()
+            }
+            catch (Exception e){
+                DevCycleLogger.log("Failed to establish connection")
+                DevCycleLogger.log_exception(e)
+                return null
+            }
+        }
+        String message = connectionEstablished.get()
+        if(connectionEstablished && message){
+            response = new JsonSlurper().parseText(message) as Map
+            DevCycleLogger.log("retrieved document info:\n",message)
         }
         return response
     }
 
     Map sendDocument(Document document, DocumentType type, boolean testing = true)
     {
+        String message = null
         if(!type){
             return null
         }
-        Map response = null
-        String message = null
-        int status = 500
         APIHttpClient client = new APIHttpClient()
         client.targetUrl = (testing ? test_url : prod_url) + endpoint_urls[type as Endpoint]
         client.data = formPayload(document,type)
         boolean ok = updateToken(testing)
         Promise<String> connectionEstablished = establishConnection(client)
         if(ok && connectionEstablished){
-            message = connectionEstablished?.get()
+            message = connectionEstablished.get()
+            Promise<Map> checkDocument = task {
+                Map response = null
+                try{
+                    response = new JsonSlurper().parseText(message) as Map
+                    response.status = "500"
+                }
+                catch (Exception ignored){
+                    document.documentId = message
+                    response = getInfo(document,testing)
+                    if(!response){
+                        return response
+                    }
+                    document.documentStatus = response.status
+                    for(int retries = 5; document.documentStatus == "IN_PROGRESS" && retries; --retries){
+                        try{
+                            sleep(100)
+                            response = getInfo(document,testing)
+                            document.documentStatus = response.status
+                        }
+                        catch (InterruptedException e){
+                            DevCycleLogger.log(e.message)
+                        }
+                    }
+                    for(okStatus in accepted_statuses){
+                        if(okStatus == document.documentStatus){
+                            response.status = 200
+                        }
+                    }
+                }
+                return response
+            }
+            Map response = checkDocument.get()
+            Document.withNewSession { session ->
+                try {
+                    document.save(true)
+                    return
+                }
+                catch (Exception e){
+                    DevCycleLogger.log_exception(e)
+                    return
+                }
+            }
+            return response
         }
 
-        connectionEstablished?.then {
-            try{
-                response = new JsonSlurper().parseText(message) as Map
-                response.status = status.toString()
-            }
-            catch (Exception ignored){
-                document.lock()
-                document.documentId = message
-                document.save()
-                response = getInfo(document,testing)
-                if(!response){
-                    return [status: 500]
-                }
-                document.documentStatus = response.status
-                for(int retries = 5; document.documentStatus == "IN_PROGRESS" && retries; --retries){
-                    try{
-                        sleep(100)
-                        response = getInfo(document,testing)
-                        document.documentStatus = response.status
-                    }
-                    catch (InterruptedException e){
-                        DevCycleLogger.log(e.message)
-                        document.save(true)
-                        return response
-                    }
-                }
-                for(okStatus in accepted_statuses){
-                    if(okStatus == document.documentStatus){
-                        response.status = 200
-                        document.save(true)
-                        return response
-                    }
-                }
-            }
-        }
-        response.status = status
-        try {
-            document.save(true)
-        }
-        catch (Exception e){
-            DevCycleLogger.log("Exception occurred while trying to save the document")
-            DevCycleLogger.log(e.message)
-            DevCycleLogger.log("stacktrace: ")
-            DevCycleLogger.log_exception(e)
-        }
-        return response
+        return [status: document?.documentStatus]
     }
 
     Map getAcceptanceResponse(Document document)

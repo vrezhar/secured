@@ -11,8 +11,7 @@ public interface DocumentForm {
     {
         Map<String,Object> map = this.getAsMap();
         JsonBuilder builder = new JsonBuilder(map);
-        DevCycleLogger.log("The document as json, 'prettified':");
-        DevCycleLogger.log(builder.toPrettyString());
+        DevCycleLogger.log("The document as json, 'prettified':", builder.toPrettyString());
         return  builder.toString();
     }
 }

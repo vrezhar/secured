@@ -16,8 +16,6 @@ import static grails.async.Promises.waitAll
 class EnterFPPDocumentService extends ProductsManagerService
 {
 
-    DataCenterApiConnectorService dataCenterApiConnectorService
-
     Map enter(FromPhysCommand cmd)
     {
         DevCycleLogger.log("enter() called")
@@ -27,13 +25,10 @@ class EnterFPPDocumentService extends ProductsManagerService
             return dandr.response
         }
         if(!document.validate()){
-            DevCycleLogger.log_validation_errors(document, "document not validated enter ship()")
+            DevCycleLogger.log_validation_errors(document, "document not validated, exiting enter()")
             return dandr.response
         }
         DevCycleLogger.log("document validated, saving, exiting enter()")
-        Promise<Map> sendDocument = task{
-            dataCenterApiConnectorService.getFPEntryResponse(document)
-        }
         dandr.response.status = 200
         try{
             document.save(true)

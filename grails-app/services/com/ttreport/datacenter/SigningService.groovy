@@ -34,7 +34,7 @@ class SigningService {
     protected static final String key_oid = JCP.GOST_PARAMS_EXC_2012_256_KEY_OID
     protected static final String provider = JCP.PROVIDER_NAME
 
-    def sign(byte[] data = "a".getBytes(), boolean detached = false) throws Exception
+    protected static sign(byte[] data = "a".getBytes(), boolean detached = false) throws Exception
     {
         System.setProperty("com.sun.security.enableAIAcaIssuers", "true")
         System.setProperty("com.sun.security.enableCRLDP","true")
@@ -93,14 +93,9 @@ class SigningService {
         }
         catch (Exception e)
         {
-            DevCycleLogger.log("exception occurred, error message:")
-            DevCycleLogger.log(e.message)
-            DevCycleLogger.log("stack trace:")
-            e.stackTrace.each {
-                DevCycleLogger.log(it.toString())
-            }
+            DevCycleLogger.log_exception(e)
         }
-        DevCycleLogger.log(signedCode?.encodeBase64()?.toString())
+        DevCycleLogger.log("signed data is:",signedCode?.encodeBase64()?.toString())
         DevCycleLogger.print_logs()
         DevCycleLogger.cleanup()
         return signedCode
@@ -122,11 +117,9 @@ class SigningService {
             println("cleaning up streams")
             if (bis != null) {
                 bis.close()
-                DevCycleLogger.log("bytestream closed")
             }
             if (fis != null){
                 fis.close()
-                DevCycleLogger.log("filestream closed")
             }
         }
     }

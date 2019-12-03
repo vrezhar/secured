@@ -3,6 +3,8 @@ package com.ttreport.api.current
 
 import com.ttreport.api.resources.current.DocumentAndResponse
 import com.ttreport.api.resources.current.ShipmentDocumentCommand
+import com.ttreport.api.types.DocumentType
+import com.ttreport.api.types.Endpoint
 import com.ttreport.data.documents.differentiated.Document
 import com.ttreport.data.documents.differentiated.existing.ShipmentDocument
 import com.ttreport.datacenter.DataCenterApiConnectorService
@@ -47,8 +49,8 @@ class DocumentShipmentService extends ProductsManagerService
     {
         ShipmentDocument document = ShipmentDocument.findWhere(documentNumber: shipmentNumber)
         if(!document){
-            return 404
+            return [status: 412]
         }
-        return dataCenterApiConnectorService.cancelShipment(document)
+        return dataCenterApiConnectorService.sendDocument(document, DocumentType.CANCEL_SHIPMENT, true)
     }
 }

@@ -61,6 +61,9 @@ class BootStrap {
                 company.save(true)
             }
             println(company.token)
+
+            DataCenterApiConnectorService.updateToken()
+
             Executors.newScheduledThreadPool(1).scheduleAtFixedRate(new Runnable() {
 
                 DocumentType inferType(Document document) {
@@ -95,18 +98,24 @@ class BootStrap {
                                 dataCenterApiConnectorService.sendDocument(document,inferType(document),true)
                             })
                             p.onError { Throwable t ->
-                                --threadCount
-                                DevCycleLogger.log_exception(t)
-                                monitor.notifyAll()
+                                synchronized (monitor){
+                                    --threadCount
+                                    DevCycleLogger.log_exception(t)
+                                    monitor.notifyAll()
+                                }
                             }
                             p.onComplete { Object ignored ->
-                                DevCycleLogger.log("document sent")
-                                --threadCount
-                                monitor.notifyAll()
+                               synchronized(monitor){
+                                   DevCycleLogger.log("document sent")
+                                   --threadCount
+                                   monitor.notifyAll()
+                               }
                             }
                         }
                         while (threadCount > 4){
-                            monitor.wait()
+                            synchronized (monitor){
+                                monitor.wait()
+                            }
                         }
                     }
                 }

@@ -20,6 +20,7 @@ import org.springframework.context.MessageSource
 @Transactional
 class ValidationErrorResolverService
 {
+    static scope = 'prototype'
     private static final Map<String, Locale> langLocaleMappings = [
             'en': Locale.ENGLISH,
             'ru': new Locale('ru', 'RU'),

@@ -72,7 +72,7 @@ class MainController {
             redirect controller: 'user', action: 'profile'
             return
         }
-        render view: '/error'
+        render view: '/notFound'
     }
 
     @Secured(["permitAll"])

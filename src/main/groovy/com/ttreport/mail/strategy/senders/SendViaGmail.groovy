@@ -33,16 +33,16 @@ class SendViaGmail extends MailingConfigurationAware implements MailingStrategy
     @Override
     def sendEmail(Mail mail) throws Exception
     {
-        String host = "smtp.gmail.com";
-        Properties props = new Properties();
-        props.put("mail.smtp.starttls.enable", "true");
-        props.put("mail.smtp.host", host);
-        props.put("mail.smtp.user", username);
-        props.put("mail.smtp.password", password);
-        props.put("mail.smtp.port", "587");
-        props.put("mail.smtp.auth", "true");
+        String host = "smtp.gmail.com"
+        Properties props = new Properties()
+        props.put("mail.smtp.starttls.enable", "true")
+        props.put("mail.smtp.host", host)
+        props.put("mail.smtp.user", username)
+        props.put("mail.smtp.password", password)
+        props.put("mail.smtp.port", "587")
+        props.put("mail.smtp.auth", "true")
 
-        Session session = Session.getDefaultInstance(props, null);
+        Session session = Session.getDefaultInstance(props, null)
         /*
         Session session = Session.getDefaultInstance(props,
                 new Authenticator() {
@@ -52,17 +52,17 @@ class SendViaGmail extends MailingConfigurationAware implements MailingStrategy
                 });
         */
 
-        MimeMessage message = new MimeMessage(session);
-        message.setFrom(new InternetAddress(username));
+        MimeMessage message = new MimeMessage(session)
+        message.setContent(mail.text,"text/html; charset=utf-8")
+        message.setFrom(new InternetAddress(username))
         message.addRecipient(Message.RecipientType.TO,new InternetAddress(mail.to));
-        message.setSubject(mail.subject);
-        message.setText(mail.text);
+        message.setSubject(mail.subject)
 
-        Transport transport = session.getTransport("smtp");
-        transport.connect(host, username, password);
+        Transport transport = session.getTransport("smtp")
+        transport.connect(host, username, password)
 
-        transport.sendMessage(message, message.getAllRecipients());
-        transport.close();
+        transport.sendMessage(message, message.getAllRecipients())
+        transport.close()
     }
 
 }

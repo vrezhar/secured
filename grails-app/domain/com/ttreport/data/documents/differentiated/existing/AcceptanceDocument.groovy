@@ -43,10 +43,10 @@ class AcceptanceDocument extends GenericDocument
         }
         releaseOrderNumber nullable: false, blank: false
         tradeSenderInn nullable: false, blank: false
-        tradeSenderName nullable: false, blank: false
+        tradeSenderName nullable: true, blank: true
         tradeRecipientInn nullable: false, blank: false
         acceptanceDate nullable: false, blank: false
-        tradeOwnerInn nullable: true, blank: true
+        tradeOwnerInn nullable: false, blank: false
         tradeOwnerName nullable: true, blank: true
     }
 }
