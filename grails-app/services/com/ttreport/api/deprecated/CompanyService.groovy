@@ -1,14 +1,14 @@
 package com.ttreport.api.deprecated
 
 import com.ttreport.api.resources.deprecated.CompanyBuildingSource
-import com.ttreport.api.response.Responsive
+import com.ttreport.configuration.ApplicationConfiguration
 import com.ttreport.auth.User
 import com.ttreport.data.Company
 import com.ttreport.logs.ServerLogger
 import grails.gorm.transactions.Transactional
 
 @Transactional
-class CompanyService extends Responsive
+class CompanyService extends ApplicationConfiguration
 {
 
     def save(CompanyBuildingSource src)
@@ -18,20 +18,20 @@ class CompanyService extends Responsive
         if(!src.validate())
         {
             ServerLogger.log("command object not validated, exiting save()")
-            response.status = statusCodes.invalid_input
+            response.status = apiStatusCodes.invalid_input
             return response
         }
         if(src.mainToken == null && src.companyToken == null)
         {
             ServerLogger.log("no token registered, exiting save()")
-            response.status = statusCodes.invalid_token
+            response.status = apiStatusCodes.invalid_token
             return response
         }
         User user = User.findWhere(mainToken: src.mainToken)
         if(!user)
         {
             ServerLogger.log("invalid user token, exiting save()")
-            response.status = statusCodes.invalid_token
+            response.status = apiStatusCodes.invalid_token
             return response
         }
         ServerLogger.log("trying to save a company")
@@ -44,12 +44,12 @@ class CompanyService extends Responsive
             company.save()
             user.save()
             response.company_token = company.token
-            response.status = statusCodes.success
+            response.status = apiStatusCodes.success
             ServerLogger.log("company saved, reporting success, exiting save()")
             return response
         }
         ServerLogger.log("company not saved, reporting failure, exiting save()")
-        response.status = statusCodes.invalid_input
+        response.status = apiStatusCodes.invalid_input
         return response
     }
 
@@ -64,13 +64,13 @@ class CompanyService extends Responsive
         Company company = Company.findByToken(src.companyToken)
         if(!company)
         {
-            response.status = statusCodes.invalid_token
+            response.status = apiStatusCodes.invalid_token
             return response
         }
         company.token = regenerateToken()
         company.save()
         response.new_company_token = company.token
-        response.status = statusCodes.success
+        response.status = apiStatusCodes.success
         return response
     }
 

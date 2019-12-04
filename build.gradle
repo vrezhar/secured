@@ -43,6 +43,7 @@ dependencies {
     compile "org.springframework.boot:spring-boot-starter-tomcat"
     compile 'org.grails.plugins:spring-security-core:3.2.3'
     compile "org.springframework.boot:spring-boot-starter-actuator"
+
     //compile "com.wildbit.java:postmark:1.2.1"
     //compile 'org.grails.plugins:spring-security-acl:3.1.1'
     compile "org.grails:grails-web-boot"
@@ -66,7 +67,7 @@ dependencies {
     compile 'javax.mail:mail:1.4.7'
     compile group: 'javax.activation', name: 'activation', version: '1.1'
 
-    compile group: 'io.jsonwebtoken', name: 'jjwt', version: '0.2'
+//    compile group: 'io.jsonwebtoken', name: 'jjwt', version: '0.2'
 //    compile group: 'org.bouncycastle', name: 'bcpkix-jdk15on', version: '1.50'
 //    compile group: 'org.bouncycastle', name: 'bcprov-jdk15on', version: '1.50'
 //

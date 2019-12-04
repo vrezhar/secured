@@ -1,5 +1,6 @@
-package com.ttreport.mail.strategy.handlers
+package com.ttreport.mail.strategy.handlers.error
 
+import com.ttreport.logs.ServerLogger
 import com.ttreport.mail.Mail
 import com.ttreport.mail.strategy.MailErrorHandlingStrategy
 import com.ttreport.mail.strategy.MailingStrategy
@@ -26,11 +27,17 @@ class Retry implements MailErrorHandlingStrategy
     def handleErrors(Mail mail, Exception e) {
         try{
             //do something with e
-            println("Sending email failed due to exception: " + e.message)
+            println("Sending email failed due to exception")
+            ServerLogger.log_exception(e)
+            ServerLogger.print_logs()
+            ServerLogger.cleanup()
             retryStrategy.sendEmail(mail)
         }
         catch(Exception again)
         {
+            ServerLogger.log_exception(again)
+            ServerLogger.print_logs()
+            ServerLogger.cleanup()
             repeatedFailureHandler.handleErrors(mail,again)
         }
     }

@@ -1,7 +1,7 @@
 package com.ttreport.api.deprecated
 
 import com.ttreport.api.resources.deprecated.BarCodeRegisteringSource
-import com.ttreport.api.response.Responsive
+import com.ttreport.configuration.ApplicationConfiguration
 import com.ttreport.data.BarCode
 import com.ttreport.data.Company
 import com.ttreport.data.Products
@@ -9,27 +9,27 @@ import com.ttreport.logs.ServerLogger
 import grails.gorm.transactions.Transactional
 
 @Transactional
-class BarCodeService extends Responsive
+class BarCodeService extends ApplicationConfiguration
 {
 
     def save(BarCodeRegisteringSource src)
     {
         ServerLogger.log("BarCodeService called, method: save()")
         Map response = [:]
-        response.status = statusCodes.success
+        response.status = apiStatusCodes.success
         response.barcode_list = []
 
         if(!src.validate())
         {
             ServerLogger.log("barcode command object not validated, exiting save()")
-            response.status = statusCodes.invalid_input
+            response.status = apiStatusCodes.invalid_input
             response.barcode_list = src.barcodes
             return response
         }
         if(src.productCode == null || src.productCode == "")
         {
             ServerLogger.log("barcode command object lacks product code, exiting save()")
-            response.status = statusCodes.invalid_input
+            response.status = apiStatusCodes.invalid_input
             response.barcode_list = src.barcodes
             return response
         }
@@ -38,7 +38,7 @@ class BarCodeService extends Responsive
         if(!owner)
         {
             ServerLogger.log("company with token ${src.companyToken} not found, exiting save()")
-            response.status = statusCodes.invalid_token
+            response.status = apiStatusCodes.invalid_token
             response.barcode_list = src.barcodes
             return response
         }
@@ -50,7 +50,7 @@ class BarCodeService extends Responsive
         if(!products.validate())
         {
             ServerLogger.log("product with code ${products.id} already exists, no changes made to the database, exiting save()")
-            response.status = statusCodes.invalid_input
+            response.status = apiStatusCodes.invalid_input
             response.barcode_list = src.barcodes
             return response
         }
@@ -85,7 +85,7 @@ class BarCodeService extends Responsive
         else
         {
             ServerLogger.log("report failure, exiting delete()")
-            response.status = statusCodes.invalid_input
+            response.status = apiStatusCodes.invalid_input
         }
         return response
     }
@@ -95,13 +95,13 @@ class BarCodeService extends Responsive
         ServerLogger.log("BarCodeService called, method: update()")
         Map response = [:]
         response.barcode_list = []
-        response.status = statusCodes.success
+        response.status = apiStatusCodes.success
 
         Company owner = Company.findWhere(token: src.companyToken)
         if(!owner)
         {
             ServerLogger.log("company with token ${src.companyToken} not found, exiting update()")
-            response.status = statusCodes.invalid_token
+            response.status = apiStatusCodes.invalid_token
             response.barcode_list = src.barcodes
             return response
         }
@@ -110,14 +110,14 @@ class BarCodeService extends Responsive
         if(!products)
         {
             ServerLogger.log("product with id ${src.productId} not found, exiting update()")
-            response.status = statusCodes.invalid_input
+            response.status = apiStatusCodes.invalid_input
             response.barcode_list = src.barcodes
             return response
         }
         if(!owner.hasProduct(products))
         {
             ServerLogger.log("product with id ${src.productId} not found in possession of: ${owner.companyId} at ${owner.address}, exiting update()")
-            response.status = statusCodes.invalid_input
+            response.status = apiStatusCodes.invalid_input
             response.barcode_list = src.barcodes
             return response
         }
@@ -159,7 +159,7 @@ class BarCodeService extends Responsive
         else
         {
             ServerLogger.log("report failure, exiting update()")
-            response.status = statusCodes.invalid_input
+            response.status = apiStatusCodes.invalid_input
         }
         return response
     }
@@ -169,13 +169,13 @@ class BarCodeService extends Responsive
         ServerLogger.log("BarCodeService called, method: delete()")
         Map response = [:]
         response.barcode_list = []
-        response.status = statusCodes.success
+        response.status = apiStatusCodes.success
 
         Company owner = Company.findWhere(token: src.companyToken)
         if(!owner)
         {
             ServerLogger.log("company with token ${src.companyToken} not found, exiting delete()")
-            response.status = statusCodes.invalid_token
+            response.status = apiStatusCodes.invalid_token
             response.barcode_list = src.barcodes
             return response
         }
@@ -184,14 +184,14 @@ class BarCodeService extends Responsive
         if(!products)
         {
             ServerLogger.log("product with id ${src.productId} not found, exiting delete()")
-            response.status = statusCodes.invalid_input
+            response.status = apiStatusCodes.invalid_input
             response.barcode_list = src.barcodes
             return response
         }
         if(!owner.hasProduct(products))
         {
             ServerLogger.log("product with id ${src.productId} not found in possession of: ${owner.companyId} at ${owner.address}, exiting delete()")
-            response.status = statusCodes.invalid_input
+            response.status = apiStatusCodes.invalid_input
             response.barcode_list = src.barcodes
             return response
         }
@@ -220,7 +220,7 @@ class BarCodeService extends Responsive
         if(src.barcodes == null || src.barcodes == [])
         {
             ServerLogger.log("no barcodes supplied, exiting delete()")
-            response.status = statusCodes.invalid_input
+            response.status = apiStatusCodes.invalid_input
         }
         else if(response.barcode_list == [])
         {
@@ -229,7 +229,7 @@ class BarCodeService extends Responsive
         else
         {
             ServerLogger.log("report failure, exiting delete()")
-            response.status = statusCodes.invalid_input
+            response.status = apiStatusCodes.invalid_input
         }
         return response
     }

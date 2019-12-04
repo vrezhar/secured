@@ -3,13 +3,13 @@ package com.ttreport.api.response.current
 
 import com.ttreport.api.resources.current.GenericDocumentCommand
 import com.ttreport.api.resources.current.ProductCommand
-import com.ttreport.api.response.Responsive
+import com.ttreport.configuration.ApplicationConfiguration
 import com.ttreport.logs.ServerLogger
 
-class Response extends  Responsive
+class Response extends ApplicationConfiguration
 {
 
-    int status = statusCodes.success as int
+    int status = apiStatusCodes.success as int
     private List<RejectedProduct> rejected_list = []
     private List<ProductIdentifier> accepted_list = []
 
@@ -57,11 +57,11 @@ class Response extends  Responsive
 
     void reportInvalidInput()
     {
-        status = statusCodes.invalid_input as int
+        status = apiStatusCodes.invalid_input as int
     }
     void rejectCompanyToken()
     {
-        status = statusCodes.invalid_token as int
+        status = apiStatusCodes.invalid_token as int
     }
 
     Map getAsMap()

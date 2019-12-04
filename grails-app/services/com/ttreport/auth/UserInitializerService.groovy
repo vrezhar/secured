@@ -5,8 +5,10 @@ import grails.gorm.transactions.Transactional
 @Transactional
 class UserInitializerService  implements  UserInitializer{
 
+    static scope = 'prototype'
+
     @Override
-    def assignRole(User usr, String r,boolean flush = true)
+    def assignRoleAndSave(User usr, String r, boolean flush = true)
     {
         if(usr == null || r == null)
             return false
@@ -22,7 +24,7 @@ class UserInitializerService  implements  UserInitializer{
 
 
     @Override
-    def assignRole(User usr, Role role,boolean flush = true)
+    def assignRoleAndSave(User usr, Role role, boolean flush = true)
     {
         if(usr == null || role == null)
             return false
@@ -42,6 +44,15 @@ class UserInitializerService  implements  UserInitializer{
         if(usr == null)
             return false
         usr.enabled = true
+        usr.save()
+        return true
+    }
+
+    def updateToken(User usr)
+    {
+        if(usr == null)
+            return false
+        usr.mainToken = UUID.randomUUID().toString()
         usr.save()
         return true
     }

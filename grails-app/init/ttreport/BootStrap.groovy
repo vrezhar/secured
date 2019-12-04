@@ -1,16 +1,18 @@
 
 package ttreport
 
-
+import com.ttreport.api.response.current.Response
 import com.ttreport.api.types.DocumentType
 import com.ttreport.auth.Role
 import com.ttreport.auth.User
 import com.ttreport.auth.UserRole
+import com.ttreport.configuration.ApplicationConfiguration
 import com.ttreport.data.Company
 import com.ttreport.data.documents.differentiated.Document
 import com.ttreport.data.documents.differentiated.existing.*
 import com.ttreport.datacenter.DataCenterApiConnectorService
 import com.ttreport.logs.ServerLogger
+import com.ttreport.mail.MailingConfiguration
 import grails.async.Promise
 import grails.compiler.GrailsCompileStatic
 
@@ -60,9 +62,8 @@ class BootStrap {
                 admin.addToCompanies(company)
                 company.save(true)
             }
-            println(company.token)
 
-            DataCenterApiConnectorService.updateToken()
+//            DataCenterApiConnectorService.updateToken()
 
             Executors.newScheduledThreadPool(1).scheduleAtFixedRate(new Runnable() {
 

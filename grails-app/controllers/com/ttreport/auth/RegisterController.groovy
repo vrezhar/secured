@@ -2,9 +2,11 @@ package com.ttreport.auth
 
 import com.ttreport.mail.Mail
 import com.ttreport.logs.ServerLogger
-import com.ttreport.user.UserCommand
-import com.ttreport.mail.strategy.handlers.RejectEmail
 import com.ttreport.mail.strategy.senders.SendViaGmail
+import com.ttreport.mail.strategy.senders.SendViaPostMarkAPI
+import com.ttreport.mail.strategy.senders.SendViaPostmarkSMTP
+import com.ttreport.user.UserCommand
+import com.ttreport.mail.strategy.handlers.error.RejectEmail
 import grails.plugin.springsecurity.SpringSecurityService
 import grails.plugin.springsecurity.annotation.Secured
 
@@ -90,8 +92,6 @@ class RegisterController
             return
         }
         User usr = User.createUser(cmd)
-        def userRole = Role.findOrSaveWhere(authority: "ROLE_USER")
-        userInitializer.assignRole(usr,userRole)
         String message = "<html>" +
                 "<br>Dear ${usr.firstName} ${usr.lastName}<br>"+
                 "<span></span>" +
@@ -100,20 +100,29 @@ class RegisterController
                 "<a href = 'www.ttreport.ru/verify?token=${usr.mainToken}'>www.ttreport.ru/verify?token=${usr.mainToken}</a>" +
                 "<p>If you didn't register in ttreport.ru just ignore this message</p>" +
                 "<span></span>" +
-                "<p>Sincerely\n" +
-                "<br>TTReport team\n</br>" +
-                "<a>www.ttreport.ru</a></p>" +
+                "<p>Sincerely</p>" +
+                "<br>TTReport team</br>" +
+                "<span></span>" +
+                "<a href='ttreport.ru'>www.ttreport.ru</a>" +
                 "</html>"
         new Mail()
+                .from('support@ttreport.ru')
                 .to(usr.username)
                 .withSubject("Confirm your email")
                 .withMessage(message)
-                .useSendingStrategy(SendViaGmail.usingDefaultAccount())
-                .onErrors(RejectEmail.withDefaultMessage())
+                .useSendingStrategy(SendViaPostMarkAPI.usingToken('43f54d1d-d68f-457c-bdf5-7157b4f67aa4'))
+                .onErrors{ Mail mail, Exception e ->
+                    RejectEmail.withMessage(e.message).handleErrors(mail,e)
+                    redirect controller: 'main', action: 'registrationError'
+                    return null
+                }
+                .onSuccess { ->
+                    def userRole = Role.findOrSaveWhere(authority: "ROLE_USER")
+                    userInitializer.assignRoleAndSave(usr,userRole)
+                    println(message)
+                    flash.message = "pending"
+                    redirect controller: 'main',action:'confirm'
+                }
                 .send()
-                .printConfiguration()
-        println(message)
-        flash.message = "pending"
-        redirect controller: 'main',action:'confirm'
     }
 }

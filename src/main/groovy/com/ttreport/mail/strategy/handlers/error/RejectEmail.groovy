@@ -1,5 +1,6 @@
-package com.ttreport.mail.strategy.handlers
+package com.ttreport.mail.strategy.handlers.error
 
+import com.ttreport.logs.ServerLogger
 import com.ttreport.mail.Mail
 import com.ttreport.mail.strategy.MailErrorHandlingStrategy
 
@@ -24,7 +25,9 @@ class RejectEmail implements MailErrorHandlingStrategy
         if(!errorMessage){
             errorMessage = e.message
         }
-        println(errorMessage)
+        ServerLogger.log_exception(e)
+        ServerLogger.print_logs()
+        ServerLogger.cleanup()
         return errorMessage
     }
 }

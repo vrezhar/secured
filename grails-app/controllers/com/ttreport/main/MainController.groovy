@@ -31,6 +31,8 @@ class MainController {
         render(view:"/user/list",model: [users: User.list()])
     }
 
+
+
     @Secured(['ROLE_ADMIN'])
     def disable(EnableCommand cmd)
     {
@@ -62,12 +64,19 @@ class MainController {
     }
 
     @Secured(["permitAll"])
+    def registrationError()
+    {
+        render view: 'registrationError'
+    }
+
+    @Secured(["permitAll"])
     def verify()
     {
         User usr = User.findWhere(mainToken: params.token)
         if(usr)
         {
             userInitializerService.enable(usr)
+            userInitializerService.updateToken()
             springSecurityService.reauthenticate(usr.username,usr.password)
             redirect controller: 'user', action: 'profile'
             return

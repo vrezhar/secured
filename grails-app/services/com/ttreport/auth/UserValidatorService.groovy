@@ -6,7 +6,10 @@ import grails.gorm.transactions.Transactional
 
 
 @Transactional
-class UserValidatorService extends PatternValidatorService {
+class UserValidatorService extends PatternValidatorService
+{
+
+    static scope = 'prototype'
 
     def isPasswordValid(UserCommand usr)
     {
@@ -31,6 +34,34 @@ class UserValidatorService extends PatternValidatorService {
             case 1:
                 ServerLogger.log("password is too weak")
                 usr.errors.rejectValue("password","user.password.tooweak")
+                return false
+        }
+        return true
+    }
+
+    def isRecoveredPasswordValid(PasswordRecoveryCommand cmd)
+    {
+        ServerLogger.log("validator called")
+        if(cmd == null || !cmd.password) {
+            return false
+        }
+
+        switch(validatePassword(cmd.password)) {
+            case -2:
+                ServerLogger.log("password is too short")
+                cmd.errors.rejectValue("password","user.password.tooshort")
+                return false
+            case -1:
+                ServerLogger.log("password is too long")
+                cmd.errors.rejectValue("password","user.password.toolong")
+                return false
+            case 0:
+                ServerLogger.log("password contains whitespaces")
+                cmd.errors.rejectValue("password","user.password.whitespaces")
+                return false
+            case 1:
+                ServerLogger.log("password is too weak")
+                cmd.errors.rejectValue("password","user.password.tooweak")
                 return false
         }
         return true
