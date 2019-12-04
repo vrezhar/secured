@@ -96,4 +96,9 @@ class MainController {
         render view: 'contactus'
     }
 
+    def forgotPassword()
+    {
+
+    }
+
 }

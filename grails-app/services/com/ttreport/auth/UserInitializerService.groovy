@@ -39,6 +39,18 @@ class UserInitializerService  implements  UserInitializer{
 
     }
 
+    def updatePassword(User usr, String newPassword)
+    {
+        if(!usr || !newPassword){
+            return false
+        }
+        usr.password = newPassword
+        if(usr.save(true)){
+            return true
+        }
+        return false
+    }
+
     def enable(User usr)
     {
         if(usr == null)

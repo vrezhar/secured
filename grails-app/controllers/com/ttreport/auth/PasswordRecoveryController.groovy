@@ -1,19 +1,21 @@
 package com.ttreport.auth
 
+import grails.plugin.springsecurity.SpringSecurityService
 import grails.plugin.springsecurity.annotation.Secured
 
 @Secured(['permitAll'])
 class PasswordRecoveryController {
 
-    UserInitializerService userInitializerService
+    UserInitializerService userInitializer
     UserValidatorService userValidator
+    SpringSecurityService springSecurityService
 
     def verify()
     {
         User usr = User.findWhere(mainToken: params.token)
         if(usr)
         {
-            userInitializerService.updateToken(usr)
+            userInitializer.updateToken(usr)
             flash.redirect = true
             flash.user = usr
             render view: 'recoverPassword'
@@ -24,13 +26,18 @@ class PasswordRecoveryController {
 
     def validate(PasswordRecoveryCommand cmd)
     {
-        boolean haserrors
+        boolean haserrors = false
+        println(request.reader.toString())
         if(!cmd.validate() ){
             haserrors = true
         }
         if(!userValidator.isRecoveredPasswordValid(cmd)) {
             haserrors = true
         }
+        if(cmd.password != cmd.confirm){
+            haserrors = true
+        }
+        return !haserrors
     }
 
     def recover(PasswordRecoveryCommand cmd)
@@ -40,5 +47,12 @@ class PasswordRecoveryController {
             return
         }
         User user = flash.user as User
+        if(userInitializer.updatePassword(user, cmd.password)){
+            springSecurityService.reauthenticate(user.username,user.password)
+            flash.message = "password changed"
+            redirect controller: 'user', action: 'profile'
+            return
+        }
+        render view: '/internalServerError'
     }
 }
