@@ -1,8 +1,8 @@
 <%--
   Created by IntelliJ IDEA.
   User: vrezh
-  Date: 29.08.19
-  Time: 17:51
+  Date: 04.12.19
+  Time: 22:21
 --%>
 
 <%@ page contentType="text/html;charset=UTF-8" %>
@@ -52,7 +52,7 @@
                         <span class="text-colored"><g:message code="website.register.success.title"></g:message></span>
                     </h2>
                     <p class="animated fadeInDown wow text-muted" data-wow-delay=".2s">
-                        <g:message code="website.register.success.message"></g:message>
+                        <g:message code="website.forgot.password.message"></g:message>
                     </p>
                     <div class="clearfix"></div>
                 </div><!-- home wrapper -->

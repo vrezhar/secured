@@ -1,6 +1,7 @@
-const field_list = ['username', 'firstName', 'lastName', 'password', 'confirm'];
+const field_list = ['password', 'confirm'];
 class Interceptor {
     constructor(intercepted = false){
+        console.log('interceptor called');
         this.intercepted = intercepted;
     };
 
@@ -8,7 +9,8 @@ class Interceptor {
     {
         if(this.intercepted)
         {
-            $("#register_form").off("submit");
+            console.log("ok, submitting");
+            $("#recovery_form").off("submit");
             $("#submit").click();
             return true;
         }
@@ -26,18 +28,22 @@ class Interceptor {
 
         }
         if(has_obvious_errors){
+            console.log("has obvious errors, rejecting");
             return false;
         }
         let xhr = new XMLHttpRequest();
-        let url = "/register/validate";
+        let url = "/recover/validate";
         xhr.open("POST", url, true);
         xhr.setRequestHeader("Content-Type", "application/json");
         xhr.onreadystatechange = function () {
             if (xhr.readyState === 4 && xhr.status === 200) {
+                console.log('server validated the data');
                 return new Interceptor(true).intercept(e);
             }
             if(xhr.readyState === 4 && xhr.status === 400){
                 let json = JSON.parse(xhr.responseText);
+                console.log('invalid data, server response: ');
+                console.log(json.errors);
                 for(let i = 0; i < json.errors.errors.length; ++i){
                     alertError(json.errors.errors[i].message,json.errors.errors[i].field);
                 }
@@ -48,20 +54,11 @@ class Interceptor {
         };
         let data = JSON.stringify(
             {
-                "firstName": document.getElementById("firstName").value,
-                "lastName" : document.getElementById("lastName").value,
-                "username" : document.getElementById("username").value,
                 "password" : document.getElementById("password").value,
                 "confirm"  : document.getElementById("confirm").value
             });
         xhr.send(data);
     }
-}
-
-function onFocus(field)
-{
-    let errorList = document.getElementById( field + "_errors");
-    errorList.value = "";
 }
 
 function alertError(message,field)
@@ -94,22 +91,11 @@ function alertEmptyInputFor(field)
     alertError("Please fill this up",field);
 }
 
-function isTooLong(field)
-{
-    return document.getElementById(field).value.length > 50;
-}
-
 function alertMismatch()
 {
     alertError("passwords don't match","confirm");
 }
 
-$("#username").on("input change keyup paste propertychange", function(){
-   removeOnChange("username");
-   if(!document.getElementById("username").value){
-       alertEmptyInputFor("username");
-   }
-});
 $("#password").on("input change keyup paste propertychange", function(){
     removeOnChange("password");
     if(!document.getElementById("password").value){
@@ -120,18 +106,7 @@ $("#password").on("input change keyup paste propertychange", function(){
         alertMismatch();
     }
 });
-$("#firstName").on("input change keyup paste propertychange", function(){
-    removeOnChange("firstName");
-    if(!document.getElementById("firstName").value){
-        alertEmptyInputFor("firstName");
-    }
-});
-$("#lastName").on("input change keyup paste propertychange", function(){
-    removeOnChange("lastName");
-    if(!document.getElementById("lastName").value){
-        alertEmptyInputFor("lastName");
-    }
-});
+
 $("#confirm").on("input change keyup paste propertychange", function(){
     removeOnChange("confirm");
     if(!document.getElementById("confirm").value){
@@ -143,7 +118,8 @@ $("#confirm").on("input change keyup paste propertychange", function(){
     }
 });
 
-$("#register_form").on("submit",function (e) {
+$("#recovery_form").on("submit",function (e) {
+    console.log("jquery selector for password recovery form");
     new Interceptor(false).intercept(e);
 });
 

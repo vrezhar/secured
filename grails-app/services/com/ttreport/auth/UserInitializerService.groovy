@@ -45,7 +45,7 @@ class UserInitializerService  implements  UserInitializer{
             return false
         }
         usr.password = newPassword
-        if(usr.save(true)){
+        if(usr.save()){
             return true
         }
         return false

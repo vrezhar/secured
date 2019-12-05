@@ -1,19 +1,28 @@
 package com.ttreport.main
 
 import com.ttreport.admin.EnableCommand
+import com.ttreport.auth.EmailCommand
 import com.ttreport.auth.Role
 import com.ttreport.auth.User
 import com.ttreport.auth.UserInitializerService
+import com.ttreport.mail.Mail
+import com.ttreport.mail.strategy.handlers.error.RejectEmail
+import com.ttreport.mail.strategy.senders.SendViaPostMarkAPI
 import grails.plugin.springsecurity.SpringSecurityService
 import grails.plugin.springsecurity.annotation.Secured
 
 
 @Secured(['ROLE_ADMIN','ROLE_USER'])
-class MainController {
+class MainController
+{
+
     static defaultAction = 'home'
+    static scope = 'session'
 
     SpringSecurityService springSecurityService
     UserInitializerService userInitializerService
+
+    private EmailCommand errorCommand = null
 
     @Secured(['ROLE_ADMIN'])
     def list()
@@ -96,9 +105,41 @@ class MainController {
         render view: 'contactus'
     }
 
-    def forgotPassword()
+    @Secured(['permitAll'])
+    def forgotPasswordEmail()
     {
+        render view: '/passwordRecovery/forgotPasswordEmail', model: [command: errorCommand?: new EmailCommand()]
+    }
 
+    @Secured(['permitAll'])
+    def forgotPassword(EmailCommand cmd)
+    {
+        println(cmd.email)
+        println(params)
+        println(request)
+        if(!cmd || !cmd?.validate()){
+            println('command not validated')
+            cmd?.errors?.rejectValue('email','Entered email is invalid')
+            errorCommand = cmd
+            redirect action: 'forgotPasswordEmail'
+            return
+        }
+        String text = "<html><p>Please Follow this link to reset your password</p><p><a href = 'www.ttreport.ru/recover/confirm?token=${User.findByUsername(cmd.email).mainToken}'>www.ttreport.ru/recover/confirm?token=${User.findByUsername(cmd.email).mainToken}</a></p></html>"
+        new Mail()
+            .from('support@ttreport.ru')
+            .to(cmd.email)
+            .withSubject('Reset password')
+            .useSendingStrategy(SendViaPostMarkAPI.usingDefaultToken())
+            .onSuccess { ->
+                render view: '/passwordRecovery/forgotPassword'
+            }
+            .onErrors { Mail mail, Exception e ->
+                RejectEmail.withMessage(e.message).handleErrors(mail,e)
+                redirect controller: 'main', action: 'registrationError'
+                return null
+            }
+            .withMessage(text)
+            .send()
     }
 
 }

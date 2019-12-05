@@ -1,19 +1,17 @@
 <%--
   Created by IntelliJ IDEA.
   User: vrezh
-  Date: 29.08.19
-  Time: 17:51
+  Date: 05.12.19
+  Time: 15:25
 --%>
 
 <%@ page contentType="text/html;charset=UTF-8" %>
 <html>
 <head>
-    <meta name="layout" content="${gspLayout ?: 'main'}"/>
     <title></title>
 </head>
 
-<body data-spy="scroll" data-target="#navbar-menu">
-<!-- STRAT NAVBAR -->
+<body>
 <nav class="navbar navbar-expand-lg fixed-top navbar-custom sticky sticky-dark">
     <div class="container">
     <!-- LOGO -->
@@ -28,11 +26,15 @@
 
             <ul class="nav navbar-nav navbar-right ml-auto">
                 <li class="nav-item">
-                    <g:link controller="login" class="navbar-btn"><g:message code="website.login"></g:message></g:link>
+                    <g:link controller="login" class="nav navbar-nav navbar-right ml-auto">
+                        <g:message code="website.login"></g:message>
+                    </g:link>
                 </li>
-                %{--                <li class="nav-item">--}%
-                %{--                    <g:link controller="register" class="btn btn-inverse btn-bordered navbar-btn nav-link">Sign up</g:link>--}%
-                %{--                </li>--}%
+                <li class="nav-item">
+                    <g:link controller="register" class="btn btn-inverse navbar-btn">
+                        <g:message code="website.sign.up"></g:message>
+                    </g:link>
+                </li>
             </ul>
 
         </div>
@@ -48,26 +50,34 @@
         <div class="row">
             <div class="col-lg-12">
                 <div class="home-wrapper">
-                    <h2 class="animated fadeInDown wow" data-wow-delay=".1s">
-                        <span class="text-colored"><g:message code="website.register.success.title"></g:message></span>
-                    </h2>
-                    <p class="animated fadeInDown wow text-muted" data-wow-delay=".2s">
-                        <g:message code="website.register.success.message"></g:message>
-                    </p>
-                    <div class="clearfix"></div>
-                </div><!-- home wrapper -->
+                    <h3 class="text-center"> Forgot your password? </h3>
+                    <g:form role="form" id="email_form" class="intro-form" method="POST" url="/recover/email">
+                        <span class="space-lg-only-1"></span>
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-lg-10">
+                                    <g:textField type="email" class="form-control form-control-lg" name="email" id="email" value="${command?.email}" placeholder="Email"></g:textField>
+                                    <label class="error" id="username_errors" style="visibility: visible; display: inline-block">
 
-            </div> <!-- end col -->
+                                    </label>
+                                </div>
+                                <div class="col-lg-2">
+                                    <input type="submit" class="class=btn btn-primary btn-shadow btn-rounded w-lg" style="width: 90%; margin-left: 5%" id="submit" value= <g:message code="website.forgot.password.button"></g:message>>
+                                </div>
+                            </div>
+                        </div>
+                    </g:form>
+                </div>
+            </div>
+
         </div> <!-- end row -->
     </div> <!-- end container -->
 </section>
 <!-- END HOME -->
 
 
-
-
 <!-- FOOTER -->
-<footer class="section bg-gray footer">
+<footer class="section bg-gray footer footer-sm">
     <div class="container">
 
 
@@ -112,6 +122,7 @@
 
 <!-- Back to top -->
 <a href="#" class="back-to-top"> <i class="zmdi zmdi-chevron-up"> </i> </a>
+
 
 </body>
 </html>

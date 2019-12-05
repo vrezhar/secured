@@ -11,12 +11,14 @@ import grails.plugin.springsecurity.SpringSecurityService
 import grails.plugin.springsecurity.annotation.Secured
 
 
-class UserController  {
+class UserController
+{
 
     SpringSecurityService springSecurityService
     SignatureVerificationService signatureVerificationService
 
-    static defaultAction = "profile()"
+    static defaultAction = "profile"
+    static scope = 'session'
 
     @Secured(['ROLE_USER','ROLE_ADMIN'])
     def show(long id)

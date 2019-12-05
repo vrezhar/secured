@@ -33,6 +33,10 @@ class UrlMappings {
 
         post "/user/company/sign"(controller: "user", action: "sign") //used by frontend
         "/user/company/confirm"(controller: "user", action: "confirm") //used by frontend
+        "/recover/email"(controller: 'main', action: 'forgotPassword')
+        "/recover/confirm"(controller: 'passwordRecovery', action: 'verify')
+        "/recover/validate"(controller: 'passwordRecovery', action: 'validate')
+        "/password/recover"(controller: 'passwordRecovery', action: 'recover')
         "/test"(controller: "test", action: "index")
         "/register"(controller: 'register',action: 'register')
         "/profile"(controller: 'user', action: 'profile')

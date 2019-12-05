@@ -2,6 +2,7 @@ package com.ttreport.auth
 
 class LoginController extends grails.plugin.springsecurity.LoginController
 {
+    static scope = 'session'
     def auth()
     {
         if (springSecurityService.isLoggedIn()) {

@@ -6,6 +6,7 @@ import grails.plugin.springsecurity.annotation.Secured
 @Secured(['permitAll'])
 class PasswordRecoveryController {
 
+    static scope = 'session'
     UserInitializerService userInitializer
     UserValidatorService userValidator
     SpringSecurityService springSecurityService
@@ -13,21 +14,20 @@ class PasswordRecoveryController {
     def verify()
     {
         User usr = User.findWhere(mainToken: params.token)
-        if(usr)
+        println(usr)
+        if(!usr)
         {
-            userInitializer.updateToken(usr)
-            flash.redirect = true
-            flash.user = usr
-            render view: 'recoverPassword'
+            render view: '/notFound'
             return
         }
-        render view: '/notFound'
+        render view: 'recoverPassword', model: [command: new PasswordRecoveryCommand(token: usr.mainToken)]
     }
 
     def validate(PasswordRecoveryCommand cmd)
     {
+        println(cmd.password)
+        println(cmd.errors)
         boolean haserrors = false
-        println(request.reader.toString())
         if(!cmd.validate() ){
             haserrors = true
         }
@@ -36,19 +36,43 @@ class PasswordRecoveryController {
         }
         if(cmd.password != cmd.confirm){
             haserrors = true
+            cmd.errors.rejectValue('confirm',"user.password.doesntmatch")
         }
-        return !haserrors
+        if(haserrors){
+            withFormat {
+                this.response.status = 400
+                json{
+                    respond([errors: cmd.errors, status: 400])
+                }
+            }
+        }
+        withFormat {
+            this.response.status = 200
+            json{
+                respond([status: 200])
+            }
+        }
     }
 
     def recover(PasswordRecoveryCommand cmd)
     {
-        if(!flash.redirect){
-            render view: 'notFound'
+        String token = (cmd.token as String)?: params.token
+        if(token == "don't"){
+            render "don't"
             return
         }
-        User user = flash.user as User
+        User user = User.findByMainToken(token)
+        println(cmd.token)
+        println(user?.dateCreated)
+        println(cmd.password)
+        println(cmd.confirm)
+        if(!user){
+            render view: '/notFound'
+            return
+        }
         if(userInitializer.updatePassword(user, cmd.password)){
-            springSecurityService.reauthenticate(user.username,user.password)
+            userInitializer.updateToken(user)
+            springSecurityService.reauthenticate(user.username)
             flash.message = "password changed"
             redirect controller: 'user', action: 'profile'
             return

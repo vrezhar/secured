@@ -14,6 +14,7 @@ import grails.plugin.springsecurity.annotation.Secured
 class RegisterController
 {
 
+    static scope = 'session'
     static defaultAction = "register"
 
     UserInitializerService userInitializer
