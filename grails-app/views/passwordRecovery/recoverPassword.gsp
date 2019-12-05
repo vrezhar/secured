@@ -54,7 +54,7 @@
             <div class="col-lg-12">
                 <div class="home-wrapper">
                     <h3 class="text-center"> Reset your password </h3>
-                    <g:form role="form" id="recovery_form" class="intro-form" method="POST" url="/password/recover">
+                    <g:form role="form" id="recovery_form" class="intro-form" method="POST" url="/password/recover?token=${command?.token?: "null"}">
 
                         <div class="form-group">
                             <g:passwordField type="password" class="form-control form-control-lg" name="password" id="password" value="${command?.password}" placeholder="Password"></g:passwordField>
