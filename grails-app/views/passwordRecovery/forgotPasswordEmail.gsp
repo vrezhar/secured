@@ -58,7 +58,7 @@
                                 <div class="col-lg-10">
                                     <g:textField type="email" class="form-control form-control-lg" name="email" id="email" value="${command?.email}" placeholder="Email"></g:textField>
                                     <label class="error" id="username_errors" style="visibility: visible; display: inline-block">
-
+                                    
                                     </label>
                                 </div>
                                 <div class="col-lg-2">

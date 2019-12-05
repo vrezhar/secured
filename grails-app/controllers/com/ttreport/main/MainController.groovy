@@ -121,7 +121,7 @@ class MainController
             println('command not validated')
             cmd?.errors?.rejectValue('email','Entered email is invalid')
             errorCommand = cmd
-            redirect action: 'forgotPasswordEmail'
+            render view: 'registrationError'
             return
         }
         String text = "<html><p>Please Follow this link to reset your password</p><p><a href = 'www.ttreport.ru/recover/confirm?token=${User.findByUsername(cmd.email).mainToken}'>www.ttreport.ru/recover/confirm?token=${User.findByUsername(cmd.email).mainToken}</a></p></html>"
