@@ -53,6 +53,9 @@
                     <p class="title-alt">
                         Account Info
                     </p>
+                    <g:if test='${flash.message}'>
+                        <div class="profile_message" id="profile_message" style="text-align: center">${flash.message}</div>
+                    </g:if>
                     <div class="border"></div>
                 </div>
             </div>

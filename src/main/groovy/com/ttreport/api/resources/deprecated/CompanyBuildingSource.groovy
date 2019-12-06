@@ -8,14 +8,14 @@ class CompanyBuildingSource implements Validateable
 
     String mainToken
     String companyToken
-    String companyId
+    String inn
     String address
 
     static constraints = {
         companyToken nullable: true, blank: true
         mainToken nullable: true, blank: true
         address nullable: false, blank: false
-        companyId nullable: false, blank: false
+        inn nullable: false, blank: false
     }
 
 }

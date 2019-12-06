@@ -8,10 +8,10 @@ class ShipmentDocumentCommand extends GenericDocumentCommand
 {
     String transfer_date = "2019"
     String turnover_type = "test"
-    String owner = null
-    String owner_inn = null
-    String receiver_inn = ""
-    String receiver = ""
+    String owner = "test"
+    String owner_inn = "test"
+    String receiver_inn = "test"
+    String receiver = "test"
     String sender_inn = "test"
     String sender = "test"
     String withdrawal_type = "test"

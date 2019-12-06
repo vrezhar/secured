@@ -13,8 +13,7 @@ class Company implements  Serializable
 
     private static final long serialVersionUID = 3L
 
-    String address
-    String companyId
+    String address = "Terra"
     String inn = "000052520"
     String name = "OOO TEST"
     String token = UUID.randomUUID().toString()
@@ -24,12 +23,12 @@ class Company implements  Serializable
 
     boolean hasProduct(Products products)
     {
-        return this.products.contains(products)
+        return !products ? false : this.products?.contains(products)
     }
 
     boolean hasBarCode(BarCode barCode)
     {
-        if(barCode.dateDeleted){
+        if(barCode?.dateDeleted){
             return false
         }
         for(product in products) {
@@ -46,7 +45,6 @@ class Company implements  Serializable
     static constraints = {
         token nullable: false, blank: false, unique: true
         address nullable: false, blank: false
-        companyId nullable: false, blank: false
         inn nullable: false, blank: false
         name nullable: false, blank: false
     }

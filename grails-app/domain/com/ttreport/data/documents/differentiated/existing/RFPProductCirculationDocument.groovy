@@ -22,6 +22,6 @@ class RFPProductCirculationDocument extends Document
     }
 
     static constraints = {
-        documentNumber nullable: true, blank: true
+
     }
 }

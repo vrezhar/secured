@@ -36,7 +36,7 @@ class CompanyService extends ApplicationConfiguration
         }
         ServerLogger.log("trying to save a company")
         Company company = new Company(address: src.address,
-                                      companyId: src.companyId,
+                                      inn: src.inn,
                                       user: user)
         if(company.validate())
         {

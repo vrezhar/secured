@@ -99,10 +99,10 @@ class ProductCommand implements Validateable
                 if (!exists && object?.action == "DELETE") {
                     return 'command.code.notfound'
                 }
-                if (exists && object?.action != "DELETE" && !exists.dateDeleted) {
+                if (exists && object?.action != "DELETE" && !exists?.dateDeleted) {
                     return 'command.code.duplicate'
                 }
-                if (exists && exists?.dateDeleted) {
+                if (exists && exists?.dateDeleted && object?.action == "DELETE") {
                     return 'command.code.deleted'
                 }
                 if (exists && object?.action != "SAVE") {

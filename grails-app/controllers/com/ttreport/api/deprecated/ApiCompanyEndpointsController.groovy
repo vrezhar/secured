@@ -30,7 +30,7 @@ class ApiCompanyEndpointsController extends RestfulController<CompanyBuildingSou
     {
         def response = companyService.save(src)
         ServerLogger.print_logs()
-        println("command object: {'${src.mainToken}', '${src.address}', '${src.companyId}'}")
+        println("command object: {'${src.mainToken}', '${src.address}', '${src.inn}'}")
         ServerLogger.cleanup()
         withFormat {
             this.response.status = (response.status as int)

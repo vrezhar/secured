@@ -24,6 +24,8 @@ class DocumentService extends ProductsService
         document.documentNumber = cmd.document_number
         document.releaseOrderNumber = cmd.release_order_number
         document.acceptanceDate = cmd.acceptance_date
+        document.tradeOwnerName = cmd.trade_owner_name?: document.tradeOwnerInn
+        document.tradeOwnerInn = cmd.trade_owner_inn?: document.tradeOwnerInn
         document.tradeSenderInn = cmd.trade_sender_inn
         document.tradeSenderName = cmd.trade_sender_name
         document.tradeRecipientInn = cmd.trade_recipient_inn

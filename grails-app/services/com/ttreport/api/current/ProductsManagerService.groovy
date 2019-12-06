@@ -102,7 +102,7 @@ class ProductsManagerService extends DocumentService
                 return dandr
             }
             document.addToBarCodes(barCode)
-            item.id = barCode.products.id
+//            item.id = barCode.products.id
             ServerLogger.log("found product with code ${item.id}, belonging to company with id ${company.companyId}, trying to delete")
             response.accept(item)
         }

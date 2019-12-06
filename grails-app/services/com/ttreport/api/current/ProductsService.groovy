@@ -108,6 +108,8 @@ class ProductsService extends ValidationErrorResolverService
             ServerLogger.log("barcode with uit code ${cmd.uit_code} and uitu code ${cmd.uitu_code} not found in ownership of product ${products.id}, nothing updated, exiting ship()")
             throw new Exception("Bar code not owned by product")
         }
+        products.barCodes.remove(barCode)
+        barCode.products = null
         barCode.dateDeleted = new Date()
         barCode.save()
         ServerLogger.log("shipping barcode with uit code ${barCode.uitCode} and uitu code ${barCode.uituCode}, saving changes, exiting ship()")

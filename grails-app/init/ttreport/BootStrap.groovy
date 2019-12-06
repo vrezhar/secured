@@ -47,15 +47,15 @@ class BootStrap {
             }
             user.save()
             admin.save()
-            Company company = Company.findWhere(address: "Komitas", companyId: "Initial", user: admin)
-            Company test = Company.findWhere(address: "Komitas", companyId: "test", user: user)
+            Company company = Company.findWhere(address: "Komitas", user: admin)
+            Company test = Company.findWhere(address: "Komitas", user: user)
             if (!test) {
-                test = new Company(address: "Komitas", companyId: "Initial", token: "test", user: user)
+                test = new Company(address: "Komitas", token: "test", user: user)
                 user.addToCompanies(test)
                 test.save()
             }
             if (!company) {
-                company = new Company(address: "Komitas", companyId: "Initial", user: admin)
+                company = new Company(address: "Komitas", user: admin)
                 admin.addToCompanies(company)
                 company.save(true)
             }
