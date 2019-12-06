@@ -235,7 +235,7 @@
 
 
 <!-- Back to top -->
-<a href="#" class="back-to-top"> <i class="zmdi zmdi-chevron-up"> </i> </a>
+%{--<a href="#" class="back-to-top"> <i class="zmdi zmdi-chevron-up"> </i> </a>--}%
 <asset:javascript src="signature/verify.js"></asset:javascript>
 <asset:javascript src="signature/onInput.js"></asset:javascript>
 <asset:javascript src="signature/loader.js"></asset:javascript>

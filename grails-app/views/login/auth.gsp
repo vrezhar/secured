@@ -113,7 +113,7 @@
 
                             </div>
                         </div>
-                        <input type="submit" class="class=btn btn-primary btn-shadow btn-rounded w-lg" style="width: 90%; margin-left: 5%" id="submit" value= <g:message code="website.log.in.message"></g:message>/>
+                        <input type="submit" class="class=btn btn-primary btn-shadow btn-rounded w-lg" style="width: 90%; margin-left: 5%" id="submit" value= <g:message code="website.log.in.message"></g:message>>
                     </form>
 %{--                    <g:form role="form" id="register_form" class="intro-form" method="POST" url="/register/confirm">--}%
 
@@ -471,6 +471,6 @@
 
 
 <!-- Back to top -->
-<a href="#" class="back-to-top"> <i class="zmdi zmdi-chevron-up"> </i> </a>
+%{--<a href="#" class="back-to-top"> <i class="zmdi zmdi-chevron-up"> </i> </a>--}%
 </body>
 </html>

@@ -14,7 +14,7 @@
     <title></title>
 </head>
 
-<body>
+<body data-spy="scroll" data-target="#navbar-menu">
 <nav class="navbar navbar-expand-lg fixed-top navbar-custom sticky sticky-dark">
     <div class="container">
     <!-- LOGO -->
@@ -130,7 +130,7 @@
 
 <asset:javascript src="recovery/async_validate.js"></asset:javascript>
 <!-- Back to top -->
-<a href="#" class="back-to-top"> <i class="zmdi zmdi-chevron-up"> </i> </a>
+%{--<a href="#" class="back-to-top"> <i class="zmdi zmdi-chevron-up"> </i> </a>--}%
 
 </body>
 </html>

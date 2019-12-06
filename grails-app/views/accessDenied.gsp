@@ -1,15 +1,15 @@
 <%--
   Created by IntelliJ IDEA.
   User: vrezh
-  Date: 04.12.19
-  Time: 22:30
+  Date: 06.12.19
+  Time: 16:07
 --%>
 
 <%@ page contentType="text/html;charset=UTF-8" %>
 <html>
 <head>
     <meta name="layout" content="${gspLayout ?: 'main'}"/>
-    <title>Internal Server Error</title>
+    <title>Access Denied</title>
 </head>
 
 <body>
@@ -20,10 +20,10 @@
             <div class="col-lg-12">
                 <div class="home-wrapper">
                     <h1>
-                        <span class="text-colored"><g:message code="website.error.505"></g:message></span>
+                        <span class="text-colored"><g:message code="website.error.403"></g:message></span>
                     </h1>
                     <h1>
-                        <g:message code="website.error.505.message"></g:message>
+                        <g:message code="website.error.403.message"></g:message>
                     </h1>
                     <div class="clearfix"></div>
                 </div><!-- home wrapper -->

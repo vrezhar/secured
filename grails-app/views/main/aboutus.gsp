@@ -4,8 +4,6 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="">
-    <meta name="author" content="Coderthemes">
     <meta name="layout" content="${gspLayout ?: 'main'}"/>
 
     <!-- Favicon icon -->
@@ -300,7 +298,7 @@
 <!-- END FOOTER -->
 
 <!-- Back to top -->
-<a href="#" class="back-to-top"> <i class="zmdi zmdi-chevron-up"> </i> </a>
+%{--<a href="#" class="back-to-top"> <i class="zmdi zmdi-chevron-up"> </i> </a>--}%
 
 <script>
     /* ==============================================

@@ -8,10 +8,11 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
 <html>
 <head>
+    <meta name="layout" content="${gspLayout ?: 'main'}"/>
     <title></title>
 </head>
 
-<body>
+<body data-spy="scroll" data-target="#navbar-menu">
 <!-- STRAT NAVBAR -->
 <nav class="navbar navbar-expand-lg fixed-top navbar-custom sticky sticky-dark">
     <div class="container">
@@ -114,7 +115,7 @@
 
 
 <!-- Back to top -->
-<a href="#" class="back-to-top"> <i class="zmdi zmdi-chevron-up"> </i> </a>
+%{--<a href="#" class="back-to-top"> <i class="zmdi zmdi-chevron-up"> </i> </a>--}%
 
 </body>
 </html>
