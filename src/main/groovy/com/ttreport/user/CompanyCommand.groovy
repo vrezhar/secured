@@ -4,11 +4,11 @@ import grails.validation.Validateable
 
 class CompanyCommand implements Validateable
 {
-    String companyId
+    String inn
     String address
 
     static constraints = {
         address nullable: false, blank: false
-        companyId nullable: false, blank: false
+        inn nullable: false, blank: false
     }
 }

@@ -61,7 +61,7 @@ class ProductsService extends ValidationErrorResolverService
     BarCode save(ProductCommand cmd, Company company) throws Exception
     {
         ServerLogger.log("save() called")
-        ServerLogger.log("trying to save product with code ${cmd.id}, belonging to company with id ${company.companyId}")
+        ServerLogger.log("trying to save product with code ${cmd.id}, belonging to company with id ${company.inn}")
         Products products = Products.findWhere(cost: cmd.cost, tax: cmd.tax, description: cmd.product_description, company: company)
         if(products)
         {
@@ -101,18 +101,18 @@ class ProductsService extends ValidationErrorResolverService
         Products products = Products.get(cmd.id)
         BarCode barCode = BarCode.findWhere(uitCode: cmd.uit_code?: null, uituCode: cmd.uitu_code?: null)
         if(!barCode) {
-            ServerLogger.log("barcode with uit code ${cmd.uit_code} and uitu code ${cmd.uitu_code} not found, nothing updated, exiting ship()")
+            ServerLogger.log("barcode with uit code ${cmd.uit_code} and uitu code ${cmd.uitu_code} not found, nothing updated, exiting delete()")
             throw new Exception("Barcode not found")
         }
         if(!products.hasBarcode(barCode)){
-            ServerLogger.log("barcode with uit code ${cmd.uit_code} and uitu code ${cmd.uitu_code} not found in ownership of product ${products.id}, nothing updated, exiting ship()")
+            ServerLogger.log("barcode with uit code ${cmd.uit_code} and uitu code ${cmd.uitu_code} not found in ownership of product ${products.id}, nothing updated, exiting delete()")
             throw new Exception("Bar code not owned by product")
         }
         products.barCodes.remove(barCode)
         barCode.products = null
         barCode.dateDeleted = new Date()
         barCode.save()
-        ServerLogger.log("shipping barcode with uit code ${barCode.uitCode} and uitu code ${barCode.uituCode}, saving changes, exiting ship()")
+        ServerLogger.log("shipping barcode with uit code ${barCode.uitCode} and uitu code ${barCode.uituCode}, saving changes, exiting delete()")
         return barCode
     }
 }
