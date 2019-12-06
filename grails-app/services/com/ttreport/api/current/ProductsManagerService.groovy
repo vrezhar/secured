@@ -33,7 +33,7 @@ class ProductsManagerService extends DocumentService
         document.company = company
         for(item in cmd.products) {
             if (item.action == "UPDATE") {
-                ServerLogger.log("found product with code ${item.id}, belonging to company with id ${company.companyId}")
+                ServerLogger.log("found product with code ${item.id}, belonging to company with inn ${company.inn}")
                 BarCode barCode
                 try{
                     barCode = update(item)
@@ -47,11 +47,11 @@ class ProductsManagerService extends DocumentService
                 document.addToBarCodes(barCode) // necessary,belongsTo in BarCode is not defined
                 item.id = barCode.products.id
                 response.accept(item)
-                ServerLogger.log("adding product with code ${item.id}, belonging to company with id ${company.companyId}, to the current document")
+                ServerLogger.log("adding product with code ${item.id}, belonging to company with id ${company.inn}, to the current document")
                 continue
             }
 
-            ServerLogger.log("product with code ${item.id}, belonging to company with id ${company.companyId} not found, trying to save")
+            ServerLogger.log("product with code ${item.id}, belonging to company with id ${company.inn} not found, trying to save")
             BarCode barCode
             try{
                 barCode = save(item, company)
@@ -64,7 +64,7 @@ class ProductsManagerService extends DocumentService
             }
             document.addToBarCodes(barCode) // necessary,belongsTo in BarCode is not defined
             item.id = barCode.products.id
-            ServerLogger.log("product with code ${item.id}, belonging to company with id ${company.companyId} saved, adding to current document")
+            ServerLogger.log("product with code ${item.id}, belonging to company with id ${company.inn} saved, adding to current document")
             response.accept(item)
         }
 
@@ -103,7 +103,7 @@ class ProductsManagerService extends DocumentService
             }
             document.addToBarCodes(barCode)
 //            item.id = barCode.products.id
-            ServerLogger.log("found product with code ${item.id}, belonging to company with id ${company.companyId}, trying to delete")
+            ServerLogger.log("found product with code ${item.id}, belonging to company with id ${company.inn}, trying to delete")
             response.accept(item)
         }
         if(!document.barCodes || document.barCodes?.size() == 0)
@@ -131,7 +131,7 @@ class ProductsManagerService extends DocumentService
         Document document = createMarketEntranceDocumentMock(cmd)
         for(item in cmd.products) {
             if (item.action == "UPDATE") {
-                ServerLogger.log("found product with code ${item.id}, belonging to company with id ${company.companyId}")
+                ServerLogger.log("found product with code ${item.id}, belonging to company with id ${company.inn}")
                 BarCode barCode
                 try{
                     barCode = update(item)
@@ -145,11 +145,11 @@ class ProductsManagerService extends DocumentService
                 document.addToBarCodes(barCode) // necessary,belongsTo in BarCode is not defined
                 item.id = barCode.products.id
                 response.accept(item)
-                ServerLogger.log("adding product with code ${item.id}, belonging to company with id ${company.companyId}, to the current document")
+                ServerLogger.log("adding product with code ${item.id}, belonging to company with id ${company.inn}, to the current document")
                 continue
             }
 
-            ServerLogger.log("product with code ${item.id}, belonging to company with id ${company.companyId} not found, trying to save")
+            ServerLogger.log("product with code ${item.id}, belonging to company with id ${company.inn} not found, trying to save")
             BarCode barCode
             try{
                 barCode = save(item, company)
@@ -162,7 +162,7 @@ class ProductsManagerService extends DocumentService
             }
             document.addToBarCodes(barCode) // necessary,belongsTo in BarCode is not defined
             item.id = barCode.products.id
-            ServerLogger.log("product with code ${item.id}, belonging to company with id ${company.companyId} saved, adding to current document")
+            ServerLogger.log("product with code ${item.id}, belonging to company with id ${company.inn} saved, adding to current document")
             response.accept(item)
         }
 
@@ -200,7 +200,7 @@ class ProductsManagerService extends DocumentService
             }
             document.addToBarCodes(barCode)
             item.id = barCode.products.id
-            ServerLogger.log("found product with code ${item.id}, belonging to company with id ${company.companyId}, trying to delete")
+            ServerLogger.log("found product with code ${item.id}, belonging to company with id ${company.inn}, trying to delete")
             response.accept(item)
         }
         dandr.response = response.getAsMap()
@@ -256,7 +256,7 @@ class ProductsManagerService extends DocumentService
         if(shouldSave) {
             for (product in cmd.products_list) {
                 if(product.action == "UPDATE") {
-                    ServerLogger.log("found product with code ${product.id}, belonging to company with id ${company.companyId}")
+                    ServerLogger.log("found product with code ${product.id}, belonging to company with id ${company.inn}")
                     BarCode barCode
                     try{
                         barCode = update(product)
@@ -270,11 +270,11 @@ class ProductsManagerService extends DocumentService
                     document.addToBarCodes(barCode) // necessary,belongsTo in BarCode is not defined
                     product.id = barCode.products.id
                     response.accept(product)
-                    ServerLogger.log("adding product with code ${product.id}, belonging to company with id ${company.companyId}, to the current document")
+                    ServerLogger.log("adding product with code ${product.id}, belonging to company with id ${company.inn}, to the current document")
                     continue
                 }
 
-                ServerLogger.log("product with code ${product.id}, belonging to company with id ${company.companyId} not found, trying to save")
+                ServerLogger.log("product with code ${product.id}, belonging to company with id ${company.inn} not found, trying to save")
                 BarCode barCode
                 try{
                     barCode = save(product, company)
@@ -287,7 +287,7 @@ class ProductsManagerService extends DocumentService
                 }
                 document.addToBarCodes(barCode) // necessary,belongsTo in BarCode is not defined
                 product.id = barCode.products.id
-                ServerLogger.log("product with code ${product.id}, belonging to company with id ${company.companyId} saved, adding to current document")
+                ServerLogger.log("product with code ${product.id}, belonging to company with id ${company.inn} saved, adding to current document")
                 response.accept(product)
             }
         }
