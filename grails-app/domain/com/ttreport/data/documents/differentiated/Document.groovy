@@ -1,9 +1,9 @@
 package com.ttreport.data.documents.differentiated
 
 import com.ttreport.api.resources.current.DocumentForm
-import com.ttreport.data.BarCode
+import com.ttreport.data.products.BarCode
 import com.ttreport.data.Company
-import com.ttreport.data.MarketEntranceBarCode
+import com.ttreport.data.products.MarketEntranceBarCode
 import com.ttreport.data.documents.differentiated.existing.MarketEntranceDocument
 import grails.compiler.GrailsCompileStatic
 

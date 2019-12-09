@@ -11,6 +11,8 @@ import com.ttreport.mail.strategy.senders.SendViaPostMarkAPI
 import grails.plugin.springsecurity.SpringSecurityService
 import grails.plugin.springsecurity.annotation.Secured
 
+import java.security.cert.X509Certificate
+
 
 @Secured(['ROLE_ADMIN','ROLE_USER'])
 class MainController
@@ -59,6 +61,7 @@ class MainController
     @Secured(['permitAll'])
     def home()
     {
+        //println((X509Certificate[])request.getAttribute("javax.servlet.request.X509Certificate"))
         render view: "default"
     }
 
@@ -136,7 +139,6 @@ class MainController
             .onErrors { Mail mail, Exception e ->
                 RejectEmail.withMessage(e.message).handleErrors(mail,e)
                 redirect controller: 'main', action: 'registrationError'
-                return null
             }
             .withMessage(text)
             .send()

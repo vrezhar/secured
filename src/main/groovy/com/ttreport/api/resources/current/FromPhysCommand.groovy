@@ -1,10 +1,5 @@
 package com.ttreport.api.resources.current
 
-import com.ttreport.data.Company
-import com.ttreport.data.Products
-import com.ttreport.data.documents.differentiated.Document
-import grails.validation.Validateable
-
 class FromPhysCommand extends DocumentCommand
 {
     String participant_inn

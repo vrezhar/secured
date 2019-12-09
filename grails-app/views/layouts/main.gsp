@@ -53,8 +53,20 @@
     <asset:javascript src="owl.carousel.min.js"></asset:javascript>
     <asset:javascript src="isotope.pkgd.min.js"></asset:javascript>
     <asset:javascript src="masonry.pkgd.min.js"></asset:javascript>
-    <asset:javascript src="npm.js"></asset:javascript>
+%{--    <asset:javascript src="npm.js"></asset:javascript>--}%
     <asset:javascript src="imagesloaded.pkgd.min.js"></asset:javascript>
+%{--    <script src="/assets/javascripts/jquery.min.js"></script>--}%
+%{--    <script src="/assets/javascripts/bootstrap.bundle.min.js"></script>--}%
+%{--    <script src="/assets/javascripts/scrollspy.min.js"></script>--}%
+%{--    <!-- Jquery easing -->--}%
+%{--    <script src="/assets/javascripts/jquery.easing.min.js"></script>--}%
+%{--    <script src="/assets/javascripts/wow.min.js"></script>--}%
+
+%{--    <!--sticky header-->--}%
+%{--    <script src="/assets/javascripts/jquery.sticky.js"></script>--}%
+
+%{--    <!--common script for all pages-->--}%
+%{--    <script src="/assets/javascripts/jquery.app.js"></script>--}%
 
     <g:layoutHead/>
 </head>

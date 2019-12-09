@@ -7,11 +7,11 @@ import com.ttreport.api.resources.current.MarketEntranceCommand
 import com.ttreport.api.resources.current.ProductCommand
 import com.ttreport.api.resources.current.ReleaseCommand
 import com.ttreport.api.resources.current.ShipmentDocumentCommand
-import com.ttreport.data.BarCode
+import com.ttreport.data.products.BarCode
 import com.ttreport.logs.ServerLogger
 import com.ttreport.api.response.current.Response
 import com.ttreport.data.Company
-import com.ttreport.data.Products
+import com.ttreport.data.products.Products
 import grails.gorm.transactions.Transactional
 import org.springframework.context.MessageSource
 

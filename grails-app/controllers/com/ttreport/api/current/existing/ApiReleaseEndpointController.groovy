@@ -1,4 +1,5 @@
-package com.ttreport.api.current
+package com.ttreport.api.current.existing
+
 
 import com.ttreport.api.resources.current.DocumentCommand
 import com.ttreport.api.resources.current.ReleaseCommand

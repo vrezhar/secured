@@ -1,5 +1,6 @@
 package com.ttreport.api.current
 
+import com.ttreport.api.current.existing.ApiFPPEndpointController
 import grails.testing.web.controllers.ControllerUnitTest
 import spock.lang.Specification
 

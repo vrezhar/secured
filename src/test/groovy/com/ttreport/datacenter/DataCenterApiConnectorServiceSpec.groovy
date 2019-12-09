@@ -4,9 +4,9 @@ import com.ttreport.api.types.DocumentType
 import com.ttreport.auth.Role
 import com.ttreport.auth.User
 import com.ttreport.auth.UserRole
-import com.ttreport.data.BarCode
+import com.ttreport.data.products.BarCode
 import com.ttreport.data.Company
-import com.ttreport.data.Products
+import com.ttreport.data.products.Products
 import com.ttreport.data.documents.differentiated.Document
 import com.ttreport.data.documents.differentiated.GenericDocument
 import com.ttreport.data.documents.differentiated.existing.AcceptanceDocument

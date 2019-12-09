@@ -1,6 +1,7 @@
-package com.ttreport.data
+package com.ttreport.data.products
 
-import com.ttreport.api.resources.current.ProductCommand
+import com.ttreport.data.Company
+import com.ttreport.data.products.BarCode
 import grails.compiler.GrailsCompileStatic
 import groovy.transform.EqualsAndHashCode
 import groovy.transform.ToString

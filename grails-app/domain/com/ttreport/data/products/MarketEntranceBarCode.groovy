@@ -1,6 +1,6 @@
-package com.ttreport.data
+package com.ttreport.data.products
 
-import com.ttreport.data.BarCode
+import com.ttreport.data.products.BarCode
 
 class MarketEntranceBarCode extends BarCode
 {

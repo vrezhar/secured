@@ -1,5 +1,6 @@
 package com.ttreport.api.current
 
+import com.ttreport.api.current.existing.DocumentService
 import com.ttreport.api.resources.current.AcceptanceDocumentCommand
 import com.ttreport.api.resources.current.DocumentAndResponse
 import com.ttreport.api.resources.current.FromPhysCommand
@@ -7,9 +8,11 @@ import com.ttreport.api.resources.current.MarketEntranceCommand
 import com.ttreport.api.resources.current.ReleaseCommand
 import com.ttreport.api.resources.current.ShipmentDocumentCommand
 import com.ttreport.api.response.current.Response
-import com.ttreport.data.BarCode
+import com.ttreport.data.documents.differentiated.remains.RemainDescriptionDocument
+import com.ttreport.data.documents.differentiated.remains.RemainsRegistryDocument
+import com.ttreport.data.products.BarCode
 import com.ttreport.data.Company
-import com.ttreport.data.Products
+import com.ttreport.data.products.Products
 import com.ttreport.data.documents.differentiated.Document
 import com.ttreport.data.documents.differentiated.existing.RFIEntranceDocument
 import com.ttreport.logs.ServerLogger
@@ -300,6 +303,16 @@ class ProductsManagerService extends DocumentService
         dandr.document = document
         dandr.response = response.getAsMap()
         return  dandr
+    }
+
+    RemainDescriptionDocument describeRemains()
+    {
+        return null
+    }
+
+    RemainsRegistryDocument registerRemains()
+    {
+        return null
     }
 //    private DocumentAndResponse doInitialValidation(DocumentCommand cmd)
 //    {

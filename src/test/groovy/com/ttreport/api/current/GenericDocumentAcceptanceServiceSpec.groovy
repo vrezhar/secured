@@ -1,6 +1,6 @@
 package com.ttreport.api.current
 
-import com.ttreport.api.current.DocumentAcceptanceService
+import com.ttreport.api.current.existing.DocumentAcceptanceService
 import grails.testing.services.ServiceUnitTest
 import spock.lang.Specification
 

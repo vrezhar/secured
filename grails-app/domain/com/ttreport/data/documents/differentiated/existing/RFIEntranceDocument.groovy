@@ -1,8 +1,6 @@
 package com.ttreport.data.documents.differentiated.existing
 
-import com.ttreport.api.resources.current.DocumentForm
-import com.ttreport.data.BarCode
-import com.ttreport.data.Company
+
 import com.ttreport.data.documents.differentiated.Document
 
 class RFIEntranceDocument extends Document

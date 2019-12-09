@@ -5,12 +5,10 @@ import com.ttreport.api.resources.current.DocumentCommand
 import com.ttreport.api.resources.current.ExtendedProductCommand
 import com.ttreport.api.resources.current.ProductCommand
 import com.ttreport.api.resources.current.ShipmentDocumentCommand
-import com.ttreport.api.types.CommandType
 import com.ttreport.api.types.DocumentType
 import com.ttreport.api.types.ProductType
-import com.ttreport.data.BarCode
+import com.ttreport.data.products.BarCode
 import com.ttreport.data.Company
-import com.ttreport.data.Products
 import com.ttreport.data.documents.differentiated.Document
 import com.ttreport.data.documents.differentiated.existing.AcceptanceDocument
 import com.ttreport.data.documents.differentiated.existing.ConsumerReleaseDocument

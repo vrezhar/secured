@@ -1,6 +1,6 @@
 package com.ttreport.auth
 
-import com.ttreport.data.BarCode
+import com.ttreport.data.products.BarCode
 import grails.testing.gorm.DomainUnitTest
 import spock.lang.Specification
 

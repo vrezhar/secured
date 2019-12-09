@@ -2,10 +2,10 @@ package com.ttreport.api.current
 
 import com.ttreport.api.resources.current.ExtendedProductCommand
 import com.ttreport.api.resources.current.ProductCommand
-import com.ttreport.data.BarCode
-import com.ttreport.data.MarketEntranceBarCode
+import com.ttreport.data.products.BarCode
+import com.ttreport.data.products.MarketEntranceBarCode
 import com.ttreport.data.Company
-import com.ttreport.data.Products
+import com.ttreport.data.products.Products
 import com.ttreport.logs.ServerLogger
 import grails.gorm.transactions.Transactional
 

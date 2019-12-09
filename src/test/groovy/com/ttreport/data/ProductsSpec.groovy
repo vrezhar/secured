@@ -1,5 +1,6 @@
 package com.ttreport.data
 
+import com.ttreport.data.products.Products
 import grails.test.hibernate.HibernateSpec
 import grails.testing.gorm.DomainUnitTest
 

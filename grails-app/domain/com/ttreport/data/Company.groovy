@@ -2,7 +2,8 @@ package com.ttreport.data
 
 import com.ttreport.auth.User
 import com.ttreport.data.documents.differentiated.Document
-import com.ttreport.data.documents.differentiated.GenericDocument
+import com.ttreport.data.products.BarCode
+import com.ttreport.data.products.Products
 import grails.compiler.GrailsCompileStatic
 import groovy.transform.EqualsAndHashCode
 

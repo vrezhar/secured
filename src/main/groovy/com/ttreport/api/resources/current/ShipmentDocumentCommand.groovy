@@ -7,7 +7,7 @@ import grails.compiler.GrailsCompileStatic
 class ShipmentDocumentCommand extends GenericDocumentCommand
 {
     String transfer_date = "2019"
-    String turnover_type = "test"
+    String turnover_type = "SALE"
     String owner = "test"
     String owner_inn = "test"
     String receiver_inn = "test"
@@ -22,7 +22,10 @@ class ShipmentDocumentCommand extends GenericDocumentCommand
     static  constraints = {
         importFrom GenericDocumentCommand
         transfer_date nullable: false, blank: false
-        turnover_type nullable: false, blank: false
+        turnover_type validator: { String value, ShipmentDocumentCommand object ->
+            if(value != "SALE" && value != "COMMISSION" && value != "AGENT" && value != "CONTRACT")
+                return false
+        }
         owner nullable: true, blank: true
         owner_inn nullable: true, blank: true
         receiver nullable: true, validator: { String value, ShipmentDocumentCommand object ->

@@ -5,6 +5,9 @@ import com.ttreport.auth.User
 import com.ttreport.auth.UserRole
 import com.ttreport.data.documents.differentiated.Document
 import com.ttreport.data.documents.differentiated.existing.MarketEntranceDocument
+import com.ttreport.data.products.BarCode
+import com.ttreport.data.products.MarketEntranceBarCode
+import com.ttreport.data.products.Products
 import com.ttreport.logs.ServerLogger
 import grails.test.hibernate.HibernateSpec
 

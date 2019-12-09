@@ -1,7 +1,7 @@
 package com.ttreport.api.resources.current
 
-import com.ttreport.data.BarCode
-import com.ttreport.data.Products
+import com.ttreport.data.products.BarCode
+import com.ttreport.data.products.Products
 import com.ttreport.logs.ServerLogger
 import grails.compiler.GrailsCompileStatic
 import grails.validation.Validateable

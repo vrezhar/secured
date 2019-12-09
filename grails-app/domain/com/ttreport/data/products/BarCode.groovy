@@ -1,4 +1,4 @@
-package com.ttreport.data
+package com.ttreport.data.products
 
 
 import grails.compiler.GrailsCompileStatic

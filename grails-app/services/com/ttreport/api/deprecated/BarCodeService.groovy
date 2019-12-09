@@ -2,9 +2,9 @@ package com.ttreport.api.deprecated
 
 import com.ttreport.api.resources.deprecated.BarCodeRegisteringSource
 import com.ttreport.configuration.ApplicationConfiguration
-import com.ttreport.data.BarCode
+import com.ttreport.data.products.BarCode
 import com.ttreport.data.Company
-import com.ttreport.data.Products
+import com.ttreport.data.products.Products
 import com.ttreport.logs.ServerLogger
 import grails.gorm.transactions.Transactional
 

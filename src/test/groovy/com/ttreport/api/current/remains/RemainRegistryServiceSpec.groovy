@@ -1,10 +1,9 @@
-package com.ttreport.api.current
+package com.ttreport.api.current.remains
 
-import com.ttreport.api.current.existing.EnterFPPDocumentService
 import grails.testing.services.ServiceUnitTest
 import spock.lang.Specification
 
-class EnterFPPDocumentServiceSpec extends Specification implements ServiceUnitTest<EnterFPPDocumentService>{
+class RemainRegistryServiceSpec extends Specification implements ServiceUnitTest<RemainRegistryService>{
 
     def setup() {
     }

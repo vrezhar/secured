@@ -1,9 +1,9 @@
 package com.ttreport.logs
 
 import com.ttreport.auth.User
-import com.ttreport.data.BarCode
+import com.ttreport.data.products.BarCode
 import com.ttreport.data.Company
-import com.ttreport.data.Products
+import com.ttreport.data.products.Products
 import grails.artefact.DomainClass
 import grails.validation.Validateable
 

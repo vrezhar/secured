@@ -1,5 +1,6 @@
-package com.ttreport.api.current
+package com.ttreport.api.current.existing
 
+import com.ttreport.api.current.ProductsManagerService
 import com.ttreport.api.resources.current.DocumentAndResponse
 import com.ttreport.api.resources.current.FromPhysCommand
 import com.ttreport.data.documents.differentiated.Document
