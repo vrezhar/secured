@@ -61,9 +61,8 @@ class ValidationErrorResolverService
 
     protected static void setActions(DocumentCommand cmd) throws Exception{
         ServerLogger.log("Determining actions for command objects")
-        if(cmd instanceof AcceptanceDocumentCommand){
-            AcceptanceDocumentCommand doc = cmd as AcceptanceDocumentCommand
-            for(product in doc.products){
+        if(cmd instanceof AcceptanceDocumentCommand || cmd instanceof MarketEntranceCommand){
+            for(product in cmd.products){
                 if(product.id){
                     ServerLogger.log("Command object number ${product.id} set to be updated with ${product.uitu_code?: product.uit_code}")
                     product.setAction("UPDATE")
@@ -74,35 +73,34 @@ class ValidationErrorResolverService
             }
             return
         }
-        if(cmd instanceof ShipmentDocumentCommand){
-            ShipmentDocumentCommand doc = cmd as ShipmentDocumentCommand
-            for(product in doc.products){
+        if(cmd instanceof ShipmentDocumentCommand || cmd instanceof ReleaseCommand){
+            for(product in cmd.products){
                 ServerLogger.log("code ${product.uitu_code?: product.uit_code} of command object number ${product.id} set to be 'deleted'")
                 product.setAction("DELETE")
             }
             return
         }
-        if(cmd instanceof ReleaseCommand) {
-            ReleaseCommand doc = cmd as ReleaseCommand
-            for(product in doc.products){
-                ServerLogger.log("code ${product.uitu_code?: product.uit_code} of command object number ${product.id} set to be 'deleted'")
-                product.setAction("DELETE")
-            }
-            return
-        }
-        if(cmd instanceof MarketEntranceCommand){
-            MarketEntranceCommand doc = cmd as MarketEntranceCommand
-            for(product in doc.products){
-                if(product.id){
-                    ServerLogger.log("Command object number ${product.id} set to be updated with ${product.uitu_code?: product.uit_code}")
-                    product.setAction("UPDATE")
-                    continue
-                }
-                ServerLogger.log("Command object with description ${product.product_description} set to be saved")
-                product.setAction("SAVE")
-            }
-            return
-        }
+//        if(cmd instanceof ReleaseCommand) {
+//            ReleaseCommand doc = cmd as ReleaseCommand
+//            for(product in doc.products){
+//                ServerLogger.log("code ${product.uitu_code?: product.uit_code} of command object number ${product.id} set to be 'deleted'")
+//                product.setAction("DELETE")
+//            }
+//            return
+//        }
+//        if(cmd instanceof MarketEntranceCommand){
+//            MarketEntranceCommand doc = cmd as MarketEntranceCommand
+//            for(product in doc.products){
+//                if(product.id){
+//                    ServerLogger.log("Command object number ${product.id} set to be updated with ${product.uitu_code?: product.uit_code}")
+//                    product.setAction("UPDATE")
+//                    continue
+//                }
+//                ServerLogger.log("Command object with description ${product.product_description} set to be saved")
+//                product.setAction("SAVE")
+//            }
+//            return
+//        }
         throw new Exception("Invalid document")
     }
 

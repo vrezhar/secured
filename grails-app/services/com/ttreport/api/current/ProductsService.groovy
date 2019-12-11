@@ -45,6 +45,15 @@ class ProductsService extends ValidationErrorResolverService
     {
         ServerLogger.log('update() called')
         Products products = Products.get(cmd.id)
+        if(cmd.product_description){
+            products.description = cmd.product_description
+        }
+        if(cmd.cost){
+            products.cost = cmd.cost
+        }
+        if(cmd.tax){
+            products.tax = cmd.tax
+        }
         BarCode barCode = initializeBarCode(cmd)
         barCode.products = products
         barCode.dateDeleted = null
@@ -99,6 +108,15 @@ class ProductsService extends ValidationErrorResolverService
         ServerLogger.log("delete() called")
         ServerLogger.log("assuming that product corresponding to command object exists")
         Products products = Products.get(cmd.id)
+        if(cmd.product_description){
+            products.description = cmd.product_description
+        }
+        if(cmd.cost){
+            products.cost = cmd.cost
+        }
+        if(cmd.tax){
+            products.tax = cmd.tax
+        }
         BarCode barCode = BarCode.findWhere(uitCode: cmd.uit_code?: null, uituCode: cmd.uitu_code?: null)
         if(!barCode) {
             ServerLogger.log("barcode with uit code ${cmd.uit_code} and uitu code ${cmd.uitu_code} not found, nothing updated, exiting delete()")

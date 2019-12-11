@@ -1,0 +1,6 @@
+package com.ttreport.api.resources.current;
+
+public interface RemainForm extends DocumentForm
+{
+
+}

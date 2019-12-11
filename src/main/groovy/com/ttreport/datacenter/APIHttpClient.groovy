@@ -15,6 +15,9 @@ class APIHttpClient
     String content_type = "application/json"
     String method = "POST"
     String targetUrl
+    Map<String,String> headers = new LinkedHashMap<String,String>()
+    boolean connectingToOMS = false
+    boolean useHttps =false
     int timeout = 10000
 
     static String getToken()
@@ -36,8 +39,13 @@ class APIHttpClient
         tokenLock.unlock()
     }
 
+    void addHeader(String header, String info)
+    {
+        headers.put(header, info)
+    }
 
-    String sendHttpRequest(String url_ = this.targetUrl, String data_ = this.data, String method = this.method, String content_type = this.content_type, int timeout = this.timeout, boolean usehttps = false)
+
+    String sendRequest(String url_ = this.targetUrl, String data_ = this.data, String method = this.method, String content_type = this.content_type, int timeout = this.timeout, boolean usehttps = useHttps)
     throws IOException,SocketTimeoutException,Exception
     {
         if(!url_) {
@@ -56,7 +64,10 @@ class APIHttpClient
             if(content_type) {
                 connection.setRequestProperty("Content-Type", content_type)
             }
-            if(getToken()){
+            headers.each {
+                connection.setRequestProperty(it.key, it.value)
+            }
+            if(getToken() && !connectingToOMS){
                 connection.setRequestProperty("Authorization", "Bearer " + getToken())
             }
             if(timeout){
@@ -71,6 +82,7 @@ class APIHttpClient
                 wr.close()
             }
 
+            println(connection.headerFields)
 
             InputStream is = connection.getInputStream()
             BufferedReader rd = new BufferedReader(new InputStreamReader(is))
@@ -94,12 +106,59 @@ class APIHttpClient
         catch(IOException ioException) {
             ServerLogger.log("input-output exception occurred while sending the request")
             ServerLogger.log_exception(ioException)
-            throw ioException
+            println(connection.responseMessage)
+            InputStream es
+            BufferedReader bufferedReader
+            try {
+                es = connection.getErrorStream()
+                bufferedReader = new BufferedReader(new InputStreamReader(es))
+                StringBuilder errors = new StringBuilder()
+                String line
+                while ((line = bufferedReader.readLine()) != null) {
+                    errors.append(line)
+                    errors.append(System.lineSeparator())
+                }
+                ServerLogger.log("Server returned error: ", errors.toString())
+                return errors.toString()
+            }
+            catch (Exception e){
+                ServerLogger.log_exception(e)
+                ServerLogger.log("exception thrown when trying to read the connection's error stream, rethrowing original exception")
+                throw ioException
+            }
+            finally {
+                if(bufferedReader){
+                    bufferedReader.close()
+                }
+            }
         }
         catch(Exception e) {
             ServerLogger.log("unknown exception occurred while sending the request")
             ServerLogger.log_exception(e)
-            throw e
+            InputStream es
+            BufferedReader bufferedReader
+            try {
+                es = connection.getErrorStream()
+                bufferedReader = new BufferedReader(new InputStreamReader(es))
+                StringBuilder errors = new StringBuilder()
+                String line
+                while ((line = bufferedReader.readLine()) != null) {
+                    errors.append(line)
+                    errors.append(System.lineSeparator())
+                }
+                ServerLogger.log("Server returned error: ", errors.toString())
+                return errors.toString()
+            }
+            catch (Exception nested){
+                ServerLogger.log_exception(nested)
+                ServerLogger.log("exception thrown when trying to read the connection's error stream, rethrowing original exception")
+                throw e
+            }
+            finally {
+                if(bufferedReader != null){
+                    bufferedReader.close()
+                }
+            }
         }
         finally {
             if(connection != null){

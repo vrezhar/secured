@@ -6,6 +6,7 @@ import com.ttreport.auth.User
 import com.ttreport.auth.UserRole
 import com.ttreport.data.products.BarCode
 import com.ttreport.data.Company
+import com.ttreport.data.products.MarketEntranceBarCode
 import com.ttreport.data.products.Products
 import com.ttreport.data.documents.differentiated.Document
 import com.ttreport.data.documents.differentiated.GenericDocument
@@ -18,14 +19,15 @@ import com.ttreport.logs.ServerLogger
 import grails.async.Promise
 import grails.test.hibernate.HibernateSpec
 import grails.testing.services.ServiceUnitTest
+import groovy.json.JsonBuilder
 
 import static grails.async.Promises.task
 
-class DataCenterApiConnectorServiceSpec extends HibernateSpec implements  ServiceUnitTest<DataCenterApiConnectorService>{
+class MTISApiConnectorServiceSpec extends HibernateSpec implements  ServiceUnitTest<MTISApiConnectorService>{
 
     List<Class> getDomainClasses()
     {
-        [Document, GenericDocument, AcceptanceDocument, Company, User, Products, BarCode, UserRole, Role]
+        [Document, GenericDocument, AcceptanceDocument, MarketEntranceDocument, Company, User, Products, BarCode, UserRole, Role]
     }
 
 
@@ -165,5 +167,44 @@ class DataCenterApiConnectorServiceSpec extends HibernateSpec implements  Servic
         }
         expect:
         Document.list()[3].documentId
+    }
+
+    void "test production"()
+    {
+
+        JsonBuilder builder = null
+        byte[] signedCode = null
+        try {
+            BarCode barCode = new MarketEntranceBarCode("uitCode": "0104600840362120212Xg3Cz3KFIjDI",
+                    "uituCode": "",
+                    "tnvedCode": "6401100000",
+                    "certificateDocument": "CONFORMITY_DECLAR",
+                    "certificateDocumentNumber": "FFFFFF",
+                    "certificateDocumentDate": new Date().toInstant().toString())
+            Company company = new Company(inn: "5053032781")
+            Document document = new MarketEntranceDocument("participantInn": "5053032781",
+                    "productionDate": new Date().toInstant().toString(),
+                    "producerInn": "5053032781",
+                    "ownerInn": "5053032781",
+                    "productionType": "OWN_PRODUCTION",
+                    "docType": "Promotion_Inform_Selfmade",
+                    company: company)
+            document.addToBarCodes(barCode)
+            service.sendDocument(document, DocumentType.ENTRANCE)
+            println(document)
+        }
+        catch (Exception e)
+        {
+            println("exception occurred, error message:")
+            println(e.message)
+            println("stack trace:")
+            e.stackTrace.each {
+                println(it.toString())
+            }
+        }
+        println(builder?.toString())
+
+        expect:
+        !null
     }
 }

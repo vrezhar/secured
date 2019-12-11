@@ -8,7 +8,7 @@ import com.ttreport.api.resources.current.MarketEntranceCommand
 import com.ttreport.api.resources.current.ReleaseCommand
 import com.ttreport.api.resources.current.ShipmentDocumentCommand
 import com.ttreport.api.response.current.Response
-import com.ttreport.data.documents.differentiated.remains.RemainDescriptionDocument
+import com.ttreport.data.documents.differentiated.remains.RemainsDescriptionDocument
 import com.ttreport.data.documents.differentiated.remains.RemainsRegistryDocument
 import com.ttreport.data.products.BarCode
 import com.ttreport.data.Company
@@ -305,7 +305,7 @@ class ProductsManagerService extends DocumentService
         return  dandr
     }
 
-    RemainDescriptionDocument describeRemains()
+    RemainsDescriptionDocument describeRemains()
     {
         return null
     }

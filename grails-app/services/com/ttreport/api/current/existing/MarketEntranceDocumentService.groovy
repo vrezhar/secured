@@ -4,14 +4,14 @@ import com.ttreport.api.current.ProductsManagerService
 import com.ttreport.api.resources.current.DocumentAndResponse
 import com.ttreport.api.resources.current.MarketEntranceCommand
 import com.ttreport.data.documents.differentiated.Document
-import com.ttreport.datacenter.DataCenterApiConnectorService
+import com.ttreport.datacenter.MTISApiConnectorService
 import com.ttreport.logs.ServerLogger
 import grails.gorm.transactions.Transactional
 
 @Transactional
 class MarketEntranceDocumentService extends ProductsManagerService
 {
-    DataCenterApiConnectorService dataCenterApiConnectorService
+    MTISApiConnectorService MTISApiConnectorService
 
     Map enterMarket(MarketEntranceCommand cmd)
     {

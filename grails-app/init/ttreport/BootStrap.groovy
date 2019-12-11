@@ -8,7 +8,7 @@ import com.ttreport.auth.UserRole
 import com.ttreport.data.Company
 import com.ttreport.data.documents.differentiated.Document
 import com.ttreport.data.documents.differentiated.existing.*
-import com.ttreport.datacenter.DataCenterApiConnectorService
+import com.ttreport.datacenter.MTISApiConnectorService
 import com.ttreport.logs.ServerLogger
 import grails.async.Promise
 import grails.compiler.GrailsCompileStatic
@@ -21,7 +21,7 @@ import static grails.async.Promises.task
 @GrailsCompileStatic
 class BootStrap {
 
-    DataCenterApiConnectorService dataCenterApiConnectorService
+    MTISApiConnectorService MTISApiConnectorService
 
     def init = {
         servletContext ->
@@ -60,7 +60,7 @@ class BootStrap {
                 company.save(true)
             }
 
-            DataCenterApiConnectorService.updateToken()
+            MTISApiConnectorService.updateToken()
 
             Executors.newScheduledThreadPool(1).scheduleAtFixedRate(new Runnable() {
 

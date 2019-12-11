@@ -13,7 +13,7 @@ import groovy.json.JsonSlurper
 
 
 @Transactional
-class DataCenterApiConnectorService extends SigningService {
+class MTISApiConnectorService extends SigningService {
 
     protected final static String  prod_url = "https://ismp.crpt.ru/api/v3"
     protected final static String test_url = "https://demo.lp.crpt.tech/api/v3"
@@ -103,7 +103,7 @@ class DataCenterApiConnectorService extends SigningService {
         client.content_type = ""
         String randomData
         try{
-            randomData = client.sendHttpRequest()
+            randomData = client.sendRequest()
         }
         catch (Exception e){
             RandomDataRetrievalFailureException exception = new RandomDataRetrievalFailureException(e)
@@ -146,7 +146,7 @@ class DataCenterApiConnectorService extends SigningService {
         client.data = builder.toString()
         String data
         try {
-            data = client.sendHttpRequest()
+            data = client.sendRequest()
         }
         catch (Exception e)
         {
@@ -221,7 +221,7 @@ class DataCenterApiConnectorService extends SigningService {
         return task {
             try {
                 ServerLogger.log("Trying to establish connection to ${client.targetUrl}")
-                client.sendHttpRequest()
+                client.sendRequest()
             }
             catch (Exception ignored){
                 ServerLogger.log("Failed to establish connection")
@@ -240,7 +240,7 @@ class DataCenterApiConnectorService extends SigningService {
         Promise<String> connectionEstablished = task {
             try {
                 ServerLogger.log("Trying to establish connection to ${client.targetUrl}")
-                client.sendHttpRequest()
+                client.sendRequest()
             }
             catch (Exception ignored){
                 ServerLogger.log("Failed to establish connection")
@@ -262,7 +262,7 @@ class DataCenterApiConnectorService extends SigningService {
         Promise<String> connectionEstablished = task {
             try {
                 ServerLogger.log("Trying to establish connection to ${client.targetUrl}")
-                client.sendHttpRequest()
+                client.sendRequest()
             }
             catch (Exception e){
                 ServerLogger.log("Failed to establish connection")

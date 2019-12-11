@@ -1,6 +1,7 @@
 package com.ttreport.data.documents.differentiated
 
 import com.ttreport.api.resources.current.DocumentForm
+import com.ttreport.data.documents.differentiated.existing.ConsumerReleaseDocument
 import com.ttreport.data.products.BarCode
 import com.ttreport.data.Company
 import com.ttreport.data.products.MarketEntranceBarCode
@@ -54,15 +55,25 @@ class Document implements DocumentForm, Serializable
             }
             return map
         }
+        if(this instanceof ConsumerReleaseDocument){
+            map.products = barCodes?.collect{
+                Map collected = [:]
+                collected.product_tax = it.products?.tax
+                collected.product_cost = it.products?.cost
+                collected.cis = it.uitCode?: it.uituCode //more likely only uit should apply
+                collected
+            }
+            return map
+        }
         map.products = barCodes?.collect{
             Map collected = [:]
-            collected.product_tax = it?.products?.tax
-            collected.product_cost = it?.products?.cost
+            collected.product_tax = it.products?.tax
+            collected.product_cost = it.products?.cost
             if(it.minified){
                 collected.cis = it.uitCode?: it.uituCode //more likely only uit should apply
                 return collected
             }
-            collected.product_description = it?.products?.description
+            collected.product_description = it.products?.description
             if(it.uitCode){
                 collected.uit_code = it.uitCode
             }
