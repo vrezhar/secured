@@ -2,11 +2,11 @@ package com.ttreport.api.current.existing
 
 import com.ttreport.api.current.ProductsManagerService
 import com.ttreport.api.resources.current.DocumentAndResponse
-import com.ttreport.api.resources.current.ShipmentDocumentCommand
+import com.ttreport.api.resources.current.documents.ShipmentDocumentCommand
 import com.ttreport.api.types.DocumentType
 import com.ttreport.data.documents.differentiated.Document
 import com.ttreport.data.documents.differentiated.existing.ShipmentDocument
-import com.ttreport.datacenter.MTISApiConnectorService
+import com.ttreport.datacenter.MtisApiConnectorService
 import com.ttreport.logs.ServerLogger
 import grails.gorm.transactions.Transactional
 
@@ -14,7 +14,7 @@ import grails.gorm.transactions.Transactional
 class DocumentShipmentService extends ProductsManagerService
 {
 
-    MTISApiConnectorService MTISApiConnectorService
+    MtisApiConnectorService mtisApiConnectorService
 
     Map ship(ShipmentDocumentCommand cmd)
     {
@@ -46,6 +46,6 @@ class DocumentShipmentService extends ProductsManagerService
         if(!document){
             return [status: 412]
         }
-        return MTISApiConnectorService.sendDocument(document, DocumentType.CANCEL_SHIPMENT, true)
+        return mtisApiConnectorService.sendDocument(document, DocumentType.CANCEL_SHIPMENT, true)
     }
 }

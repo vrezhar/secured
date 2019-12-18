@@ -15,6 +15,7 @@ class APIHttpClient
     String content_type = "application/json"
     String method = "POST"
     String targetUrl
+    boolean hasParams = false
     Map<String,String> headers = new LinkedHashMap<String,String>()
     boolean connectingToOMS = false
     boolean useHttps =false
@@ -44,6 +45,24 @@ class APIHttpClient
         headers.put(header, info)
     }
 
+    void addRequestParameter(String param, String value)
+    {
+        StringBuilder sb = new StringBuilder(targetUrl)
+        if(!hasParams){
+            hasParams = true
+            sb.append('?')
+            sb.append(param)
+            sb.append('=')
+            sb.append(value)
+            targetUrl = sb.toString()
+            return
+        }
+        sb.append('&')
+        sb.append(param)
+        sb.append('=')
+        sb.append(value)
+        targetUrl = sb.toString()
+    }
 
     String sendRequest(String url_ = this.targetUrl, String data_ = this.data, String method = this.method, String content_type = this.content_type, int timeout = this.timeout, boolean usehttps = useHttps)
     throws IOException,SocketTimeoutException,Exception

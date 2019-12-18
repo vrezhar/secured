@@ -1,4 +1,5 @@
-package com.ttreport.api.resources.current
+package com.ttreport.api.resources.current.products
+
 
 import com.ttreport.data.products.BarCode
 import com.ttreport.data.products.Products
@@ -9,7 +10,6 @@ import grails.validation.Validateable
 @GrailsCompileStatic
 class ProductCommand implements Validateable
 {
-    boolean minified = false
     boolean rejected = false
     int tax
     int cost
@@ -60,26 +60,9 @@ class ProductCommand implements Validateable
         }
 
         uitu_code nullable: true, validator: { String value, ProductCommand object ->
-            BarCode exists = BarCode.findWhere(uitCode: object?.uit_code?: null, uituCode: value ?: null)
             if (object?.action == "SAVE" && !object?.uit_code && !value) {
                 return 'command.code.uitu.null'
             }
-            if (!exists && object?.action == "DELETE") {
-                return 'command.code.notfound'
-            }
-            if (exists && object?.action != "DELETE" && !exists?.dateDeleted) {
-                return 'command.code.duplicate'
-            }
-            if (exists && exists?.dateDeleted && object?.action == "DELETE") {
-                return 'command.code.deleted'
-            }
-            if (exists && object?.action != "SAVE") {
-                Products products = Products.get(object?.id)
-                if (!products?.hasBarcode(exists)) {
-                    return 'command.code.notfound'
-                }
-            }
-
         }
 
         product_description nullable: true, validator: { String value, ProductCommand object ->
@@ -124,9 +107,6 @@ class ProductCommand implements Validateable
                 productCommand.owner_inn = rawJson?.owner_inn
                 productCommand.production_date = rawJson?.production_date
                 return productCommand
-            }
-            if(bindTo == "RELEASE"){
-                command.minified = true
             }
         }
         catch(Exception ignored) {

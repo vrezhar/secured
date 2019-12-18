@@ -1,4 +1,4 @@
-package com.ttreport.api.resources.current
+package com.ttreport.api.resources.current.products
 
 class ExtendedProductCommand extends ProductCommand
 {

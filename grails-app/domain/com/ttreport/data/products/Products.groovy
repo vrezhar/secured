@@ -32,6 +32,7 @@ class Products implements Serializable
         description nullable: false, blank: false
         cost nullable: false, blank: false
         tax nullable: false, blank: false
+        barCodes nullable: true
     }
 
 }

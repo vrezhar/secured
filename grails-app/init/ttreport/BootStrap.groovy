@@ -8,7 +8,7 @@ import com.ttreport.auth.UserRole
 import com.ttreport.data.Company
 import com.ttreport.data.documents.differentiated.Document
 import com.ttreport.data.documents.differentiated.existing.*
-import com.ttreport.datacenter.MTISApiConnectorService
+import com.ttreport.datacenter.MtisApiConnectorService
 import com.ttreport.logs.ServerLogger
 import grails.async.Promise
 import grails.compiler.GrailsCompileStatic
@@ -21,7 +21,7 @@ import static grails.async.Promises.task
 @GrailsCompileStatic
 class BootStrap {
 
-    MTISApiConnectorService MTISApiConnectorService
+    MtisApiConnectorService mtisApiConnectorService
 
     def init = {
         servletContext ->
@@ -60,7 +60,7 @@ class BootStrap {
                 company.save(true)
             }
 
-            MTISApiConnectorService.updateToken()
+            MtisApiConnectorService.updateToken()
 
             Executors.newScheduledThreadPool(1).scheduleAtFixedRate(new Runnable() {
 
@@ -93,7 +93,7 @@ class BootStrap {
                             ServerLogger.log("found unsent document, sending")
                             Promise p = task({
                                 ++threadCount
-                                dataCenterApiConnectorService.sendDocument(document,inferType(document),true)
+                                mtisApiConnectorService.sendDocument(document,inferType(document),true)
                             })
                             p.onError { Throwable t ->
                                 synchronized (monitor){

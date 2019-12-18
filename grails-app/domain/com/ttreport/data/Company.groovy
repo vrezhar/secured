@@ -17,7 +17,11 @@ class Company implements  Serializable
     String address = "Terra"
     String inn = "000052520"
     String name = "OOO TEST"
+    String omsToken = "from oms"
+    String omsId = "from oms"
     String token = UUID.randomUUID().toString()
+    String contactPerson
+    final transient Object orderMonitor = new Object()
 
     Date dateCreated
     Date lastUpdated
@@ -48,5 +52,6 @@ class Company implements  Serializable
         address nullable: false, blank: false
         inn nullable: false, blank: false
         name nullable: false, blank: false
+        contactPerson nullable: true, blank: false
     }
 }

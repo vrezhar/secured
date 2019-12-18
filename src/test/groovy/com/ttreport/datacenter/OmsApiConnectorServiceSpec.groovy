@@ -3,7 +3,7 @@ package com.ttreport.datacenter
 import grails.testing.services.ServiceUnitTest
 import spock.lang.Specification
 
-class OMSApiConnectorServiceSpec extends Specification implements ServiceUnitTest<OMSApiConnectorService>{
+class OmsApiConnectorServiceSpec extends Specification implements ServiceUnitTest<OmsApiConnectorService>{
 
     def setup() {
     }

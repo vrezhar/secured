@@ -13,9 +13,6 @@ class ConsumerReleaseDocument extends GenericDocument
     @Override
     transient Map<String,Object> getAsMap()
     {
-        barCodes.each {
-            it.minified = true
-        }
         Map<String,Object> map = super.getAsMap()
         map.order_number = orderNumber
         if(orderDate) {

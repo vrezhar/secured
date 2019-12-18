@@ -23,7 +23,7 @@ import groovy.json.JsonBuilder
 
 import static grails.async.Promises.task
 
-class MTISApiConnectorServiceSpec extends HibernateSpec implements  ServiceUnitTest<MTISApiConnectorService>{
+class MtisApiConnectorServiceSpec extends HibernateSpec implements  ServiceUnitTest<MtisApiConnectorService>{
 
     List<Class> getDomainClasses()
     {

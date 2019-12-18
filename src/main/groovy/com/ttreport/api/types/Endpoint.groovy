@@ -11,7 +11,14 @@ enum Endpoint
     RELEASE,
     INDIVIDUAL,
     STATUS,
-    FULL_INFO
+    FULL_INFO,
+    REMAINS_DESCRIPTION,
+    FILL_REMAINS_DESCRIPTION,
+    REMAINS_REGISTRY,
+    CODE_ORDER,
+    CODE_ORDER_STATUS,
+    CODE_ORDER_FETCH,
+    USAGE_REPORT
 
     Object asType(Class clazz)
     {

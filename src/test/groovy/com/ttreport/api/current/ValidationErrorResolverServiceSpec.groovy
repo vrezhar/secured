@@ -1,6 +1,6 @@
 package com.ttreport.api.current
 
-import com.ttreport.api.resources.current.ProductCommand
+import com.ttreport.api.resources.current.products.ProductCommand
 import com.ttreport.auth.Role
 import com.ttreport.auth.User
 import com.ttreport.auth.UserRole

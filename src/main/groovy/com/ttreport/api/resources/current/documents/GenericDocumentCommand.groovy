@@ -1,9 +1,7 @@
-package com.ttreport.api.resources.current
+package com.ttreport.api.resources.current.documents
 
-import com.ttreport.data.Company
-import com.ttreport.data.documents.differentiated.GenericDocument
+import com.ttreport.api.resources.current.documents.DocumentCommand
 import grails.compiler.GrailsCompileStatic
-import grails.validation.Validateable
 
 @GrailsCompileStatic
 class GenericDocumentCommand extends DocumentCommand

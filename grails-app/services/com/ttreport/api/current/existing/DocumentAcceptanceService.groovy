@@ -1,17 +1,15 @@
 package com.ttreport.api.current.existing
 
 import com.ttreport.api.current.ProductsManagerService
-import com.ttreport.api.resources.current.AcceptanceDocumentCommand
+import com.ttreport.api.resources.current.documents.AcceptanceDocumentCommand
 import com.ttreport.api.resources.current.DocumentAndResponse
 import com.ttreport.data.documents.differentiated.Document
-import com.ttreport.datacenter.MTISApiConnectorService
 import com.ttreport.logs.ServerLogger
 import grails.gorm.transactions.Transactional
 
 @Transactional
 class DocumentAcceptanceService extends ProductsManagerService
 {
-    MTISApiConnectorService MTISApiConnectorService
     Map accept(AcceptanceDocumentCommand cmd)
     {
         ServerLogger.log("accept() called ")

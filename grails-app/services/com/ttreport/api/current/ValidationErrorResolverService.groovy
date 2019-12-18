@@ -1,19 +1,25 @@
 package com.ttreport.api.current
 
-
-import com.ttreport.api.resources.current.AcceptanceDocumentCommand
-import com.ttreport.api.resources.current.DocumentCommand
-import com.ttreport.api.resources.current.MarketEntranceCommand
-import com.ttreport.api.resources.current.ProductCommand
-import com.ttreport.api.resources.current.ReleaseCommand
-import com.ttreport.api.resources.current.ShipmentDocumentCommand
+import com.ttreport.api.DocumentCommandObject
+import com.ttreport.api.resources.current.documents.AcceptanceDocumentCommand
+import com.ttreport.api.resources.current.documents.DocumentCommand
+import com.ttreport.api.resources.current.documents.MarketEntranceCommand
+import com.ttreport.api.resources.current.documents.remains.RemainsDescriptionDocumentCommand
+import com.ttreport.api.resources.current.documents.remains.RemainsRegistryDocumentCommand
+import com.ttreport.api.resources.current.products.ProductCommand
+import com.ttreport.api.resources.current.documents.ReleaseCommand
+import com.ttreport.api.resources.current.documents.ShipmentDocumentCommand
+import com.ttreport.api.resources.current.remains.ProductRemainsRegistryCommand
 import com.ttreport.data.products.BarCode
 import com.ttreport.logs.ServerLogger
 import com.ttreport.api.response.current.Response
 import com.ttreport.data.Company
 import com.ttreport.data.products.Products
 import grails.gorm.transactions.Transactional
+import grails.validation.Validateable
 import org.springframework.context.MessageSource
+
+import javax.activation.CommandObject
 
 @Transactional
 class ValidationErrorResolverService
@@ -35,7 +41,13 @@ class ValidationErrorResolverService
         if(message == 'nullable'){
             return 413
         }
-        String error = getMessage(message)
+        String error
+        try{
+            error = getMessage(message)
+        }
+        catch (Exception ignored){
+            return -1
+        }
         int result = 0
         for(int i = 0; i < error.length(); ++i){
             result = result*10 + error[i].toInteger()
@@ -43,7 +55,7 @@ class ValidationErrorResolverService
         return result
     }
 
-    protected int computeHighestPriorityError(ProductCommand cmd)
+    protected int computeHighestPriorityError(Validateable cmd)
     {
         List<Integer> list = []
         cmd.errors.fieldErrors.each {
@@ -120,18 +132,16 @@ class ValidationErrorResolverService
         if(!cmd.validate()){
             ServerLogger.log("DocumentCommand object not validated")
             response.reportInvalidInput()
-            for(error in cmd.errors.fieldErrors){
-                if(error.field == "companyToken"){
-                    ServerLogger.log("authorisation failure")
-                    response.rejectCompanyToken()
-                    return response
-                }
-            }
             ServerLogger.log_validation_errors(cmd)
             response.status = 401
             return response
         }
-        Company company = Company.findWhere(token: cmd.companyToken)
+        Company company = authorize(cmd)
+        if(!company){
+            ServerLogger.log("invalid token")
+            response.status = 400
+            return response
+        }
         for(product in cmd.products){
             if(!product.validate()){
                 response.reportInvalidInput()
@@ -147,15 +157,73 @@ class ValidationErrorResolverService
                 response.rejectProduct(product,computeHighestPriorityError(product))
                 product.rejected = true
             }
-            BarCode barCode = BarCode.findWhere(uituCode: product.uitu_code ?: null, uitCode: product.uit_code ?: null)
-            if(barCode && product.action == "DELETE"){
-                if(!company.hasBarCode(barCode)){
+
+            if(product.action == "DELETE"){
+                BarCode barCode = BarCode.findWhere(uituCode: product.uitu_code ?: null, uitCode: product.uit_code ?: null)
+                if(barCode && !company.hasBarCode(barCode)){
                     response.reportInvalidInput()
                     ServerLogger.log("Product doesn't belong to found company's product list")
                     product.errors.rejectValue('id','command.code.notfound')
                     response.rejectProduct(product,computeHighestPriorityError(product))
                     product.rejected = true
                 }
+            }
+        }
+        return response
+    }
+
+    Company authorize(DocumentCommandObject cmd)
+    {
+        return Company.findWhere(token: cmd.getCompanyToken())
+    }
+
+    protected Response validateRemainsDescription(RemainsDescriptionDocumentCommand cmd)
+    {
+        Response response = new Response()
+        if(!cmd.validate()){
+            ServerLogger.log("DocumentCommand object not validated")
+            response.reportInvalidInput()
+            ServerLogger.log_validation_errors(cmd)
+            response.status = 401
+            return response
+        }
+        Company company = authorize(cmd)
+        if(!company){
+            ServerLogger.log("invalid token")
+            response.status = 400
+            return response
+        }
+
+        return response
+    }
+
+    protected Response validateRemainsRegistry(RemainsRegistryDocumentCommand cmd)
+    {
+        Response response = new Response()
+        if(!cmd.validate()){
+            ServerLogger.log("DocumentCommand object not validated")
+            response.reportInvalidInput()
+            ServerLogger.log_validation_errors(cmd)
+            response.status = 401
+            return response
+        }
+        Company company = authorize(cmd)
+        if(!company){
+            ServerLogger.log("invalid token")
+            response.status = 400
+            return response
+        }
+        for(product in cmd.products){
+            if(!cmd.validate()){
+                response.rejectProduct(product, computeHighestPriorityError(product))
+            }
+            BarCode barCode = BarCode.findWhere(uituCode: product.ki ?: null, uitCode: product.kitu ?: null)
+            if(barCode && !company.hasBarCode(barCode)){
+                response.reportInvalidInput()
+                ServerLogger.log("Product doesn't belong to found company's product list")
+                product.errors.rejectValue('id','command.code.notfound')
+                response.rejectProduct(product,computeHighestPriorityError(product))
+                product.rejected = true
             }
         }
         return response

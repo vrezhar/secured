@@ -1,13 +1,14 @@
 package com.ttreport.api.current.existing
 
 
-import com.ttreport.api.resources.current.DocumentCommand
-import com.ttreport.api.resources.current.MarketEntranceCommand
+import com.ttreport.api.resources.current.documents.DocumentCommand
+import com.ttreport.api.resources.current.documents.MarketEntranceCommand
 import com.ttreport.logs.ServerLogger
 import grails.plugin.springsecurity.annotation.Secured
 
 @Secured(['permitAll'])
-class ApiEnterMarketEndpointController {
+class ApiEnterMarketEndpointController
+{
 
     MarketEntranceDocumentService marketEntranceDocumentService
 

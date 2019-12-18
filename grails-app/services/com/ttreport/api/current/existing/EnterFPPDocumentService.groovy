@@ -2,7 +2,7 @@ package com.ttreport.api.current.existing
 
 import com.ttreport.api.current.ProductsManagerService
 import com.ttreport.api.resources.current.DocumentAndResponse
-import com.ttreport.api.resources.current.FromPhysCommand
+import com.ttreport.api.resources.current.documents.FromPhysCommand
 import com.ttreport.data.documents.differentiated.Document
 import com.ttreport.logs.ServerLogger
 import grails.gorm.transactions.Transactional

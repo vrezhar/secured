@@ -1,14 +1,16 @@
 package com.ttreport.api.current
 
 import com.ttreport.api.current.existing.DocumentService
-import com.ttreport.api.resources.current.AcceptanceDocumentCommand
+import com.ttreport.api.resources.current.documents.AcceptanceDocumentCommand
 import com.ttreport.api.resources.current.DocumentAndResponse
-import com.ttreport.api.resources.current.FromPhysCommand
-import com.ttreport.api.resources.current.MarketEntranceCommand
-import com.ttreport.api.resources.current.ReleaseCommand
-import com.ttreport.api.resources.current.ShipmentDocumentCommand
+import com.ttreport.api.resources.current.documents.FromPhysCommand
+import com.ttreport.api.resources.current.documents.MarketEntranceCommand
+import com.ttreport.api.resources.current.documents.ReleaseCommand
+import com.ttreport.api.resources.current.documents.ShipmentDocumentCommand
+import com.ttreport.api.resources.current.documents.remains.RemainBundle
+import com.ttreport.api.resources.current.documents.remains.RemainsDescriptionDocumentCommand
+import com.ttreport.api.resources.current.documents.remains.RemainsRegistryDocumentCommand
 import com.ttreport.api.response.current.Response
-import com.ttreport.data.documents.differentiated.remains.RemainsDescriptionDocument
 import com.ttreport.data.documents.differentiated.remains.RemainsRegistryDocument
 import com.ttreport.data.products.BarCode
 import com.ttreport.data.Company
@@ -305,15 +307,27 @@ class ProductsManagerService extends DocumentService
         return  dandr
     }
 
-    RemainsDescriptionDocument describeRemains()
+    RemainBundle describeRemains(RemainsDescriptionDocumentCommand cmd)
+    {
+        RemainBundle rb = new RemainBundle()
+        Response response = new Response()
+        if(!authorize(cmd)){
+            rb.response = [status: 400]
+            return rb
+        }
+        if(!cmd.validate()){
+            rb.response = [status: 401]
+            return rb
+        }
+        rb.document = createRemainDescriptionDocument(cmd)
+        return rb
+    }
+
+    RemainBundle registerRemains(RemainsRegistryDocumentCommand cmd)
     {
         return null
     }
 
-    RemainsRegistryDocument registerRemains()
-    {
-        return null
-    }
 //    private DocumentAndResponse doInitialValidation(DocumentCommand cmd)
 //    {
 //        DocumentAndResponse dandr = new DocumentAndResponse()

@@ -1,7 +1,9 @@
 package com.ttreport.api.current
 
-import com.ttreport.api.resources.current.ExtendedProductCommand
-import com.ttreport.api.resources.current.ProductCommand
+import com.ttreport.api.resources.current.products.ExtendedProductCommand
+import com.ttreport.api.resources.current.products.ProductCommand
+import com.ttreport.api.resources.current.remains.ProductRemainsDescriptionCommand
+import com.ttreport.api.resources.current.remains.ProductRemainsRegistryCommand
 import com.ttreport.data.products.BarCode
 import com.ttreport.data.products.MarketEntranceBarCode
 import com.ttreport.data.Company
@@ -37,7 +39,7 @@ class ProductsService extends ValidationErrorResolverService
             }
             return barCode
         }
-        return BarCode.findWhere(uitCode: cmd.uit_code, uituCode: cmd.uitu_code, minified: cmd.minified)?: new BarCode(uitCode: cmd.uit_code, uituCode: cmd.uitu_code, minified: cmd.minified)
+        return BarCode.findWhere(uitCode: cmd.uit_code, uituCode: cmd.uitu_code)?: new BarCode(uitCode: cmd.uit_code, uituCode: cmd.uitu_code)
 
     }
 
@@ -69,8 +71,7 @@ class ProductsService extends ValidationErrorResolverService
 
     BarCode save(ProductCommand cmd, Company company) throws Exception
     {
-        ServerLogger.log("save() called")
-        ServerLogger.log("trying to save product with code ${cmd.id}, belonging to company with id ${company.inn}")
+        ServerLogger.log("save() called", "trying to save product with code ${cmd.id}, belonging to company with id ${company.inn}")
         Products products = Products.findWhere(cost: cmd.cost, tax: cmd.tax, description: cmd.product_description, company: company)
         if(products)
         {
@@ -105,8 +106,7 @@ class ProductsService extends ValidationErrorResolverService
 
     BarCode delete(ProductCommand cmd) throws Exception
     {
-        ServerLogger.log("delete() called")
-        ServerLogger.log("assuming that product corresponding to command object exists")
+        ServerLogger.log("delete() called", "assuming that product corresponding to command object exists")
         Products products = Products.get(cmd.id)
         if(cmd.product_description){
             products.description = cmd.product_description
@@ -132,5 +132,23 @@ class ProductsService extends ValidationErrorResolverService
         barCode.save()
         ServerLogger.log("shipping barcode with uit code ${barCode.uitCode} and uitu code ${barCode.uituCode}, saving changes, exiting delete()")
         return barCode
+    }
+
+    BarCode registerRemains(ProductRemainsRegistryCommand cmd)
+    {
+        try{
+            BarCode barCode = BarCode.findWhere(uitCode: cmd.ki?: null, uituCode: cmd.kitu?: null)
+            Products products = barCode?.products
+            products?.cost = cmd.cost
+            products?.tax = cmd.tax
+            products?.description = cmd.description
+            cmd.id = products.id
+            products.save()
+            return barCode
+        }
+        catch (Exception e){
+            ServerLogger.log_exception(e)
+            return null
+        }
     }
 }

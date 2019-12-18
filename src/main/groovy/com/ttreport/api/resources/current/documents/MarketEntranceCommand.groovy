@@ -1,4 +1,4 @@
-package com.ttreport.api.resources.current
+package com.ttreport.api.resources.current.documents
 
 class MarketEntranceCommand extends DocumentCommand
 {
