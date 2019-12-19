@@ -13,7 +13,7 @@ enum Endpoint
     STATUS,
     FULL_INFO,
     REMAINS_DESCRIPTION,
-    FILL_REMAINS_DESCRIPTION,
+    FULL_REMAINS_DESCRIPTION,
     REMAINS_REGISTRY,
     CODE_ORDER,
     CODE_ORDER_STATUS,
@@ -36,6 +36,12 @@ enum Endpoint
                     return DocumentType.RELEASE
                 case INDIVIDUAL:
                     return DocumentType.INDIVIDUAL
+                case REMAINS_DESCRIPTION:
+                    return DocumentType.REMAINS_DESCRIPTION
+                case FULL_REMAINS_DESCRIPTION:
+                    return DocumentType.FULL_REMAINS_DESCRIPTION
+                case REMAINS_REGISTRY:
+                    return DocumentType.REMAINS_REGISTRY
                 default:
                     return super.asType(clazz)
             }

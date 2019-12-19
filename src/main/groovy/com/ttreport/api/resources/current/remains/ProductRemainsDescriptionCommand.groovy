@@ -7,6 +7,11 @@ import grails.validation.Validateable
 class ProductRemainsDescriptionCommand implements Validateable
 {
     String description_type = 'EXTENDED'
+    String identifier
+
+    String description
+    String tax
+    String cost
 
     String product_gender
     String tnved_code_2
@@ -22,9 +27,22 @@ class ProductRemainsDescriptionCommand implements Validateable
     String material_down
     String color
     String product_size
+    String certificate_type
+    String certificate_date
+    String certificate_number
+
 
     static constraints = {
 
+        description nullable: true, blank: true
+        tax nullable: true, blank: true
+        cost nullable: true, blank: true
+
+        identifier nullable: true, validator: { String value, ProductRemainsDescriptionCommand object ->
+            if(object?.description_type == "SIMPLE" && !value && !object?.description){
+                return false
+            }
+        }
         product_gender nullable: true, validator: { String value, ProductRemainsDescriptionCommand object ->
             if(object?.description_type == "SIMPLE" && !value){
                 return false
@@ -47,7 +65,7 @@ class ProductRemainsDescriptionCommand implements Validateable
             }
         }
         product_name nullable: true, validator: { String value, ProductRemainsDescriptionCommand object ->
-            if(object?.description_type != "SIMPLE" && !value){
+            if(object?.description_type != "SIMPLE" && !value && !object?.description){
                 return false
             }
         }
@@ -79,5 +97,21 @@ class ProductRemainsDescriptionCommand implements Validateable
         }
         color nullable: true, blank: true
         product_size nullable: true, blank: true
+        certificate_type  nullable: true, validator: { String value, ProductRemainsDescriptionCommand object ->
+            if(object?.description_type != "SIMPLE" && !value){
+                return false
+            }
+        }
+        certificate_date  nullable: true, validator: { String value, ProductRemainsDescriptionCommand object ->
+            if(object?.description_type != "SIMPLE" && !value){
+                return false
+            }
+        }
+        certificate_number  nullable: true, validator: { String value, ProductRemainsDescriptionCommand object ->
+            if(object?.description_type != "SIMPLE" && !value){
+                return false
+            }
+        }
+
     }
 }

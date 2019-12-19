@@ -6,8 +6,6 @@ class CodeTailEncoded
 {
     String encodedTail
 
-    static belongsTo = [barCode: RemainsBarCode]
-
     static constraints = {
     }
 }

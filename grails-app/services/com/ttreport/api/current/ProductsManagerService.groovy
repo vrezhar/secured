@@ -1,24 +1,24 @@
 package com.ttreport.api.current
 
 import com.ttreport.api.current.existing.DocumentService
-import com.ttreport.api.resources.current.documents.AcceptanceDocumentCommand
 import com.ttreport.api.resources.current.DocumentAndResponse
-import com.ttreport.api.resources.current.documents.FromPhysCommand
-import com.ttreport.api.resources.current.documents.MarketEntranceCommand
-import com.ttreport.api.resources.current.documents.ReleaseCommand
-import com.ttreport.api.resources.current.documents.ShipmentDocumentCommand
-import com.ttreport.api.resources.current.documents.remains.RemainBundle
+import com.ttreport.api.resources.current.documents.*
 import com.ttreport.api.resources.current.documents.remains.RemainsDescriptionDocumentCommand
 import com.ttreport.api.resources.current.documents.remains.RemainsRegistryDocumentCommand
 import com.ttreport.api.response.current.Response
-import com.ttreport.data.documents.differentiated.remains.RemainsRegistryDocument
-import com.ttreport.data.products.BarCode
 import com.ttreport.data.Company
-import com.ttreport.data.products.Products
 import com.ttreport.data.documents.differentiated.Document
 import com.ttreport.data.documents.differentiated.existing.RFIEntranceDocument
+import com.ttreport.data.documents.differentiated.remains.RemainsDescriptionDocument
+import com.ttreport.data.documents.differentiated.remains.RemainsDocument
+import com.ttreport.data.documents.differentiated.remains.RemainsRegistryDocument
+import com.ttreport.data.products.BarCode
+import com.ttreport.data.products.Products
+import com.ttreport.data.products.remains.FullRemainsProduct
+import com.ttreport.data.products.remains.RemainsProduct
 import com.ttreport.logs.ServerLogger
 import grails.gorm.transactions.Transactional
+import org.springframework.transaction.TransactionStatus
 
 @Transactional
 class ProductsManagerService extends DocumentService
@@ -307,25 +307,140 @@ class ProductsManagerService extends DocumentService
         return  dandr
     }
 
-    RemainBundle describeRemains(RemainsDescriptionDocumentCommand cmd)
+    DocumentAndResponse describeRemains(RemainsDescriptionDocumentCommand cmd)
     {
-        RemainBundle rb = new RemainBundle()
-        Response response = new Response()
-        if(!authorize(cmd)){
-            rb.response = [status: 400]
-            return rb
+        DocumentAndResponse documentAndResponse = new DocumentAndResponse()
+        Company company = cmd.authorize()
+        if(!company){
+            documentAndResponse.response = [status: 400]
+            return documentAndResponse
         }
         if(!cmd.validate()){
-            rb.response = [status: 401]
-            return rb
+            documentAndResponse.response = [status: 401]
+            return documentAndResponse
         }
-        rb.document = createRemainDescriptionDocument(cmd)
-        return rb
+        Map response = [:]
+        response.status = 200
+        RemainsDocument document = new RemainsDescriptionDocument()
+        document.company = company
+        Document.withTransaction { TransactionStatus status ->
+            boolean save = true
+            List errorList = [], acceptedList = []
+            for(product in cmd.products){
+                if(!product.validate()){
+                    save = false
+                    List errors = []
+                    product.errors.fieldErrors.each {
+                        errors.add([field: it.field, error: getMessage(it.code)?: 'invalid value'])
+                    }
+                    errorList.add([product: product.product_name?: product.description, errors: errors])
+                    continue
+                }
+                Products products
+                def bindingMap = [
+                        company: company,
+                        model: product.model,
+                        productName: product.product_name,
+                        brand: product.brand,
+                        country: product.country,
+                        productType: product.product_type,
+                        materialUpper: product.material_upper,
+                        materialLining: product.material_lining,
+                        materialDown: product.material_down,
+                        color: product.color,
+                        productSize: product.product_size,
+                        tnvedCode2: product.tnved_code_2,
+                        productGender: product.product_gender,
+                        releaseMethod: product.release_method,
+                        certificateDate: product.certificate_date,
+                        certificateNumber: product.certificate_number,
+                        certificateType :product.certificate_type
+                ]
+                if(product.description){
+                    bindingMap.description = product.description
+                }
+                if(!product.description && product.product_name){
+                    bindingMap.description = product.product_name
+                }
+                if(product.tax){
+                    bindingMap.tax = product.tax
+                }
+                if(product.cost){
+                    bindingMap.cost = product.cost
+                }
+                if(product.description_type == 'EXTENDED'){
+                    products = FullRemainsProduct.findOrSaveWhere(bindingMap)
+                    Map newProduct = [product_name: product.product_name, id: products.id]
+                    if(!acceptedList.contains(newProduct)){
+                        acceptedList.add(newProduct)
+                    }
+                }
+                else{
+                    products = RemainsProduct.findOrSaveWhere(bindingMap)
+                    Map newProduct = [product_name: product.identifier?: product.description, id: products.id]
+                    if(!acceptedList.contains(newProduct)){
+                        acceptedList.add(newProduct)
+                    }
+                }
+                document.addToProducts(products)
+            }
+            if(!save){
+                response.status = 402
+                response.errors = errorList
+                status.setRollbackOnly()
+                return
+            }
+            response.accepted = acceptedList
+            document.save()
+            documentAndResponse.document = document
+            return
+        }
+        return documentAndResponse
     }
 
-    RemainBundle registerRemains(RemainsRegistryDocumentCommand cmd)
+    DocumentAndResponse registerRemains(RemainsRegistryDocumentCommand cmd)
     {
-        return null
+        DocumentAndResponse documentAndResponse = new DocumentAndResponse()
+        Company company = cmd.authorize()
+        if(!company){
+            documentAndResponse.response = [status: 400]
+            return documentAndResponse
+        }
+        if(!cmd.validate()){
+            documentAndResponse.response = [status: 401]
+            return documentAndResponse
+        }
+        Map response = [:]
+        response.status = 200
+        Document document = new RemainsRegistryDocument()
+        document.company = company
+        Document.withTransaction { TransactionStatus status ->
+            boolean save = true
+            List errorList = [], acceptedList = []
+            for (product in cmd.products) {
+                if(!product.validate()){
+                    save = false
+                    List errors = []
+                    product.errors.fieldErrors.each {
+                        errors.add([field: it.field, error: getMessage(it.code)?: 'invalid value'])
+                    }
+                    errorList.add([codes: [ki: product.ki, kitu: product.kitu], errors: errors])
+                    continue
+                }
+                BarCode barCode = BarCode.findWhere(uitCode: product.ki?: null, uituCode: product.kitu?: null)
+                document.addToBarCodes(barCode)
+            }
+            if(!save){
+                response.status = 402
+                response.errors = errorList
+                status.setRollbackOnly()
+                return documentAndResponse
+            }
+            response.accepted = acceptedList
+            document.save()
+            documentAndResponse.document = document
+            return documentAndResponse
+        }
     }
 
 //    private DocumentAndResponse doInitialValidation(DocumentCommand cmd)

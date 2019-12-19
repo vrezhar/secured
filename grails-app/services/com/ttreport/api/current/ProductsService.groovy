@@ -133,22 +133,4 @@ class ProductsService extends ValidationErrorResolverService
         ServerLogger.log("shipping barcode with uit code ${barCode.uitCode} and uitu code ${barCode.uituCode}, saving changes, exiting delete()")
         return barCode
     }
-
-    BarCode registerRemains(ProductRemainsRegistryCommand cmd)
-    {
-        try{
-            BarCode barCode = BarCode.findWhere(uitCode: cmd.ki?: null, uituCode: cmd.kitu?: null)
-            Products products = barCode?.products
-            products?.cost = cmd.cost
-            products?.tax = cmd.tax
-            products?.description = cmd.description
-            cmd.id = products.id
-            products.save()
-            return barCode
-        }
-        catch (Exception e){
-            ServerLogger.log_exception(e)
-            return null
-        }
-    }
 }

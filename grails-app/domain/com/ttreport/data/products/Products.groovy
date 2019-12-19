@@ -28,11 +28,25 @@ class Products implements Serializable
         return barCodes.contains(barCode)
     }
 
+    static transient Products findByGTIN(String gtin)
+    {
+        for(products in Products.list()){
+            for(barCode in products.barCodes){
+                if(barCode.getGTIN() == gtin){
+                    return products
+                }
+                break
+            }
+        }
+        return null
+    }
+
     static constraints = {
         description nullable: false, blank: false
         cost nullable: false, blank: false
         tax nullable: false, blank: false
         barCodes nullable: true
+        company nullable: true //TODO investigate this more thoroughly
     }
 
 }

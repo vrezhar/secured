@@ -1,7 +1,14 @@
 package com.ttreport.api
 
-interface DocumentCommandObject
+import com.ttreport.data.Company
+
+trait DocumentCommandObject
 {
-    String getCompanyToken()
-    void setCompanyToken(String companyToken)
+    abstract String getCompanyToken()
+    abstract void setCompanyToken(String companyToken)
+
+    Company authorize()
+    {
+        return Company.findWhere(token: getCompanyToken())
+    }
 }

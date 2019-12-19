@@ -29,7 +29,10 @@ class MtisApiConnectorService extends SigningService {
                     (Endpoint.CANCEL_SHIPMENT): "/lk/documents/shipment/cancel",
                     (Endpoint.INDIVIDUAL): "/lk/documents/commissioning/indi/create",
                     (Endpoint.STATUS): "/facade/doc/",
-                    (Endpoint.FULL_INFO): "/facade/doc/listV2"
+                    (Endpoint.FULL_INFO): "/facade/doc/listV2",
+                    (Endpoint.REMAINS_DESCRIPTION): "/lk/documents/create",
+                    (Endpoint.FULL_REMAINS_DESCRIPTION): "/lk/documents/create",
+                    (Endpoint.REMAINS_REGISTRY): "/lk/documents/create"
             ]
 
     protected final static Map<DocumentType,String> document_types =
@@ -39,7 +42,10 @@ class MtisApiConnectorService extends SigningService {
                     (DocumentType.ACCEPTANCE): "LP_ACCEPT_GOODS",
                     (DocumentType.SHIPMENT): "LP_SHIP_GOODS",
                     (DocumentType.CANCEL_SHIPMENT): "LP_CANCEL_SHIPMENT",
-                    (DocumentType.INDIVIDUAL): "LK_INDI_COMMISSIONING"
+                    (DocumentType.INDIVIDUAL): "LK_INDI_COMMISSIONING",
+                    (DocumentType.REMAINS_REGISTRY): "LP_INTRODUCE_OST",
+                    (DocumentType.REMAINS_DESCRIPTION): "OST_DESCRIPTION",
+                    (DocumentType.FULL_REMAINS_DESCRIPTION): "OST_DESCRIPTION"
             ]
 
     protected final static List<String> accepted_statuses =

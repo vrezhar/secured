@@ -18,30 +18,15 @@ class ProductRemainsRegistryCommand implements Validateable
             }
         }
 
-        description nullable: true, validator: { String value, ProductRemainsRegistryCommand object ->
-            if(!value && !object?.id){
-                return "command.product.description.null"
-            }
-        }
-
-        tax validator: { String value, ProductRemainsRegistryCommand object ->
-            if(!value && !object?.id){
-                return "command.product.tax.null "
-            }
-        }
-
-        cost validator: { String value, ProductRemainsRegistryCommand object ->
-            if(!value && !object?.id){
-                return "command.product.cost.null "
-            }
-        }
-
         ki nullable: true, validator: { String value, ProductRemainsRegistryCommand object ->
-            BarCode exists = BarCode.findWhere(uitCode: value ?: null, uituCode: object?.kitu ?: null)
             if (!value && !object?.kitu) {
                 return 'command.code.uit.null'
             }
-            if (exists) {
+            BarCode exists = BarCode.findWhere(uitCode: value ?: null, uituCode: object?.kitu ?: null)
+            if(!exists){
+                return 'command.code.notfound'
+            }
+            if (exists && exists.inMarket) {
                 return 'command.code.duplicate'
             }
         }

@@ -1,5 +1,6 @@
 package com.ttreport.api.current
 
+import com.ttreport.MessageBundleService
 import com.ttreport.api.DocumentCommandObject
 import com.ttreport.api.resources.current.documents.AcceptanceDocumentCommand
 import com.ttreport.api.resources.current.documents.DocumentCommand
@@ -22,54 +23,9 @@ import org.springframework.context.MessageSource
 import javax.activation.CommandObject
 
 @Transactional
-class ValidationErrorResolverService
+class ValidationErrorResolverService extends MessageBundleService
 {
     static scope = 'prototype'
-    private static final Map<String, Locale> langLocaleMappings = [
-            'en': Locale.ENGLISH,
-            'ru': new Locale('ru', 'RU'),
-    ].asImmutable()
-
-    MessageSource messageSource
-
-    protected String getMessage(String message) {
-        messageSource.getMessage(message, [].toArray(), langLocaleMappings.en)
-    }
-
-    protected int getCode(String message)
-    {
-        if(message == 'nullable'){
-            return 413
-        }
-        String error
-        try{
-            error = getMessage(message)
-        }
-        catch (Exception ignored){
-            return -1
-        }
-        int result = 0
-        for(int i = 0; i < error.length(); ++i){
-            result = result*10 + error[i].toInteger()
-        }
-        return result
-    }
-
-    protected int computeHighestPriorityError(Validateable cmd)
-    {
-        List<Integer> list = []
-        cmd.errors.fieldErrors.each {
-            list.add(getCode(it.code))
-        }
-        ServerLogger.log_validation_errors(cmd)
-        int min = list[0]?: -1
-        for(item in list){
-            if(item < min){
-                min = item
-            }
-        }
-        return min
-    }
 
     protected static void setActions(DocumentCommand cmd) throws Exception{
         ServerLogger.log("Determining actions for command objects")
@@ -136,7 +92,7 @@ class ValidationErrorResolverService
             response.status = 401
             return response
         }
-        Company company = authorize(cmd)
+        Company company = cmd.authorize()
         if(!company){
             ServerLogger.log("invalid token")
             response.status = 400
@@ -172,11 +128,6 @@ class ValidationErrorResolverService
         return response
     }
 
-    Company authorize(DocumentCommandObject cmd)
-    {
-        return Company.findWhere(token: cmd.getCompanyToken())
-    }
-
     protected Response validateRemainsDescription(RemainsDescriptionDocumentCommand cmd)
     {
         Response response = new Response()
@@ -187,7 +138,7 @@ class ValidationErrorResolverService
             response.status = 401
             return response
         }
-        Company company = authorize(cmd)
+        Company company = cmd.authorize()
         if(!company){
             ServerLogger.log("invalid token")
             response.status = 400
@@ -207,7 +158,7 @@ class ValidationErrorResolverService
             response.status = 401
             return response
         }
-        Company company = authorize(cmd)
+        Company company = cmd.authorize()
         if(!company){
             ServerLogger.log("invalid token")
             response.status = 400

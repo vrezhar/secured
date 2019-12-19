@@ -16,23 +16,27 @@ class OrderCommand implements Validateable, DocumentCommandObject
 
     static constraints = {
         productOrderId nullable: true, blank: true
-        contactPerson nullable: false, blank: false
+        contactPerson validator: { String value, OrderCommand object ->
+            if (!value) {
+                return 'order.contact.person.null'
+            }
+        }
         releaseMethodType nullable: false, blank: false, validator: { String value, OrderCommand object ->
             if(value != 'REMAINS' || value != 'PRODUCTION' || value != 'IMPORT' || value != 'CROSSBORDER'){
-                return false
+                return 'order.release.method.invalid'
             }
         }
         products nullable: false
         createMethodType nullable: false, blank: false, validator: { String value, OrderCommand object ->
             if(value != 'SELF_MADE' || value != 'CEM'){
-                return false
+                return 'order.creation.method.invalid'
             }
         }
-        companyToken nullable: false, blank: false, validator: { String value, OrderCommand object ->
-            Company company = Company.findWhere(token: value)
-            if(!company){
-                return false
+        products validator: { List<OrderUnitCommand> value, OrderCommand object ->
+            if(!value || value?.isEmpty()){
+                return 'order.product.null'
             }
         }
+        companyToken nullable: false, blank: false
     }
 }

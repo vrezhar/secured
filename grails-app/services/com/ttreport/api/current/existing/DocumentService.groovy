@@ -13,6 +13,7 @@ import com.ttreport.data.documents.differentiated.existing.ConsumerReleaseDocume
 import com.ttreport.data.documents.differentiated.existing.MarketEntranceDocument
 import com.ttreport.data.documents.differentiated.existing.ShipmentDocument
 import com.ttreport.data.documents.differentiated.remains.RemainsDescriptionDocument
+import com.ttreport.data.documents.differentiated.remains.RemainsRegistryDocument
 import grails.gorm.transactions.Transactional
 
 @Transactional
@@ -82,13 +83,5 @@ class DocumentService extends ProductsService
         return document
     }
 
-    RemainsDescriptionDocument createRemainDescriptionDocument(RemainsDescriptionDocumentCommand cmd)
-    {
-        RemainsDescriptionDocument document = new RemainsDescriptionDocument()
-    }
 
-    RemainsRegistryDocumentCommand createRemainsRegstryDocumentMock(RemainsRegistryDocumentCommand cmd)
-    {
-
-    }
 }

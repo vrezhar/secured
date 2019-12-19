@@ -11,5 +11,8 @@ class RemainsProduct extends Products
     String releaseMethod
 
     static constraints = {
+        productGender nullable: false, blank: false
+        tnvedCode2 nullable: false, blank: false
+        releaseMethod nullable: false, blank: false
     }
 }

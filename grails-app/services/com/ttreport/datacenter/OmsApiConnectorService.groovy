@@ -1,5 +1,6 @@
 package com.ttreport.datacenter
 
+import com.sun.xml.internal.bind.v2.TODO
 import com.ttreport.api.types.Endpoint
 import com.ttreport.data.Company
 import com.ttreport.data.products.BarCode
@@ -14,6 +15,7 @@ import groovy.json.JsonSlurper
 
 //import static grails.async.Promises.*
 
+//TODO add proper logs
 @Transactional
 class OmsApiConnectorService extends SigningService
 {
@@ -61,7 +63,7 @@ class OmsApiConnectorService extends SigningService
     Map checkStatus(Order order, String gtin, boolean testing = true)
     {
         if(!order){
-            return [status: 500]
+            return [status: 404, error: "order not found"]
         }
         APIHttpClient client = initializeClient(order.company, Endpoint.CODE_ORDER_STATUS, "GET", testing)
         client.addRequestParameter("orderId", order.orderId)
@@ -77,10 +79,10 @@ class OmsApiConnectorService extends SigningService
         return response
     }
 
-    Map fetchBarCodes(Order order, int quantity, String gtin, boolean testing = false)
+    Map fetchBarCodes(Order order, int quantity, String gtin, boolean testing = true)
     {
         if(!order){
-            return [status: 500]
+            return [status: 404, error: "order not found"]
         }
         if(!order.orderId || order.orderStatus != "ACTIVE"){
             return [status: 402, error: "order inactive"]
@@ -98,22 +100,40 @@ class OmsApiConnectorService extends SigningService
         }
         order.lastBlockId = response.lastBlockId
         order.save()
-        for(code in (response.codes as List<String>)) {
-            try{
-                Products empty = Products.findOrSaveWhere(company: order.company, description: "JUNK", cost: 5, tax: 5)
-                CodeTailEncoded tail = new CodeTailEncoded(encodedTail: code.split("\u003d")[1])
-                BarCode barCode = new RemainsBarCode(uituCode: code.split("\u003d")[0], cryptoTail: tail, products: empty)
-                empty.addToBarCodes(barCode)
-                empty.save()
-                tail.save()
-                barCode.save()
-
+        Iterator<String> iterator = (response.codes as List<String>)?.iterator()
+        if(!iterator){
+            return [status: 402, error: 'no codes left for this gtin in this order']
+        }
+        for(orderUnit in order.products){
+            if(orderUnit.gtin != gtin){
+                continue
             }
-            catch (Exception e){
-                ServerLogger.log_exception(e)
-                response.status = 500
-                return response
+            Products products = Products.get(orderUnit.productId)
+            if(!products){
+                ServerLogger.log('critical logic error, product not found')
+                return [status: 500]
             }
+            response.productId = products.id
+            for(int i = 0; i < quantity; ++i){
+                String code = iterator.next()
+                if(!code){
+                    //TODO test this case properly
+                    return [status: 202, warning: 'no codes left for this gtin in this order', productId: products.id]
+                }
+                try{
+                    CodeTailEncoded tail = new CodeTailEncoded(encodedTail: code.split("\u003d")[1])
+                    BarCode barCode = new RemainsBarCode(uituCode: code.split("\u003d")[0], cryptoTail: tail, products: products, inMarket: false)
+                    products.addToBarCodes(barCode)
+                    products.save()
+                    tail.save()
+                    barCode.save()
+                }
+                catch (Exception e){
+                    ServerLogger.log_exception(e)
+                    return [status: 500]
+                }
+            }
+            break
         }
         response.status = 200
         return response

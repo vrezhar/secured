@@ -1,7 +1,9 @@
 package com.ttreport.api.orders
 
 import com.ttreport.api.current.remains.OrderService
+import com.ttreport.api.resources.current.OrderAndResponse
 import com.ttreport.api.resources.current.OrderCommand
+import com.ttreport.data.products.remains.Order
 import com.ttreport.datacenter.OmsApiConnectorService
 import grails.rest.RestfulController
 
@@ -26,20 +28,45 @@ class ApiCodeOrderController extends RestfulController<OrderCommand>
 
     def order(OrderCommand cmd)
     {
+        OrderAndResponse orderAndResponse = orderService.processOrder(cmd)
+        Order order = orderAndResponse.order
+
+        if(!order){
+            Map response = orderAndResponse.response
+            withFormat {
+                this.response.status = response.status as int
+                json{
+                    respond(response)
+                }
+            }
+        }
         withFormat {
+            Map response = omsApiConnectorService.createOrder(order)
             json{
-                respond(omsApiConnectorService.createOrder(orderService.createOrder(cmd)))
+                respond(response)
             }
         }
     }
 
     def checkStatus()
     {
-
+        Map response = omsApiConnectorService.checkStatus(Order.findWhere(orderId: params.orderId), params.gtin as String)
+        withFormat {
+            this.response.status = response.status as int
+            json{
+                respond(response)
+            }
+        }
     }
 
-    def getBarCode()
+    def getBarCodes()
     {
-
+        Map response = omsApiConnectorService.fetchBarCodes(Order.findWhere(orderId: params.orderId), params.quantity as int, params.gtin as String)
+        withFormat {
+            this.response.status = response.status as int
+            json{
+                respond(response)
+            }
+        }
     }
 }

@@ -14,6 +14,8 @@ class BarCode implements Serializable
 
     private static final long serialVersionUID = 1L
 
+
+    boolean inMarket = true
     String uitCode
     String uituCode
     Date dateDeleted = null
@@ -22,11 +24,19 @@ class BarCode implements Serializable
     Date lastUpdated
 
     static belongsTo = [products: Products]
-    static hasOne = [tail: CodeTailEncoded]
+    CodeTailEncoded tail
 
     transient String getGTIN()
     {
-        return Arrays.copyOfRange(uitCode?.toCharArray()?: uituCode?.toCharArray(), 2, 16)
+        StringBuilder sb = new StringBuilder()
+        String deconstructable = uitCode?: uituCode
+        if(!deconstructable){
+            return null
+        }
+        for(int i = 2; i < 14; ++i){
+            sb.append(deconstructable[i])
+        }
+        return sb.toString()
     }
 
     transient String getSerialNumber()

@@ -30,6 +30,7 @@ class ProductOrderUnit
     }
 
     static hasMany = [serialNumbers: SerialNumber]
+    static belongsTo = [order: Order]
 
     static constraints = {
         serialNumbers nullable: true, validator: { List<ProductOrderUnit> value, ProductOrderUnit object ->

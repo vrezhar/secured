@@ -4,10 +4,9 @@ import com.ttreport.data.Company
 import com.ttreport.data.documents.differentiated.Document
 import com.ttreport.data.products.remains.RemainsBarCode
 
-class RemainsRegistryDocument extends RemainsDocument
+class RemainsRegistryDocument extends Document
 {
-    static hasMany = [products: RemainsBarCode]
-
     static constraints = {
+        importFrom Document
     }
 }
