@@ -7,7 +7,7 @@ import com.ttreport.data.products.CodeTailEncoded
 class RemainsBarCode extends BarCode
 {
 
-    static hasOne = [cryptoTail: CodeTailEncoded]
+    CodeTailEncoded tail
 
     static constraints = {
     }

@@ -35,7 +35,6 @@ class OrderService extends MessageBundleService
         response.status = 200
         List errors = []
         Order.withTransaction { TransactionStatus status ->
-            def savepoint = status.createSavepoint()
             boolean noerrors = true
             for(orderUnit in cmd.products){
                 if(!orderUnit.validate()){
@@ -60,7 +59,7 @@ class OrderService extends MessageBundleService
                 unit.save()
             }
             if(!noerrors){
-                status.rollbackToSavepoint(savepoint)
+                status.setRollbackOnly()
                 return
             }
             order.save()

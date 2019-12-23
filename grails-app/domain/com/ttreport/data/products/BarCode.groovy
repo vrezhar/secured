@@ -33,7 +33,7 @@ class BarCode implements Serializable
         if(!deconstructable){
             return null
         }
-        for(int i = 2; i < 14; ++i){
+        for(int i = 2; i < 16; ++i){
             sb.append(deconstructable[i])
         }
         return sb.toString()
@@ -41,8 +41,15 @@ class BarCode implements Serializable
 
     transient String getSerialNumber()
     {
-        char[] code = uitCode?.toCharArray()?: uituCode?.toCharArray()
-        return Arrays.copyOfRange(code, 17, code.size() - 1)
+        StringBuilder sb = new StringBuilder()
+        String deconstructable = uitCode?: uituCode
+        if(!deconstructable){
+            return null
+        }
+        for(int i = 16; i < 30; ++i){
+            sb.append(deconstructable[i])
+        }
+        return sb.toString()
     }
 
     @Override
@@ -65,7 +72,7 @@ class BarCode implements Serializable
                 return false
             }
             if(value){
-                Pattern pattern = Pattern.compile("01\\[0-9]\\{14}21\\[a-zA-Z0-9]\\{13}")
+                Pattern pattern = Pattern.compile("01[0-9]{14}21[a-zA-Z0-9]{13}")
                 Matcher matcher = pattern.matcher(value)
                 if(!matcher.matches()){
                     return false
@@ -75,13 +82,6 @@ class BarCode implements Serializable
         uituCode nullable: true, validator: { String value, BarCode object ->
             if(!value && !object?.uitCode) {
                 return false
-            }
-            if(value){
-                Pattern pattern = Pattern.compile("01\\[0-9]\\{14}21\\[a-zA-Z0-9]\\{13}")
-                Matcher matcher = pattern.matcher(value)
-                if(!matcher.matches()){
-                    return false
-                }
             }
         }
         products nullable: true

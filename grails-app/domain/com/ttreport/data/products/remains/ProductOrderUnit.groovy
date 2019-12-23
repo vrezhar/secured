@@ -21,8 +21,9 @@ class ProductOrderUnit
         ] as Map<String, Object>
         if(serialNumberType != 'OPERATOR') {
             List<String> serials = []
-            serialNumbers.each {
-                serials.add(it.serialNumber)
+            for (int i = 0; i < quantity; i++) {
+                SerialNumber serialNumber = new SerialNumber(orderUnit: this, serialNumber: SerialNumber.generateRandomSerialNumber())
+                serialNumber.save()
             }
             map.serialNumbers = serials
         }

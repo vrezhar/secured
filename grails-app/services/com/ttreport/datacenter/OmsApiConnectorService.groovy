@@ -1,6 +1,6 @@
 package com.ttreport.datacenter
 
-import com.sun.xml.internal.bind.v2.TODO
+
 import com.ttreport.api.types.Endpoint
 import com.ttreport.data.Company
 import com.ttreport.data.products.BarCode
@@ -121,8 +121,8 @@ class OmsApiConnectorService extends SigningService
                     return [status: 202, warning: 'no codes left for this gtin in this order', productId: products.id]
                 }
                 try{
-                    CodeTailEncoded tail = new CodeTailEncoded(encodedTail: code.split("\u003d")[1])
-                    BarCode barCode = new RemainsBarCode(uituCode: code.split("\u003d")[0], cryptoTail: tail, products: products, inMarket: false)
+                    CodeTailEncoded tail = new CodeTailEncoded(encodedTail: "\u001d"+code.split("\u001d")[1])
+                    BarCode barCode = new RemainsBarCode(uituCode: code.split("\u001d")[0], tail: tail, products: products, inMarket: false)
                     products.addToBarCodes(barCode)
                     products.save()
                     tail.save()

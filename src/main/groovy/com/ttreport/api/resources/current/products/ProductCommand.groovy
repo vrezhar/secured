@@ -7,6 +7,9 @@ import com.ttreport.logs.ServerLogger
 import grails.compiler.GrailsCompileStatic
 import grails.validation.Validateable
 
+import java.util.regex.Matcher
+import java.util.regex.Pattern
+
 @GrailsCompileStatic
 class ProductCommand implements Validateable
 {
@@ -40,6 +43,13 @@ class ProductCommand implements Validateable
             BarCode exists = BarCode.findWhere(uitCode: value ?: null, uituCode: object?.uitu_code ?: null)
             if (object?.action == "SAVE" && !(value || object?.uitu_code)) {
                 return 'command.code.uit.null'
+            }
+            if(value){
+                Pattern pattern = Pattern.compile("^01[0-9]{14}21[a-zA-Z0-9]{13}\$")
+                Matcher matcher = pattern.matcher(value)
+                if(!matcher.matches()){
+                    return 'command.code.format.invalid'
+                }
             }
             if (!exists && object?.action == "DELETE") {
                 return 'command.code.notfound'

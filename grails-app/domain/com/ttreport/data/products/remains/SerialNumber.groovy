@@ -49,11 +49,7 @@ class SerialNumber
         return serial
     }
 
-    BarCode formBarCode(boolean forPackage = false){
-        BarCode barCode = new BarCode()
-        forPackage ? (barCode.uituCode = "01" + serialNumber + "21") : (barCode.uitCode = "01" + serialNumber + "21")
-        return barCode
-    }
+    static belongsTo = [orderUnit: ProductOrderUnit]
 
     static constraints = {
         serialNumber nullable: true, blank: true

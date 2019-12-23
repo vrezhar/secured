@@ -25,12 +25,32 @@ class ExtendedProductCommand extends ProductCommand
 
     static constraints = {
         importFrom ProductCommand
-        tnved_code nullable: false, blank: false
-        certificate_document nullable: false, blank: false
-        certificate_document_date nullable: false, blank: false
-        certificate_document_number nullable: false, blank: false
+        tnved_code validator: { String value, ExtendedProductCommand object ->
+            if (!value) {
+                return 'command.code.entrance.tnved.null'
+            }
+        }
+        certificate_document validator: { String value, ExtendedProductCommand object ->
+            if (!value) {
+                return 'command.entrance.certificate.null'
+            }
+        }
+        certificate_document_date validator: { String value, ExtendedProductCommand object ->
+            if (!value) {
+                return 'command.entrance.certificate.date.null'
+            }
+        }
+        certificate_document_number validator: { String value, ExtendedProductCommand object ->
+            if (!value) {
+                return 'command.entrance.certificate.number.null'
+            }
+        }
         production_date nullable: true, blank: true
-        producer_inn nullable: false, blank: false
+        producer_inn validator: { String value, ExtendedProductCommand object ->
+            if (!value) {
+                return 'command.code.entrance.tnved.null'
+            }
+        }
         owner_inn nullable: true, blank: true
     }
 }

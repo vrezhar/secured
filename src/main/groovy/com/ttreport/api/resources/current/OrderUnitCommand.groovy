@@ -13,7 +13,11 @@ class OrderUnitCommand implements Validateable
     String serialNumberType = 'OPERATOR'
 
     static constraints = {
-        id notEqual: 0
+        id validator: { long value, OrderUnitCommand object ->
+            if(!value){
+                return 'order.product.id.null'
+            }
+        }
         gtin validator: { String value, OrderUnitCommand object ->
             if (!value) {
                 return 'order.product.gtin.null'
