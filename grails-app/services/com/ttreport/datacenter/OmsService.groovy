@@ -136,8 +136,13 @@ class OmsService extends SigningService
                     return [status: 202, warning: 'no codes left for this gtin in this order', productId: products.id]
                 }
                 try{
-                    CodeTailEncoded tail = new CodeTailEncoded(encodedTail: "\u001d"+code.split("\u001d")[1])
-                    BarCode barCode = new RemainsBarCode(uituCode: code.split("\u001d")[0], tail: tail, products: products, inMarket: false)
+                    String[] parts = code.split("\u001d")
+                    CodeTailEncoded tail = new CodeTailEncoded(encodedTail: "\u001d")
+                    for (int j = 1; j < parts.length ; j++) {
+                        tail.encodedTail += parts[j]
+                    }
+
+                    BarCode barCode = new RemainsBarCode(uituCode: parts[0], tail: tail, products: products, inMarket: false)
                     products.addToBarCodes(barCode)
                     products.save()
                     tail.save()
