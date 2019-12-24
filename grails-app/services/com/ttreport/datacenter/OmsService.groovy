@@ -6,7 +6,7 @@ import com.ttreport.data.Company
 import com.ttreport.data.products.BarCode
 import com.ttreport.data.products.CodeTailEncoded
 import com.ttreport.data.products.Products
-import com.ttreport.data.products.remains.Order
+import com.ttreport.data.products.remains.Orders
 import com.ttreport.data.products.remains.RemainsBarCode
 import com.ttreport.logs.ServerLogger
 import grails.gorm.transactions.Transactional
@@ -17,8 +17,11 @@ import groovy.json.JsonSlurper
 
 //TODO add proper logs
 @Transactional
-class OmsApiConnectorService extends SigningService
+class OmsService extends SigningService
 {
+
+    static scope = 'prototype'
+
     static final String test_url = 'https://intuot.crpt.ru:12011/api/v2/light'
     static final String prod_url = 'https://suz2.crpt.ru/api/v2/light'
 
@@ -39,7 +42,7 @@ class OmsApiConnectorService extends SigningService
         return client
     }
 
-    Map createOrder(Order order, boolean testing = true)
+    Map createOrder(Orders order, boolean testing = true)
     {
         if(!order){
             return [status: 500]
@@ -48,19 +51,26 @@ class OmsApiConnectorService extends SigningService
         APIHttpClient client = initializeClient(order.company, Endpoint.CODE_ORDER, "POST", testing)
         client.addHeader("X-Signature", sign(json.bytes, true).encodeBase64().toString())
         client.data = json
-        Map response = new JsonSlurper().parseText(client.sendRequest()) as Map
-        if(response.fieldErrors || response.globalErrors) {
-            response.status = 402
-            return response
+        String responseString = client.sendRequest()
+        Map response
+        try {
+            response = new JsonSlurper().parseText(responseString) as Map
+            if (response.fieldErrors || response.globalErrors) {
+                response.status = 402
+                return response
+            }
+        }
+        catch (Exception ignored){
+            return [status: 402, error: responseString]
         }
         order.orderId = response.orderId
         order.estimatedWaitTime = response.expectedCompleteTimestamp as Long
-        order.save()
+        order.save(true)
         response.status = 200
         return response
     }
 
-    Map checkStatus(Order order, String gtin, boolean testing = true)
+    Map checkStatus(Orders order, String gtin, boolean testing = true)
     {
         if(!order){
             return [status: 404, error: "order not found"]
@@ -73,13 +83,13 @@ class OmsApiConnectorService extends SigningService
             response.status = 402
             return response
         }
-        order.orderStatus = response.buffferStatus
+        order.orderStatus = response.bufferStatus
         order.save()
         response.status = 200
         return response
     }
 
-    Map fetchBarCodes(Order order, int quantity, String gtin, boolean testing = true)
+    Map fetchBarCodes(Orders order, int quantity, String gtin, boolean testing = true)
     {
         if(!order){
             return [status: 404, error: "order not found"]
@@ -87,14 +97,16 @@ class OmsApiConnectorService extends SigningService
         if(!order.orderId || order.orderStatus != "ACTIVE"){
             return [status: 402, error: "order inactive"]
         }
-        APIHttpClient client = initializeClient(order.company, Endpoint.CODE_ORDER_STATUS, "GET", testing)
+        APIHttpClient client = initializeClient(order.company, Endpoint.CODE_ORDER_FETCH, "GET", testing)
         client.addRequestParameter("quantity", quantity.toString())
         client.addRequestParameter("gtin", gtin)
+        client.addRequestParameter("orderId",order.orderId)
         if(order.lastBlockId){
             client.addRequestParameter("lastBlockId", order.lastBlockId)
         }
-        Map response = new JsonSlurper().parseText(client.sendRequest()) as Map
-        if(response.fieldErrors && response.globalErrors) {
+        String responseText = client.sendRequest()
+        Map response = new JsonSlurper().parseText(responseText) as Map
+        if(response.fieldErrors || response.globalErrors) {
             response.status = 402
             return response
         }
@@ -115,6 +127,9 @@ class OmsApiConnectorService extends SigningService
             }
             response.productId = products.id
             for(int i = 0; i < quantity; ++i){
+                if(quantity <= orderUnit.quantity){
+                    orderUnit.quantity -= quantity
+                }
                 String code = iterator.next()
                 if(!code){
                     //TODO test this case properly

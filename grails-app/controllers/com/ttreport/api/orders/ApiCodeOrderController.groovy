@@ -3,14 +3,16 @@ package com.ttreport.api.orders
 import com.ttreport.api.current.remains.OrderService
 import com.ttreport.api.resources.current.OrderAndResponse
 import com.ttreport.api.resources.current.OrderCommand
-import com.ttreport.data.products.remains.Order
-import com.ttreport.datacenter.OmsApiConnectorService
+import com.ttreport.data.products.remains.Orders
+import com.ttreport.datacenter.OmsService
+import grails.plugin.springsecurity.annotation.Secured
 import grails.rest.RestfulController
 
+@Secured(['permitAll'])
 class ApiCodeOrderController extends RestfulController<OrderCommand>
 {
 
-    OmsApiConnectorService omsApiConnectorService
+    OmsService omsService
     OrderService orderService
 
     ApiCodeOrderController()
@@ -29,7 +31,7 @@ class ApiCodeOrderController extends RestfulController<OrderCommand>
     def order(OrderCommand cmd)
     {
         OrderAndResponse orderAndResponse = orderService.processOrder(cmd)
-        Order order = orderAndResponse.order
+        Orders order = orderAndResponse.order
 
         if(!order){
             Map response = orderAndResponse.response
@@ -39,9 +41,11 @@ class ApiCodeOrderController extends RestfulController<OrderCommand>
                     respond(response)
                 }
             }
+            return
         }
+        Map response = omsService.createOrder(order)
         withFormat {
-            Map response = omsApiConnectorService.createOrder(order)
+            this.response.status = response.status as int
             json{
                 respond(response)
             }
@@ -50,7 +54,25 @@ class ApiCodeOrderController extends RestfulController<OrderCommand>
 
     def checkStatus()
     {
-        Map response = omsApiConnectorService.checkStatus(Order.findWhere(orderId: params.orderId), params.gtin as String)
+        if(!params.orderId){
+            withFormat {
+                this.response.status = 402
+                json{
+                    respond([status: 402, reason: "orderId missing from the url"])
+                }
+            }
+            return
+        }
+        if(!params.gtin){
+            withFormat {
+                this.response.status = 402
+                json{
+                    respond([status: 402, reason: "gtin missing from the url"])
+                }
+            }
+            return
+        }
+        Map response = omsService.checkStatus(Orders.findWhere(orderId: params.orderId as String), params.gtin as String)
         withFormat {
             this.response.status = response.status as int
             json{
@@ -61,7 +83,34 @@ class ApiCodeOrderController extends RestfulController<OrderCommand>
 
     def getBarCodes()
     {
-        Map response = omsApiConnectorService.fetchBarCodes(Order.findWhere(orderId: params.orderId), params.quantity as int, params.gtin as String)
+        if(!params.orderId){
+            withFormat {
+                this.response.status = 402
+                json{
+                    respond([status: 402, reason: "orderId missing from the url"])
+                }
+            }
+            return
+        }
+        if(!params.gtin){
+            withFormat {
+                this.response.status = 402
+                json{
+                    respond([status: 402, reason: "gtin missing from the url"])
+                }
+            }
+            return
+        }
+        if(!params.quantity){
+            withFormat {
+                this.response.status = 402
+                json{
+                    respond([status: 402, reason: "quantity missing from the url"])
+                }
+            }
+            return
+        }
+        Map response = omsService.fetchBarCodes(Orders.findWhere(orderId: params.orderId), params.quantity as int, params.gtin as String)
         withFormat {
             this.response.status = response.status as int
             json{

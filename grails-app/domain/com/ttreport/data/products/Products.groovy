@@ -14,8 +14,8 @@ class Products implements Serializable
     private static final long serialVersionUID = 1
 
     String description
-    int cost
-    int tax
+    int cost = 0
+    int tax = 0
 
     Date dateCreated
     Date lastUpdated
@@ -42,11 +42,12 @@ class Products implements Serializable
     }
 
     static constraints = {
-        description nullable: false, blank: false
-        cost nullable: false, blank: false
-        tax nullable: false, blank: false
+        description nullable: true, blank: true
         barCodes nullable: true
         company nullable: true //TODO investigate this more thoroughly
     }
 
+    static mapping = {
+        tablePerHierarchy false
+    }
 }

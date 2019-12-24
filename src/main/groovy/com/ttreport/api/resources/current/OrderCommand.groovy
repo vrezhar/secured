@@ -22,13 +22,12 @@ class OrderCommand implements Validateable, DocumentCommandObject
             }
         }
         releaseMethodType nullable: false, blank: false, validator: { String value, OrderCommand object ->
-            if(value != 'REMAINS' || value != 'PRODUCTION' || value != 'IMPORT' || value != 'CROSSBORDER'){
+            if(value != 'REMAINS' && value != 'PRODUCTION' && value != 'IMPORT' && value != 'CROSSBORDER'){
                 return 'order.release.method.invalid'
             }
         }
-        products nullable: false
         createMethodType nullable: false, blank: false, validator: { String value, OrderCommand object ->
-            if(value != 'SELF_MADE' || value != 'CEM'){
+            if(value != 'SELF_MADE' && value != 'CEM'){
                 return 'order.creation.method.invalid'
             }
         }

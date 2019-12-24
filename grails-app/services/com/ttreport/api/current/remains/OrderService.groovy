@@ -5,7 +5,7 @@ import com.ttreport.api.resources.current.OrderAndResponse
 import com.ttreport.api.resources.current.OrderCommand
 import com.ttreport.data.Company
 import com.ttreport.data.products.Products
-import com.ttreport.data.products.remains.Order
+import com.ttreport.data.products.remains.Orders
 import com.ttreport.data.products.remains.ProductOrderUnit
 import grails.gorm.transactions.Transactional
 import org.springframework.transaction.TransactionStatus
@@ -21,26 +21,26 @@ class OrderService extends MessageBundleService
         if(!cmd.validate()){
             List errorList = []
             cmd.errors.fieldErrors.each {
-                errorList.add([field: it.field, error: getMessage(it.code)])
+                errorList.add([field: it.field, value: it.rejectedValue, error: getMessage(it.code)?: "invalid value"])
             }
-            return [status: 402, errors: errorList]
+            return new OrderAndResponse(response: [status: 402, errors: errorList])
         }
         Company company = cmd.authorize()
         if(!company){
-            return [status: 400]
+            return new OrderAndResponse(response: [status: 400])
         }
         OrderAndResponse orderAndResponse = new OrderAndResponse()
-        Order order = new Order(contactPerson: cmd.contactPerson, releaseMethodType: cmd.releaseMethodType, createMethodType: cmd.createMethodType, company: company)
+        Orders order = new Orders(contactPerson: cmd.contactPerson, releaseMethodType: cmd.releaseMethodType, createMethodType: cmd.createMethodType, company: company)
         Map<String,Object> response = [:]
         response.status = 200
         List errors = []
-        Order.withTransaction { TransactionStatus status ->
+        Orders.withTransaction { TransactionStatus status ->
             boolean noerrors = true
             for(orderUnit in cmd.products){
                 if(!orderUnit.validate()){
                     List errorList = []
-                    cmd.errors.fieldErrors.each {
-                        errorList.add([field: it.field, error: getMessage(it.code)])
+                    orderUnit.errors.fieldErrors.each {
+                        errorList.add([field: it.field, value: it.rejectedValue, error: getMessage(it.code)?: "invalid value"])
                     }
                     errors.add([gtin: orderUnit.gtin, errors: errorList])
                     noerrors = false
@@ -56,13 +56,12 @@ class OrderService extends MessageBundleService
                 if(orderUnit.serialNumberType){
                     unit.serialNumberType = orderUnit.serialNumberType
                 }
-                unit.save()
+                order.addToProducts(unit)
             }
             if(!noerrors){
                 status.setRollbackOnly()
                 return
             }
-            order.save()
             return
         }
         if(!errors){

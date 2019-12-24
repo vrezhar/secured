@@ -12,12 +12,12 @@ import com.ttreport.data.documents.differentiated.remains.RemainsRegistryDocumen
 import com.ttreport.data.products.BarCode
 import com.ttreport.data.products.Products
 import com.ttreport.data.products.remains.FullRemainsProduct
-import com.ttreport.data.products.remains.Order
+import com.ttreport.data.products.remains.Orders
 import com.ttreport.data.products.remains.ProductOrderUnit
 import grails.test.hibernate.HibernateSpec
 import grails.testing.services.ServiceUnitTest
 
-class OmsApiConnectorServiceSpec extends HibernateSpec implements ServiceUnitTest<OmsApiConnectorService>{
+class OmsServiceSpec extends HibernateSpec implements ServiceUnitTest<OmsService>{
 
     def setup() {
     }
@@ -27,7 +27,7 @@ class OmsApiConnectorServiceSpec extends HibernateSpec implements ServiceUnitTes
 
     List<Class> getDomainClasses()
     {
-        [Document, FullRemainsProduct, RemainsDocument, RemainsDescriptionDocument, RemainsRegistryDocument, RemainsFullDescriptionDocument, Company, User, Products, BarCode, Order, ProductOrderUnit, UserRole, Role]
+        [Document, FullRemainsProduct, RemainsDocument, RemainsDescriptionDocument, RemainsRegistryDocument, RemainsFullDescriptionDocument, Company, User, Products, BarCode, Orders, ProductOrderUnit, UserRole, Role]
     }
 
     void "test something"() {
@@ -38,7 +38,7 @@ class OmsApiConnectorServiceSpec extends HibernateSpec implements ServiceUnitTes
         UserRole.create(user, testRole)
         Company company = new Company(address: "Komitas", companyId: "1", user: user, omsId: "0794f376-7135-486d-a748-8d91fec417227", omsToken: "17c8c49-dab2-bc02-4e82-a58b46cabf66")
         company.save()
-        Order order = new Order()
+        Orders order = new Orders()
         expect:"fix me"
             true == false
     }

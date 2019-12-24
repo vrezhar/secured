@@ -331,31 +331,14 @@ class ProductsManagerService extends DocumentService
                     save = false
                     List errors = []
                     product.errors.fieldErrors.each {
-                        errors.add([field: it.field, error: getMessage(it.code)?: 'invalid value'])
+                        errors.add([field: it.field, value: it.rejectedValue, error: getMessage(it.code)?: 'invalid value'])
                     }
-                    errorList.add([product: product.product_name?: product.description, errors: errors])
+                    errorList.add([product: product.product_name?: product.description?: product.identifier, errors: errors])
                     continue
                 }
                 Products products
-                def bindingMap = [
-                        company: company,
-                        model: product.model,
-                        productName: product.product_name,
-                        brand: product.brand,
-                        country: product.country,
-                        productType: product.product_type,
-                        materialUpper: product.material_upper,
-                        materialLining: product.material_lining,
-                        materialDown: product.material_down,
-                        color: product.color,
-                        productSize: product.product_size,
-                        tnvedCode2: product.tnved_code_2,
-                        productGender: product.product_gender,
-                        releaseMethod: product.release_method,
-                        certificateDate: product.certificate_date,
-                        certificateNumber: product.certificate_number,
-                        certificateType :product.certificate_type
-                ]
+                def bindingMap = [:]
+                bindingMap.company = company
                 if(product.description){
                     bindingMap.description = product.description
                 }
@@ -369,6 +352,19 @@ class ProductsManagerService extends DocumentService
                     bindingMap.cost = product.cost
                 }
                 if(product.description_type == 'EXTENDED'){
+                    bindingMap.model = product.model
+                    bindingMap.productName = product.product_name
+                    bindingMap.brand = product.brand
+                    bindingMap.country = product.country
+                    bindingMap.productType = product.product_type
+                    bindingMap.materialUpper = product.material_upper
+                    bindingMap.materialLining = product.material_lining
+                    bindingMap.materialDown = product.material_down
+                    bindingMap.color = product.color
+                    bindingMap.productSize = product.product_size
+                    bindingMap.certificateDate = product.certificate_date
+                    bindingMap.certificateNumber = product.certificate_number
+                    bindingMap.certificateType = product.certificate_type
                     products = FullRemainsProduct.findOrSaveWhere(bindingMap)
                     Map newProduct = [product_name: product.product_name, id: products.id]
                     if(!acceptedList.contains(newProduct)){
@@ -376,6 +372,9 @@ class ProductsManagerService extends DocumentService
                     }
                 }
                 else{
+                    bindingMap.tnvedCode2 = product.tnved_code_2
+                    bindingMap.productGender = product.product_gender
+                    bindingMap.releaseMethod = product.release_method
                     products = RemainsProduct.findOrSaveWhere(bindingMap)
                     Map newProduct = [product_name: product.identifier?: product.description, id: products.id]
                     if(!acceptedList.contains(newProduct)){
@@ -395,6 +394,7 @@ class ProductsManagerService extends DocumentService
             documentAndResponse.document = document
             return
         }
+        documentAndResponse.response = response
         return documentAndResponse
     }
 
@@ -439,6 +439,7 @@ class ProductsManagerService extends DocumentService
             response.accepted = acceptedList
             document.save()
             documentAndResponse.document = document
+            documentAndResponse.response = response
             return documentAndResponse
         }
     }

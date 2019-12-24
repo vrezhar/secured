@@ -2,8 +2,10 @@ package com.ttreport.api.current.remains
 
 import com.ttreport.api.current.ProductsManagerService
 import com.ttreport.api.resources.current.documents.remains.RemainsDescriptionDocumentCommand
+import grails.plugin.springsecurity.annotation.Secured
 import grails.rest.RestfulController
 
+@Secured(['permitAll'])
 class ApiRemainsDescriptionController extends RestfulController<RemainsDescriptionDocumentCommand>
 {
     ProductsManagerService productsManagerService

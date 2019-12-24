@@ -24,7 +24,8 @@ import ru.CryptoPro.CAdES.CAdESSignature
 import java.security.cert.CertificateFactory
 
 @Transactional
-class SigningService {
+class SigningService
+{
 
     protected static final String keystore_type = JCP.HD_STORE_NAME
     protected static final String keystore_alias = "test"
@@ -65,10 +66,6 @@ class SigningService {
                 }
 
             }
-            x509Certificates.each {
-                println(it.toString())
-            }
-            println(certificates.size())
             CAdESSignature signature = new CAdESSignature(false)
             ByteArrayOutputStream out = new ByteArrayOutputStream()
             signature.setCertificateStore(new CollectionStore(x509Certificates))
@@ -96,8 +93,6 @@ class SigningService {
             ServerLogger.log_exception(e)
         }
         ServerLogger.log("signed data is:",signedCode?.encodeBase64()?.toString())
-        ServerLogger.print_logs()
-        ServerLogger.cleanup()
         return signedCode
     }
 
@@ -114,7 +109,6 @@ class SigningService {
             return cert
         }
         finally {
-            println("cleaning up streams")
             if (bis != null) {
                 bis.close()
             }

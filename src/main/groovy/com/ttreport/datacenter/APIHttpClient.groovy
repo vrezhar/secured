@@ -89,6 +89,7 @@ class APIHttpClient
             if(getToken() && !connectingToOMS){
                 connection.setRequestProperty("Authorization", "Bearer " + getToken())
             }
+
             if(timeout){
                 connection.setConnectTimeout(timeout)
             }
@@ -100,8 +101,6 @@ class APIHttpClient
                 wr.writeBytes(data_)
                 wr.close()
             }
-
-            println(connection.headerFields)
 
             InputStream is = connection.getInputStream()
             BufferedReader rd = new BufferedReader(new InputStreamReader(is))
@@ -125,7 +124,7 @@ class APIHttpClient
         catch(IOException ioException) {
             ServerLogger.log("input-output exception occurred while sending the request")
             ServerLogger.log_exception(ioException)
-            println(connection.responseMessage)
+//            println(connection.responseMessage)
             InputStream es
             BufferedReader bufferedReader
             try {

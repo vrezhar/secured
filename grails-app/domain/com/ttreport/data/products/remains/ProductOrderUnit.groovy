@@ -31,7 +31,7 @@ class ProductOrderUnit
     }
 
     static hasMany = [serialNumbers: SerialNumber]
-    static belongsTo = [order: Order]
+    static belongsTo = [order: Orders]
 
     static constraints = {
         serialNumbers nullable: true, validator: { List<ProductOrderUnit> value, ProductOrderUnit object ->
@@ -42,7 +42,7 @@ class ProductOrderUnit
                 return false
             }
         }
-        quantity min: 1, max: 1500
-        gtin nullable: false, blank: false, matches: "\\[0-9]\\{14}"
+        quantity min: 1, max: 10
+        gtin nullable: false, blank: false
     }
 }

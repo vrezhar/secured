@@ -4,7 +4,7 @@ import com.ttreport.data.Company
 import com.ttreport.logs.ServerLogger
 import groovy.json.JsonBuilder
 
-class Order
+class Orders
 {
     String contactPerson
     String releaseMethodType = 'REMAINS'
@@ -40,20 +40,20 @@ class Order
     transient String json()
     {
         JsonBuilder builder = new JsonBuilder(this.serialize())
-        ServerLogger.log("Order serialized", builder.toPrettyString())
+        ServerLogger.log("Orders serialized", builder.toPrettyString())
         return builder.toString()
     }
 
     static constraints = {
         productOrderId nullable: true, blank: true
         contactPerson nullable: false, blank: false
-        releaseMethodType nullable: false, blank: false, validator: { String value, Order object ->
-            if(value != 'REMAINS' || value != 'PRODUCTION' || value != 'IMPORT' || value != 'CROSSBORDER'){
+        releaseMethodType nullable: false, blank: false, validator: { String value, Orders object ->
+            if(value != 'REMAINS' && value != 'PRODUCTION' && value != 'IMPORT' && value != 'CROSSBORDER'){
                 return false
             }
         }
-        createMethodType nullable: false, blank: false, validator: { String value, Order object ->
-            if(value != 'SELF_MADE' || value != 'CEM'){
+        createMethodType nullable: false, blank: false, validator: { String value, Orders object ->
+            if(value != 'SELF_MADE' && value != 'CEM'){
                 return false
             }
         }

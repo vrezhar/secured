@@ -25,6 +25,8 @@ class BootStrap {
 
     def init = {
         servletContext ->
+            System.setProperty("com.sun.security.enableAIAcaIssuers", "true")
+            System.setProperty("com.sun.security.enableCRLDP","true")
             Role adminRole = Role.findOrSaveWhere(authority: 'ROLE_ADMIN')
             Role userRole = Role.findOrSaveWhere(authority: 'ROLE_USER')
             User admin = User.findWhere(username: 'testmail@gmail.com')
@@ -59,8 +61,9 @@ class BootStrap {
                 admin.addToCompanies(company)
                 company.save(true)
             }
-
-            MtisApiConnectorService.updateToken()
+            company.omsId = "1745f04c-23c3-4479-8dc0-ff2052cff9e8"
+            company.omsToken = "717c8c49-dab2-bc02-4e82-a58b46cabf66"
+            //MtisApiConnectorService.updateToken()
 
             Executors.newScheduledThreadPool(1).scheduleAtFixedRate(new Runnable() {
 

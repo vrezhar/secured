@@ -3,7 +3,7 @@ package com.ttreport.data.products.remains
 import grails.testing.gorm.DomainUnitTest
 import spock.lang.Specification
 
-class ProductOrderUnitSpec extends Specification implements DomainUnitTest<ProductOrderUnit> {
+class OrdersSpec extends Specification implements DomainUnitTest<Orders> {
 
     def setup() {
     }

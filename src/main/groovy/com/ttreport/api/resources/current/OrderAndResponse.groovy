@@ -1,10 +1,10 @@
 package com.ttreport.api.resources.current
 
-import com.ttreport.api.response.current.Response
-import com.ttreport.data.products.remains.Order
+
+import com.ttreport.data.products.remains.Orders
 
 class OrderAndResponse
 {
-    Order order
+    Orders order
     Map response
 }

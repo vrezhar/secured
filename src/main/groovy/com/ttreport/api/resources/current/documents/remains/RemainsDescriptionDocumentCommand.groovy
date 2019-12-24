@@ -12,6 +12,10 @@ class RemainsDescriptionDocumentCommand implements Validateable, DocumentCommand
 
     static constraints = {
         companyToken nullable: false, blank: false
-        products nullable: false
+        products nullable: false, validator: { List<ProductRemainsDescriptionCommand> value, RemainsDescriptionDocumentCommand object ->
+            if(value.isEmpty()){
+                return false
+            }
+        }
     }
 }

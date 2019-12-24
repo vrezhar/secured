@@ -1,5 +1,6 @@
 package com.ttreport.api.resources.current
 
+import com.ttreport.data.products.Products
 import grails.validation.Validateable
 
 class OrderUnitCommand implements Validateable
@@ -31,7 +32,7 @@ class OrderUnitCommand implements Validateable
         }
 
         description validator: { String value, OrderUnitCommand object ->
-            if (!value) {
+            if (!value && !Products.get(object?.id)?.description) {
                 return 'order.product.description.null'
             }
         }

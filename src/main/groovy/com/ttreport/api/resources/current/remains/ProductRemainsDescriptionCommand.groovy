@@ -10,8 +10,8 @@ class ProductRemainsDescriptionCommand implements Validateable
     String identifier
 
     String description
-    String tax
-    String cost
+    int tax
+    int cost
 
     String product_gender
     String tnved_code_2
