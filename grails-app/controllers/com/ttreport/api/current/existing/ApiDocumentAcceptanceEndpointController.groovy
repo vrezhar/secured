@@ -1,7 +1,7 @@
 package com.ttreport.api.current.existing
 
 
-import com.ttreport.api.resources.current.AcceptanceDocumentCommand
+import com.ttreport.api.resources.current.documents.AcceptanceDocumentCommand
 import com.ttreport.logs.ServerLogger
 import grails.plugin.springsecurity.annotation.Secured
 import grails.rest.RestfulController

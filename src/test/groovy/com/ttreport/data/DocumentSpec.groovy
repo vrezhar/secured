@@ -1,5 +1,6 @@
 package com.ttreport.data
 
+import com.ttreport.api.resources.current.documents.DocumentCommand
 import com.ttreport.auth.Role
 import com.ttreport.auth.User
 import com.ttreport.auth.UserRole
@@ -11,7 +12,8 @@ import com.ttreport.data.products.Products
 import com.ttreport.logs.ServerLogger
 import grails.test.hibernate.HibernateSpec
 
-class DocumentSpec extends HibernateSpec{
+class DocumentSpec extends HibernateSpec
+{
 
     List<Class> getDomainClasses()
     {
@@ -41,6 +43,21 @@ class DocumentSpec extends HibernateSpec{
         println(result_json)
         ServerLogger.print_logs()
         expect:"test encoding and decoding"
-            true
+        true
+    }
+
+    void "test trait"()
+    {
+        Role testRole = new Role(authority: "ROLE_TEST")
+        testRole.save()
+        User user = new User(firstName: "user", lastName: "userson", username: "user@userson.com", password: "1Test")
+        user.save()
+        UserRole.create(user, testRole)
+        Company company = new Company(address: "Komitas", companyId: "1", user: user, token: "test")
+        company.save()
+        DocumentCommand documentCommand = new DocumentCommand(companyToken: "test")
+        println(documentCommand.authorize())
+        expect:
+        documentCommand.authorize()
     }
 }

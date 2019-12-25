@@ -47,7 +47,7 @@ class RegisterController
         }
         if(cmd.password != cmd.confirm) {
             cmd.errors.rejectValue("confirm",
-                    "user.password.doesntmatch")
+                    "user.password.doesnt.match")
             haserrors = true
         }
         if(haserrors){
@@ -78,7 +78,7 @@ class RegisterController
         if(!cmd.confirm || cmd.password != cmd.confirm)
         {
             cmd.errors.rejectValue("password",
-                    "user.password.doesntmatch")
+                    "user.password.doesnt.match")
             haserrors = true
         }
         if(haserrors)
@@ -102,7 +102,7 @@ class RegisterController
                 "<p>If you didn't register in ttreport.ru just ignore this message</p>" +
                 "<span></span>" +
                 "<p>Sincerely</p>" +
-                "<br>TTReport team</br>" +
+                "<br>TTReport team </br>" +
                 "<span></span>" +
                 "<a href='ttreport.ru'>www.ttreport.ru</a>" +
                 "</html>"

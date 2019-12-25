@@ -21,11 +21,11 @@ class UserValidatorService extends PatternValidatorService
         switch(validatePassword(usr.password)) {
             case -2:
                 ServerLogger.log("password is too short")
-                usr.errors.rejectValue("password","user.password.tooshort")
+                usr.errors.rejectValue("password","user.password.too.short")
                 return false
             case -1:
                 ServerLogger.log("password is too long")
-                usr.errors.rejectValue("password","user.password.toolong")
+                usr.errors.rejectValue("password","user.password.too.long")
                 return false
             case 0:
                 ServerLogger.log("password contains whitespaces")
@@ -33,7 +33,7 @@ class UserValidatorService extends PatternValidatorService
                 return false
             case 1:
                 ServerLogger.log("password is too weak")
-                usr.errors.rejectValue("password","user.password.tooweak")
+                usr.errors.rejectValue("password","user.password.too.weak")
                 return false
         }
         return true
@@ -49,11 +49,11 @@ class UserValidatorService extends PatternValidatorService
         switch(validatePassword(cmd.password)) {
             case -2:
                 ServerLogger.log("password is too short")
-                cmd.errors.rejectValue("password","user.password.tooshort")
+                cmd.errors.rejectValue("password","user.password.too.short")
                 return false
             case -1:
                 ServerLogger.log("password is too long")
-                cmd.errors.rejectValue("password","user.password.toolong")
+                cmd.errors.rejectValue("password","user.password.too.long")
                 return false
             case 0:
                 ServerLogger.log("password contains whitespaces")
@@ -61,7 +61,7 @@ class UserValidatorService extends PatternValidatorService
                 return false
             case 1:
                 ServerLogger.log("password is too weak")
-                cmd.errors.rejectValue("password","user.password.tooweak")
+                cmd.errors.rejectValue("password","user.password.too.weak")
                 return false
         }
         return true

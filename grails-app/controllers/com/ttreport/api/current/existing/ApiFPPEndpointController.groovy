@@ -1,7 +1,7 @@
 package com.ttreport.api.current.existing
 
 
-import com.ttreport.api.resources.current.FromPhysCommand
+import com.ttreport.api.resources.current.documents.FromPhysCommand
 import com.ttreport.logs.ServerLogger
 import grails.plugin.springsecurity.annotation.Secured
 import grails.rest.RestfulController

@@ -1,10 +1,10 @@
 package com.ttreport.api.factories
 
-import com.ttreport.api.resources.current.AcceptanceDocumentCommand
-import com.ttreport.api.resources.current.DocumentCommand
-import com.ttreport.api.resources.current.ExtendedProductCommand
-import com.ttreport.api.resources.current.ProductCommand
-import com.ttreport.api.resources.current.ShipmentDocumentCommand
+import com.ttreport.api.resources.current.documents.AcceptanceDocumentCommand
+import com.ttreport.api.resources.current.documents.DocumentCommand
+import com.ttreport.api.resources.current.products.ExtendedProductCommand
+import com.ttreport.api.resources.current.products.ProductCommand
+import com.ttreport.api.resources.current.documents.ShipmentDocumentCommand
 import com.ttreport.api.types.DocumentType
 import com.ttreport.api.types.ProductType
 import com.ttreport.data.products.BarCode

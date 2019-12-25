@@ -1,8 +1,9 @@
 package com.ttreport.api.response.current
 
 
-import com.ttreport.api.resources.current.GenericDocumentCommand
-import com.ttreport.api.resources.current.ProductCommand
+import com.ttreport.api.resources.current.documents.GenericDocumentCommand
+import com.ttreport.api.resources.current.products.ProductCommand
+import com.ttreport.api.resources.current.remains.ProductRemainsRegistryCommand
 import com.ttreport.configuration.ApplicationConfiguration
 import com.ttreport.logs.ServerLogger
 
@@ -27,6 +28,17 @@ class Response extends ApplicationConfiguration
         rejected.id = cmd.id
         rejected.uit_code = cmd.uit_code
         rejected.uitu_code = cmd.uitu_code
+        rejected.reason = reason
+        rejected_list?.add(rejected)
+        return rejected
+    }
+
+    RejectedProduct rejectProduct(ProductRemainsRegistryCommand cmd, int reason)
+    {
+        RejectedProduct rejected = new RejectedProduct()
+        rejected.id = cmd.id
+        rejected.uit_code = cmd.ki
+        rejected.uitu_code = cmd.kitu
         rejected.reason = reason
         rejected_list?.add(rejected)
         return rejected

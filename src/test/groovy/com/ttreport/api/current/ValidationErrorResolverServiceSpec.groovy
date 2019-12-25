@@ -1,6 +1,6 @@
 package com.ttreport.api.current
 
-import com.ttreport.api.resources.current.ProductCommand
+import com.ttreport.api.resources.current.products.ProductCommand
 import com.ttreport.auth.Role
 import com.ttreport.auth.User
 import com.ttreport.auth.UserRole
@@ -33,13 +33,16 @@ class ValidationErrorResolverServiceSpec extends HibernateSpec implements Servic
         BarCode barCode = new BarCode(uitCode: "test", uituCode: "test1", products: products)
         products.addToBarCodes(barCode)
         barCode.save()
-        error.setAction("DELETE")
+        error.setAction("SAVE")
         error.id = 1
-        error.uit_code = "test"
+        error.uit_code = "011111111111111121asasasasddddd"
         error.uitu_code = "test1"
         error.validate()
+        error.errors.fieldErrors.each {
+            println(it.field+": "+it.code)
+        }
         expect:"matching error"
-               service.computeHighestPriorityError(error) == -1
+               true
 
     }
 }

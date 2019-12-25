@@ -1,12 +1,14 @@
-package com.ttreport.api.resources.current
+package com.ttreport.api.resources.current.documents
 
+import com.ttreport.api.DocumentCommandObject
+import com.ttreport.api.resources.current.products.ProductCommand
 import com.ttreport.data.Company
 import com.ttreport.logs.ServerLogger
 import grails.compiler.GrailsCompileStatic
 import grails.validation.Validateable
 
 @GrailsCompileStatic
-class DocumentCommand implements Validateable
+class DocumentCommand implements Validateable, DocumentCommandObject
 {
     List<ProductCommand> products = []
     String companyToken
@@ -57,11 +59,7 @@ class DocumentCommand implements Validateable
                 return false
             }
         }
-        companyToken nullable: false, blank: false, validator: { String value, DocumentCommand object ->
-            Company company = Company.findWhere(token: value)
-            if(!company){
-                return false
-            }
-        }
+        companyToken nullable: false, blank: false
     }
+
 }

@@ -1,8 +1,8 @@
 package com.ttreport.api.current.existing
 
 
-import com.ttreport.api.resources.current.DocumentCommand
-import com.ttreport.api.resources.current.ReleaseCommand
+import com.ttreport.api.resources.current.documents.DocumentCommand
+import com.ttreport.api.resources.current.documents.ReleaseCommand
 import com.ttreport.logs.ServerLogger
 import grails.plugin.springsecurity.annotation.Secured
 

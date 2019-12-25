@@ -1,14 +1,19 @@
 package com.ttreport.api.current.existing
 
 import com.ttreport.api.current.ProductsService
-import com.ttreport.api.resources.current.AcceptanceDocumentCommand
-import com.ttreport.api.resources.current.MarketEntranceCommand
-import com.ttreport.api.resources.current.ReleaseCommand
-import com.ttreport.api.resources.current.ShipmentDocumentCommand
+import com.ttreport.api.resources.current.documents.AcceptanceDocumentCommand
+import com.ttreport.api.resources.current.documents.MarketEntranceCommand
+import com.ttreport.api.resources.current.documents.ReleaseCommand
+import com.ttreport.api.resources.current.documents.ShipmentDocumentCommand
+import com.ttreport.api.resources.current.documents.remains.RemainBundle
+import com.ttreport.api.resources.current.documents.remains.RemainsDescriptionDocumentCommand
+import com.ttreport.api.resources.current.documents.remains.RemainsRegistryDocumentCommand
 import com.ttreport.data.documents.differentiated.existing.AcceptanceDocument
 import com.ttreport.data.documents.differentiated.existing.ConsumerReleaseDocument
 import com.ttreport.data.documents.differentiated.existing.MarketEntranceDocument
 import com.ttreport.data.documents.differentiated.existing.ShipmentDocument
+import com.ttreport.data.documents.differentiated.remains.RemainsDescriptionDocument
+import com.ttreport.data.documents.differentiated.remains.RemainsRegistryDocument
 import grails.gorm.transactions.Transactional
 
 @Transactional
@@ -77,4 +82,6 @@ class DocumentService extends ProductsService
         document.documentType = cmd.document_type
         return document
     }
+
+
 }

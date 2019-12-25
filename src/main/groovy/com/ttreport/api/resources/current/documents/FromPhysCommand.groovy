@@ -1,4 +1,6 @@
-package com.ttreport.api.resources.current
+package com.ttreport.api.resources.current.documents
+
+import com.ttreport.api.resources.current.products.ProductCommand
 
 class FromPhysCommand extends DocumentCommand
 {

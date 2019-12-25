@@ -1,5 +1,6 @@
 package com.ttreport.data.products
 
+import com.ttreport.data.products.remains.RemainsBarCode
 import grails.testing.gorm.DomainUnitTest
 import spock.lang.Specification
 
