@@ -8,8 +8,8 @@ class ShipmentDocument extends GenericDocument
 {
     String turnoverType
     String transferDate
-    String owner
-    String ownerInn
+    String owner = company?.name
+    String ownerInn = company?.inn
     String receiverInn
     String receiver
     String sender
@@ -32,8 +32,8 @@ class ShipmentDocument extends GenericDocument
         map.pdf = pdf
         map.receiver = receiver
         map.receiver_inn = receiverInn
-        map.owner = owner?: company?.name
-        map.owner_inn = ownerInn?: company?.inn
+        map.owner = owner
+        map.owner_inn = ownerInn
         map.sender = sender
         map.sender_inn = senderInn
         return map

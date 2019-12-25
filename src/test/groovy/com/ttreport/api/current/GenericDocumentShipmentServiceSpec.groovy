@@ -1,6 +1,6 @@
 package com.ttreport.api.current
 
-import com.ttreport.api.current.DocumentShipmentService
+import com.ttreport.api.current.existing.DocumentShipmentService
 import grails.testing.services.ServiceUnitTest
 import spock.lang.Specification
 

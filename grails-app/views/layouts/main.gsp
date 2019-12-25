@@ -20,22 +20,10 @@
     <link href="https://fonts.googleapis.com/css?family=Nunito:400,600,700,800|Roboto:400,500,700" rel="stylesheet">
     <link href='https://fonts.googleapis.com/css?family=Roboto:400,300,500,700' rel='stylesheet' type='text/css'>
     <link href='https://fonts.googleapis.com/css?family=Montserrat:400,700' rel='stylesheet' type='text/css'>
-    <asset:stylesheet src="old/assets/vendor/swiper/css/swiper.min.css"></asset:stylesheet>
-    <asset:stylesheet src="old/assets/vendor/hamburgers/hamburgers.min.css" ></asset:stylesheet>
-    <asset:stylesheet src="old/assets/vendor/animate/animate.min.css" ></asset:stylesheet>
-    <asset:stylesheet src="old/assets/vendor/fancybox/css/jquery.fancybox.min.css"></asset:stylesheet>
-    <asset:stylesheet src="old/assets/fonts/font-awesome/css/font-awesome.min.css" ></asset:stylesheet>
-    <asset:stylesheet src="old/assets/fonts/ionicons/css/ionicons.min.css" ></asset:stylesheet>
-    <asset:stylesheet src="old/assets/fonts/line-icons/line-icons.css" ></asset:stylesheet>
-    <asset:stylesheet src="old/assets/fonts/line-icons-pro/line-icons-pro.css" ></asset:stylesheet>
-    <asset:stylesheet src="old/assets/fonts/linea/arrows/linea-icons.css" ></asset:stylesheet>
-    <asset:stylesheet src="old/assets/fonts/linea/basic/linea-icons.css" ></asset:stylesheet>
-    <asset:stylesheet src="old/assets/fonts/linea/ecommerce/linea-icons.css" ></asset:stylesheet>
-    <asset:stylesheet src="old/assets/fonts/linea/software/linea-icons.css"></asset:stylesheet>
-    <asset:stylesheet src="old/boomerang.css"></asset:stylesheet>
     <asset:stylesheet src="animate.css"></asset:stylesheet>
-    <asset:stylesheet src="bootstrap-grid.css"></asset:stylesheet>
-    <asset:stylesheet src="bootstrap-reboot.css"></asset:stylesheet>
+    <link href="/assets/stylesheets/bootstrap-grid.css" rel="stylesheet" type="text/css">
+    <link href="/assets/stylesheets/bootstrap-reboot.css" rel="stylesheet" type="text/css">
+    <asset:stylesheet src="old/boomerang.css"></asset:stylesheet>
     <asset:stylesheet src="material-design-iconic-font.min.css"></asset:stylesheet>
     <asset:stylesheet src="owl.carousel.css"></asset:stylesheet>
     <asset:stylesheet src="owl.theme.css"></asset:stylesheet>
@@ -44,12 +32,12 @@
     <asset:stylesheet src="colors/brown.css"></asset:stylesheet>
     <asset:stylesheet src="colors/red.css"></asset:stylesheet>
     <asset:stylesheet src="colors/default.css"></asset:stylesheet>
-    <asset:stylesheet src="colors/cyan.css"></asset:stylesheet>
-    <asset:stylesheet src="colors/green.css"></asset:stylesheet>
-    <asset:stylesheet src="colors/pink.css"></asset:stylesheet>
-    <asset:stylesheet src="colors/purple.css"></asset:stylesheet>
-    <asset:stylesheet src="colors/teal.css"></asset:stylesheet>
-    <asset:stylesheet src="colors/yellow.css"></asset:stylesheet>
+%{--    <asset:stylesheet src="colors/cyan.css"></asset:stylesheet>--}%
+%{--    <asset:stylesheet src="colors/green.css"></asset:stylesheet>--}%
+%{--    <asset:stylesheet src="colors/pink.css"></asset:stylesheet>--}%
+%{--    <asset:stylesheet src="colors/purple.css"></asset:stylesheet>--}%
+%{--    <asset:stylesheet src="colors/teal.css"></asset:stylesheet>--}%
+%{--    <asset:stylesheet src="colors/yellow.css"></asset:stylesheet>--}%
 
     <asset:javascript src="jquery-3.3.1.min.js"></asset:javascript>
     <asset:javascript src="popper.min.js"></asset:javascript>
@@ -65,8 +53,20 @@
     <asset:javascript src="owl.carousel.min.js"></asset:javascript>
     <asset:javascript src="isotope.pkgd.min.js"></asset:javascript>
     <asset:javascript src="masonry.pkgd.min.js"></asset:javascript>
-    <asset:javascript src="npm.js"></asset:javascript>
+%{--    <asset:javascript src="npm.js"></asset:javascript>--}%
     <asset:javascript src="imagesloaded.pkgd.min.js"></asset:javascript>
+%{--    <script src="/assets/javascripts/jquery.min.js"></script>--}%
+%{--    <script src="/assets/javascripts/bootstrap.bundle.min.js"></script>--}%
+%{--    <script src="/assets/javascripts/scrollspy.min.js"></script>--}%
+%{--    <!-- Jquery easing -->--}%
+%{--    <script src="/assets/javascripts/jquery.easing.min.js"></script>--}%
+%{--    <script src="/assets/javascripts/wow.min.js"></script>--}%
+
+%{--    <!--sticky header-->--}%
+%{--    <script src="/assets/javascripts/jquery.sticky.js"></script>--}%
+
+%{--    <!--common script for all pages-->--}%
+%{--    <script src="/assets/javascripts/jquery.app.js"></script>--}%
 
     <g:layoutHead/>
 </head>

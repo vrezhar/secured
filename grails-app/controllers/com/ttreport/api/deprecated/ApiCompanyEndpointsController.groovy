@@ -2,7 +2,7 @@ package com.ttreport.api.deprecated
 
 
 import com.ttreport.api.resources.deprecated.CompanyBuildingSource
-import com.ttreport.logs.DevCycleLogger
+import com.ttreport.logs.ServerLogger
 import grails.plugin.springsecurity.annotation.Secured
 import grails.rest.RestfulController
 
@@ -29,9 +29,9 @@ class ApiCompanyEndpointsController extends RestfulController<CompanyBuildingSou
     def save(CompanyBuildingSource src)
     {
         def response = companyService.save(src)
-        DevCycleLogger.print_logs()
-        println("command object: {'${src.mainToken}', '${src.address}', '${src.companyId}'}")
-        DevCycleLogger.cleanup()
+        ServerLogger.print_logs()
+        println("command object: {'${src.mainToken}', '${src.address}', '${src.inn}'}")
+        ServerLogger.cleanup()
         withFormat {
             this.response.status = (response.status as int)
             json{

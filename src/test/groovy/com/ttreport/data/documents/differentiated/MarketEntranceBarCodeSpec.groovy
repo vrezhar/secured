@@ -1,6 +1,6 @@
 package com.ttreport.data.documents.differentiated
 
-import com.ttreport.data.MarketEntranceBarCode
+import com.ttreport.data.products.MarketEntranceBarCode
 import grails.testing.gorm.DomainUnitTest
 import spock.lang.Specification
 

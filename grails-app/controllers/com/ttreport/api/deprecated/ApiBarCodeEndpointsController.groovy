@@ -2,7 +2,7 @@ package com.ttreport.api.deprecated
 
 
 import com.ttreport.api.resources.deprecated.BarCodeRegisteringSource
-import com.ttreport.logs.DevCycleLogger
+import com.ttreport.logs.ServerLogger
 import grails.plugin.springsecurity.annotation.Secured
 import grails.rest.RestfulController
 
@@ -54,8 +54,8 @@ class ApiBarCodeEndpointsController extends RestfulController<BarCodeRegistering
     {
         src.productId = (params.id as int)
         def response = barCodeService.delete(src)
-        DevCycleLogger.print_logs()
-        DevCycleLogger.cleanup()
+        ServerLogger.print_logs()
+        ServerLogger.cleanup()
         this.response.status = (response.status as int)
         withFormat {
             json{

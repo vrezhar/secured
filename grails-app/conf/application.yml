@@ -1,14 +1,9 @@
 
 ---
 mail:
-    gmail:
-        email: bronsmailsupreme@gmail.com
-        password: bruhMoment
-    postmark:
-        api:
-            token: postmark_token
-    sender:
-        email: bronsmailsupreme@gmail.com
+    email: 'bronsmailsupreme@gmail.com'
+    password: 'bruhMoment'
+    token: '43f54d1d-d68f-457c-bdf5-7157b4f67aa4'
 
 ---
 status:
@@ -29,8 +24,7 @@ grails:
             events: false
     cors:
         enabled: true
-        allowedOrigins:
-            -http://localhost:8080
+
 info:
     app:
         name: '@info.app.name@'
@@ -87,7 +81,7 @@ grails:
         cache:
             maxsize: 1000
     controllers:
-        defaultScope: singleton
+        defaultScope: prototype
     converters:
         encoding: UTF-8
     views:

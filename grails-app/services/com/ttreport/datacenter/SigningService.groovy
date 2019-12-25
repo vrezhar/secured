@@ -1,7 +1,7 @@
 package com.ttreport.datacenter
 
-import com.ttreport.data.documents.differentiated.GenericDocument
-import com.ttreport.logs.DevCycleLogger
+
+import com.ttreport.logs.ServerLogger
 import grails.gorm.transactions.Transactional
 import org.bouncycastle.asn1.DERSet
 import org.bouncycastle.asn1.cms.Attribute
@@ -24,7 +24,8 @@ import ru.CryptoPro.CAdES.CAdESSignature
 import java.security.cert.CertificateFactory
 
 @Transactional
-class SigningService {
+class SigningService
+{
 
     protected static final String keystore_type = JCP.HD_STORE_NAME
     protected static final String keystore_alias = "test"
@@ -34,7 +35,7 @@ class SigningService {
     protected static final String key_oid = JCP.GOST_PARAMS_EXC_2012_256_KEY_OID
     protected static final String provider = JCP.PROVIDER_NAME
 
-    def sign(byte[] data = "a".getBytes(), boolean detached = false) throws Exception
+    protected static sign(byte[] data = "a".getBytes(), boolean detached = false) throws Exception
     {
         System.setProperty("com.sun.security.enableAIAcaIssuers", "true")
         System.setProperty("com.sun.security.enableCRLDP","true")
@@ -54,21 +55,17 @@ class SigningService {
             certificates.add(readCertificate("/certs/tensor.crt"))
             certificates.add(readCertificate("/certs/CA.crt"))
             List<X509CertificateHolder> x509Certificates = new ArrayList<X509CertificateHolder>()
-            DevCycleLogger.log("key is ${key.toString()}")
+            ServerLogger.log("key is ${key.toString()}")
             certificates.each {
                 try{
                     x509Certificates.add(new X509CertificateHolder(it.getEncoded()))
                 }
                 catch (Exception e)
                 {
-                    DevCycleLogger.log("exception occurred while building x509 certificate, message: ${e.message}")
+                    ServerLogger.log("exception occurred while building x509 certificate, message: ${e.message}")
                 }
 
             }
-            x509Certificates.each {
-                println(it.toString())
-            }
-            println(certificates.size())
             CAdESSignature signature = new CAdESSignature(false)
             ByteArrayOutputStream out = new ByteArrayOutputStream()
             signature.setCertificateStore(new CollectionStore(x509Certificates))
@@ -93,16 +90,9 @@ class SigningService {
         }
         catch (Exception e)
         {
-            DevCycleLogger.log("exception occurred, error message:")
-            DevCycleLogger.log(e.message)
-            DevCycleLogger.log("stack trace:")
-            e.stackTrace.each {
-                DevCycleLogger.log(it.toString())
-            }
+            ServerLogger.log_exception(e)
         }
-        DevCycleLogger.log(signedCode?.encodeBase64()?.toString())
-        DevCycleLogger.print_logs()
-        DevCycleLogger.cleanup()
+        ServerLogger.log("signed data is:",signedCode?.encodeBase64()?.toString())
         return signedCode
     }
 
@@ -119,14 +109,11 @@ class SigningService {
             return cert
         }
         finally {
-            println("cleaning up streams")
             if (bis != null) {
                 bis.close()
-                DevCycleLogger.log("bytestream closed")
             }
             if (fis != null){
                 fis.close()
-                DevCycleLogger.log("filestream closed")
             }
         }
     }

@@ -1,3 +1,4 @@
+const field_list = ['username', 'firstName', 'lastName', 'password', 'confirm'];
 class Interceptor {
     constructor(intercepted = false){
         this.intercepted = intercepted;
@@ -12,6 +13,21 @@ class Interceptor {
             return true;
         }
         e.preventDefault();
+        let has_obvious_errors = false;
+        for(let i = 0; i < field_list.length; ++i){
+            let value = document.getElementById(field_list[i]).value;
+            if(!value){
+                alertError("Please fill this up",field_list[i])
+            }
+            if(value.length > 50){
+                alertError("Entered value is too long",field_list[i]);
+                has_obvious_errors = true;
+            }
+
+        }
+        if(has_obvious_errors){
+            return false;
+        }
         let xhr = new XMLHttpRequest();
         let url = "/register/validate";
         xhr.open("POST", url, true);
@@ -25,6 +41,8 @@ class Interceptor {
                 for(let i = 0; i < json.errors.errors.length; ++i){
                     alertError(json.errors.errors[i].message,json.errors.errors[i].field);
                 }
+                document.getElementById('password').value = "";
+                document.getElementById('confirm').value = "";
                 return false;
             }
         };
@@ -74,6 +92,11 @@ function removeOnChange(field)
 function alertEmptyInputFor(field)
 {
     alertError("Please fill this up",field);
+}
+
+function isTooLong(field)
+{
+    return document.getElementById(field).value.length > 50;
 }
 
 function alertMismatch()

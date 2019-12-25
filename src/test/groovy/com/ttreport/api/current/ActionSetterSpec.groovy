@@ -1,15 +1,15 @@
 package com.ttreport.api.current
 
-import com.ttreport.api.resources.current.AcceptanceDocumentCommand
-import com.ttreport.api.resources.current.GenericDocumentCommand
-import com.ttreport.api.resources.current.ProductCommand
-import com.ttreport.api.resources.current.ShipmentDocumentCommand
+import com.ttreport.api.resources.current.documents.AcceptanceDocumentCommand
+import com.ttreport.api.resources.current.documents.GenericDocumentCommand
+import com.ttreport.api.resources.current.products.ProductCommand
+import com.ttreport.api.resources.current.documents.ShipmentDocumentCommand
 import com.ttreport.auth.Role
 import com.ttreport.auth.User
 import com.ttreport.auth.UserRole
-import com.ttreport.data.BarCode
+import com.ttreport.data.products.BarCode
 import com.ttreport.data.Company
-import com.ttreport.data.Products
+import com.ttreport.data.products.Products
 import grails.testing.services.ServiceUnitTest
 import spock.lang.Specification
 

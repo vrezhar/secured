@@ -1,36 +1,67 @@
 package com.ttreport.auth
 
-import com.ttreport.logs.DevCycleLogger
+import com.ttreport.logs.ServerLogger
 import com.ttreport.user.UserCommand
 import grails.gorm.transactions.Transactional
 
 
 @Transactional
-class UserValidatorService extends PatternValidatorService {
+class UserValidatorService extends PatternValidatorService
+{
+
+    static scope = 'prototype'
 
     def isPasswordValid(UserCommand usr)
     {
-        DevCycleLogger.log("validator called")
+        ServerLogger.log("validator called")
         if(usr == null || !usr.password) {
             return false
         }
 
         switch(validatePassword(usr.password)) {
             case -2:
-                DevCycleLogger.log("password is too short")
-                usr.errors.rejectValue("password","user.password.tooshort")
+                ServerLogger.log("password is too short")
+                usr.errors.rejectValue("password","user.password.too.short")
                 return false
             case -1:
-                DevCycleLogger.log("password is too long")
-                usr.errors.rejectValue("password","user.password.toolong")
+                ServerLogger.log("password is too long")
+                usr.errors.rejectValue("password","user.password.too.long")
                 return false
             case 0:
-                DevCycleLogger.log("password contains whitespaces")
+                ServerLogger.log("password contains whitespaces")
                 usr.errors.rejectValue("password","user.password.whitespaces")
                 return false
             case 1:
-                DevCycleLogger.log("password is too weak")
-                usr.errors.rejectValue("password","user.password.tooweak")
+                ServerLogger.log("password is too weak")
+                usr.errors.rejectValue("password","user.password.too.weak")
+                return false
+        }
+        return true
+    }
+
+    def isRecoveredPasswordValid(PasswordRecoveryCommand cmd)
+    {
+        ServerLogger.log("validator called")
+        if(cmd == null || !cmd.password) {
+            return false
+        }
+
+        switch(validatePassword(cmd.password)) {
+            case -2:
+                ServerLogger.log("password is too short")
+                cmd.errors.rejectValue("password","user.password.too.short")
+                return false
+            case -1:
+                ServerLogger.log("password is too long")
+                cmd.errors.rejectValue("password","user.password.too.long")
+                return false
+            case 0:
+                ServerLogger.log("password contains whitespaces")
+                cmd.errors.rejectValue("password","user.password.whitespaces")
+                return false
+            case 1:
+                ServerLogger.log("password is too weak")
+                cmd.errors.rejectValue("password","user.password.too.weak")
                 return false
         }
         return true

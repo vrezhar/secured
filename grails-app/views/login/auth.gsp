@@ -28,8 +28,6 @@
             <i class="zmdi zmdi-menu"></i>
         </button>
         <div class="collapse navbar-collapse" id="navbarCollapse">
-
-
             <ul class="nav navbar-nav navbar-right ml-auto">
                 <li class="nav-item">
                     <g:link controller="register" class="btn btn-inverse navbar-btn">
@@ -49,7 +47,21 @@
     <!-- <div class="bg-overlay"></div> -->
     <div class="container">
         <div class="row">
-            <div class="col-lg-12">
+            <div class="col-lg-6">
+                <div class="home-wrapper">
+                    <h2 class="animated fadeInDown wow" data-wow-delay=".1s">
+                        <span class="text-colored"><g:message code="website.title"></g:message></span> - <g:message code="website.dummy.headline"></g:message>
+                    </h2>
+                    <p class="animated fadeInDown wow text-muted" data-wow-delay=".2s">
+                        <g:message code="website.dummy.text"></g:message>
+                    </p>
+                    <g:link controller="register" class="btn btn-primary btn-shadow btn-rounded w-lg animated fadeInDown wow" data-wow-delay=".4s">Get Started</g:link>
+                    <div class="clearfix"></div>
+
+                </div><!-- home wrapper -->
+
+            </div> <!-- end col -->
+            <div class="col-lg-6">
                 <div class="home-wrapper">
                     <h3 class="text-center"> Log In To Your Account</h3>
 
@@ -84,14 +96,24 @@
                         <span class="space-lg-only-1"></span>
 
                         <div class="row">
-                            <div class="col-lg-12">
+                            <div class="col-lg-8">
                                 <div class="checkbox">
                                     <input type="checkbox" id="chkRemember" <g:if test='${hasCookie}'>checked="checked"</g:if>>
                                     <label for="chkRemember">Remember me</label>
                                 </div>
                             </div>
+                            <div class="col-lg-4">
+                                <ul class="nav navbar-nav navbar-right ml-auto">
+                                    <li class="nav-item">
+                                        <g:link controller="main" action="forgotPasswordEmail">
+                                            <g:message code="website.forgot.password"></g:message>
+                                        </g:link>
+                                    </li>
+                                </ul>
+
+                            </div>
                         </div>
-                        <button type="submit" class="class=btn btn-primary btn-shadow btn-rounded w-lg" style="width: 90%; margin-left: 5%" id="submit" value= <g:message code="website.register.form.submit"></g:message>>Sign in</button>
+                        <input type="submit" class="class=btn btn-primary btn-shadow btn-rounded w-lg" style="width: 90%; margin-left: 5%" id="submit" value= <g:message code="website.log.in.message"></g:message>>
                     </form>
 %{--                    <g:form role="form" id="register_form" class="intro-form" method="POST" url="/register/confirm">--}%
 
@@ -425,11 +447,11 @@
                     </ul>
 
                     <ul class="list-inline menu-list m-t-30">
-                        <li class="list-inline-item"><a href=""> About Us</a></li>
+                        <li class="list-inline-item"><g:link controller="main" action="aboutUs"> About Us</g:link></li>
                         <li class="list-inline-item"><a href=""> Help & Support</a></li>
                         <li class="list-inline-item"><a href=""> Terms & Conditions</a></li>
                         <li class="list-inline-item"><a href=""> Privacy Policy</a></li>
-
+                        <li class="list-inline-item"><g:link controller="main" action="contactUs"> Contact Us</g:link></li>
                     </ul>
                 </div>
             </div>
@@ -449,6 +471,6 @@
 
 
 <!-- Back to top -->
-<a href="#" class="back-to-top"> <i class="zmdi zmdi-chevron-up"> </i> </a>
+%{--<a href="#" class="back-to-top"> <i class="zmdi zmdi-chevron-up"> </i> </a>--}%
 </body>
 </html>

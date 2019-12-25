@@ -48,7 +48,19 @@
     <!-- <div class="bg-overlay"></div> -->
     <div class="container">
         <div class="row">
-            <div class="col-lg-12">
+            <div class="col-lg-6">
+                <div class="home-wrapper">
+                    <h2 class="animated fadeInDown wow" data-wow-delay=".1s">
+                        <span class="text-colored"><g:message code="website.title"></g:message></span> - <g:message code="website.dummy.headline"></g:message>
+                    </h2>
+                    <p class="animated fadeInDown wow text-muted" data-wow-delay=".2s">
+                        <g:message code="website.dummy.text"></g:message>
+                    </p>
+                    <div class="clearfix"></div>
+                </div><!-- home wrapper -->
+
+            </div> <!-- end col -->
+            <div class="col-lg-6">
                 <div class="home-wrapper">
                     <h3 class="text-center"> Register Now </h3>
                     <g:form role="form" id="register_form" class="intro-form" method="POST" url="/register/confirm">
@@ -383,11 +395,11 @@
                     </ul>
 
                     <ul class="list-inline menu-list m-t-30">
-                        <li class="list-inline-item"><a href=""> About Us</a></li>
+                        <li class="list-inline-item"><g:link controller="main" action="aboutUs"> About Us</g:link></li>
                         <li class="list-inline-item"><a href=""> Help & Support</a></li>
                         <li class="list-inline-item"><a href=""> Terms & Conditions</a></li>
                         <li class="list-inline-item"><a href=""> Privacy Policy</a></li>
-
+                        <li class="list-inline-item"><g:link controller="main" action="contactUs"> Contact Us</g:link></li>
                     </ul>
                 </div>
             </div>
@@ -407,7 +419,7 @@
 
 
 <!-- Back to top -->
-<a href="#" class="back-to-top"> <i class="zmdi zmdi-chevron-up"> </i> </a>
+%{--<a href="#" class="back-to-top"> <i class="zmdi zmdi-chevron-up"> </i> </a>--}%
 
 <asset:javascript src="register/async_validate.js"></asset:javascript>
 </body>

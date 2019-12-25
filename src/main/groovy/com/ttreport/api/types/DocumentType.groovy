@@ -7,7 +7,10 @@ enum DocumentType
     ACCEPTANCE ,
     SHIPMENT ,
     INDIVIDUAL ,
-    CANCEL_SHIPMENT
+    CANCEL_SHIPMENT,
+    REMAINS_DESCRIPTION,
+    FULL_REMAINS_DESCRIPTION,
+    REMAINS_REGISTRY
 
     Object asType(Class clazz)
     {
@@ -25,6 +28,12 @@ enum DocumentType
                     return Endpoint.RELEASE
                 case INDIVIDUAL:
                     return Endpoint.INDIVIDUAL
+                case REMAINS_DESCRIPTION:
+                    return Endpoint.REMAINS_DESCRIPTION
+                case FULL_REMAINS_DESCRIPTION:
+                    return Endpoint.FULL_REMAINS_DESCRIPTION
+                case REMAINS_REGISTRY:
+                    return Endpoint.REMAINS_REGISTRY
                 default:
                     return super.asType(clazz)
             }

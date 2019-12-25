@@ -3,7 +3,7 @@ package com.ttreport.data.documents.differentiated.remains
 import grails.testing.gorm.DomainUnitTest
 import spock.lang.Specification
 
-class RemainsCirculationGenericDocumentSpec extends Specification implements DomainUnitTest<RemainsCirculationDocument> {
+class RemainsCirculationGenericDocumentSpec extends Specification implements DomainUnitTest<RemainsRegistryDocument> {
 
     def setup() {
     }

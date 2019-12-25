@@ -1,15 +1,16 @@
 package com.ttreport.api.response.current
 
 
-import com.ttreport.api.resources.current.GenericDocumentCommand
-import com.ttreport.api.resources.current.ProductCommand
-import com.ttreport.api.response.Responsive
-import com.ttreport.logs.DevCycleLogger
+import com.ttreport.api.resources.current.documents.GenericDocumentCommand
+import com.ttreport.api.resources.current.products.ProductCommand
+import com.ttreport.api.resources.current.remains.ProductRemainsRegistryCommand
+import com.ttreport.configuration.ApplicationConfiguration
+import com.ttreport.logs.ServerLogger
 
-class Response extends  Responsive
+class Response extends ApplicationConfiguration
 {
 
-    int status = statusCodes.success as int
+    int status = apiStatusCodes.success as int
     private List<RejectedProduct> rejected_list = []
     private List<ProductIdentifier> accepted_list = []
 
@@ -32,12 +33,23 @@ class Response extends  Responsive
         return rejected
     }
 
+    RejectedProduct rejectProduct(ProductRemainsRegistryCommand cmd, int reason)
+    {
+        RejectedProduct rejected = new RejectedProduct()
+        rejected.id = cmd.id
+        rejected.uit_code = cmd.ki
+        rejected.uitu_code = cmd.kitu
+        rejected.reason = reason
+        rejected_list?.add(rejected)
+        return rejected
+    }
+
     static Map rejectToken(String token_for_logging = "")
     {
         Response response = new Response()
         response.rejectCompanyToken()
         if(token_for_logging) {
-            DevCycleLogger.log("token ${token_for_logging} rejected")
+            ServerLogger.log("token ${token_for_logging} rejected")
         }
         return response.getAsMap()
     }
@@ -50,18 +62,18 @@ class Response extends  Responsive
             response.rejectProduct(object,reason)
         }
         if(log) {
-            DevCycleLogger.log_validation_errors(cmd,additional_message)
+            ServerLogger.log_validation_errors(cmd,additional_message)
         }
         return response.getAsMap()
     }
 
     void reportInvalidInput()
     {
-        status = statusCodes.invalid_input as int
+        status = apiStatusCodes.invalid_input as int
     }
     void rejectCompanyToken()
     {
-        status = statusCodes.invalid_token as int
+        status = apiStatusCodes.invalid_token as int
     }
 
     Map getAsMap()
