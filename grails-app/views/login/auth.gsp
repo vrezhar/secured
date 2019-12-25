@@ -1,156 +1,476 @@
 <%--
   Created by IntelliJ IDEA.
   User: vrezh
-  Date: 23.08.19
-  Time: 04:25
+  Date: 25.11.19
+  Time: 22:15
 --%>
 
 <%@ page contentType="text/html;charset=UTF-8" %>
 <html>
 <head>
     <meta name="layout" content="${gspLayout ?: 'main'}"/>
+
     <title><g:message code='springSecurity.login.title'/></title>
-    <style type="text/css" media="screen">
-    #login {
-        margin: 15px 0px;
-        padding: 0px;
-        text-align: center;
-    }
 
-    #login .inner {
-        width: 340px;
-        padding-bottom: 6px;
-        margin: 60px auto;
-        text-align: left;
-        border: 1px solid #aab;
-        background-color: #f0f0fa;
-        -moz-box-shadow: 2px 2px 2px #eee;
-        -webkit-box-shadow: 2px 2px 2px #eee;
-        -khtml-box-shadow: 2px 2px 2px #eee;
-        box-shadow: 2px 2px 2px #eee;
-    }
+    <asset:stylesheet src="web_page/authorization/login/inputs.css"></asset:stylesheet>
+    <asset:stylesheet src="web_page/authorization/login/errors.css"></asset:stylesheet>
 
-    #login .inner .fheader {
-        padding: 18px 26px 14px 26px;
-        background-color: #f7f7ff;
-        margin: 0px 0 14px 0;
-        color: #2e3741;
-        font-size: 18px;
-        font-weight: bold;
-    }
-
-    #login .inner .cssform p {
-        clear: left;
-        margin: 0;
-        padding: 4px 0 3px 0;
-        padding-left: 105px;
-        margin-bottom: 20px;
-        height: 1%;
-    }
-
-    #login .inner .cssform input[type="text"] {
-        width: 120px;
-    }
-
-    #login .inner .cssform label {
-        font-weight: bold;
-        float: left;
-        text-align: right;
-        margin-left: -105px;
-        width: 110px;
-        padding-top: 3px;
-        padding-right: 10px;
-    }
-
-    #login #remember_me_holder {
-        padding-left: 120px;
-    }
-
-    #login #submit {
-        margin-left: 15px;
-        height: 30px;
-    }
-
-    #login .inner .register
-    {
-        margin-left: 150px;
-
-    }
-
-    #login .inner .cssform .submit
-    {
-        margin-left: 20px;
-    }
-
-    #login #remember_me_holder label {
-        float: none;
-        height:  1px;
-        text-align: left;
-        width: 190px
-    }
-
-    #login .inner .login_message {
-        padding: 6px 25px 20px 25px;
-        color: #c33;
-    }
-
-    #login .inner .text_ {
-        width: 120px;
-    }
-
-    #login .inner .chk {
-        height: 20px;
-        margin-right: 100px;
-    }
-    </style>
 </head>
 
-<body>
-<div id="login">
-    <div class="inner">
-        <div class="fheader"><g:message code='springSecurity.login.header'/></div>
+<body data-spy="scroll" data-target="#navbar-menu">
+<nav class="navbar navbar-expand-lg fixed-top navbar-custom sticky sticky-dark">
+    <div class="container">
+    <!-- LOGO -->
+        <g:link class="navbar-brand logo" controller="main">
+            <i class="zmdi zmdi-navigation"></i> <span><g:message code="website.title"></g:message></span>
+        </g:link>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="zmdi zmdi-menu"></i>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="nav navbar-nav navbar-right ml-auto">
+                <li class="nav-item">
+                    <g:link controller="register" class="btn btn-inverse navbar-btn">
+                        <g:message code="website.sign.up"></g:message>
+                    </g:link>
+                </li>
+            </ul>
 
-        <g:if test='${flash.message}'>
-            <div class="login_message">${flash.message}</div>
-        </g:if>
+        </div>
+    </div>
+</nav>
+<!-- END NAVBAR -->
 
-        <form action="${postUrl ?: '/login/authenticate'}" method="POST" id="loginForm" class="cssform" autocomplete="off">
-            <p>
-                <label for="username"><g:message code='springSecurity.login.username.label'/>:</label>
-                <input type="text" class="text_" name="${usernameParameter ?: 'username'}" id="username"/>
-            </p>
 
-            <p>
-                <label for="password"><g:message code='springSecurity.login.password.label'/>:</label>
-                <input type="password" class="text_" name="${passwordParameter ?: 'password'}" id="password"/>
-            </p>
+<!-- HOME -->
+<section class="home home-form-left" id="home">
+    <!-- <div class="bg-overlay"></div> -->
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-6">
+                <div class="home-wrapper">
+                    <h2 class="animated fadeInDown wow" data-wow-delay=".1s">
+                        <span class="text-colored"><g:message code="website.title"></g:message></span> - <g:message code="website.dummy.headline"></g:message>
+                    </h2>
+                    <p class="animated fadeInDown wow text-muted" data-wow-delay=".2s">
+                        <g:message code="website.dummy.text"></g:message>
+                    </p>
+                    <g:link controller="register" class="btn btn-primary btn-shadow btn-rounded w-lg animated fadeInDown wow" data-wow-delay=".4s">Get Started</g:link>
+                    <div class="clearfix"></div>
 
-            <p id="remember_me_holder">
-                <input type="checkbox" class="chk" name="${rememberMeParameter ?: 'remember-me'}" id="remember_me" <g:if test='${hasCookie}'>checked="checked"</g:if>/>
-                <label for="remember_me"><g:message code='springSecurity.login.remember.me.label'/></label>
-            </p>
+                </div><!-- home wrapper -->
 
-            <div class="submit">
-                <input type="submit" id="submit" value="${message(code: 'springSecurity.login.button')}"/>
+            </div> <!-- end col -->
+            <div class="col-lg-6">
+                <div class="home-wrapper">
+                    <h3 class="text-center"> Log In To Your Account</h3>
+
+                    <form role="form" id="register_form" class="intro-form" method="POST" action="/login/authenticate" >
+
+                        <span class="space-lg-only-1"></span>
+
+                        <g:if test='${flash.message}'>
+                            <div class="login_message" id="login_message" style="text-align: center">${flash.message}</div>
+                        </g:if>
+
+                        <div class="row ">
+                            <div class="col-12">
+                                <div class="form-group">
+                                    %{--                                                <label>Email</label>--}%
+                                    <input type="email" class="form-control form-control-lg" name="${usernameParameter ?: 'username'}" id="username" placeholder="Username"/>
+                                </div>
+                            </div>
+                        </div>
+
+                        <span class="space-lg-only-1"></span>
+
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="form-group ">
+                                    %{--                                                <label>Password</label>--}%
+                                    <input type="password" class="form-control form-control-lg" name="${passwordParameter ?: 'password'}" id="password" placeholder="Password"/>
+                                </div>
+                            </div>
+                        </div>
+
+                        <span class="space-lg-only-1"></span>
+
+                        <div class="row">
+                            <div class="col-lg-8">
+                                <div class="checkbox">
+                                    <input type="checkbox" id="chkRemember" <g:if test='${hasCookie}'>checked="checked"</g:if>>
+                                    <label for="chkRemember">Remember me</label>
+                                </div>
+                            </div>
+                            <div class="col-lg-4">
+                                <ul class="nav navbar-nav navbar-right ml-auto">
+                                    <li class="nav-item">
+                                        <g:link controller="main" action="forgotPasswordEmail">
+                                            <g:message code="website.forgot.password"></g:message>
+                                        </g:link>
+                                    </li>
+                                </ul>
+
+                            </div>
+                        </div>
+                        <input type="submit" class="class=btn btn-primary btn-shadow btn-rounded w-lg" style="width: 90%; margin-left: 5%" id="submit" value= <g:message code="website.log.in.message"></g:message>>
+                    </form>
+%{--                    <g:form role="form" id="register_form" class="intro-form" method="POST" url="/register/confirm">--}%
+
+%{--                        <div class="form-group">--}%
+%{--                            <g:textField name="firstName" class="form-control form-control-lg" id="firstName" placeholder="First name" value="${user?.firstName}"></g:textField>--}%
+%{--                            <label class="error"  id="firstName_errors" style="visibility: visible; display: inline-block">--}%
+%{--                            </label>--}%
+%{--                        </div>--}%
+
+%{--                        <div class="form-group">--}%
+%{--                            <g:textField type="text" class="form-control form-control-lg" name="lastName" id="lastName" value="${user?.lastName}" placeholder="Last name"></g:textField>--}%
+%{--                            <label class="error" id="lastName_errors" style="visibility: visible; display: inline-block">--}%
+
+%{--                            </label>--}%
+%{--                        </div>--}%
+
+%{--                        <span class="space-lg-only-1"></span>--}%
+
+%{--                        <div class="form-group">--}%
+%{--                            <g:textField type="email" class="form-control form-control-lg" name="username" id="username" value="${user?.username}" placeholder="Email"></g:textField>--}%
+%{--                            <label class="error" id="username_errors" style="visibility: visible; display: inline-block">--}%
+
+%{--                            </label>--}%
+%{--                        </div>--}%
+
+
+%{--                        <span class="space-lg-only-1"></span>--}%
+
+
+%{--                        <div class="form-group">--}%
+%{--                            <g:passwordField type="password" class="form-control form-control-lg" name="password" id="password" value="${user?.password}" placeholder="Password"></g:passwordField>--}%
+%{--                            <label class="error" id="password_errors" style="visibility: visible; display: inline-block">--}%
+
+%{--                            </label>--}%
+%{--                        </div>--}%
+
+%{--                        <div class="form-group">--}%
+%{--                            <g:passwordField type="password" class="form-control form-control-lg" name="confirm" id="confirm" placeholder="Confirm password" value="${user?.confirm}"></g:passwordField>--}%
+%{--                            <label class="error" id="confirm_errors" style="visibility: visible; display: inline-block">--}%
+
+%{--                            </label>--}%
+%{--                        </div>--}%
+
+
+%{--                        <span class="space-lg-only-1"></span>--}%
+
+%{--                        <input type="submit" class="class=btn btn-primary btn-shadow btn-rounded w-lg" style="width: 90%; margin-left: 5%" id="submit" value= <g:message code="website.register.form.submit"></g:message>/>--}%
+
+%{--                        <span class="space-md-md"></span>--}%
+%{--                    </g:form>--}%
+                </div>
             </div>
 
-        </form>
+        </div> <!-- end row -->
+    </div> <!-- end container -->
+</section>
+<!-- END HOME -->
 
-        <div class="register">
-            <sec:ifNotLoggedIn>
-                Don't have an account?
-                <g:link controller="user" action="register">
-                    Register Now!
-                </g:link>
-            </sec:ifNotLoggedIn>
+
+
+%{--<!-- FEATURES -->--}%
+%{--<section class="section" id="features">--}%
+%{--    <div class="container">--}%
+
+%{--        <div class="row">--}%
+%{--            <div class="col-lg-12 text-center">--}%
+%{--                <div class="title-box">--}%
+%{--                    <p class="title-alt">01.</p>--}%
+%{--                    <h3 class="fadeIn animated wow" data-wow-delay=".1s">How It Works ?</h3>--}%
+%{--                    <div class="border"></div>--}%
+%{--                </div>--}%
+%{--            </div>--}%
+%{--        </div> <!-- end row -->--}%
+
+%{--        <div class="row text-center">--}%
+%{--            <div class="col-lg-4">--}%
+%{--                <div class="service-item animated fadeInLeft wow" data-wow-delay=".1s">--}%
+%{--                    <h2 class="mb-4"><i class="zmdi zmdi-collection-item-1 text-colored"></i></h2>--}%
+%{--                    <div class="service-detail">--}%
+%{--                        <h4 class="mb-3">Strategy Solutions</h4>--}%
+%{--                        <p>We put a lot of effort in design, as it’s the most important ingredient of successful website.Sed ut perspiciatis unde omnis iste natus error sit.</p>--}%
+%{--                    </div> <!-- /service-detail -->--}%
+%{--                </div> <!-- /service-item -->--}%
+%{--            </div> <!-- /col -->--}%
+
+%{--            <div class="col-lg-4">--}%
+%{--                <div class="service-item animated fadeInDown wow" data-wow-delay=".3s">--}%
+%{--                    <h2 class="mb-4"><i class="zmdi zmdi-collection-item-2 text-colored"></i></h2>--}%
+%{--                    <div class="service-detail">--}%
+%{--                        <h4 class="mb-3">Digital Design</h4>--}%
+%{--                        <p>We put a lot of effort in design, as it’s the most important ingredient of successful website.Sed ut perspiciatis unde omnis iste.</p>--}%
+%{--                    </div> <!-- /service-detail -->--}%
+%{--                </div> <!-- /service-item -->--}%
+%{--            </div> <!-- /col -->--}%
+
+%{--            <div class="col-lg-4">--}%
+%{--                <div class="service-item animated fadeInRight wow" data-wow-delay=".5s">--}%
+%{--                    <h2 class="mb-4"><i class="zmdi zmdi-collection-item-3 text-colored"></i></h2>--}%
+%{--                    <div class="service-detail">--}%
+%{--                        <h4 class="mb-3">SEO</h4>--}%
+%{--                        <p>We put a lot of effort in design, as it’s the most important ingredient of successful website.Sed ut perspiciatis unde omnis iste.</p>--}%
+%{--                    </div> <!-- /service-detail -->--}%
+%{--                </div> <!-- /service-item -->--}%
+%{--            </div> <!-- /col -->--}%
+%{--        </div> <!--end row -->--}%
+
+
+%{--    </div> <!-- end container -->--}%
+%{--</section>--}%
+%{--<!-- END FEATURES -->--}%
+
+
+%{--<!-- FEATURES-ALT -->--}%
+%{--<section class="section bg-gray" id="features">--}%
+%{--    <div class="container">--}%
+
+%{--        <div class="row">--}%
+%{--            <div class="col-lg-6">--}%
+%{--                <div class="feature-detail">--}%
+
+%{--                    <div class="title-box">--}%
+%{--                        <p class="title-alt">02.</p>--}%
+%{--                        <h3 class="fadeIn animated wow" data-wow-delay=".1s">Fully Responsive Design</h3>--}%
+%{--                        <div class="border"></div>--}%
+%{--                    </div>--}%
+
+%{--                    <p class="text-muted">Proin a velit aliquam vitae malesuada rutrum. Aenean ullamcorper placerat porttitor velit aliquam vitae. Aliquam a augue suscipit, bibendum luctus neque laoreet rhoncus ipsum, ullamcorper.</p>--}%
+
+%{--                    <ul class="zmdi-hc-ul">--}%
+%{--                        <li class="fadeIn animated wow" data-wow-delay=".1s"><i class="zmdi-hc-li zmdi zmdi-caret-right-circle text-colored"></i><span class="text-muted">Fully Responsive design.</span></li>--}%
+
+%{--                        <li class="fadeIn animated wow" data-wow-delay=".2s"><i class="zmdi-hc-li zmdi zmdi-caret-right-circle text-colored"></i><span class="text-muted">Based on Bootstrap 4.3.1</span></li>--}%
+
+%{--                        <li class="fadeIn animated wow" data-wow-delay=".3s"><i class="zmdi-hc-li zmdi zmdi-caret-right-circle text-colored"></i><span class="text-muted">Many variants to choose from</span></li>--}%
+
+%{--                        <li class="fadeIn animated wow" data-wow-delay=".4s"><i class="zmdi-hc-li zmdi zmdi-caret-right-circle text-colored"></i><span class="text-muted">Built with HTML5 & CSS3</span></li>--}%
+
+%{--                    </ul>--}%
+
+%{--                </div>--}%
+%{--            </div>--}%
+
+%{--            <div class="col-lg-6">--}%
+%{--                <img src="images/macbook.png" class="img-fluid fadeIn animated wow" data-wow-delay=".2s">--}%
+%{--            </div>--}%
+
+%{--        </div>--}%
+%{--    </div>--}%
+%{--</section>--}%
+%{--<!-- END FEATURES-ALT -->--}%
+
+
+%{--<!-- FEATURES-ALT -->--}%
+%{--<section class="section" id="features">--}%
+%{--    <div class="container">--}%
+
+%{--        <div class="row">--}%
+%{--            <div class="col-lg-6">--}%
+%{--                <img src="images/tablet.png" class="img-fluid fadeIn animated wow center-block" data-wow-delay=".2s">--}%
+%{--            </div>--}%
+
+%{--            <div class="col-lg-6">--}%
+%{--                <div class="feature-detail">--}%
+
+%{--                    <div class="title-box">--}%
+%{--                        <p class="title-alt">03.</p>--}%
+%{--                        <h3 class="fadeIn animated wow" data-wow-delay=".1s">Clean and Ultra Modern Design</h3>--}%
+%{--                        <div class="border"></div>--}%
+%{--                    </div>--}%
+
+%{--                    <p class="text-muted">Proin a velit aliquam vitae malesuada rutrum. Aenean ullamcorper placerat porttitor velit aliquam vitae. Aliquam a augue suscipit, bibendum luctus neque laoreet rhoncus ipsum, ullamcorper.</p>--}%
+
+%{--                    <p class="text-muted">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sint nulla facilis voluptatem delectus alias officia iure.</p>--}%
+
+%{--                    <ul class="zmdi-hc-ul">--}%
+%{--                        <li class="fadeIn animated wow" data-wow-delay=".1s"><i class="zmdi-hc-li zmdi zmdi-caret-right-circle text-colored"></i><span class="text-muted">Fully Responsive design.</span></li>--}%
+
+%{--                        <li class="fadeIn animated wow" data-wow-delay=".2s"><i class="zmdi-hc-li zmdi zmdi-caret-right-circle text-colored"></i><span class="text-muted">Based on Bootstrap 4.3.1</span></li>--}%
+
+%{--                        <li class="fadeIn animated wow" data-wow-delay=".3s"><i class="zmdi-hc-li zmdi zmdi-caret-right-circle text-colored"></i><span class="text-muted">Many variants to choose from</span></li>--}%
+
+%{--                        <li class="fadeIn animated wow" data-wow-delay=".4s"><i class="zmdi-hc-li zmdi zmdi-caret-right-circle text-colored"></i><span class="text-muted">Built with HTML5 & CSS3</span></li>--}%
+
+%{--                        <li class="fadeIn animated wow" data-wow-delay=".5s"><i class="zmdi-hc-li zmdi zmdi-caret-right-circle text-colored"></i><span class="text-muted">Commented and clean code</span></li>--}%
+
+%{--                    </ul>--}%
+
+%{--                    <a href="" class="btn btn-primary btn-shadow btn-rounded w-lg animated fadeInDown wow" data-wow-delay=".4s">Get Started</a>--}%
+%{--                </div>--}%
+%{--            </div>--}%
+
+%{--        </div>--}%
+%{--    </div>--}%
+%{--</section>--}%
+%{--<!-- END FEATURES-ALT -->--}%
+
+
+%{--<!-- FEATURES-ALT -->--}%
+%{--<section class="section bg-gray" id="features">--}%
+%{--    <div class="container">--}%
+
+%{--        <div class="row">--}%
+%{--            <div class="col-lg-6">--}%
+%{--                <div class="feature-detail">--}%
+
+%{--                    <div class="title-box">--}%
+%{--                        <p class="title-alt">04.</p>--}%
+%{--                        <h3 class="fadeIn animated wow" data-wow-delay=".1s">Clean and Ultra Modern Design</h3>--}%
+%{--                        <div class="border"></div>--}%
+%{--                    </div>--}%
+
+%{--                    <ul class="zmdi-hc-ul">--}%
+%{--                        <li class="fadeIn animated wow" data-wow-delay=".1s"><i class="zmdi-hc-li zmdi zmdi-caret-right-circle text-colored"></i><span class="text-muted">Fully Responsive design.</span></li>--}%
+
+%{--                        <li class="fadeIn animated wow" data-wow-delay=".2s"><i class="zmdi-hc-li zmdi zmdi-caret-right-circle text-colored"></i><span class="text-muted">Based on Bootstrap 4.3.1</span></li>--}%
+
+%{--                        <li class="fadeIn animated wow" data-wow-delay=".3s"><i class="zmdi-hc-li zmdi zmdi-caret-right-circle text-colored"></i><span class="text-muted">Many variants to choose from</span></li>--}%
+
+%{--                        <li class="fadeIn animated wow" data-wow-delay=".4s"><i class="zmdi-hc-li zmdi zmdi-caret-right-circle text-colored"></i><span class="text-muted">Built with HTML5 & CSS3</span></li>--}%
+
+%{--                        <li class="fadeIn animated wow" data-wow-delay=".5s"><i class="zmdi-hc-li zmdi zmdi-caret-right-circle text-colored"></i><span class="text-muted">Commented and clean code</span></li>--}%
+
+%{--                    </ul>--}%
+
+%{--                    <a href="" class="btn btn-primary btn-shadow btn-rounded w-lg animated fadeInDown wow" data-wow-delay=".4s">Get Started</a>--}%
+%{--                </div>--}%
+%{--            </div>--}%
+
+%{--            <div class="col-lg-6">--}%
+%{--                <img src="images/macbook.png" class="img-fluid fadeIn animated wow" data-wow-delay=".2s">--}%
+%{--            </div>--}%
+
+%{--        </div>--}%
+%{--    </div>--}%
+%{--</section>--}%
+%{--<!-- END FEATURES-ALT -->--}%
+
+
+
+
+
+%{--<!-- FAQ -->--}%
+%{--<section class="section" id="faq">--}%
+%{--    <div class="container">--}%
+
+%{--        <div class="row">--}%
+%{--            <div class="col-lg-12 text-center">--}%
+%{--                <div class="title-box">--}%
+%{--                    <p class="title-alt">Faq</p>--}%
+%{--                    <h3 class="fadeIn animated wow" data-wow-delay=".1s">Simple Questions</h3>--}%
+%{--                    <div class="border"></div>--}%
+%{--                </div>--}%
+%{--            </div>--}%
+%{--        </div> <!-- end row -->--}%
+
+%{--        <div class="row m-t-30">--}%
+%{--            <div class="col-lg-5 offset-lg-1">--}%
+%{--                <!-- Question/Answer -->--}%
+%{--                <div class="question-q-box">Q.</div>--}%
+%{--                <div class="animated fadeInLeft wow" data-wow-delay=".1s">--}%
+%{--                    <h4 class="question" data-wow-delay=".1s">What is Lorem Ipsum?</h4>--}%
+%{--                    <p class="answer">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s.</p>--}%
+%{--                </div>--}%
+
+%{--                <!-- Question/Answer -->--}%
+%{--                <div class="question-q-box">Q.</div>--}%
+%{--                <div class="animated fadeInLeft wow" data-wow-delay=".3s">--}%
+%{--                    <h4 class="question">Why use Lorem Ipsum?</h4>--}%
+%{--                    <p class="answer">Lorem ipsum dolor sit amet, in mea nonumes dissentias dissentiunt, pro te solet oratio iriure. Cu sit consetetur moderatius intellegam, ius decore accusamus te. Ne primis suavitate disputando nam. Mutat convenirete.</p>--}%
+%{--                </div>--}%
+
+%{--                <!-- Question/Answer -->--}%
+%{--                <div class="question-q-box">Q.</div>--}%
+%{--                <div class="animated fadeInLeft wow" data-wow-delay=".5s">--}%
+%{--                    <h4 class="question">How many variations exist?</h4>--}%
+%{--                    <p class="answer">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s.</p>--}%
+%{--                </div>--}%
+
+%{--            </div>--}%
+%{--            <!--/col-md-5 -->--}%
+
+%{--            <div class="col-lg-5">--}%
+%{--                <!-- Question/Answer -->--}%
+%{--                <div class="question-q-box">Q.</div>--}%
+%{--                <div class="animated fadeInRight wow" data-wow-delay=".2s">--}%
+%{--                    <h4 class="question">Is safe use Lorem Ipsum?</h4>--}%
+%{--                    <p class="answer">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s.</p>--}%
+%{--                </div>--}%
+
+%{--                <!-- Question/Answer -->--}%
+%{--                <div class="question-q-box">Q.</div>--}%
+%{--                <div class="animated fadeInRight wow" data-wow-delay=".4s">--}%
+%{--                    <h4 class="question">When can be used?</h4>--}%
+%{--                    <p class="answer">Lorem ipsum dolor sit amet, in mea nonumes dissentias dissentiunt, pro te solet oratio iriure. Cu sit consetetur moderatius intellegam, ius decore accusamus te. Ne primis suavitate disputando nam. Mutat convenirete.</p>--}%
+%{--                </div>--}%
+
+%{--                <!-- Question/Answer -->--}%
+%{--                <div class="question-q-box">Q.</div>--}%
+%{--                <div class="animated fadeInRight wow" data-wow-delay=".6s">--}%
+%{--                    <h4 class="question">License &amp; Copyright</h4>--}%
+%{--                    <p class="answer">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s.</p>--}%
+%{--                </div>--}%
+
+%{--            </div>--}%
+%{--            <!--/col-md-5-->--}%
+%{--        </div>--}%
+
+%{--    </div>--}%
+%{--</section>--}%
+%{--<!-- END FAQ -->--}%
+
+
+<!-- FOOTER -->
+<footer class="section bg-gray footer footer-sm">
+    <div class="container">
+
+
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="text-center">
+                    <g:link class="navbar-brand logo" controller="main">
+                        <i class="zmdi zmdi-navigation"></i> <span class="text-uppercase">TTReport</span>
+                    </g:link>
+
+                    <ul class="list-inline social-circle">
+                        <li class="list-inline-item"><a href=""> <i class="zmdi zmdi-facebook"></i> </a></li>
+                        <li class="list-inline-item"><a href=""> <i class="zmdi zmdi-twitter"></i> </a></li>
+                        <li class="list-inline-item"><a href=""> <i class="zmdi zmdi-google-plus"></i> </a></li>
+                        <li class="list-inline-item"><a href=""> <i class="zmdi zmdi-apple"></i> </a></li>
+                        <li class="list-inline-item"><a href=""> <i class="zmdi zmdi-instagram"></i> </a></li>
+                    </ul>
+
+                    <ul class="list-inline menu-list m-t-30">
+                        <li class="list-inline-item"><g:link controller="main" action="aboutUs"> About Us</g:link></li>
+                        <li class="list-inline-item"><a href=""> Help & Support</a></li>
+                        <li class="list-inline-item"><a href=""> Terms & Conditions</a></li>
+                        <li class="list-inline-item"><a href=""> Privacy Policy</a></li>
+                        <li class="list-inline-item"><g:link controller="main" action="contactUs"> Contact Us</g:link></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <ul class="list-inline menu-list m-t-30">
+                    <li class="text-muted m-b-0"><g:message code="website.copyright"></g:message></li>
+                </ul>
+            </div>
+
         </div>
+        <!-- end row -->
 
     </div>
-</div>
-<script>
-    (function() {
-        document.forms['loginForm'].elements['${usernameParameter ?: 'username'}'].focus();
-    })();
-</script>
+</footer>
+
+<!-- END FOOTER -->
+
+
+<!-- Back to top -->
+%{--<a href="#" class="back-to-top"> <i class="zmdi zmdi-chevron-up"> </i> </a>--}%
 </body>
 </html>

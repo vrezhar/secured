@@ -10,3 +10,8 @@ out/
 .project
 .settings
 .classpath
+src/test/groovy/general
+Keys
+Certificates/
+/keystore/
+logs.txt
