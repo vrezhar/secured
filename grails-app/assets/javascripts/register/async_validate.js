@@ -15,10 +15,15 @@ class Interceptor {
         e.preventDefault();
         let has_obvious_errors = false;
         for(let i = 0; i < field_list.length; ++i){
-            if(document.getElementById(field_list[i]).value.length > 50){
+            let value = document.getElementById(field_list[i]).value;
+            if(!value){
+                alertError("Please fill this up",field_list[i])
+            }
+            if(value.length > 50){
                 alertError("Entered value is too long",field_list[i]);
                 has_obvious_errors = true;
             }
+
         }
         if(has_obvious_errors){
             return false;

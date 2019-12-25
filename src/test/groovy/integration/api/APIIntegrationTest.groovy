@@ -1,11 +1,10 @@
 package integration.api
 
-import com.ttreport.api.current.ConsumerReleaseDocumentService
-import com.ttreport.api.current.DocumentAcceptanceService
-import com.ttreport.api.current.DocumentShipmentService
-import com.ttreport.api.current.EnterFPPDocumentService
-import com.ttreport.api.current.MarketEntranceDocumentService
-import com.ttreport.api.resources.current.MarketEntranceCommand
+import com.ttreport.api.current.existing.ConsumerReleaseDocumentService
+import com.ttreport.api.current.existing.DocumentAcceptanceService
+import com.ttreport.api.current.existing.DocumentShipmentService
+import com.ttreport.api.current.existing.EnterFPPDocumentService
+import com.ttreport.api.current.existing.MarketEntranceDocumentService
 import grails.testing.mixin.integration.Integration
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.test.annotation.Rollback

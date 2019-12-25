@@ -1,13 +1,13 @@
 package com.ttreport.api.current
 
 
-import com.ttreport.api.resources.current.ProductCommand
+import com.ttreport.api.resources.current.products.ProductCommand
 import com.ttreport.auth.Role
 import com.ttreport.auth.User
 import com.ttreport.auth.UserRole
-import com.ttreport.data.BarCode
+import com.ttreport.data.products.BarCode
 import com.ttreport.data.Company
-import com.ttreport.data.Products
+import com.ttreport.data.products.Products
 import grails.test.hibernate.HibernateSpec
 import grails.testing.services.ServiceUnitTest
 

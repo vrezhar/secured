@@ -22,6 +22,11 @@ class UrlMappings {
         post "/api/document/shipment/release"(controller: "apiReleaseEndpoint")
         post "/api/document/individual"(controller: "apiFPPEndpoint", action: "index")
 
+        post "/api/remains/describe"(controller: 'apiRemainsDescription', action: 'describeRemains')
+        post "/api/remains/register"(controller: 'apiRemainsRegistry', action: 'registerRemains')
+        post "/api/orders"(controller: 'apiCodeOrder', action: 'order')
+        get "/api/orders"(controller: 'apiCodeOrder', action: 'checkStatus')
+        "/api/orders/codes"(controller: 'apiCodeOrder', action: 'getBarCodes')
         /*
         post "/document/alternative/acceptance"(controller: "apiAlternativeAccept", action: "accept")
         put "/document/alternative/acceptance/$id"(controller: "apiAlternativeAccept", action: "update")
@@ -33,6 +38,10 @@ class UrlMappings {
 
         post "/user/company/sign"(controller: "user", action: "sign") //used by frontend
         "/user/company/confirm"(controller: "user", action: "confirm") //used by frontend
+        "/recover/email"(controller: 'main', action: 'forgotPassword')
+        "/recover/confirm"(controller: 'passwordRecovery', action: 'verify')
+        "/recover/validate"(controller: 'passwordRecovery', action: 'validate')
+        "/password/recover"(controller: 'passwordRecovery', action: 'recover')
         "/test"(controller: "test", action: "index")
         "/register"(controller: 'register',action: 'register')
         "/profile"(controller: 'user', action: 'profile')
@@ -45,5 +54,6 @@ class UrlMappings {
 
         "500"(view:'/error')
         "404"(view:'/notFound')
+        "403"(view: '/accessDenied')
     }
 }

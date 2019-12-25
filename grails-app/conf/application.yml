@@ -1,14 +1,9 @@
 
 ---
 mail:
-    gmail:
-        email: bronsmailsupreme@gmail.com
-        password: bruhMoment
-    postmark:
-        api:
-            token: postmark_token
-    sender:
-        email: bronsmailsupreme@gmail.com
+    email: 'bronsmailsupreme@gmail.com'
+    password: 'bruhMoment'
+    token: '43f54d1d-d68f-457c-bdf5-7157b4f67aa4'
 
 ---
 status:

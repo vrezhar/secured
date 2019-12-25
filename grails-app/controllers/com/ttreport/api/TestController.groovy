@@ -1,10 +1,9 @@
 package com.ttreport.api
 
-import com.ttreport.api.resources.current.ExtendedProductCommand
-import com.ttreport.api.resources.current.ProductCommand
+
+import com.ttreport.api.resources.current.products.ProductCommand
 import grails.plugin.springsecurity.annotation.Secured
 import grails.rest.RestfulController
-import grails.validation.Validateable
 
 @Secured(['permitAll'])
 class TestController extends RestfulController<ProductCommand>

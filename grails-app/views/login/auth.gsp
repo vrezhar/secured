@@ -57,6 +57,7 @@
                     </p>
                     <g:link controller="register" class="btn btn-primary btn-shadow btn-rounded w-lg animated fadeInDown wow" data-wow-delay=".4s">Get Started</g:link>
                     <div class="clearfix"></div>
+
                 </div><!-- home wrapper -->
 
             </div> <!-- end col -->
@@ -95,14 +96,24 @@
                         <span class="space-lg-only-1"></span>
 
                         <div class="row">
-                            <div class="col-lg-12">
+                            <div class="col-lg-8">
                                 <div class="checkbox">
                                     <input type="checkbox" id="chkRemember" <g:if test='${hasCookie}'>checked="checked"</g:if>>
                                     <label for="chkRemember">Remember me</label>
                                 </div>
                             </div>
+                            <div class="col-lg-4">
+                                <ul class="nav navbar-nav navbar-right ml-auto">
+                                    <li class="nav-item">
+                                        <g:link controller="main" action="forgotPasswordEmail">
+                                            <g:message code="website.forgot.password"></g:message>
+                                        </g:link>
+                                    </li>
+                                </ul>
+
+                            </div>
                         </div>
-                        <input type="submit" class="class=btn btn-primary btn-shadow btn-rounded w-lg" style="width: 90%; margin-left: 5%" id="submit" value= <g:message code="website.log.in.message"></g:message>></input>
+                        <input type="submit" class="class=btn btn-primary btn-shadow btn-rounded w-lg" style="width: 90%; margin-left: 5%" id="submit" value= <g:message code="website.log.in.message"></g:message>>
                     </form>
 %{--                    <g:form role="form" id="register_form" class="intro-form" method="POST" url="/register/confirm">--}%
 
@@ -460,6 +471,6 @@
 
 
 <!-- Back to top -->
-<a href="#" class="back-to-top"> <i class="zmdi zmdi-chevron-up"> </i> </a>
+%{--<a href="#" class="back-to-top"> <i class="zmdi zmdi-chevron-up"> </i> </a>--}%
 </body>
 </html>

@@ -53,6 +53,9 @@
                     <p class="title-alt">
                         Account Info
                     </p>
+                    <g:if test='${flash.message}'>
+                        <div class="profile_message" id="profile_message" style="text-align: center">${flash.message}</div>
+                    </g:if>
                     <div class="border"></div>
                 </div>
             </div>
@@ -232,7 +235,7 @@
 
 
 <!-- Back to top -->
-<a href="#" class="back-to-top"> <i class="zmdi zmdi-chevron-up"> </i> </a>
+%{--<a href="#" class="back-to-top"> <i class="zmdi zmdi-chevron-up"> </i> </a>--}%
 <asset:javascript src="signature/verify.js"></asset:javascript>
 <asset:javascript src="signature/onInput.js"></asset:javascript>
 <asset:javascript src="signature/loader.js"></asset:javascript>

@@ -1,21 +1,22 @@
 package com.ttreport.mail.strategy.senders
 
+import com.ttreport.configuration.ApplicationConfiguration
 import com.ttreport.mail.Mail
-import com.ttreport.mail.MailingConfigurationAware
+import com.ttreport.mail.MailingConfiguration
 import com.ttreport.mail.strategy.MailingStrategy
 
-import javax.mail.*;
-import javax.mail.internet.*;
+import javax.mail.*
+import javax.mail.internet.*
 
-class SendViaGmail extends MailingConfigurationAware implements MailingStrategy
+class SendViaGmail extends ApplicationConfiguration implements MailingStrategy
 {
     private String username
     private String password
 
-    private SendViaGmail(String username, String password)
+    private SendViaGmail(String username = null, String password = null)
     {
-        this.username = username
-        this.password = password
+        this.username = username?: mailConfigs.sender as String
+        this.password = password?: mailConfigs.password as String
     }
 
     public static SendViaGmail usingAccount(String username, String password)
@@ -26,7 +27,7 @@ class SendViaGmail extends MailingConfigurationAware implements MailingStrategy
 
     public static SendViaGmail usingDefaultAccount()
     {
-        SendViaGmail sender = new SendViaGmail("bronsmailsupreme@gmail.com","bruhMoment")
+        SendViaGmail sender = new SendViaGmail()
         return sender
     }
 
@@ -55,7 +56,7 @@ class SendViaGmail extends MailingConfigurationAware implements MailingStrategy
         MimeMessage message = new MimeMessage(session)
         message.setContent(mail.text,"text/html; charset=utf-8")
         message.setFrom(new InternetAddress(username))
-        message.addRecipient(Message.RecipientType.TO,new InternetAddress(mail.to));
+        message.addRecipient(Message.RecipientType.TO,new InternetAddress(mail.to))
         message.setSubject(mail.subject)
 
         Transport transport = session.getTransport("smtp")

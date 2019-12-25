@@ -6,12 +6,9 @@
 --%>
 
 <%@ page contentType="text/html;charset=UTF-8" %>
-<%@ page contentType="text/html;charset=UTF-8" %>
 <html>
 <head>
     <meta name="layout" content="${gspLayout ?: 'main'}"/>
-    <asset:javascript src="jquery-3.3.1.min.js"></asset:javascript>
-    <asset:stylesheet src="web_page/authorization/register/errors.css"></asset:stylesheet>
     <title></title>
 </head>
 
@@ -114,8 +111,7 @@
 
 
 <!-- Back to top -->
-<a href="#" class="back-to-top"> <i class="zmdi zmdi-chevron-up"> </i> </a>
+%{--<a href="#" class="back-to-top"> <i class="zmdi zmdi-chevron-up"> </i> </a>--}%
 
-<asset:javascript src="register/async_validate.js"></asset:javascript>
 </body>
 </html>

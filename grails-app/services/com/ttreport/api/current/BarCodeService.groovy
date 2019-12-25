@@ -1,6 +1,6 @@
 package com.ttreport.api.current
 
-import com.ttreport.data.BarCode
+import com.ttreport.data.products.BarCode
 import grails.gorm.transactions.Transactional
 
 @Transactional

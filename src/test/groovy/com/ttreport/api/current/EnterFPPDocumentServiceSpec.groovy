@@ -1,5 +1,6 @@
 package com.ttreport.api.current
 
+import com.ttreport.api.current.existing.EnterFPPDocumentService
 import grails.testing.services.ServiceUnitTest
 import spock.lang.Specification
 

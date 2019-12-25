@@ -1,42 +1,42 @@
 package com.ttreport.api.deprecated
 
 import com.ttreport.api.resources.deprecated.CompanyBuildingSource
-import com.ttreport.api.response.Responsive
+import com.ttreport.configuration.ApplicationConfiguration
 import com.ttreport.auth.User
 import com.ttreport.data.Company
-import com.ttreport.logs.DevCycleLogger
+import com.ttreport.logs.ServerLogger
 import grails.gorm.transactions.Transactional
 
 @Transactional
-class CompanyService extends Responsive
+class CompanyService extends ApplicationConfiguration
 {
 
     def save(CompanyBuildingSource src)
     {
-        DevCycleLogger.log("save() called")
+        ServerLogger.log("save() called")
         Map response = [:]
         if(!src.validate())
         {
-            DevCycleLogger.log("command object not validated, exiting save()")
-            response.status = statusCodes.invalid_input
+            ServerLogger.log("command object not validated, exiting save()")
+            response.status = apiStatusCodes.invalid_input
             return response
         }
         if(src.mainToken == null && src.companyToken == null)
         {
-            DevCycleLogger.log("no token registered, exiting save()")
-            response.status = statusCodes.invalid_token
+            ServerLogger.log("no token registered, exiting save()")
+            response.status = apiStatusCodes.invalid_token
             return response
         }
         User user = User.findWhere(mainToken: src.mainToken)
         if(!user)
         {
-            DevCycleLogger.log("invalid user token, exiting save()")
-            response.status = statusCodes.invalid_token
+            ServerLogger.log("invalid user token, exiting save()")
+            response.status = apiStatusCodes.invalid_token
             return response
         }
-        DevCycleLogger.log("trying to save a company")
+        ServerLogger.log("trying to save a company")
         Company company = new Company(address: src.address,
-                                      companyId: src.companyId,
+                                      inn: src.inn,
                                       user: user)
         if(company.validate())
         {
@@ -44,12 +44,12 @@ class CompanyService extends Responsive
             company.save()
             user.save()
             response.company_token = company.token
-            response.status = statusCodes.success
-            DevCycleLogger.log("company saved, reporting success, exiting save()")
+            response.status = apiStatusCodes.success
+            ServerLogger.log("company saved, reporting success, exiting save()")
             return response
         }
-        DevCycleLogger.log("company not saved, reporting failure, exiting save()")
-        response.status = statusCodes.invalid_input
+        ServerLogger.log("company not saved, reporting failure, exiting save()")
+        response.status = apiStatusCodes.invalid_input
         return response
     }
 
@@ -64,13 +64,13 @@ class CompanyService extends Responsive
         Company company = Company.findByToken(src.companyToken)
         if(!company)
         {
-            response.status = statusCodes.invalid_token
+            response.status = apiStatusCodes.invalid_token
             return response
         }
         company.token = regenerateToken()
         company.save()
         response.new_company_token = company.token
-        response.status = statusCodes.success
+        response.status = apiStatusCodes.success
         return response
     }
 

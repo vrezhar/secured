@@ -18,7 +18,7 @@ class UserInitializerServiceSpec extends HibernateSpec implements ServiceUnitTes
                 username: "bruh", password: "bruhMoment", email:"test@test.com"
         )
         //Note to self: save something before searching for them in a database
-        service.assignRole(user, test_role,true)
+        service.assignRoleAndSave(user, test_role,true)
         then:
         UserRole.findByUser(user).role.authority == "ROLE_TEST"
     }
@@ -29,7 +29,7 @@ class UserInitializerServiceSpec extends HibernateSpec implements ServiceUnitTes
         def user = new User(firstName: "bron", lastName: "bronson",
                 username: "bruh", password: "bruhMoment",email: "test@test.com"
         )
-        service.assignRole(user, test_role)
+        service.assignRoleAndSave(user, test_role)
 
         then:
         UserRole.findByUser(user).role.authority == "ROLE_TEST"

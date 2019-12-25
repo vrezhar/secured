@@ -3,7 +3,7 @@ package com.ttreport.user
 import com.ttreport.auth.Role
 import com.ttreport.auth.User
 import com.ttreport.data.Company
-import com.ttreport.logs.DevCycleLogger
+import com.ttreport.logs.ServerLogger
 
 
 import com.ttreport.signature.SignatureVerificationService
@@ -11,12 +11,14 @@ import grails.plugin.springsecurity.SpringSecurityService
 import grails.plugin.springsecurity.annotation.Secured
 
 
-class UserController  {
+class UserController
+{
 
     SpringSecurityService springSecurityService
     SignatureVerificationService signatureVerificationService
 
-    static defaultAction = "profile()"
+    static defaultAction = "profile"
+    static scope = 'session'
 
     @Secured(['ROLE_USER','ROLE_ADMIN'])
     def show(long id)
@@ -90,10 +92,10 @@ class UserController  {
     @Secured(['ROLE_ADMIN','ROLE_USER'])
     def confirm(SignatureCommand cmd)
     {
-        DevCycleLogger.log("accept called ")
+        ServerLogger.log("accept called ")
         if(cmd == null)
         {
-            DevCycleLogger.log("command object is null, exiting confirm()")
+            ServerLogger.log("command object is null, exiting confirm()")
             withFormat{
                 this.response.status = 400
                 json{
@@ -104,7 +106,7 @@ class UserController  {
         Company company = signatureVerificationService.verify(cmd.body)
         if(company)
         {
-            DevCycleLogger.log("saving company")
+            ServerLogger.log("saving company")
             company.save()
             withFormat{
                 this.response.status = 200
@@ -113,7 +115,7 @@ class UserController  {
                 }
             }
         }
-        DevCycleLogger.log("Critical error occurred while creating company(reasons unknown)")
+        ServerLogger.log("Critical error occurred while creating company(reasons unknown)")
         withFormat{
             this.response.status = 404
             json{

@@ -9,10 +9,12 @@
 <html>
 <head>
     <title>Welcome!</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="layout" content="${gspLayout ?: 'main'}"/>
 </head>
 
-<body data-spy="scroll" data-target="#navbar-menu">
+<body data-spy="scroll" data-target="body">
 <!-- STRAT NAVBAR -->
 <nav class="navbar navbar-expand-lg fixed-top navbar-custom sticky sticky-dark">
     <div class="container">
@@ -26,6 +28,7 @@
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
             <i class="zmdi zmdi-menu"></i>
         </button>
+
         <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-center nav-custom-left" id="mySidenav">
                 <li class="nav-item dropdown">
@@ -545,6 +548,6 @@
 
 
 <!-- Back to top -->
-<a href="#" class="back-to-top"> <i class="zmdi zmdi-chevron-up"> </i> </a>
+%{--<a href="#" class="back-to-top"> <i class="zmdi zmdi-chevron-up"> </i> </a>--}%
 </body>
 </html>

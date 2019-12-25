@@ -1,7 +1,6 @@
 
 package ttreport
 
-
 import com.ttreport.api.types.DocumentType
 import com.ttreport.auth.Role
 import com.ttreport.auth.User
@@ -9,8 +8,8 @@ import com.ttreport.auth.UserRole
 import com.ttreport.data.Company
 import com.ttreport.data.documents.differentiated.Document
 import com.ttreport.data.documents.differentiated.existing.*
-import com.ttreport.datacenter.DataCenterApiConnectorService
-import com.ttreport.logs.DevCycleLogger
+import com.ttreport.datacenter.MtisApiConnectorService
+import com.ttreport.logs.ServerLogger
 import grails.async.Promise
 import grails.compiler.GrailsCompileStatic
 
@@ -22,10 +21,12 @@ import static grails.async.Promises.task
 @GrailsCompileStatic
 class BootStrap {
 
-    DataCenterApiConnectorService dataCenterApiConnectorService
+    MtisApiConnectorService mtisApiConnectorService
 
     def init = {
         servletContext ->
+            System.setProperty("com.sun.security.enableAIAcaIssuers", "true")
+            System.setProperty("com.sun.security.enableCRLDP","true")
             Role adminRole = Role.findOrSaveWhere(authority: 'ROLE_ADMIN')
             Role userRole = Role.findOrSaveWhere(authority: 'ROLE_USER')
             User admin = User.findWhere(username: 'testmail@gmail.com')
@@ -48,21 +49,21 @@ class BootStrap {
             }
             user.save()
             admin.save()
-            Company company = Company.findWhere(address: "Komitas", companyId: "Initial", user: admin)
-            Company test = Company.findWhere(address: "Komitas", companyId: "test", user: user)
+            Company company = Company.findWhere(address: "Komitas", user: admin)
+            Company test = Company.findWhere(address: "Komitas", user: user)
             if (!test) {
-                test = new Company(address: "Komitas", companyId: "Initial", token: "test", user: user)
+                test = new Company(address: "Komitas", token: "test", user: user)
                 user.addToCompanies(test)
                 test.save()
             }
             if (!company) {
-                company = new Company(address: "Komitas", companyId: "Initial", user: admin)
+                company = new Company(address: "Komitas", user: admin)
                 admin.addToCompanies(company)
                 company.save(true)
             }
-            println(company.token)
-
-            DataCenterApiConnectorService.updateToken()
+            company.omsId = "1745f04c-23c3-4479-8dc0-ff2052cff9e8"
+            company.omsToken = "717c8c49-dab2-bc02-4e82-a58b46cabf66"
+            //MtisApiConnectorService.updateToken()
 
             Executors.newScheduledThreadPool(1).scheduleAtFixedRate(new Runnable() {
 
@@ -87,26 +88,26 @@ class BootStrap {
 
                 @Override
                 void run() {
-                    DevCycleLogger.log("Document sender executor started, iterating over all documents")
+                    ServerLogger.log("Document sender executor started, iterating over all documents")
                     final Object monitor = new Object()
                     int threadCount = 1
                     for(document in Document.list()){
                         if (!document.documentId) {
-                            DevCycleLogger.log("found unsent document, sending")
+                            ServerLogger.log("found unsent document, sending")
                             Promise p = task({
                                 ++threadCount
-                                dataCenterApiConnectorService.sendDocument(document,inferType(document),true)
+                                mtisApiConnectorService.sendDocument(document,inferType(document),true)
                             })
                             p.onError { Throwable t ->
                                 synchronized (monitor){
                                     --threadCount
-                                    DevCycleLogger.log_exception(t)
+                                    ServerLogger.log_exception(t)
                                     monitor.notifyAll()
                                 }
                             }
                             p.onComplete { Object ignored ->
                                synchronized(monitor){
-                                   DevCycleLogger.log("document sent")
+                                   ServerLogger.log("document sent")
                                    --threadCount
                                    monitor.notifyAll()
                                }

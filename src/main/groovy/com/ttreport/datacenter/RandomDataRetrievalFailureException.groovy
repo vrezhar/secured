@@ -1,6 +1,6 @@
 package com.ttreport.datacenter
 
-import com.ttreport.logs.DevCycleLogger
+import com.ttreport.logs.ServerLogger
 
 class RandomDataRetrievalFailureException extends Exception {
     String message
@@ -16,6 +16,6 @@ class RandomDataRetrievalFailureException extends Exception {
     }
     void log()
     {
-        DevCycleLogger.log_exception(this)
+        ServerLogger.log_exception(this)
     }
 }
