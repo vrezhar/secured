@@ -47,6 +47,16 @@ class OrderService extends MessageBundleService
                     continue
                 }
                 Products products = Products.get(orderUnit.id)
+                if(!products){
+                    List errorList = []
+                    orderUnit.errors.rejectValue('id','command.product.notfound')
+                    orderUnit.errors.fieldErrors.each {
+                        errorList.add([field: it.field, value: it.rejectedValue, error: getMessage(it.code)?: "invalid value"])
+                    }
+                    errors.add([gtin: orderUnit.gtin, errors: errorList])
+                    noerrors = false
+                    continue
+                }
                 products.description = orderUnit.description?: products.description
                 products.cost = orderUnit.cost?: products.cost
                 products.tax = orderUnit.tax?: products.tax

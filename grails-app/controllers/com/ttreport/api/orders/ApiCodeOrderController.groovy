@@ -5,6 +5,7 @@ import com.ttreport.api.resources.current.OrderAndResponse
 import com.ttreport.api.resources.current.OrderCommand
 import com.ttreport.data.products.remains.Orders
 import com.ttreport.datacenter.OmsService
+import com.ttreport.logs.ServerLogger
 import grails.plugin.springsecurity.annotation.Secured
 import grails.rest.RestfulController
 
@@ -30,24 +31,35 @@ class ApiCodeOrderController extends RestfulController<OrderCommand>
 
     def order(OrderCommand cmd)
     {
-        OrderAndResponse orderAndResponse = orderService.processOrder(cmd)
-        Orders order = orderAndResponse.order
+        try {
+            OrderAndResponse orderAndResponse = orderService.processOrder(cmd)
+            Orders order = orderAndResponse.order
 
-        if(!order){
-            Map response = orderAndResponse.response
+            if(!order){
+                Map response = orderAndResponse.response
+                withFormat {
+                    this.response.status = response.status as int
+                    json{
+                        respond(response)
+                    }
+                }
+                return
+            }
+            Map response = omsService.createOrder(order)
             withFormat {
                 this.response.status = response.status as int
                 json{
                     respond(response)
                 }
             }
-            return
         }
-        Map response = omsService.createOrder(order)
-        withFormat {
-            this.response.status = response.status as int
-            json{
-                respond(response)
+        catch (Exception e) {
+            ServerLogger.log_exception(e)
+            withFormat {
+                this.response.status = 500
+                json{
+                    respond(status: 500)
+                }
             }
         }
     }
