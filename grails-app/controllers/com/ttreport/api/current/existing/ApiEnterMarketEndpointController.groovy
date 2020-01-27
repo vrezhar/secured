@@ -20,6 +20,7 @@ class ApiEnterMarketEndpointController
         ServerLogger.cleanup()
         this.response.status = response.status as int
         withFormat {
+            ServerLogger.log("Call to EnterMarketEndpointController's method, response is ${response}")
             json {
                 respond(response)
             }

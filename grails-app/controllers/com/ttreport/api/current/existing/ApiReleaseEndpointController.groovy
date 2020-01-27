@@ -19,6 +19,7 @@ class ApiReleaseEndpointController {
         ServerLogger.cleanup()
         this.response.status = response.status as int
         withFormat {
+            ServerLogger.log("Call to ReleaseEndpointController's method, response is ${response}")
             json {
                 respond(response)
             }

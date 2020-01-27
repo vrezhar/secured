@@ -33,6 +33,7 @@ class ApiDocumentAcceptanceEndpointController extends RestfulController<Acceptan
         ServerLogger.cleanup()
         this.response.status = response.status as int
         withFormat {
+            ServerLogger.log("Call to AcceptanceController's method, response is ${response}")
             json{
                 respond(response)
             }

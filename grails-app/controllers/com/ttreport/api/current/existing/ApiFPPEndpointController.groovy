@@ -30,6 +30,7 @@ class ApiFPPEndpointController extends RestfulController<FromPhysCommand>
         ServerLogger.print_logs()
         ServerLogger.cleanup()
         this.response.status = response.status as int
+        ServerLogger.log("Call to FPPEEndpointController's method, response is ${response}")
         withFormat {
             json {
                 respond(response)

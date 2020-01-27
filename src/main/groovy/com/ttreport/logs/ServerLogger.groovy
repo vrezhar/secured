@@ -103,7 +103,6 @@ class ServerLogger
             finally{
                 if(writer){
                     try{
-                        writer.println("End of the new log entry")
                         writer.println("\n")
                         writer.flush()
                         writer.close()
@@ -141,7 +140,6 @@ class ServerLogger
             finally{
                 if(writer){
                     try{
-                        writer.println("End of validation errors' logs")
                         writer.println("\n")
                         writer.flush()
                         writer.close()
@@ -185,7 +183,6 @@ class ServerLogger
             finally{
                 if(writer){
                     try{
-                        writer.println("End of validation errors' logs")
                         writer.println("\n")
                         writer.flush()
                         writer.close()
@@ -230,7 +227,6 @@ class ServerLogger
             finally{
                 if(writer){
                     try{
-                        writer.println("End of exception's logs")
                         writer.println("\n")
                         writer.flush()
                         writer.close()

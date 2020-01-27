@@ -34,6 +34,7 @@ class ApiDocumentShipmentEndpointController extends RestfulController<ShipmentDo
         ServerLogger.cleanup()
         this.response.status = response.status as int
         withFormat {
+            ServerLogger.log("Call to ShipmentController's ship method, response is ${response}")
             json{
                 respond(response)
             }
@@ -45,6 +46,7 @@ class ApiDocumentShipmentEndpointController extends RestfulController<ShipmentDo
         def response = documentShipmentService.cancelShipment(params.number as String)
         this.response.status = (response?.status as int) ?: 500
         withFormat {
+            ServerLogger.log("Call to ShipmentEndpointController's cancelShipment method, response is ${response}")
             json{
                 respond([status: response])
             }

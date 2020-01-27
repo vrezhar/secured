@@ -39,6 +39,7 @@ class ApiCodeOrderController extends RestfulController<OrderCommand>
                 Map response = orderAndResponse.response
                 withFormat {
                     this.response.status = response.status as int
+                    ServerLogger.log("Call to OrderController's order method, response is ${response}")
                     json{
                         respond(response)
                     }
@@ -48,6 +49,7 @@ class ApiCodeOrderController extends RestfulController<OrderCommand>
             Map response = omsService.createOrder(order)
             withFormat {
                 this.response.status = response.status as int
+                ServerLogger.log("Call to OrderController's order method, response is ${response}")
                 json{
                     respond(response)
                 }
@@ -57,6 +59,7 @@ class ApiCodeOrderController extends RestfulController<OrderCommand>
             ServerLogger.log_exception(e)
             withFormat {
                 this.response.status = 500
+                ServerLogger.log("Internal server error, controller: Order, action: order")
                 json{
                     respond(status: 500)
                 }
@@ -69,6 +72,7 @@ class ApiCodeOrderController extends RestfulController<OrderCommand>
         if(!params.orderId){
             withFormat {
                 this.response.status = 402
+                ServerLogger.log("Call to OrderController's checkstatus method, response is ${[status: 402, reason: "orderId missing from the url"]}")
                 json{
                     respond([status: 402, reason: "orderId missing from the url"])
                 }
@@ -78,6 +82,7 @@ class ApiCodeOrderController extends RestfulController<OrderCommand>
         if(!params.gtin){
             withFormat {
                 this.response.status = 402
+                ServerLogger.log("Call to OrderController's checkstatus method, response is ${[status: 402, reason: "gtin missing from the url"]}")
                 json{
                     respond([status: 402, reason: "gtin missing from the url"])
                 }
@@ -86,6 +91,7 @@ class ApiCodeOrderController extends RestfulController<OrderCommand>
         }
         Map response = omsService.checkStatus(Orders.findWhere(orderId: params.orderId as String), params.gtin as String)
         withFormat {
+            ServerLogger.log("Call to OrderController's checkStatus method, response is ${response}")
             this.response.status = response.status as int
             json{
                 respond(response)
@@ -98,6 +104,7 @@ class ApiCodeOrderController extends RestfulController<OrderCommand>
         if(!params.orderId){
             withFormat {
                 this.response.status = 402
+                ServerLogger.log("Call to OrderController's getBarCodes method, response is ${[status: 402, reason: "orderId missing from the url"]}")
                 json{
                     respond([status: 402, reason: "orderId missing from the url"])
                 }
@@ -107,6 +114,7 @@ class ApiCodeOrderController extends RestfulController<OrderCommand>
         if(!params.gtin){
             withFormat {
                 this.response.status = 402
+                ServerLogger.log("Call to OrderController's checkStatus method, response is ${[status: 402, reason: "gtin missing from the url"]}")
                 json{
                     respond([status: 402, reason: "gtin missing from the url"])
                 }
@@ -116,6 +124,7 @@ class ApiCodeOrderController extends RestfulController<OrderCommand>
         if(!params.quantity){
             withFormat {
                 this.response.status = 402
+                ServerLogger.log("Call to OrderController's checkStatus method, response is ${[status: 402, reason: "quantity missing from the url"]}")
                 json{
                     respond([status: 402, reason: "quantity missing from the url"])
                 }
@@ -125,6 +134,7 @@ class ApiCodeOrderController extends RestfulController<OrderCommand>
         Map response = omsService.fetchBarCodes(Orders.findWhere(orderId: params.orderId), params.quantity as int, params.gtin as String)
         withFormat {
             this.response.status = response.status as int
+            ServerLogger.log("Call to OrderController's checkStatus method, response is ${response}")
             json{
                 respond(response)
             }

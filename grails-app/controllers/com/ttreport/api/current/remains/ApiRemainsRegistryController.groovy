@@ -3,6 +3,7 @@ package com.ttreport.api.current.remains
 import com.ttreport.api.current.ProductsManagerService
 import com.ttreport.api.resources.current.documents.remains.RemainsDescriptionDocumentCommand
 import com.ttreport.api.resources.current.documents.remains.RemainsRegistryDocumentCommand
+import com.ttreport.logs.ServerLogger
 import grails.plugin.springsecurity.annotation.Secured
 import grails.rest.RestfulController
 
@@ -32,6 +33,7 @@ class ApiRemainsRegistryController extends RestfulController<RemainsRegistryDocu
         Map response = productsManagerService.registerRemains(cmd).response
         withFormat {
             this.response.status = response.status as int
+            ServerLogger.log("Call to RemainRegistryController's method, response is ${response}")
             json{
                 respond(response)
             }
