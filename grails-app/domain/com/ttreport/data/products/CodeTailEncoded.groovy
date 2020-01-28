@@ -7,5 +7,6 @@ class CodeTailEncoded
     String encodedTail
 
     static constraints = {
+        encodedTail nullable: true, blank: true
     }
 }

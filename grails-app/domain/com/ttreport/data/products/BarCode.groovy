@@ -84,6 +84,7 @@ class BarCode implements Serializable
                 return false
             }
         }
+        tail nullable: true
         products nullable: true
     }
     static mapping = {
