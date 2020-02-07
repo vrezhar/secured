@@ -9,7 +9,7 @@ class Validator
 
     static validateBarCodeFormat(String code)
     {
-        Pattern pattern = Pattern.compile("01[0-9]{14}21[-!”%&’()*+,./_:;=<>?a-zA-Z0-9]{13}")
+        Pattern pattern = Pattern.compile("01[0-9]{14}21[-&>'()*+,./_:;=<?!%a-zA-Z0-9]{13}")
         Matcher matcher = pattern.matcher(code)
         return matcher.matches()
     }
