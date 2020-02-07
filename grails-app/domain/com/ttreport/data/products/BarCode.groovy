@@ -91,12 +91,6 @@ class BarCode implements Serializable
         products nullable: true
     }
 
-    def beforeInsert()
-    {
-        uitCode = uitCode ? URLEncoder.encode(uitCode, "UTF-8") : uitCode
-        uituCode = uituCode ? URLEncoder.encode(uituCode, "UTF-8") : uitCode
-    }
-
     static mapping = {
         tablePerHierarchy false
     }
