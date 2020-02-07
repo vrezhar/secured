@@ -4,6 +4,7 @@ package com.ttreport.api.resources.current.products
 import com.ttreport.data.products.BarCode
 import com.ttreport.data.products.Products
 import com.ttreport.logs.ServerLogger
+import com.ttreport.validation.Validator
 import grails.compiler.GrailsCompileStatic
 import grails.validation.Validateable
 
@@ -45,9 +46,7 @@ class ProductCommand implements Validateable
                 return 'command.code.uit.null'
             }
             if(value){
-                Pattern pattern = Pattern.compile("^01[0-9]{14}21[a-zA-Z0-9]{13}\$")
-                Matcher matcher = pattern.matcher(value)
-                if(!matcher.matches()){
+                if(!Validator.validateBarCodeFormat(value)){
                     return 'command.code.format.invalid'
                 }
             }
@@ -72,6 +71,11 @@ class ProductCommand implements Validateable
         uitu_code nullable: true, validator: { String value, ProductCommand object ->
             if (object?.action == "SAVE" && !object?.uit_code && !value) {
                 return 'command.code.uitu.null'
+            }
+            if(value){
+                if(!Validator.validateBarCodeFormat(value)){
+                    return 'command.code.format.invalid'
+                }
             }
         }
 

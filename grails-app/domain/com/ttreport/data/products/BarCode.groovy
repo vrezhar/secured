@@ -1,6 +1,6 @@
 package com.ttreport.data.products
 
-
+import com.ttreport.validation.Validator
 import grails.compiler.GrailsCompileStatic
 import groovy.transform.ToString
 
@@ -72,9 +72,7 @@ class BarCode implements Serializable
                 return false
             }
             if(value){
-                Pattern pattern = Pattern.compile("01[0-9]{14}21[a-zA-Z0-9]{13}")
-                Matcher matcher = pattern.matcher(value)
-                if(!matcher.matches()){
+                if(!Validator.validateBarCodeFormat(value)){
                     return false
                 }
             }
@@ -83,10 +81,22 @@ class BarCode implements Serializable
             if(!value && !object?.uitCode) {
                 return false
             }
+            if(value){
+                if(!Validator.validateBarCodeFormat(value)){
+                    return false
+                }
+            }
         }
         tail nullable: true
         products nullable: true
     }
+
+    def beforeInsert()
+    {
+        uitCode = uitCode ? URLEncoder.encode(uitCode, "UTF-8") : uitCode
+        uituCode = uituCode ? URLEncoder.encode(uituCode, "UTF-8") : uitCode
+    }
+
     static mapping = {
         tablePerHierarchy false
     }
